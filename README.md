@@ -1,6 +1,3 @@
-# bottom-up
-concepts from bottom to up.
+# Farabi
 
-Python code and description in 3 paragraphs
-
-for semantic segmentation use
+Random description here

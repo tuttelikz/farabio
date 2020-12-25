@@ -1,0 +1,7 @@
+README.md
+setup.py
+farabi/__init__.py
+farabi.egg-info/PKG-INFO
+farabi.egg-info/SOURCES.txt
+farabi.egg-info/dependency_links.txt
+farabi.egg-info/top_level.txt
