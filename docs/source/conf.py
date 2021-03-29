@@ -23,11 +23,11 @@ sys.path.insert(0, os.path.abspath('../../'))  # models added here
 # -- Project information -----------------------------------------------------
 
 project = 'farabi'
-copyright = '2020, Translational Biophotonics Lab'
-author = 'Translational Biophotonics Lab'
+copyright = '2021, MIT License'
+author = 'San Askaruly'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = '0.0.3'
 
 
 # -- General configuration ---------------------------------------------------

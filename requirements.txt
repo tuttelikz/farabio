@@ -5,6 +5,7 @@ imageio==2.9.0
 ipdb==0.13.6
 matplotlib==3.3.4
 numpy==1.19.4
+numpydoc==1.1.0
 opencv_python==4.5.1.48
 pandas==1.2.2
 Pillow==8.1.1
@@ -13,6 +14,7 @@ scikit_image==0.18.1
 scipy==1.6.1
 seaborn==0.11.1
 sphinx-git==11.0.0
+sphinx-rtd-theme==0.5.1
 tensorboardX==2.1
 tensorflow==2.4.1
 terminaltables==3.1.0
