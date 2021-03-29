@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Tutorial &mdash; farabi 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Concepts" href="concepts.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> farabi
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Handbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-train-model">How to train model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-use-tensorboard">How to use Tensorboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-train-yolo-v3-on-custom-dataset">How to train Yolo-v3 on custom dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux-related">Linux related</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-the-user-of-pid">Get the user of PID</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html">Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="downloads.html">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">farabi</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Handbook</a> &raquo;</li>
+        
+      <li>Tutorial</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/handbook/tutorial.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#how-to-train-model" id="id1">How to train model</a></p></li>
+<li><p><a class="reference internal" href="#how-to-use-tensorboard" id="id2">How to use Tensorboard</a></p></li>
+<li><p><a class="reference internal" href="#how-to-train-yolo-v3-on-custom-dataset" id="id3">How to train Yolo-v3 on custom dataset</a></p></li>
+<li><p><a class="reference internal" href="#linux-related" id="id4">Linux related</a></p>
+<ul>
+<li><p><a class="reference internal" href="#get-the-user-of-pid" id="id5">Get the user of PID</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="how-to-train-model">
+<h2><a class="toc-backref" href="#id1">How to train model</a><a class="headerlink" href="#how-to-train-model" title="Permalink to this headline">¶</a></h2>
+<p>Adjust the following code from <code class="code docutils literal notranslate"><span class="pre">farabi.kernel.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">farabi.core.configs</span> <span class="kn">import</span> <span class="n">get_config</span>
+<span class="kn">from</span> <span class="nn">farabi.models.segmentation.unet.unet_trainer</span> <span class="kn">import</span> <span class="n">UnetTrainer</span>
+<span class="kn">from</span> <span class="nn">farabi.models.segmentation.attunet.attunet_trainer</span> <span class="kn">import</span> <span class="n">AttunetTrainer</span>
+<span class="kn">from</span> <span class="nn">farabi.models.superres.srgan.srgan_trainer</span> <span class="kn">import</span> <span class="n">SrganTrainer</span>
+<span class="kn">from</span> <span class="nn">farabi.models.translation.cyclegan.cyclegan_trainer</span> <span class="kn">import</span> <span class="n">CycleganTrainer</span>
+<span class="kn">from</span> <span class="nn">farabi.models.detection.yolov3.yolo_trainer</span> <span class="kn">import</span> <span class="n">YoloTrainer</span>
+<span class="kn">from</span> <span class="nn">farabi.models.detection.faster_rcnn.faster_rcnn_trainer</span> <span class="kn">import</span> <span class="n">FasterRCNNTrainer</span>
+
+
+<span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;unet&quot;</span><span class="p">:</span> <span class="n">UnetTrainer</span><span class="p">,</span>
+    <span class="s2">&quot;attunet&quot;</span><span class="p">:</span> <span class="n">AttunetTrainer</span><span class="p">,</span>
+    <span class="s2">&quot;srgan&quot;</span><span class="p">:</span> <span class="n">SrganTrainer</span><span class="p">,</span>
+    <span class="s2">&quot;cyclegan&quot;</span><span class="p">:</span> <span class="n">CycleganTrainer</span><span class="p">,</span>
+    <span class="s2">&quot;yolov3&quot;</span><span class="p">:</span> <span class="n">YoloTrainer</span><span class="p">,</span>
+    <span class="s2">&quot;faster_rcnn&quot;</span><span class="p">:</span> <span class="n">FasterRCNNTrainer</span>
+<span class="p">}</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">itime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;faster_rcnn&quot;</span>
+    <span class="n">config</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="n">trnr</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="n">model</span><span class="p">](</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
+        <span class="n">trnr</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
+        <span class="n">trnr</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;detect&#39;</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;yolov3&quot;</span><span class="p">,</span> <span class="s2">&quot;detect mode works only for yolo!&quot;</span>
+        <span class="n">trnr</span><span class="o">.</span><span class="n">detect_perform</span><span class="p">()</span>
+
+    <span class="n">etime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">itime</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Complete in </span><span class="si">{</span><span class="n">etime</span> <span class="o">//</span> <span class="mi">60</span><span class="si">}</span><span class="s1">m </span><span class="si">{</span><span class="n">etime</span> <span class="o">%</span> <span class="mi">60</span><span class="si">:</span><span class="s1"> .2f</span><span class="si">}</span><span class="s1">s&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-to-use-tensorboard">
+<h2><a class="toc-backref" href="#id2">How to use Tensorboard</a><a class="headerlink" href="#how-to-use-tensorboard" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ tensorboard --logdir<span class="o">=</span>&lt;DIR-WHERE-TFRECORDS-FILE-STORED&gt; --port <span class="m">6006</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-to-train-yolo-v3-on-custom-dataset">
+<h2><a class="toc-backref" href="#id3">How to train Yolo-v3 on custom dataset</a><a class="headerlink" href="#how-to-train-yolo-v3-on-custom-dataset" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Create custom configuration Yolo:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> farabi/models/detection/yolov3/config/          <span class="c1"># Navigate to config dir</span>
+$ bash create_custom_model.sh &lt;num-classes&gt;  <span class="c1"># Will create custom model &#39;yolov3-custom.cfg&#39;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Modify the ‘custom.data’ file according to the dataset:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> farabi/models/detection/config/          <span class="c1"># Navigate to config dir</span>
+$ nano custom.data                           <span class="c1"># Change classes, train, valid and names fields</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Start YOLO trainer with settings:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python kernel.py --mode train --model_def &lt;yolov3-custom.cfg&gt; --data_config &lt;custom.data&gt; --pretrained_weights &lt;darknet53.conv.74&gt;     <span class="c1"># Start training</span>
+$ python kernel.py --mode &lt;test<span class="p">|</span>detect&gt; --model_def &lt;yolov3-custom.cfg&gt; --data_config &lt;custom.data&gt; --weights_path &lt;weights.pth&gt;         <span class="c1"># Start test/detecting</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="linux-related">
+<h2><a class="toc-backref" href="#id4">Linux related</a><a class="headerlink" href="#linux-related" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="get-the-user-of-pid">
+<h3><a class="toc-backref" href="#id5">Get the user of PID</a><a class="headerlink" href="#get-the-user-of-pid" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ps -u -p &lt;PID&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="concepts.html" class="btn btn-neutral float-right" title="Concepts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Translational Biophotonics Lab.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,566 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>farabi.core.convnettrainer &mdash; farabi 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> farabi
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">farabi</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>farabi.core.convnettrainer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for farabi.core.convnettrainer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">farabi.core.basetrainer</span> <span class="kn">import</span> <span class="n">BaseTrainer</span>
+
+
+<div class="viewcode-block" id="ConvnetTrainer"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer">[docs]</a><span class="k">class</span> <span class="nc">ConvnetTrainer</span><span class="p">(</span><span class="n">BaseTrainer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ConvnetTrainer is main trainer class for every ConvNet related</span>
+<span class="sd">    architectures.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    BaseTrainer : ABC</span>
+<span class="sd">        Inherits BaseTrainer class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConvnetTrainer.__init__"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initializes trainer object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_attr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_attr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_trainloader</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_testloader</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_parallel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">build_parallel_model</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_parallel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">build_model</span><span class="p">()</span></div>
+
+    <span class="c1">##########################</span>
+    <span class="c1"># Definition of attributes</span>
+    <span class="c1">##########################</span>
+<div class="viewcode-block" id="ConvnetTrainer.default_attr"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.default_attr">[docs]</a>    <span class="k">def</span> <span class="nf">default_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_epochs</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="s1">&#39;train&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_epoch</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_epoch</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_eval</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_interval</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_loader</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid_loader</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_loader</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_iter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid_epoch_iter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_loop_iter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_use_tqdm</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_parallel</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_next_loop</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_epoch</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_backbone</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.init_attr"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.init_attr">[docs]</a>    <span class="k">def</span> <span class="nf">init_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Abstract method that initializes object attributes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">define_data_attr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">define_model_attr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">define_train_attr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">define_test_attr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">define_log_attr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">define_compute_attr</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">define_misc_attr</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.define_data_attr"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.define_data_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_data_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define data related attributes here</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.define_model_attr"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.define_model_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_model_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define model related attributes here</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.define_train_attr"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.define_train_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_train_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define training related attributes here</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.define_test_attr"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.define_test_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_test_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define training related attributes here</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.define_log_attr"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.define_log_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_log_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define log related attributes here</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.define_compute_attr"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.define_compute_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_compute_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define compute related attributes here</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.define_misc_attr"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.define_misc_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_misc_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Define miscellaneous attributes here</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1">##########################</span>
+    <span class="c1"># Building model</span>
+    <span class="c1">##########################</span>
+<div class="viewcode-block" id="ConvnetTrainer.build_model"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.build_model">[docs]</a>    <span class="k">def</span> <span class="nf">build_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Abstract method that builds model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.build_parallel_model"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.build_parallel_model">[docs]</a>    <span class="k">def</span> <span class="nf">build_parallel_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Abstract method that builds multi-GPU model in parallel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1">##########################</span>
+    <span class="c1"># Dataloaders</span>
+    <span class="c1">##########################</span>
+<div class="viewcode-block" id="ConvnetTrainer.get_trainloader"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.get_trainloader">[docs]</a>    <span class="k">def</span> <span class="nf">get_trainloader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: Retreives training set of torch.utils.data.DataLoader class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.get_testloader"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.get_testloader">[docs]</a>    <span class="k">def</span> <span class="nf">get_testloader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: Retreives test set of torch.utils.data.DataLoader class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1">##########################</span>
+    <span class="c1"># Training related</span>
+    <span class="c1">##########################</span>
+<div class="viewcode-block" id="ConvnetTrainer.train"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Training loop with hooksa</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_train_start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_logger</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_loop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_train_end</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.train_loop"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.train_loop">[docs]</a>    <span class="k">def</span> <span class="nf">train_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: training loop</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_epochs</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.train_epoch"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.train_epoch">[docs]</a>    <span class="k">def</span> <span class="nf">train_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: epoch of training loop</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_train_epoch_start</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">train_epoch_var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_iter</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train_batch</span><span class="p">(</span><span class="n">train_epoch_var</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_train_epoch_end</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_eval</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epoch</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eval_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_epoch</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_epoch_end</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.train_batch"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.train_batch">[docs]</a>    <span class="k">def</span> <span class="nf">train_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: batch of training loop</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_start_training_batch</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">training_step</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_end_training_batch</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_train_start"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_train_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_train_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: On start of training loop</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_training_loss</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.start_logger"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.start_logger">[docs]</a>    <span class="k">def</span> <span class="nf">start_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: Starts logger</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_train_epoch_start"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_train_epoch_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_train_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: On epoch start</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_training_loss</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_start_training_batch"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_start_training_batch">[docs]</a>    <span class="k">def</span> <span class="nf">on_start_training_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: On training batch start</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.optimizer_zero_grad"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.optimizer_zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">optimizer_zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: Zero gradients of optimizer</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.training_step"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.training_step">[docs]</a>    <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: During training batch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.loss_backward"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.loss_backward">[docs]</a>    <span class="k">def</span> <span class="nf">loss_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: Loss back-propagation</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.optimizer_step"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.optimizer_step">[docs]</a>    <span class="k">def</span> <span class="nf">optimizer_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: Optimizer step</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_end_training_batch"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_end_training_batch">[docs]</a>    <span class="k">def</span> <span class="nf">on_end_training_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: On end of training batch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_train_epoch_end"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_train_epoch_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_train_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: On end of training epoch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_train_end"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_train_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_train_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: On end of training</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_epoch_end"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_epoch_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: on epoch end</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.stop_train"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.stop_train">[docs]</a>    <span class="k">def</span> <span class="nf">stop_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;On end of training</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></div>
+
+    <span class="c1">##########################</span>
+    <span class="c1"># Evaluation loop related</span>
+    <span class="c1">##########################</span>
+<div class="viewcode-block" id="ConvnetTrainer.evaluate_epoch"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.evaluate_epoch">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_epoch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: epoch of evaluation loop</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        epoch : int</span>
+<span class="sd">            Current epoch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_evaluate_epoch_start</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">valid_epoch_var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_epoch_iter</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_evaluate_batch_start</span><span class="p">(</span><span class="n">valid_epoch_var</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_loop</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_next_loop</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">continue</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_batch</span><span class="p">(</span><span class="n">valid_epoch_var</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">on_evaluate_batch_end</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_evaluate_epoch_end</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.evaluate_batch"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.evaluate_batch">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: batch of evaluation loop</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_evaluate_start"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: on evaluation end</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_evaluate_epoch_start"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_epoch_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: on evaluation start</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_evaluate_batch_start"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_batch_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_batch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_evaluate_batch_end"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_batch_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_batch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: On evaluate batch end</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_evaluate_epoch_end"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_epoch_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_evaluate_end"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: on evaluation end</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1">##########################</span>
+    <span class="c1"># Test loop related</span>
+    <span class="c1">##########################</span>
+<div class="viewcode-block" id="ConvnetTrainer.test"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.test">[docs]</a>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: Test lifecycle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_parallel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_parallel_model</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_parallel</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_model</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_test_start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_loop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_test_end</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.test_loop"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.test_loop">[docs]</a>    <span class="k">def</span> <span class="nf">test_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: test loop</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">test_loop_var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_loop_iter</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_start_test_batch</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">test_step</span><span class="p">(</span><span class="n">test_loop_var</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_end_test_batch</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_test_start"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_test_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_test_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: on test start</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_start_test_batch"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_start_test_batch">[docs]</a>    <span class="k">def</span> <span class="nf">on_start_test_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: on test batch start</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.test_step"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.test_step">[docs]</a>    <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test action (Put test here)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_end_test_batch"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_end_test_batch">[docs]</a>    <span class="k">def</span> <span class="nf">on_end_test_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: on end of batch test</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.on_test_end"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.on_test_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_test_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: on end test</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1">##########################</span>
+    <span class="c1"># Handle models</span>
+    <span class="c1">##########################</span>
+<div class="viewcode-block" id="ConvnetTrainer.load_model"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.load_model">[docs]</a>    <span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: load model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.load_parallel_model"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.load_parallel_model">[docs]</a>    <span class="k">def</span> <span class="nf">load_parallel_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: load parallel model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.save_model"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.save_model">[docs]</a>    <span class="k">def</span> <span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: saves model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ConvnetTrainer.save_parallel_model"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.save_parallel_model">[docs]</a>    <span class="k">def</span> <span class="nf">save_parallel_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: saves parallel model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+    <span class="c1">##########################</span>
+    <span class="c1"># Miscellaneous</span>
+    <span class="c1">##########################</span>
+<div class="viewcode-block" id="ConvnetTrainer.exit_trainer"><a class="viewcode-back" href="../../../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer.exit_trainer">[docs]</a>    <span class="k">def</span> <span class="nf">exit_trainer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Exits trainer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Translational Biophotonics Lab.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

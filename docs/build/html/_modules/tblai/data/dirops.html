@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>farabi.data.dirops &mdash; farabi 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> farabi
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">farabi</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>farabi.data.dirops</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for farabi.data.dirops</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+
+<div class="viewcode-block" id="DirOps"><a class="viewcode-back" href="../../../reference/data.dirops.html#farabi.data.dirops.DirOps">[docs]</a><span class="k">class</span> <span class="nc">DirOps</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Creates instance of DirOps class</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : str</span>
+<span class="sd">        path of interest</span>
+<span class="sd">    dirs : list of str</span>
+<span class="sd">        existing folders at path</span>
+<span class="sd">    files : list of str</span>
+<span class="sd">        existing filenames at path</span>
+<span class="sd">    ndirs : int</span>
+<span class="sd">        number of only folders at path</span>
+<span class="sd">    nfiles : int</span>
+<span class="sd">        number of files at cwd path, except folders</span>
+<span class="sd">    dirsize : str</span>
+<span class="sd">        total occupied memory</span>
+<span class="sd">    titems : int</span>
+<span class="sd">        total items including subdirectories</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    dirinfo(self)</span>
+<span class="sd">        Prints basic information in a neat format</span>
+<span class="sd">    split_traintest(self, ratio=0.8, shuffle=True)</span>
+<span class="sd">        Splits list of files into train and test, shuffles by default</span>
+<span class="sd">    lsmedia(self)</span>
+<span class="sd">        Returns media files from path</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for dirops class</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path : str</span>
+<span class="sd">            path of interest</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subdirs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span>
+            <span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="p">))])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span>
+            <span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">name</span><span class="p">))])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nsubdirs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subdirs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nfiles</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dirsize</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+            <span class="p">[</span><span class="s1">&#39;du&#39;</span><span class="p">,</span> <span class="s1">&#39;-sh&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">titems</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">titems</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DirOps.dirinfo"><a class="viewcode-back" href="../../../reference/data.dirops.html#farabi.data.dirops.DirOps.dirinfo">[docs]</a>    <span class="k">def</span> <span class="nf">dirinfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prints basic information in a neat format</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        ----------</span>
+<span class="sd">        &gt;&gt;&gt; DirOps(dir_path).dirinfo()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Info on path: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Subdirs: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nsubdirs</span><span class="si">}</span><span class="s2"> | Files: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nfiles</span><span class="si">}</span><span class="s2"> | Recursive files: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">titems</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Memory: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dirsize</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DirOps.split_traintest"><a class="viewcode-back" href="../../../reference/data.dirops.html#farabi.data.dirops.DirOps.split_traintest">[docs]</a>    <span class="k">def</span> <span class="nf">split_traintest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Splits list of files in path into train and test</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ratio : float</span>
+<span class="sd">            ratio to split into train and test</span>
+<span class="sd">        shuffle : bool</span>
+<span class="sd">            flag to perform shuffle before split</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        train, test : tuple of lists</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        ----------</span>
+<span class="sd">        &gt;&gt;&gt; (train_list, test_list) = DirOps(dir_path).split_traintest(ratio=0.7)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">shuffle</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span>
+
+        <span class="n">split_idx</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">ratio</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">))</span>
+        <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">files</span><span class="p">[:</span><span class="n">split_idx</span><span class="p">],</span> <span class="n">files</span><span class="p">[</span><span class="n">split_idx</span><span class="p">:]</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DirOps.lsmedia"><a class="viewcode-back" href="../../../reference/data.dirops.html#farabi.data.dirops.DirOps.lsmedia">[docs]</a>    <span class="k">def</span> <span class="nf">lsmedia</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns media files from path</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (img_fns, vid_fns, aud_fns) : tuple of lists</span>
+<span class="sd">            img_fns : list of image files</span>
+<span class="sd">            vid_fns : list of video files</span>
+<span class="sd">            aud_fns : list of audio files</span>
+<span class="sd">        </span>
+<span class="sd">        Examples</span>
+<span class="sd">        ----------</span>
+<span class="sd">        &gt;&gt;&gt; DirOps(dir_path).lsmedia()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">img_fm</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;.tiff&quot;</span><span class="p">,</span> <span class="s2">&quot;.jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;.jpeg&quot;</span><span class="p">,</span> <span class="s2">&quot;.gif&quot;</span><span class="p">,</span> <span class="s2">&quot;.png&quot;</span><span class="p">,</span> <span class="s2">&quot;.eps&quot;</span><span class="p">,</span>
+                  <span class="s2">&quot;.raw&quot;</span><span class="p">,</span> <span class="s2">&quot;.cr2&quot;</span><span class="p">,</span> <span class="s2">&quot;.nef&quot;</span><span class="p">,</span> <span class="s2">&quot;.orf&quot;</span><span class="p">,</span> <span class="s2">&quot;.sr2&quot;</span><span class="p">,</span> <span class="s2">&quot;.bmp&quot;</span><span class="p">,</span> <span class="s2">&quot;.ppm&quot;</span><span class="p">,</span> <span class="s2">&quot;.heif&quot;</span><span class="p">)</span>
+        <span class="n">vid_fm</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;.flv&quot;</span><span class="p">,</span> <span class="s2">&quot;.avi&quot;</span><span class="p">,</span> <span class="s2">&quot;.mp4&quot;</span><span class="p">,</span> <span class="s2">&quot;.3gp&quot;</span><span class="p">,</span> <span class="s2">&quot;.mov&quot;</span><span class="p">,</span>
+                  <span class="s2">&quot;.webm&quot;</span><span class="p">,</span> <span class="s2">&quot;.ogg&quot;</span><span class="p">,</span> <span class="s2">&quot;.qt&quot;</span><span class="p">,</span> <span class="s2">&quot;.avchd&quot;</span><span class="p">)</span>
+        <span class="n">aud_fm</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;.flac&quot;</span><span class="p">,</span> <span class="s2">&quot;.mp3&quot;</span><span class="p">,</span> <span class="s2">&quot;.wav&quot;</span><span class="p">,</span> <span class="s2">&quot;.wma&quot;</span><span class="p">,</span> <span class="s2">&quot;.aac&quot;</span><span class="p">)</span>
+        <span class="n">media_fms</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">img_fm</span><span class="p">,</span> <span class="s2">&quot;video&quot;</span><span class="p">:</span> <span class="n">vid_fm</span><span class="p">,</span> <span class="s2">&quot;audio&quot;</span><span class="p">:</span> <span class="n">aud_fm</span><span class="p">}</span>
+
+        <span class="k">def</span> <span class="nf">fns</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">media</span><span class="p">):</span> <span class="k">return</span> <span class="p">[</span><span class="n">fn</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="n">fn</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">media_fms</span><span class="p">[</span><span class="n">media</span><span class="p">])</span> <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">media_fms</span><span class="p">[</span><span class="n">media</span><span class="p">])]</span>
+        <span class="n">img_fns</span><span class="p">,</span> <span class="n">vid_fns</span><span class="p">,</span> <span class="n">aud_fns</span> <span class="o">=</span> <span class="n">fns</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">),</span> <span class="n">fns</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;video&quot;</span><span class="p">),</span> <span class="n">fns</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;audio&quot;</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;State of media in &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Images: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">img_fns</span><span class="p">),</span> <span class="s2">&quot; | Videos: &quot;</span><span class="p">,</span>
+              <span class="nb">len</span><span class="p">(</span><span class="n">vid_fns</span><span class="p">),</span> <span class="s2">&quot;| Audios: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">aud_fns</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">img_fns</span><span class="p">,</span> <span class="n">vid_fns</span><span class="p">,</span> <span class="n">aud_fns</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DirOps.del_files"><a class="viewcode-back" href="../../../reference/data.dirops.html#farabi.data.dirops.DirOps.del_files">[docs]</a>    <span class="k">def</span> <span class="nf">del_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reflist</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deletes files in current folder that matches / not matches with list</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reflist : list</span>
+<span class="sd">            list of items in folder</span>
+<span class="sd">        match : bool</span>
+<span class="sd">            deletes files which match, if True</span>
+<span class="sd">        </span>
+<span class="sd">        Examples</span>
+<span class="sd">        ----------</span>
+<span class="sd">        &gt;&gt;&gt; sample_list = [&#39;1.png&#39;, &#39;3.png&#39;, &#39;4.png&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; DirOps(dir_path).del_files(sample_list, match=False)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">reflist</span><span class="p">:</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">fname</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fname</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">fname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">reflist</span><span class="p">:</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">fname</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Translational Biophotonics Lab.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

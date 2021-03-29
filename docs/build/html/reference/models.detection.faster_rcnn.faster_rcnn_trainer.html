@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>faster_rcnn_trainer Module &mdash; farabi 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="imgops Module" href="data.imgops.html" />
+    <link rel="prev" title="yolo_trainer Module" href="models.detection.yolov3.yolo_trainer.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> farabi
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#core-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">core</span></code> Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#models-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">models</span></code> Package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="models.segmentation.unet.unet_trainer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">unet_trainer</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.segmentation.attunet.attunet_trainer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">attunet_trainer</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.superres.srgan.srgan_trainer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">srgan_trainer</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.translation.cyclegan.cyclegan_trainer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cyclegan_trainer</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models.detection.yolov3.yolo_trainer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">yolo_trainer</span></code> Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">faster_rcnn_trainer</span></code> Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#data-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">data</span></code> Package</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">farabi</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Reference</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">faster_rcnn_trainer</span></code> Module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/reference/models.detection.faster_rcnn.faster_rcnn_trainer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="faster-rcnn-trainer-module">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">faster_rcnn_trainer</span></code> Module<a class="headerlink" href="#faster-rcnn-trainer-module" title="Permalink to this headline">¶</a></h1>
+<a class="reference internal image-reference" href="../_images/faster_rcnn.png"><img alt="../_images/faster_rcnn.png" src="../_images/faster_rcnn.png" style="width: 600px;" /></a>
+<p><a class="reference internal" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer" title="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">FasterRCNNTrainer</span></code></a> class uses Faster R-CNN model architecture,
+which is originally proposed in this <a class="reference external" href="https://arxiv.org/abs/1506.01497">arXiv</a> <a class="footnote-reference brackets" href="#id1" id="id2">1</a>. Implemented trainer module uses this <a class="reference external" href="https://github.com/chenyuntc/simple-faster-rcnn-pytorch">Git</a> <a class="footnote-reference brackets" href="#id3" id="id4">2</a> code as reference work.</p>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
+<dd><p><a class="reference external" href="https://arxiv.org/abs/1506.01497">https://arxiv.org/abs/1506.01497</a></p>
+</dd>
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id4">2</a></span></dt>
+<dd><p><a class="reference external" href="https://github.com/chenyuntc/simple-faster-rcnn-pytorch">https://github.com/chenyuntc/simple-faster-rcnn-pytorch</a></p>
+</dd>
+</dl>
+<div class="section" id="fasterrcnntrainer-class">
+<h3><a class="reference internal" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer" title="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">FasterRCNNTrainer</span></code></a> class<a class="headerlink" href="#fasterrcnntrainer-class" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabi.models.detection.faster_rcnn.faster_rcnn_trainer.</span></code><code class="sig-name descname"><span class="pre">FasterRCNNTrainer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>FasterRCNNTrainer trainer class. Override with custom methods here.</p>
+<p>The losses include:</p>
+<ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rpn_loc_loss</span></code>: The localization loss for         Region Proposal Network (RPN).</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rpn_cls_loss</span></code>: The classification loss for RPN.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">roi_loc_loss</span></code>: The localization loss for the head module.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">roi_cls_loss</span></code>: The classification loss for the head module.</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">total_loss</span></code>: The sum of 4 loss above.</p></li>
+</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>faster_rcnn (model.FasterRCNN):</dt><dd><p>A Faster R-CNN model that is going to be trained.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_train_attr">
+<code class="sig-name descname"><span class="pre">define_train_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.define_train_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_train_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define training related attributes here</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_model_attr">
+<code class="sig-name descname"><span class="pre">define_model_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.define_model_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_model_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define model related attributes here</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_log_attr">
+<code class="sig-name descname"><span class="pre">define_log_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.define_log_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_log_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define log related attributes here</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_misc_attr">
+<code class="sig-name descname"><span class="pre">define_misc_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.define_misc_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_misc_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define miscellaneous attributes here</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.get_trainloader">
+<code class="sig-name descname"><span class="pre">get_trainloader</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.get_trainloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.get_trainloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Retreives training set of torch.utils.data.DataLoader class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.get_testloader">
+<code class="sig-name descname"><span class="pre">get_testloader</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.get_testloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.get_testloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Retreives test set of torch.utils.data.DataLoader class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.build_model">
+<code class="sig-name descname"><span class="pre">build_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.build_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.build_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract method that builds model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.load_model">
+<code class="sig-name descname"><span class="pre">load_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.load_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: load model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.save_model">
+<code class="sig-name descname"><span class="pre">save_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.save_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: saves model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_train_start">
+<code class="sig-name descname"><span class="pre">on_train_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.on_train_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_train_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: On start of training loop</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.start_logger">
+<code class="sig-name descname"><span class="pre">start_logger</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.start_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.start_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Starts logger</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_train_epoch_start">
+<code class="sig-name descname"><span class="pre">on_train_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.on_train_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_train_epoch_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: On epoch start</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_start_training_batch">
+<code class="sig-name descname"><span class="pre">on_start_training_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.on_start_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_start_training_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: On training batch start</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.training_step">
+<code class="sig-name descname"><span class="pre">training_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.training_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.training_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: During training batch</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_evaluate_epoch_start">
+<code class="sig-name descname"><span class="pre">on_evaluate_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.on_evaluate_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_evaluate_epoch_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: on evaluation start</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_evaluate_batch_start">
+<code class="sig-name descname"><span class="pre">on_evaluate_batch_start</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.on_evaluate_batch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_evaluate_batch_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_evaluate_epoch_end">
+<code class="sig-name descname"><span class="pre">on_evaluate_epoch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.on_evaluate_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_evaluate_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.visdom_plot">
+<code class="sig-name descname"><span class="pre">visdom_plot</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.visdom_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.visdom_plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_epoch_end">
+<code class="sig-name descname"><span class="pre">on_epoch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.on_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: on epoch end</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.evaluate_batch">
+<code class="sig-name descname"><span class="pre">evaluate_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.evaluate_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.evaluate_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: batch of evaluation loop</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.forward">
+<code class="sig-name descname"><span class="pre">forward</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.optimizer_zero_grad">
+<code class="sig-name descname"><span class="pre">optimizer_zero_grad</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.optimizer_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.optimizer_zero_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Zero gradients of optimizer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.loss_backward">
+<code class="sig-name descname"><span class="pre">loss_backward</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.loss_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.loss_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Loss back-propagation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.optimizer_step">
+<code class="sig-name descname"><span class="pre">optimizer_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.optimizer_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.optimizer_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Optimizer step</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.update_meters">
+<code class="sig-name descname"><span class="pre">update_meters</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.update_meters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.update_meters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.reset_meters">
+<code class="sig-name descname"><span class="pre">reset_meters</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.reset_meters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.reset_meters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.get_meter_data">
+<code class="sig-name descname"><span class="pre">get_meter_data</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/detection/faster_rcnn/faster_rcnn_trainer.html#FasterRCNNTrainer.get_meter_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.get_meter_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="data.imgops.html" class="btn btn-neutral float-right" title="imgops Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="models.detection.yolov3.yolo_trainer.html" class="btn btn-neutral float-left" title="yolo_trainer Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Translational Biophotonics Lab.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

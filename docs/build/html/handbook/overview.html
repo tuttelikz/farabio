@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Overview &mdash; farabi 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial" href="tutorial.html" />
+    <link rel="prev" title="Handbook" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> farabi
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Handbook</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#purpose">Purpose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-can-i-do-with-this-package">What can I do with this package?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#package-organization">Package organization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#diagram">Diagram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tree-structure">Tree structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inheritance-of-trainers">Inheritance of trainers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-contribute">How to contribute?</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-report-an-issue">How to report an issue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clean-code-caveat">Clean code Caveat</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html">Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="downloads.html">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">farabi</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Handbook</a> &raquo;</li>
+        
+      <li>Overview</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/handbook/overview.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p>Deep learning has transformed the way biomedical engineers approach complex problems. Especially, whose work is associated with day-to-day medical/optical imaging equipment are able to integrate deep learning techniques rapidly. There are several biomedical applications we in our lab are interested to pursue in research, for instance, classfication for screening, segmentation for accurate border/region detection, super-resolution for quality enhancement and generative models, eg. digital histopathology.</p>
+<p>The pipeline of integrating deep learning for our applications is as follows:</p>
+<div class="line-block">
+<div class="line">1. Prepare data <span class="raw-html">&rarr;</span> 2. Customize model <span class="raw-html">&rarr;</span> 3. Train/test <span class="raw-html">&rarr;</span> 4. Analyze/Visualize</div>
+</div>
+<div class="section" id="purpose">
+<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Prototyping: code reuse</p></li>
+<li><p>Educational: tutorials</p></li>
+</ul>
+</div>
+<div class="section" id="what-can-i-do-with-this-package">
+<h2>What can I do with this package?<a class="headerlink" href="#what-can-i-do-with-this-package" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Image data (pre)processing</p></li>
+<li><p>Train/customize deep learning models</p></li>
+<li><p>Visualize/monitor results</p></li>
+</ul>
+</div>
+<div class="section" id="package-organization">
+<h2>Package organization<a class="headerlink" href="#package-organization" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="diagram">
+<h3>Diagram<a class="headerlink" href="#diagram" title="Permalink to this headline">¶</a></h3>
+<div class="graphviz"><img src="../_images/graphviz-a366f7c1f6b9ed84d452c8d6b9d852548ddbd52b.png" alt="graph FarabiOverview {
+
+node [shape=box, colorscheme=set32 , style=rounded];
+
+farabi -- core;
+farabi -- data;
+farabi -- models;
+farabi -- utils;
+
+farabi  [fillcolor=1, style=&quot;rounded&quot;]
+core  [fillcolor=2, style=&quot;rounded&quot;]
+data  [fillcolor=2, style=&quot;rounded&quot;]
+models  [fillcolor=2, style=&quot;rounded&quot;]
+utils  [fillcolor=2, style=&quot;rounded&quot;]
+}" class="graphviz" /></div>
+</div>
+<div class="section" id="tree-structure">
+<h3>Tree structure<a class="headerlink" href="#tree-structure" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
+├── kernel.py
+├── core
+│   ├── basetrainer.py
+│   ├── configs.py
+│   ├── convnettrainer.py
+│   └── gantrainer.py
+├── data
+│   ├── dataloader.py
+│   ├── datasets.py
+│   ├── dirops.py
+│   ├── imgops.py
+│   ├── tbldata.py
+│   └── transforms.py
+├── models
+│   ├── blocks
+│   │   └── vgg.py
+│   ├── detection
+│   │   ├── faster_rcnn
+│   │   │   ├── creator_tool.py
+│   │   │   ├── dataset.py
+│   │   │   ├── faster_rcnn.py
+│   │   │   ├── faster_rcnn_trainer.py
+│   │   │   ├── faster_rcnn_vgg16.py
+│   │   │   └── region_proposal_network.py
+│   │   └── yolov3
+│   │       ├── config
+│   │       │   ├── coco.data
+│   │       │   ├── coco.names
+│   │       │   ├── create_custom_model.sh
+│   │       │   ├── custom.data
+│   │       │   ├── yolov3.cfg
+│   │       │   ├── yolov3-custom.cfg
+│   │       │   └── yolov3-tiny.cfg
+│   │       ├── darknet.py
+│   │       ├── parsers.py
+│   │       ├── yolo_trainer.py
+│   │       └── yolo_v3.py
+│   ├── segmentation
+│   │   ├── attunet
+│   │   │   ├── attunet.py
+│   │   │   └── attunet_trainer.py
+│   │   └── unet
+│   │       ├── unet.py
+│   │       └── unet_trainer.py
+│   ├── superres
+│   │   └── srgan
+│   │       ├── srgan.py
+│   │       └── srgan_trainer.py
+│   └── translation
+│       └── cyclegan
+│           ├── cyclegan.py
+│           └── cyclegan_trainer.py
+└── utils
+    ├── bboxtools.py
+    ├── collect_env.py
+    ├── exceptions.py
+    ├── helpers.py
+    ├── loggers.py
+    ├── losses.py
+    ├── meters.py
+    ├── metrics.py
+    ├── misc.py
+    ├── regul.py
+    └── vistools.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="inheritance-of-trainers">
+<h3>Inheritance of trainers<a class="headerlink" href="#inheritance-of-trainers" title="Permalink to this headline">¶</a></h3>
+<div class="graphviz"><img src="../_images/inheritance-cab8140eea801796e820a00581b7a652d65e43fa.png" alt="Inheritance diagram of farabi.models.segmentation.unet.unet_trainer.UnetTrainer, farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer, farabi.models.superres.srgan.srgan_trainer.SrganTrainer, farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer, farabi.models.detection.yolov3.yolo_trainer.YoloTrainer, farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer" usemap="#inheritance73ad783dbe" class="inheritance graphviz" /></div>
+<map id="inheritance73ad783dbe" name="inheritance73ad783dbe">
+<area shape="rect" id="node1" href="../reference/models.segmentation.attunet.attunet_trainer.html#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer" target="_top" title="Attention U&#45;Net trainer class. Override with custom methods here." alt="" coords="334,5,449,31"/>
+<area shape="rect" id="node2" href="../reference/core.convnettrainer.html#farabi.core.convnettrainer.ConvnetTrainer" target="_top" title="ConvnetTrainer is main trainer class for every ConvNet related" alt="" coords="152,104,272,129"/>
+<area shape="rect" id="node6" href="../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer" target="_top" title="FasterRCNNTrainer trainer class. Override with custom methods here." alt="" coords="320,55,463,80"/>
+<area shape="rect" id="node8" href="../reference/models.segmentation.unet.unet_trainer.html#farabi.models.segmentation.unet.unet_trainer.UnetTrainer" target="_top" title="U&#45;Net trainer class. Override with custom methods here." alt="" coords="343,104,440,129"/>
+<area shape="rect" id="node9" href="../reference/models.detection.yolov3.yolo_trainer.html#farabi.models.detection.yolov3.yolo_trainer.YoloTrainer" target="_top" title="YoloTrainer trainer class. Override with custom methods here." alt="" coords="345,153,437,179"/>
+<area shape="rect" id="node3" href="../reference/core.basetrainer.html#farabi.core.basetrainer.BaseTrainer" target="_top" title="This is the base core module for all types of trainers. &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;It inherits Python&#39;s Abstract Base Class (ABC)." alt="" coords="5,153,104,179"/>
+<area shape="rect" id="node5" href="../reference/core.gantrainer.html#farabi.core.gantrainer.GanTrainer" target="_top" title="GanTrainer" alt="" coords="166,203,258,228"/>
+<area shape="rect" id="node4" href="../reference/models.translation.cyclegan.cyclegan_trainer.html#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer" target="_top" title="CycleganTrainer trainer class. Override with custom methods here." alt="" coords="328,203,455,228"/>
+<area shape="rect" id="node7" href="../reference/models.superres.srgan.srgan_trainer.html#farabi.models.superres.srgan.srgan_trainer.SrganTrainer" target="_top" title="SrganTrainer trainer class. Override with custom methods here." alt="" coords="340,252,443,277"/>
+</map></div>
+</div>
+<div class="section" id="how-to-contribute">
+<h2>How to contribute?<a class="headerlink" href="#how-to-contribute" title="Permalink to this headline">¶</a></h2>
+<p>You can contribute to this package by reporting issues and/or by sending pull request.</p>
+<div class="section" id="how-to-report-an-issue">
+<h3>How to report an issue<a class="headerlink" href="#how-to-report-an-issue" title="Permalink to this headline">¶</a></h3>
+<p>If you find a bug, please report it by opening an <a class="reference external" href="https://github.com/TBL-UNIST/tbl-ai/issues/new">issue on Git</a>.</p>
+<p>Before reporting, please skim through instructions below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># How to report issue
+
+## Instructions To Reproduce the Bug
+
+1. What exact command you run:
+```
+If making changes to the project itself, please use output of the following command:
+git rev-parse HEAD; git diff
+
+&lt;put code or diff here&gt;
+```
+2. __Full logs__ or other relevant observations:
+```
+&lt;put logs here&gt;
+```
+3. please simplify the steps as much as possible so they do not require additional resources to run, such as a private dataset.
+
+## Expected behavior:
+
+If there are no obvious error in &quot;what you observed&quot; provided above,
+please tell us the expected behavior.
+
+## Environment:
+
+Provide your environment information using the following command:
+```
+git clone https://gist.github.com/tuttelikz/ebd5ab3ffb29cb9399f2596b8f163a4e a &amp;&amp; python a/cenv.py
+```
+</pre></div>
+</div>
+</div>
+<div class="section" id="clean-code-caveat">
+<h3>Clean code Caveat<a class="headerlink" href="#clean-code-caveat" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Modules</strong> should have short, <em>all-lowercase names. Underscores can be used</em> in the module name if it improves readability.</p></li>
+<li><p><strong>Class names</strong> should normally use the <em>CapWords</em> convention.</p></li>
+<li><p><strong>Function names</strong> should be <em>lowercase, with words separated by &gt; underscores as necessary to improve readability.</em></p></li>
+<li><p><strong>Variable names</strong> follow the <em>same convention as function names</em>.</p></li>
+<li><p>If a <strong>function argument</strong>’s name clashes with a reserved keyword, it is generally better to append a single trailing underscore rather than use an abbreviation or spelling corruption. Thus <em>class_</em> is better than clss. (Perhaps better is to avoid such clashes by using a synonym.)</p></li>
+<li><p><strong>Constants</strong> are usually defined on a module level and written in all <em>capital letters with underscores separating words.</em></p></li>
+</ul>
+<p class="attribution">—from <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/#package-and-module-names">PEP 8</a>.</p>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="tutorial.html" class="btn btn-neutral float-right" title="Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Handbook" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Translational Biophotonics Lab.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

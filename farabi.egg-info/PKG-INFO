@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: farabi
+Version: 0.0.2
+Summary: Farabi - Deep learning for biomedical imaging
+Home-page: https://github.com/tuttelikz/farabi
+Author: San Askaruly
+Author-email: s.askaruly@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/tuttelikz/farabi/issues
+Description: # Farabi - Deep learning for biomedical imaging
+        
+        Deep learning has transformed many aspects of industrial pipelines nowadays. Scientists involved in biomedical imaging research are also benefiting from the power of artificial intelligence to tackle complex challenges. Although academic community has widely accepted image analysis tools, such as scikit-image, ImageJ, there is still a need for a tool which integrates deep learning into analysis. We propose a minimal, but convenient Python package based on PyTorch with popular deep learning models, extended by trainers and datasets, providing great flexibility. Preliminary applications include classification, segmentation, detection, super-resolution, and image translation, which are crucial to perform variety of biomedical tasks.
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown

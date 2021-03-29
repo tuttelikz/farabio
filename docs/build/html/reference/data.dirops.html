@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dirops Module &mdash; farabi 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="imgops Module" href="data.imgops.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> farabi
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#core-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">core</span></code> Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#models-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">models</span></code> Package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#data-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">data</span></code> Package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="data.imgops.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">imgops</span></code> Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dirops</span></code> Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#register-module">Register module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">farabi</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Reference</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">dirops</span></code> Module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/reference/data.dirops.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dirops-module">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">dirops</span></code> Module<a class="headerlink" href="#dirops-module" title="Permalink to this headline">¶</a></h1>
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">dirops</span></code> module provides a <a class="reference internal" href="#farabi.data.dirops.DirOps" title="farabi.data.dirops.DirOps"><code class="xref py py-class docutils literal notranslate"><span class="pre">DirOps</span></code></a> class
+which retrieves basic information, performs operations on path.</p>
+<div class="section" id="register-module">
+<h2>Register module<a class="headerlink" href="#register-module" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">farabi.data.imgops.DirOps</span> <span class="k">as</span> <span class="nn">DirOps</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dir_path</span> <span class="o">=</span> <span class="s1">&#39;./images/&#39;</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="farabi.data.dirops.DirOps">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabi.data.dirops.</span></code><code class="sig-name descname"><span class="pre">DirOps</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/data/dirops.html#DirOps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.data.dirops.DirOps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates instance of DirOps class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>path</strong><span class="classifier">str</span></dt><dd><p>path of interest</p>
+</dd>
+<dt><strong>dirs</strong><span class="classifier">list of str</span></dt><dd><p>existing folders at path</p>
+</dd>
+<dt><strong>files</strong><span class="classifier">list of str</span></dt><dd><p>existing filenames at path</p>
+</dd>
+<dt><strong>ndirs</strong><span class="classifier">int</span></dt><dd><p>number of only folders at path</p>
+</dd>
+<dt><strong>nfiles</strong><span class="classifier">int</span></dt><dd><p>number of files at cwd path, except folders</p>
+</dd>
+<dt><strong>dirsize</strong><span class="classifier">str</span></dt><dd><p>total occupied memory</p>
+</dd>
+<dt><strong>titems</strong><span class="classifier">int</span></dt><dd><p>total items including subdirectories</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45%" />
+<col style="width: 55%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>dirinfo(self)</strong></p></td>
+<td><p>Prints basic information in a neat format</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>split_traintest(self, ratio=0.8, shuffle=True)</strong></p></td>
+<td><p>Splits list of files into train and test, shuffles by default</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>lsmedia(self)</strong></p></td>
+<td><p>Returns media files from path</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="farabi.data.dirops.DirOps.dirinfo">
+<code class="sig-name descname"><span class="pre">dirinfo</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/data/dirops.html#DirOps.dirinfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.data.dirops.DirOps.dirinfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints basic information in a neat format</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">DirOps</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span><span class="o">.</span><span class="n">dirinfo</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.data.dirops.DirOps.split_traintest">
+<code class="sig-name descname"><span class="pre">split_traintest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/data/dirops.html#DirOps.split_traintest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.data.dirops.DirOps.split_traintest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits list of files in path into train and test</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ratio</strong><span class="classifier">float</span></dt><dd><p>ratio to split into train and test</p>
+</dd>
+<dt><strong>shuffle</strong><span class="classifier">bool</span></dt><dd><p>flag to perform shuffle before split</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>train, test</strong><span class="classifier">tuple of lists</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">train_list</span><span class="p">,</span> <span class="n">test_list</span><span class="p">)</span> <span class="o">=</span> <span class="n">DirOps</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span><span class="o">.</span><span class="n">split_traintest</span><span class="p">(</span><span class="n">ratio</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.data.dirops.DirOps.lsmedia">
+<code class="sig-name descname"><span class="pre">lsmedia</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/data/dirops.html#DirOps.lsmedia"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.data.dirops.DirOps.lsmedia" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns media files from path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>(img_fns, vid_fns, aud_fns)</strong><span class="classifier">tuple of lists</span></dt><dd><p>img_fns : list of image files
+vid_fns : list of video files
+aud_fns : list of audio files</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">DirOps</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span><span class="o">.</span><span class="n">lsmedia</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.data.dirops.DirOps.del_files">
+<code class="sig-name descname"><span class="pre">del_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reflist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/data/dirops.html#DirOps.del_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.data.dirops.DirOps.del_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes files in current folder that matches / not matches with list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>reflist</strong><span class="classifier">list</span></dt><dd><p>list of items in folder</p>
+</dd>
+<dt><strong>match</strong><span class="classifier">bool</span></dt><dd><p>deletes files which match, if True</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sample_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1.png&#39;</span><span class="p">,</span> <span class="s1">&#39;3.png&#39;</span><span class="p">,</span> <span class="s1">&#39;4.png&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DirOps</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span><span class="o">.</span><span class="n">del_files</span><span class="p">(</span><span class="n">sample_list</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="data.imgops.html" class="btn btn-neutral float-left" title="imgops Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Translational Biophotonics Lab.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

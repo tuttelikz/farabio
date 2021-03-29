@@ -1,0 +1,6 @@
+classes= 80
+train=/home/data/02_SSD4TB/suzy/datasets/public/coco/trainvalno5k.txt
+valid=/home/data/02_SSD4TB/suzy/datasets/public/coco/5k.txt
+names=/home/suzy/gitrepos/TBL-UNIST/tbl-ai/farabi/models/detection/yolov3/config/coco.names
+backup=backup/
+eval=coco

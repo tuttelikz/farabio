@@ -1,0 +1,4 @@
+classes= 4
+train=/home/DATA_Lia/data_02/DATASET_SUZY/MO_EAR/detection/train.txt
+valid=/home/DATA_Lia/data_02/DATASET_SUZY/MO_EAR/detection/valid.txt
+names=/home/DATA_Lia/data_02/DATASET_SUZY/MO_EAR/detection/classes.names

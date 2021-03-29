@@ -1,4 +1,3 @@
-# Farabi
+# Farabi - Deep learning for biomedical imaging
 
-Random description here
-aa
+Deep learning has transformed many aspects of industrial pipelines nowadays. Scientists involved in biomedical imaging research are also benefiting from the power of artificial intelligence to tackle complex challenges. Although academic community has widely accepted image analysis tools, such as scikit-image, ImageJ, there is still a need for a tool which integrates deep learning into analysis. We propose a minimal, but convenient Python package based on PyTorch with popular deep learning models, extended by trainers and datasets, providing great flexibility. Preliminary applications include classification, segmentation, detection, super-resolution, and image translation, which are crucial to perform variety of biomedical tasks.

@@ -1,0 +1,708 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>gantrainer Module &mdash; farabi 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="unet_trainer Module" href="models.segmentation.unet.unet_trainer.html" />
+    <link rel="prev" title="convnettrainer Module" href="core.convnettrainer.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> farabi
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#core-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">core</span></code> Package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="core.configs.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">configs</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.basetrainer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">basetrainer</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core.convnettrainer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">convnettrainer</span></code> Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gantrainer</span></code> Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#non-lifecycle-hooks">Non-lifecycle hooks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lifecycle-hooks">Lifecycle hooks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#docs">Docs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#models-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">models</span></code> Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#data-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">data</span></code> Package</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">farabi</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Reference</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">gantrainer</span></code> Module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/reference/core.gantrainer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="gantrainer-module">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">gantrainer</span></code> Module<a class="headerlink" href="#gantrainer-module" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer" title="farabi.core.gantrainer.GanTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GanTrainer</span></code></a> class makes use of hooks. Hooks are a collection of methods which provide
+quick access to exact entry in loop. In this way, we can override these methods with custom functionality
+in either training, evaluation or test loops.</p>
+<div class="section" id="non-lifecycle-hooks">
+<h2>Non-lifecycle hooks<a class="headerlink" href="#non-lifecycle-hooks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="default-methods">
+<h3>Default methods<a class="headerlink" href="#default-methods" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.init_attr" title="farabi.core.gantrainer.GanTrainer.init_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">init_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.get_trainloader" title="farabi.core.gantrainer.GanTrainer.get_trainloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trainloader()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.get_testloader" title="farabi.core.gantrainer.GanTrainer.get_testloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_testloader()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.build_model" title="farabi.core.gantrainer.GanTrainer.build_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_model()</span></code></a> | <code class="xref py py-meth docutils literal notranslate"><span class="pre">build_parallel_model()</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="methods-to-initalize-class-attributes">
+<h3>Methods to initalize class attributes<a class="headerlink" href="#methods-to-initalize-class-attributes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.define_data_attr" title="farabi.core.gantrainer.GanTrainer.define_data_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_data_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.define_model_attr" title="farabi.core.gantrainer.GanTrainer.define_model_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_model_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.define_train_attr" title="farabi.core.gantrainer.GanTrainer.define_train_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_train_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.define_test_attr" title="farabi.core.gantrainer.GanTrainer.define_test_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_test_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.define_log_attr" title="farabi.core.gantrainer.GanTrainer.define_log_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_log_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.define_compute_attr" title="farabi.core.gantrainer.GanTrainer.define_compute_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_compute_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.define_misc_attr" title="farabi.core.gantrainer.GanTrainer.define_misc_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_misc_attr()</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="native-methods">
+<h3>Native methods<a class="headerlink" href="#native-methods" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.discriminator_zero_grad" title="farabi.core.gantrainer.GanTrainer.discriminator_zero_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">discriminator_zero_grad()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.discriminator_loss" title="farabi.core.gantrainer.GanTrainer.discriminator_loss"><code class="xref py py-meth docutils literal notranslate"><span class="pre">discriminator_loss()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.discriminator_backward" title="farabi.core.gantrainer.GanTrainer.discriminator_backward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">discriminator_backward()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.discriminator_optim_step" title="farabi.core.gantrainer.GanTrainer.discriminator_optim_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">discriminator_optim_step()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.generator_zero_grad" title="farabi.core.gantrainer.GanTrainer.generator_zero_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generator_zero_grad()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.generator_loss" title="farabi.core.gantrainer.GanTrainer.generator_loss"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generator_loss()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.generator_backward" title="farabi.core.gantrainer.GanTrainer.generator_backward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generator_backward()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.generator_optim_step" title="farabi.core.gantrainer.GanTrainer.generator_optim_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generator_optim_step()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.load_model" title="farabi.core.gantrainer.GanTrainer.load_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_model()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabi.core.gantrainer.GanTrainer.save_model" title="farabi.core.gantrainer.GanTrainer.save_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_model()</span></code></a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="lifecycle-hooks">
+<h2>Lifecycle hooks<a class="headerlink" href="#lifecycle-hooks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="training-loop">
+<h3>Training loop<a class="headerlink" href="#training-loop" title="Permalink to this headline">¶</a></h3>
+<div class="graphviz"><img src="../_images/graphviz-b7789a4a7e343da2025efa3d6b40d5578b18027d.png" alt="digraph Trainloop {
+
+   graph [fontsize=8];
+   edge [fontsize=8];
+   node [fontsize=8, shape=box, colorscheme=set36, style=rounded];
+
+   train -&gt; on_train_start;
+   on_train_start -&gt; start_logger;
+   start_logger -&gt; train_loop;
+   train_loop -&gt; on_train_end;
+   train_loop -&gt; train_epoch;
+   train_epoch -&gt; on_train_epoch_start;
+   on_epoch_end -&gt; on_train_epoch_start [label = &quot;_num_epochs&quot;];
+   on_train_epoch_start -&gt; train_batch;
+   train_batch -&gt; on_train_epoch_end;
+   on_train_epoch_end -&gt; evaluate_epoch;
+   evaluate_epoch -&gt; on_epoch_end;
+   train_batch -&gt; on_start_training_batch;
+   on_start_training_batch -&gt; discriminator_zero_grad;
+   discriminator_zero_grad -&gt; discriminator_loss;
+   discriminator_loss -&gt; discriminator_backward;
+   discriminator_backward -&gt; discriminator_optim_step;
+   discriminator_optim_step -&gt; generator_zero_grad;
+   generator_zero_grad -&gt; generator_loss;
+   generator_loss -&gt; generator_backward;
+   generator_backward -&gt; generator_optim_step;
+   generator_optim_step -&gt; on_end_training_batch;
+   on_end_training_batch -&gt; on_start_training_batch [label = &quot;train_epoch_iter&quot;];
+
+   train  [fillcolor=1, style=&quot;rounded,filled&quot;]
+   on_train_start  [fillcolor=2, style=&quot;rounded,filled&quot;]
+   start_logger  [fillcolor=2, style=&quot;rounded,filled&quot;]
+   train_loop  [fillcolor=2, style=&quot;rounded,filled&quot;]
+   on_train_end  [fillcolor=2, style=&quot;rounded,filled&quot;]
+   train_epoch  [fillcolor=3, style=&quot;rounded,filled&quot;]
+   on_train_epoch_start  [fillcolor=4, style=&quot;rounded,filled&quot;]
+   train_batch  [fillcolor=4, style=&quot;rounded,filled&quot;]
+   on_train_epoch_end  [fillcolor=4, style=&quot;rounded,filled&quot;]
+   evaluate_epoch  [fillcolor=4, style=&quot;rounded,filled,dashed&quot;]
+   on_epoch_end  [fillcolor=4, style=&quot;rounded,filled&quot;]
+   on_start_training_batch  [fillcolor=5, style=&quot;rounded,filled&quot;]
+   discriminator_zero_grad  [fillcolor=5, style=&quot;rounded,filled&quot;]
+   discriminator_loss  [fillcolor=5, style=&quot;rounded,filled&quot;]
+   discriminator_backward  [fillcolor=5, style=&quot;rounded,filled&quot;]
+   discriminator_optim_step  [fillcolor=5, style=&quot;rounded,filled&quot;]
+   generator_zero_grad  [fillcolor=5, style=&quot;rounded,filled&quot;]
+   generator_loss  [fillcolor=5, style=&quot;rounded,filled&quot;]
+   generator_backward  [fillcolor=5, style=&quot;rounded,filled&quot;]
+   generator_optim_step  [fillcolor=5, style=&quot;rounded,filled&quot;]
+   on_end_training_batch  [fillcolor=5, style=&quot;rounded,filled&quot;]
+   }" class="graphviz" /></div>
+</div>
+<div class="section" id="evaluation-loop">
+<h3>Evaluation Loop<a class="headerlink" href="#evaluation-loop" title="Permalink to this headline">¶</a></h3>
+<div class="graphviz"><img src="../_images/graphviz-5a30baec4d0266c5e7e5019fa2529c141b9cdbbf.png" alt="digraph Evalloop {
+
+   graph [fontsize=8];
+   edge [fontsize=8];
+   node [fontsize=8, shape=box, colorscheme=set36, style=rounded];
+
+   evaluate_epoch -&gt; on_evaluate_epoch_start
+   on_evaluate_epoch_start -&gt; on_evaluate_batch_start;
+   on_evaluate_batch_start -&gt; evaluate_batch;
+   evaluate_batch -&gt; on_evaluate_batch_end;
+   on_evaluate_batch_end -&gt; on_evaluate_epoch_end;
+   on_evaluate_batch_end -&gt; on_evaluate_batch_start [label = &quot;valid_epoch_iter&quot;];
+
+   evaluate_epoch  [fillcolor=4, style=&quot;rounded,filled,dashed&quot;]
+   on_evaluate_epoch_start  [fillcolor=5, style=&quot;rounded,filled&quot;]
+   on_evaluate_epoch_end  [fillcolor=5, style=&quot;rounded,filled&quot;]
+   on_evaluate_batch_start  [fillcolor=6, style=&quot;rounded,filled&quot;]
+   evaluate_batch  [fillcolor=6, style=&quot;rounded,filled&quot;]
+   on_evaluate_batch_end  [fillcolor=6, style=&quot;rounded,filled&quot;]
+
+   }" class="graphviz" /></div>
+</div>
+<div class="section" id="test-loop">
+<h3>Test loop<a class="headerlink" href="#test-loop" title="Permalink to this headline">¶</a></h3>
+<div class="graphviz"><img src="../_images/graphviz-b3e8647cf34a3508b60e77569227f4ea5695629c.png" alt="digraph Testloop {
+
+   graph [fontsize=8];
+   edge [fontsize=8];
+   node [fontsize=8, shape=box, colorscheme=set33 , style=rounded];
+
+   test -&gt; load_model;
+   test -&gt; load_parallel_model;
+   load_model -&gt; on_test_start;
+   load_parallel_model -&gt; on_test_start;
+   on_test_start -&gt; test_loop;
+   test_loop -&gt; on_test_end;
+   test_loop -&gt; on_start_test_batch;
+   on_start_test_batch -&gt; test_step;
+   test_step -&gt; on_end_test_batch;
+   on_end_test_batch -&gt; on_start_test_batch [label = &quot;test_loop_iter&quot;];
+
+   test  [fillcolor=1, style=&quot;rounded,filled&quot;]
+   load_model  [fillcolor=2, style=&quot;rounded,filled&quot;]
+   load_parallel_model  [fillcolor=2, style=&quot;rounded,filled&quot;]
+   on_test_start  [fillcolor=2, style=&quot;rounded,filled&quot;]
+   test_loop  [fillcolor=2, style=&quot;rounded,filled&quot;]
+   on_test_end  [fillcolor=2, style=&quot;rounded,filled&quot;]
+   on_start_test_batch  [fillcolor=3, style=&quot;rounded,filled&quot;]
+   test_step  [fillcolor=3, style=&quot;rounded,filled&quot;]
+   on_end_test_batch  [fillcolor=3, style=&quot;rounded,filled&quot;]
+
+   }" class="graphviz" /></div>
+</div>
+</div>
+<div class="section" id="docs">
+<h2>Docs<a class="headerlink" href="#docs" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="farabi.core.gantrainer.GanTrainer">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabi.core.gantrainer.</span></code><code class="sig-name descname"><span class="pre">GanTrainer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes trainer object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.default_attr">
+<code class="sig-name descname"><span class="pre">default_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.default_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.default_attr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.init_attr">
+<code class="sig-name descname"><span class="pre">init_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.init_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.init_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract method that initializes object attributes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.define_data_attr">
+<code class="sig-name descname"><span class="pre">define_data_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.define_data_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.define_data_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define data related attributes here</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.define_model_attr">
+<code class="sig-name descname"><span class="pre">define_model_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.define_model_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.define_model_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define model related attributes here</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.define_train_attr">
+<code class="sig-name descname"><span class="pre">define_train_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.define_train_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.define_train_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define training related attributes here</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.define_test_attr">
+<code class="sig-name descname"><span class="pre">define_test_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.define_test_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.define_test_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define training related attributes here</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.define_log_attr">
+<code class="sig-name descname"><span class="pre">define_log_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.define_log_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.define_log_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define log related attributes here</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.define_compute_attr">
+<code class="sig-name descname"><span class="pre">define_compute_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.define_compute_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.define_compute_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define compute related attributes here</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.define_misc_attr">
+<code class="sig-name descname"><span class="pre">define_misc_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.define_misc_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.define_misc_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define miscellaneous attributes here</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.build_model">
+<code class="sig-name descname"><span class="pre">build_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.build_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.build_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract method that builds model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.get_trainloader">
+<code class="sig-name descname"><span class="pre">get_trainloader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.get_trainloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.get_trainloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Retreives training set of torch.utils.data.DataLoader class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.get_testloader">
+<code class="sig-name descname"><span class="pre">get_testloader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.get_testloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.get_testloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Retreives test set of torch.utils.data.DataLoader class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.train">
+<code class="sig-name descname"><span class="pre">train</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Training loop with hooks</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.train_loop">
+<code class="sig-name descname"><span class="pre">train_loop</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.train_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.train_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: training loop</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.train_epoch">
+<code class="sig-name descname"><span class="pre">train_epoch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.train_epoch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.train_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: epoch of training loop</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.train_batch">
+<code class="sig-name descname"><span class="pre">train_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.train_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.train_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: batch of training loop</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_train_start">
+<code class="sig-name descname"><span class="pre">on_train_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_train_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_train_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: On start of training loop</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.start_logger">
+<code class="sig-name descname"><span class="pre">start_logger</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.start_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.start_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Starts logger</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_train_epoch_start">
+<code class="sig-name descname"><span class="pre">on_train_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_train_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_train_epoch_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: On epoch start</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_start_training_batch">
+<code class="sig-name descname"><span class="pre">on_start_training_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_start_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_start_training_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: On training batch start</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_end_training_batch">
+<code class="sig-name descname"><span class="pre">on_end_training_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_end_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_end_training_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: On end of training batch</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_train_epoch_end">
+<code class="sig-name descname"><span class="pre">on_train_epoch_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_train_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_train_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: On end of training epoch</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_train_end">
+<code class="sig-name descname"><span class="pre">on_train_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_train_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_train_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: On end of training</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.stop_train">
+<code class="sig-name descname"><span class="pre">stop_train</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.stop_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.stop_train" title="Permalink to this definition">¶</a></dt>
+<dd><p>On end of training</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.evaluate_epoch">
+<code class="sig-name descname"><span class="pre">evaluate_epoch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.evaluate_epoch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.evaluate_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: epoch of evaluation loop</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>epoch</strong><span class="classifier">int</span></dt><dd><p>Current epoch</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.evaluate_batch">
+<code class="sig-name descname"><span class="pre">evaluate_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.evaluate_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.evaluate_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: batch of evaluation loop</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_evaluate_start">
+<code class="sig-name descname"><span class="pre">on_evaluate_start</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_evaluate_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_evaluate_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: on evaluation end</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_evaluate_epoch_start">
+<code class="sig-name descname"><span class="pre">on_evaluate_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_evaluate_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_evaluate_epoch_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: on evaluation start</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_evaluate_batch_start">
+<code class="sig-name descname"><span class="pre">on_evaluate_batch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_evaluate_batch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_evaluate_batch_start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_evaluate_batch_end">
+<code class="sig-name descname"><span class="pre">on_evaluate_batch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_evaluate_batch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_evaluate_batch_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: On evaluate batch end</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_evaluate_epoch_end">
+<code class="sig-name descname"><span class="pre">on_evaluate_epoch_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_evaluate_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_evaluate_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_evaluate_end">
+<code class="sig-name descname"><span class="pre">on_evaluate_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_evaluate_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_evaluate_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: on evaluation end</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_epoch_end">
+<code class="sig-name descname"><span class="pre">on_epoch_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: on epoch end</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.test">
+<code class="sig-name descname"><span class="pre">test</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Test lifecycle</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.test_loop">
+<code class="sig-name descname"><span class="pre">test_loop</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.test_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.test_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: test loop</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.get_dataloader">
+<code class="sig-name descname"><span class="pre">get_dataloader</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.get_dataloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.get_dataloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Retreives torch.utils.data.DataLoader object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_test_start">
+<code class="sig-name descname"><span class="pre">on_test_start</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_test_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_test_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: on test start</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_start_test_batch">
+<code class="sig-name descname"><span class="pre">on_start_test_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_start_test_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_start_test_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: on test batch start</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.test_step">
+<code class="sig-name descname"><span class="pre">test_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.test_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test action (Put test here)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_end_test_batch">
+<code class="sig-name descname"><span class="pre">on_end_test_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_end_test_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_end_test_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: on end of batch test</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.on_test_end">
+<code class="sig-name descname"><span class="pre">on_test_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.on_test_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.on_test_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: on end test</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.load_model">
+<code class="sig-name descname"><span class="pre">load_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.load_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: load model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.save_model">
+<code class="sig-name descname"><span class="pre">save_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.save_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: saves model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.discriminator_zero_grad">
+<code class="sig-name descname"><span class="pre">discriminator_zero_grad</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.discriminator_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.discriminator_zero_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Zero gradients of discriminator</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.discriminator_loss">
+<code class="sig-name descname"><span class="pre">discriminator_loss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.discriminator_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.discriminator_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Training action (Put training here)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.discriminator_backward">
+<code class="sig-name descname"><span class="pre">discriminator_backward</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.discriminator_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.discriminator_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Discriminator back-propagation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.discriminator_optim_step">
+<code class="sig-name descname"><span class="pre">discriminator_optim_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.discriminator_optim_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.discriminator_optim_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discriminator optimizer step</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.generator_zero_grad">
+<code class="sig-name descname"><span class="pre">generator_zero_grad</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.generator_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.generator_zero_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Zero gradients of generator</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.generator_loss">
+<code class="sig-name descname"><span class="pre">generator_loss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.generator_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.generator_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: Training action (Put training here)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.generator_backward">
+<code class="sig-name descname"><span class="pre">generator_backward</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.generator_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.generator_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook: sends backward</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabi.core.gantrainer.GanTrainer.generator_optim_step">
+<code class="sig-name descname"><span class="pre">generator_optim_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/gantrainer.html#GanTrainer.generator_optim_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.gantrainer.GanTrainer.generator_optim_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discriminator optimizer step</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="models.segmentation.unet.unet_trainer.html" class="btn btn-neutral float-right" title="unet_trainer Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="core.convnettrainer.html" class="btn btn-neutral float-left" title="convnettrainer Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Translational Biophotonics Lab.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

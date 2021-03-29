@@ -1,0 +1,445 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Concepts &mdash; farabi 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Downloads" href="downloads.html" />
+    <link rel="prev" title="Tutorial" href="tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> farabi
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Handbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Concepts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#activation-functions">Activation functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#binary-step">Binary Step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#piecewise-linear">Piecewise Linear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bipolar">Bipolar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sigmoid">Sigmoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bipolar-sigmoid">Bipolar Sigmoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hyperbolic-tangent-tanh">Hyperbolic Tangent, TanH</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#arctangent-arctan">Arctangent, ArcTan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rectified-linear-units-relu">Rectified Linear Units, ReLU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#leaky-rectified-linear-units-leaky-relu">Leaky Rectified Linear Units, Leaky ReLU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exponential-linear-units-elu">Exponential Linear Units, ELU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#softplus">SoftPlus</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="downloads.html">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">farabi</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Handbook</a> &raquo;</li>
+        
+      <li>Concepts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/handbook/concepts.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="concepts">
+<h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#activation-functions" id="id1">Activation functions</a></p>
+<ul>
+<li><p><a class="reference internal" href="#binary-step" id="id2">Binary Step</a></p></li>
+<li><p><a class="reference internal" href="#piecewise-linear" id="id3">Piecewise Linear</a></p></li>
+<li><p><a class="reference internal" href="#bipolar" id="id4">Bipolar</a></p></li>
+<li><p><a class="reference internal" href="#sigmoid" id="id5">Sigmoid</a></p></li>
+<li><p><a class="reference internal" href="#bipolar-sigmoid" id="id6">Bipolar Sigmoid</a></p></li>
+<li><p><a class="reference internal" href="#hyperbolic-tangent-tanh" id="id7">Hyperbolic Tangent, TanH</a></p></li>
+<li><p><a class="reference internal" href="#arctangent-arctan" id="id8">Arctangent, ArcTan</a></p></li>
+<li><p><a class="reference internal" href="#rectified-linear-units-relu" id="id9">Rectified Linear Units, ReLU</a></p></li>
+<li><p><a class="reference internal" href="#leaky-rectified-linear-units-leaky-relu" id="id10">Leaky Rectified Linear Units, Leaky ReLU</a></p></li>
+<li><p><a class="reference internal" href="#exponential-linear-units-elu" id="id11">Exponential Linear Units, ELU</a></p></li>
+<li><p><a class="reference internal" href="#softplus" id="id12">SoftPlus</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="activation-functions">
+<h2><a class="toc-backref" href="#id1">Activation functions</a><a class="headerlink" href="#activation-functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="binary-step">
+<h3><a class="toc-backref" href="#id2">Binary Step</a><a class="headerlink" href="#binary-step" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}f(x) = \left\{
+      \begin{array}{lll}
+          0 &amp; for &amp; x &lt; x_{min} \\
+          mx+b &amp; for &amp; x_{min} \leq x \leq x_{max}  \\
+          1 &amp; for &amp; x &gt; x_{max}
+      \end{array}
+  \right.\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}f'(x) = \left\{
+      \begin{array}{lll}
+          0 &amp; for &amp; x \neq 0  \\
+          ? &amp; for &amp; x = 0
+      \end{array}
+  \right.\end{split}\]</div>
+<p>(<a class="reference external" href="../handbook/pyplots/binary_step.py">Source code</a>, <a class="reference external" href="../handbook/pyplots/binary_step.png">png</a>, <a class="reference external" href="../handbook/pyplots/binary_step.hires.png">hires.png</a>, <a class="reference external" href="../handbook/pyplots/binary_step.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="../_images/binary_step.png" src="../_images/binary_step.png" />
+</div>
+</div>
+<div class="section" id="piecewise-linear">
+<h3><a class="toc-backref" href="#id3">Piecewise Linear</a><a class="headerlink" href="#piecewise-linear" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}f(x) = \left\{
+      \begin{array}{lll}
+          0 &amp; for &amp; x &lt; x_{min} \\
+          mx+b &amp; for &amp; x_{min} \leq x \leq x_{max}  \\
+          1 &amp; for &amp; x &gt; x_{max}
+      \end{array}
+  \right.\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}f'(x) = \left\{
+      \begin{array}{lll}
+          0 &amp; for &amp; x &lt; x_{min} \\
+          m &amp; for &amp; x_{min} \leq x \leq x_{max}  \\
+          0 &amp; for &amp; x &gt; x_{max}
+      \end{array}
+  \right.\end{split}\]</div>
+<p>(<a class="reference external" href="../handbook/pyplots/piecewise_linear.py">Source code</a>, <a class="reference external" href="../handbook/pyplots/piecewise_linear.png">png</a>, <a class="reference external" href="../handbook/pyplots/piecewise_linear.hires.png">hires.png</a>, <a class="reference external" href="../handbook/pyplots/piecewise_linear.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="../_images/piecewise_linear.png" src="../_images/piecewise_linear.png" />
+</div>
+</div>
+<div class="section" id="bipolar">
+<h3><a class="toc-backref" href="#id4">Bipolar</a><a class="headerlink" href="#bipolar" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}f(x) = \left\{
+      \begin{array}{lll}
+          -1 &amp; for &amp; x \leq 0  \\
+          1 &amp; for &amp; x &gt; 0
+      \end{array}
+  \right.\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}f'(x) = \left\{
+      \begin{array}{lll}
+          0 &amp; for &amp; x \neq 0  \\
+          ? &amp; for &amp; x = 0
+      \end{array}
+  \right.\end{split}\]</div>
+<p>(<a class="reference external" href="../handbook/pyplots/bipolar.py">Source code</a>, <a class="reference external" href="../handbook/pyplots/bipolar.png">png</a>, <a class="reference external" href="../handbook/pyplots/bipolar.hires.png">hires.png</a>, <a class="reference external" href="../handbook/pyplots/bipolar.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="../_images/bipolar.png" src="../_images/bipolar.png" />
+</div>
+</div>
+<div class="section" id="sigmoid">
+<h3><a class="toc-backref" href="#id5">Sigmoid</a><a class="headerlink" href="#sigmoid" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[f(x)={\frac {1}{1+e^{-x}}}\]</div>
+<div class="math notranslate nohighlight">
+\[f'(x)=f(x)(1-f(x))\]</div>
+<p>(<a class="reference external" href="../handbook/pyplots/sigmoid.py">Source code</a>, <a class="reference external" href="../handbook/pyplots/sigmoid.png">png</a>, <a class="reference external" href="../handbook/pyplots/sigmoid.hires.png">hires.png</a>, <a class="reference external" href="../handbook/pyplots/sigmoid.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="../_images/sigmoid.png" src="../_images/sigmoid.png" />
+</div>
+</div>
+<div class="section" id="bipolar-sigmoid">
+<h3><a class="toc-backref" href="#id6">Bipolar Sigmoid</a><a class="headerlink" href="#bipolar-sigmoid" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[f(x)={\frac {1-e^{-x}}{1+e^{-x}}}\]</div>
+<div class="math notranslate nohighlight">
+\[f'(x)={\frac {2e^x}{(e^x+1)^2}}\]</div>
+<p>(<a class="reference external" href="../handbook/pyplots/bipolar_sigmoid.py">Source code</a>, <a class="reference external" href="../handbook/pyplots/bipolar_sigmoid.png">png</a>, <a class="reference external" href="../handbook/pyplots/bipolar_sigmoid.hires.png">hires.png</a>, <a class="reference external" href="../handbook/pyplots/bipolar_sigmoid.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="../_images/bipolar_sigmoid.png" src="../_images/bipolar_sigmoid.png" />
+</div>
+</div>
+<div class="section" id="hyperbolic-tangent-tanh">
+<h3><a class="toc-backref" href="#id7">Hyperbolic Tangent, TanH</a><a class="headerlink" href="#hyperbolic-tangent-tanh" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[f(x)={\frac {2}{1+e^{-2x}}}-1\]</div>
+<div class="math notranslate nohighlight">
+\[f'(x)=1-f(x)^2\]</div>
+<p>(<a class="reference external" href="../handbook/pyplots/tanh.py">Source code</a>, <a class="reference external" href="../handbook/pyplots/tanh.png">png</a>, <a class="reference external" href="../handbook/pyplots/tanh.hires.png">hires.png</a>, <a class="reference external" href="../handbook/pyplots/tanh.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="../_images/tanh.png" src="../_images/tanh.png" />
+</div>
+</div>
+<div class="section" id="arctangent-arctan">
+<h3><a class="toc-backref" href="#id8">Arctangent, ArcTan</a><a class="headerlink" href="#arctangent-arctan" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[f(x)=tan^{-1}(x)\]</div>
+<div class="math notranslate nohighlight">
+\[f'(x)={\frac {1}{1+x^2}}\]</div>
+<p>(<a class="reference external" href="../handbook/pyplots/arctan.py">Source code</a>, <a class="reference external" href="../handbook/pyplots/arctan.png">png</a>, <a class="reference external" href="../handbook/pyplots/arctan.hires.png">hires.png</a>, <a class="reference external" href="../handbook/pyplots/arctan.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="../_images/arctan.png" src="../_images/arctan.png" />
+</div>
+</div>
+<div class="section" id="rectified-linear-units-relu">
+<h3><a class="toc-backref" href="#id9">Rectified Linear Units, ReLU</a><a class="headerlink" href="#rectified-linear-units-relu" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}f(x) = \left\{
+      \begin{array}{lll}
+          0 &amp; for &amp; x \leq 0  \\
+          x &amp; for &amp; x &gt; 0
+      \end{array}
+  \right.\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}f'(x) = \left\{
+      \begin{array}{lll}
+          0 &amp; for &amp; x \leq 0  \\
+          1 &amp; for &amp; x &gt; 0
+      \end{array}
+  \right.\end{split}\]</div>
+<p>(<a class="reference external" href="../handbook/pyplots/relu.py">Source code</a>, <a class="reference external" href="../handbook/pyplots/relu.png">png</a>, <a class="reference external" href="../handbook/pyplots/relu.hires.png">hires.png</a>, <a class="reference external" href="../handbook/pyplots/relu.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="../_images/relu.png" src="../_images/relu.png" />
+</div>
+</div>
+<div class="section" id="leaky-rectified-linear-units-leaky-relu">
+<h3><a class="toc-backref" href="#id10">Leaky Rectified Linear Units, Leaky ReLU</a><a class="headerlink" href="#leaky-rectified-linear-units-leaky-relu" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}f(x) = \left\{
+      \begin{array}{lll}
+          ax &amp; for &amp; x \leq 0  \\
+          x &amp; for &amp; x &gt; 0
+      \end{array}
+  \right.\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}f'(x) = \left\{
+      \begin{array}{lll}
+          a &amp; for &amp; x \leq 0  \\
+          1 &amp; for &amp; x &gt; 0
+      \end{array}
+  \right.\end{split}\]</div>
+<p>(<a class="reference external" href="../handbook/pyplots/leaky_relu.py">Source code</a>, <a class="reference external" href="../handbook/pyplots/leaky_relu.png">png</a>, <a class="reference external" href="../handbook/pyplots/leaky_relu.hires.png">hires.png</a>, <a class="reference external" href="../handbook/pyplots/leaky_relu.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="../_images/leaky_relu.png" src="../_images/leaky_relu.png" />
+</div>
+</div>
+<div class="section" id="exponential-linear-units-elu">
+<h3><a class="toc-backref" href="#id11">Exponential Linear Units, ELU</a><a class="headerlink" href="#exponential-linear-units-elu" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}f(x) = \left\{
+      \begin{array}{lll}
+          a(e^x-1) &amp; for &amp; x \leq 0  \\
+          x &amp; for &amp; x &gt; 0
+      \end{array}
+  \right.\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}f'(x) = \left\{
+      \begin{array}{lll}
+          f(x)+a &amp; for &amp; x \leq 0  \\
+          1 &amp; for &amp; x &gt; 0
+      \end{array}
+  \right.\end{split}\]</div>
+<p>(<a class="reference external" href="../handbook/pyplots/elu.py">Source code</a>, <a class="reference external" href="../handbook/pyplots/elu.png">png</a>, <a class="reference external" href="../handbook/pyplots/elu.hires.png">hires.png</a>, <a class="reference external" href="../handbook/pyplots/elu.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="../_images/elu.png" src="../_images/elu.png" />
+</div>
+</div>
+<div class="section" id="softplus">
+<h3><a class="toc-backref" href="#id12">SoftPlus</a><a class="headerlink" href="#softplus" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[f(x)=ln(1+e^x)\]</div>
+<div class="math notranslate nohighlight">
+\[f'(x)={\frac {1}{1+e^{-x}}}\]</div>
+<p>(<a class="reference external" href="../handbook/pyplots/softplus.py">Source code</a>, <a class="reference external" href="../handbook/pyplots/softplus.png">png</a>, <a class="reference external" href="../handbook/pyplots/softplus.hires.png">hires.png</a>, <a class="reference external" href="../handbook/pyplots/softplus.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="../_images/softplus.png" src="../_images/softplus.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="downloads.html" class="btn btn-neutral float-right" title="Downloads" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Translational Biophotonics Lab.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
