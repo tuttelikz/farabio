@@ -90,7 +90,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../handbook/index.html">Handbook</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#core-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">core</span></code> Package</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">configs</span></code> Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">configs</span></code> Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#argument-groups">Argument groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-lifecycle-hooks">Non-lifecycle hooks</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="core.basetrainer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">basetrainer</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="core.convnettrainer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">convnettrainer</span></code> Module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="core.gantrainer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gantrainer</span></code> Module</a></li>
@@ -171,7 +175,59 @@
             
   <div class="section" id="configs-module">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">configs</span></code> Module<a class="headerlink" href="#configs-module" title="Permalink to this headline">¶</a></h1>
-<p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">config</span></code> package contains base configurations for models</p>
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">configs</span></code> module combines is a main place for model configurations. These
+settings are separately defined in their related functions. Each of these functions use group of
+arguments from argparse.ArgumentParser().</p>
+<div class="section" id="argument-groups">
+<h2>Argument groups<a class="headerlink" href="#argument-groups" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><dl class="std option">
+<dt id="cmdoption-arg-data_arg">
+<span id="cmdoption-arg-data-arg"></span><code class="sig-name descname"><span class="pre">data_arg</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-data_arg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+<li><dl class="std option">
+<dt id="cmdoption-arg-model_arg">
+<span id="cmdoption-arg-model-arg"></span><code class="sig-name descname"><span class="pre">model_arg</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-model_arg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+<li><dl class="std option">
+<dt id="cmdoption-arg-train_arg">
+<span id="cmdoption-arg-train-arg"></span><code class="sig-name descname"><span class="pre">train_arg</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-train_arg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+<li><dl class="std option">
+<dt id="cmdoption-arg-test_arg">
+<span id="cmdoption-arg-test-arg"></span><code class="sig-name descname"><span class="pre">test_arg</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-test_arg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+<li><dl class="std option">
+<dt id="cmdoption-arg-log_arg">
+<span id="cmdoption-arg-log-arg"></span><code class="sig-name descname"><span class="pre">log_arg</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-log_arg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+<li><dl class="std option">
+<dt id="cmdoption-arg-compute_arg">
+<span id="cmdoption-arg-compute-arg"></span><code class="sig-name descname"><span class="pre">compute_arg</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-compute_arg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+<li><dl class="std option">
+<dt id="cmdoption-arg-misc_arg">
+<span id="cmdoption-arg-misc-arg"></span><code class="sig-name descname"><span class="pre">misc_arg</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-misc_arg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</li>
+</ul>
+</div>
+<div class="section" id="non-lifecycle-hooks">
+<h2>Non-lifecycle hooks<a class="headerlink" href="#non-lifecycle-hooks" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">config</span></code> package contains base configurations for models:</p>
 <dl class="py function">
 <dt id="farabi.core.configs.define_unet">
 <code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">define_unet</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#define_unet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs.define_unet" title="Permalink to this definition">¶</a></dt>
@@ -195,6 +251,12 @@
 <code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">define_yolo</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#define_yolo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs.define_yolo" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py function">
+<dt id="farabi.core.configs.define_faster_rcnn">
+<code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">define_faster_rcnn</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#define_faster_rcnn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs.define_faster_rcnn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 
 

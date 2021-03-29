@@ -576,7 +576,7 @@
                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;detect&#39;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;mode of learning&#39;</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">define_faster_rcnn</span><span class="p">():</span>
+<div class="viewcode-block" id="define_faster_rcnn"><a class="viewcode-back" href="../../../reference/core.configs.html#farabi.core.configs.define_faster_rcnn">[docs]</a><span class="k">def</span> <span class="nf">define_faster_rcnn</span><span class="p">():</span>
     <span class="c1"># Data</span>
     <span class="n">data_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>
     <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -662,7 +662,7 @@
     <span class="c1"># Misc</span>
     <span class="n">misc_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Misc&#39;</span><span class="p">)</span>
     <span class="n">misc_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mode&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;mode of learning&#39;</span><span class="p">)</span>
+                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;mode of learning&#39;</span><span class="p">)</span></div>
 
 
 <span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span>

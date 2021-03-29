@@ -21,7 +21,7 @@ models = {
 if __name__ == "__main__":
     itime = time.time()
 
-    model = "faster_rcnn"
+    model = "unet"
     config, _ = get_config(model)
 
     trnr = models[model](config)
