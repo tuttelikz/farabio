@@ -6,7 +6,7 @@ from torch.utils.data import Dataset, DataLoader, random_split
 import albumentations as A
 from albumentations.pytorch import ToTensor
 from farabi.core.convnettrainer import ConvnetTrainer
-from farabi.models.segmentation.unet.unet import Unet
+from farabi.models.segmentation.attunet.attunet import AttUnet
 from farabi.utils.regul import EarlyStopping
 from farabi.utils.losses import Losses
 from farabi.utils.loggers import TensorBoard, UnetViz
@@ -17,8 +17,9 @@ from skimage.io import imsave
 from torchsummary import summary
 
 
-class UnetTrainer(ConvnetTrainer):
-    """U-Net trainer class. Override with custom methods here.
+class AttunetTrainer(ConvnetTrainer):
+    """Attention U-Net trainer class. Override with custom methods here.
+    Attention U-Net cannot fit into one GPU. Supports only parallel mode.
 
     Parameters
     ----------
@@ -35,7 +36,7 @@ class UnetTrainer(ConvnetTrainer):
     def define_model_attr(self, *args):
         self._semantic = self.config.semantic
         self._model_save_name = self.config.model_save_name
-        self._model_save_dir = self.config.model_save_dir
+        self._model_save_dir = os.path.join(self.config.model_save_dir)
 
     def define_train_attr(self, *args):
         self._epoch = self.config.start_epoch
@@ -103,7 +104,7 @@ class UnetTrainer(ConvnetTrainer):
         self.test_loader = self.valid_loader
 
     def build_model(self):
-        self.model = Unet(self._in_ch, self._out_ch)
+        self.model = AttUnet(self._in_ch, self._out_ch)
 
         if self._cuda:
             self.model.to(self._device)
@@ -112,7 +113,7 @@ class UnetTrainer(ConvnetTrainer):
                                     lr=self.config.learning_rate)
 
     def build_parallel_model(self):
-        self.model = Unet(self._in_ch, self._out_ch)
+        self.model = AttUnet(self._in_ch, self._out_ch)
         self.model = nn.DataParallel(self.model)
         self.model.to(self._device)
         self.optimizer = self.optim(list(self.model.parameters()),
@@ -136,9 +137,8 @@ class UnetTrainer(ConvnetTrainer):
             self.logger = UnetViz(self._num_epochs, len(self.train_loader))
 
     def on_train_epoch_start(self):
-        self.batch_tloss = 0
         self.model.train()
-
+        self.batch_tloss = 0
         self.train_epoch_iter = enumerate(self.train_loader)
 
     def on_start_training_batch(self, args):
@@ -242,7 +242,7 @@ class UnetTrainer(ConvnetTrainer):
 
         if self.early_stop:
             print("Early stopping")
-            self._model_save_name = "unet_es.pt"
+            self._model_save_name = "attunet_es.pt"
 
             if self._data_parallel:
                 self.save_parallel_model()
@@ -252,12 +252,10 @@ class UnetTrainer(ConvnetTrainer):
             self.stop_train()
 
     def save_model(self):
-        torch.save(self.model.state_dict(), os.path.join(
-            self._model_save_dir, self._model_save_name))
+        torch.save(self.model.state_dict(), os.path.join(self._model_save_dir, self._model_save_name))
 
     def save_parallel_model(self):
-        torch.save(self.model.module.state_dict(), os.path.join(
-            self._model_save_dir, self._model_save_name))
+        torch.save(self.model.module.state_dict(), os.path.join(self._model_save_dir, self._model_save_name))
 
     def on_test_start(self):
         self.model.eval()

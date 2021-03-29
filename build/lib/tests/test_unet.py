@@ -1,6 +1,6 @@
 import os
 from torchvision import transforms
-from farabi.prep.transforms import Normalize, ToTensor
+from farabi.data.transforms import Normalize, ToTensor
 from farabi.data.datasets import XenopusDataset
 import numpy as np
 from torch.utils.data.sampler import SubsetRandomSampler

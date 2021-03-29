@@ -1,6 +1,6 @@
-from torchvision import models
 from collections import namedtuple
 import torch.nn as nn
+from torchvision import models
 
 
 class vgg19(nn.Module):

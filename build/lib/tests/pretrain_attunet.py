@@ -1,5 +1,5 @@
 from farabi.data.tbldata import XenopusData
-from farabi.prep.transforms import Normalize, ToTensor
+from farabi.data.transforms import Normalize, ToTensor
 from torchvision import transforms
 from farabi.data.datasets import XenopusDataset
 import numpy as np

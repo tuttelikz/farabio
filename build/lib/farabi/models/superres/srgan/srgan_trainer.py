@@ -8,7 +8,7 @@ import torch
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
 import torchvision.utils as vutils
-from farabi.prep.transforms import display_transform
+from farabi.data.transforms import display_transform
 from farabi.core.configs import get_config
 from farabi.core.gantrainer import GanTrainer
 from farabi.utils.losses import GeneratorLoss
@@ -19,7 +19,7 @@ from farabi.data.datasets import TrainDatasetFromFolder, ValDatasetFromFolder, T
 
 
 class SrganTrainer(GanTrainer):
-    """SrganTrainer class inheriting from GanTrainer
+    """SrganTrainer trainer class. Override with custom methods here.
 
     Parameters
     ----------
@@ -27,37 +27,37 @@ class SrganTrainer(GanTrainer):
         Parent object of SrganTrainer
     """
 
-    def init_attr(self):
-        """Constructor for Unet class
+    def define_data_attr(self):
+        self._trainset_dir = self.config.train_set
+        self._validset_dir = self.config.valid_set
+        self._testset_dir = self.config.test_set
+        self._batch_size_train = self.config.batch_size_train
+        self._batch_size_valid = self.config.batch_size_valid
+        self._batch_size_test = self.config.batch_size_test
+        self._upscale_factor = self.config.upscale_factor
+        self._crop_size = self.config.crop_size
 
-        Parameters
-        ------------
-        config : object
-            configurations
-        data_loader : torch.utils.data.dataloader
-            dataloader
-        model : nn.Module
-            segmentation model
-        """
-        self._upscale_factor = config.upscale_factor
-        self._cuda = config.cuda
-        self._model_save_dir = config.model_save_dir
-        self._crop_size = config.crop_size
-        self._use_tqdm = True
-        self._trainset_dir = config.train_set
-        self._validset_dir = config.valid_set
-        self._testset_dir = config.test_set
-        self._num_workers = config.num_workers
-        self._save_epoch = config.save_epoch
-        self._save_csv_epoch = config.save_csv_epoch
-        self._start_epoch = config.start_epoch
-        self._model_path = config.model_path
-        self._batch_size_train = config.batch_size_train
-        self._batch_size_valid = config.batch_size_valid
-        self._batch_size_test = config.batch_size_test
+    def define_model_attr(self):
+        self._model_path = self.config.model_path
+        self._model_save_dir = self.config.model_save_dir
 
-        if config.optim == 'adam':
+    def define_train_attr(self):
+        self._num_epochs = self.config.num_epochs
+        self._start_epoch = self.config.start_epoch
+        self._has_eval = True
+        if self.config.optim == 'adam':
             self.optim = torch.optim.Adam
+
+    def define_log_attr(self):
+        self._save_epoch = self.config.save_epoch
+        self._save_csv_epoch = self.config.save_csv_epoch
+    
+    def define_compute_attr(self):
+        self._cuda = self.config.cuda
+        self._num_workers = self.config.num_workers
+
+    def define_misc_attr(self):
+        self._mode = self.config.mode
 
     def get_trainloader(self):
         if self._mode == 'train':
@@ -113,7 +113,7 @@ class SrganTrainer(GanTrainer):
 
         self.netG.train()
         self.netD.train()
-    
+
     def train_batch(self, args):
         self.on_start_training_batch(args)
 
@@ -208,7 +208,7 @@ class SrganTrainer(GanTrainer):
             self.batch_size
 
         self.train_epoch_iter.set_description(desc='[%d/%d] Loss_D: %.4f Loss_G: %.4f D(x): %.4f D(G(z)): %.4f' % (
-            self.epoch, self.num_epochs, self.running_results['d_loss'] /
+            self.epoch, self._num_epochs, self.running_results['d_loss'] /
             self.running_results['batch_sizes'],
             self.running_results['g_loss'] /
             self.running_results['batch_sizes'],
@@ -401,29 +401,3 @@ class SrganTrainer(GanTrainer):
         data_frame = pd.DataFrame(saved_results, self.results.keys())
         data_frame.to_csv(os.path.join(out_stat_path, 'srf_' +
                                        str(self._upscale_factor) + '_test_results.csv'), index_label='DataSet')
-
-
-if __name__ == "__main__":
-    start_time = time.time()
-
-    config, unparsed = get_config('srgan')
-
-    trnr = SrganTrainer(config)
-    trnr.test()
-
-    # trnr = Trainer(config, (train_loader, val_loader), mode=config.mode)
-    # trnr.train()
-
-    # if config.mode == "test":
-    #     test_set = TestDatasetFromFolder(
-    #         '/home/DATA_Lia/data_02/DATASET_EXT/SuperResolution/lowres_test', upscale_factor=config.upscale_factor)
-    #     test_loader = DataLoader(
-    #         dataset=test_set, num_workers=4, batch_size=1, shuffle=False)
-
-    #     trnr = Trainer(config, test_loader, mode=config.mode)
-    #     trnr.test()
-
-    # time_elapsed = time.time() - start_time
-
-    # print(
-    #     f'Complete in {time_elapsed // 60}m {time_elapsed % 60: .2f}s')

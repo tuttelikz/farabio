@@ -1,22 +1,26 @@
 import torch
 import sys
 from farabi.core.basetrainer import BaseTrainer
-from abc import abstractmethod
-from tqdm import tqdm
 
 
 class GanTrainer(BaseTrainer):
     def __init__(self, config):
         """Initializes trainer object
         """
-        #super(BaseTrainer, self).__init__()
         super().__init__()
+        self.config = config
+        self.default_attr()
+        self.init_attr()
+        self.get_trainloader()
+        self.get_testloader()
+        self.build_model()
 
-        self._num_epochs = config.num_epochs
-        self._mode = config.mode
-
-        # default values
-        self._use_tqdm = False
+    ##########################
+    # Definition of attributes
+    ##########################
+    def default_attr(self, *args):
+        self._mode = "train"
+        self._num_epochs = 10
         self.train_loader = None
         self.valid_loader = None
         self.test_loader = None
@@ -32,43 +36,63 @@ class GanTrainer(BaseTrainer):
         self._start_epoch = 1
         self._has_eval = True
 
-        self.init_attr()
-        self.get_trainloader()
-        self.get_testloader()
-        self.build_model()
-
-    @property
-    def num_epochs(self):
-        """Number of training epochs
-
-        Returns
-        -------
-        int
-            Number of training epochs
-        """
-        return self._num_epochs
-
-    @property
-    def mode(self):
-        """Trainer mode
-
-        Returns
-        -------
-        string
-            Mode (Train/Test)
-        """
-        return self._mode
-
     def init_attr(self, *args):
         """Abstract method that initializes object attributes
         """
+        self.define_data_attr()
+        self.define_model_attr()
+        self.define_train_attr()
+        self.define_test_attr()
+        self.define_log_attr()
+        self.define_compute_attr()
+        self.define_misc_attr()
+
+    def define_data_attr(self, *args):
+        """Define data related attributes here
+        """
         pass
 
+    def define_model_attr(self, *args):
+        """Define model related attributes here
+        """
+        pass
+
+    def define_train_attr(self, *args):
+        """Define training related attributes here
+        """
+        pass
+
+    def define_test_attr(self, *args):
+        """Define training related attributes here
+        """
+        pass
+
+    def define_log_attr(self, *args):
+        """Define log related attributes here
+        """
+        pass
+
+    def define_compute_attr(self, *args):
+        """Define compute related attributes here
+        """
+        pass
+
+    def define_misc_attr(self, *args):
+        """Define miscellaneous attributes here
+        """
+        pass
+
+    ##########################
+    # Building model
+    ##########################
     def build_model(self, *args):
         """Abstract method that builds model
         """
         pass
 
+    ##########################
+    # Dataloaders
+    ##########################
     def get_trainloader(self, *args):
         """Hook: Retreives training set of torch.utils.data.DataLoader class
         """
@@ -79,22 +103,11 @@ class GanTrainer(BaseTrainer):
         """
         pass
 
+    ##########################
+    # Training related
+    ##########################
     def train(self):
         """Training loop with hooks
-
-        Lifecycle:
-        ------------
-        on_train_start()
-        start_logger()
-            on_train_epoch_start()
-                start_training_batch()
-                optimizer_zero_grad()
-                training_step()
-                backward()
-                on_end_training_batch()
-            on_train_epoch_end()
-            evaluate()
-        on_train_end()
         """
         # hook to do on tran instart
         self.on_train_start()
@@ -128,13 +141,13 @@ class GanTrainer(BaseTrainer):
         """
         self.on_start_training_batch(args)
 
-        ###### Discriminator ######
+        # ##### Discriminator ######
         self.discriminator_zero_grad()
         self.discriminator_loss()
         self.discriminator_backward()
         self.discriminator_optim_step()
 
-        ###### Generator ######
+        # ##### Generator ######
         self.generator_zero_grad()
         self.generator_loss()
         self.generator_backward()
@@ -142,68 +155,6 @@ class GanTrainer(BaseTrainer):
 
         self.on_end_training_batch()
 
-    def evaluate_epoch(self):
-        """Hook: epoch of evaluation loop
-
-        Parameters
-        ----------
-        epoch : int
-            Current epoch
-
-        Lifecycle:
-        ------------
-        on_evaluate_start()
-            evaluate_step()
-        on_evaluate_end()
-        """
-
-        # what happens if i just put inside nograd
-        with torch.no_grad():
-            self.on_evaluate_epoch_start()
-
-            for valid_epoch_var in self.valid_epoch_iter:
-                self.on_evaluate_batch_start()
-                self.evaluate_batch(valid_epoch_var)
-                self.on_evaluate_batch_end()
-
-            self.on_evaluate_epoch_end()
-
-    def evaluate_batch(self, *args):
-        """Hook: batch of evaluation loop
-        """
-        pass
-
-    def test(self):
-        """Hook: Test lifecycle
-
-        Lifecycle:
-        ------------
-        on_test_start()
-            on_start_test_batch()
-            test_step()
-            on_end_test_batch()
-        on_test_end()
-        """
-        # self.load_model(self._model_path)
-        self.load_model()
-        self.on_test_start()
-        self.test_loop()
-        self.on_test_end()
-
-    def test_loop(self):
-        """Hook: test loop
-        """
-        for test_loop_var in self.test_loop_iter:
-            self.on_start_test_batch()
-            self.test_step(test_loop_var)
-            self.on_end_test_batch()
-
-    def get_dataloader(self):
-        """Hook: Retreives torch.utils.data.DataLoader object
-        """
-        pass
-
-    # Training loop related
     def on_train_start(self):
         """Hook: On start of training loop
         """
@@ -246,7 +197,34 @@ class GanTrainer(BaseTrainer):
         """
         sys.exit()
 
+    ##########################
     # Evaluation loop related
+    ##########################
+    def evaluate_epoch(self):
+        """Hook: epoch of evaluation loop
+
+        Parameters
+        ----------
+        epoch : int
+            Current epoch
+        """
+
+        # what happens if i just put inside nograd
+        with torch.no_grad():
+            self.on_evaluate_epoch_start()
+
+            for valid_epoch_var in self.valid_epoch_iter:
+                self.on_evaluate_batch_start()
+                self.evaluate_batch(valid_epoch_var)
+                self.on_evaluate_batch_end()
+
+            self.on_evaluate_epoch_end()
+
+    def evaluate_batch(self, *args):
+        """Hook: batch of evaluation loop
+        """
+        pass
+
     def on_evaluate_start(self, *args):
         """Hook: on evaluation end
         """
@@ -278,7 +256,31 @@ class GanTrainer(BaseTrainer):
         """
         pass
 
+    ##########################
     # Test loop related
+    ##########################
+    def test(self):
+        """Hook: Test lifecycle
+        """
+        # self.load_model(self._model_path)
+        self.load_model()
+        self.on_test_start()
+        self.test_loop()
+        self.on_test_end()
+
+    def test_loop(self):
+        """Hook: test loop
+        """
+        for test_loop_var in self.test_loop_iter:
+            self.on_start_test_batch()
+            self.test_step(test_loop_var)
+            self.on_end_test_batch()
+
+    def get_dataloader(self):
+        """Hook: Retreives torch.utils.data.DataLoader object
+        """
+        pass
+
     def on_test_start(self, *args):
         """Hook: on test start
         """
@@ -305,7 +307,9 @@ class GanTrainer(BaseTrainer):
         """
         pass
 
-    # Misc related
+    ##########################
+    # Handle models
+    ##########################
     def load_model(self, *args):
         """Hook: load model
         """
@@ -316,6 +320,9 @@ class GanTrainer(BaseTrainer):
         """
         pass
 
+    ##########################
+    # GAN specific
+    ##########################
     def discriminator_zero_grad(self):
         """Hook: Zero gradients of discriminator
         """
@@ -323,13 +330,6 @@ class GanTrainer(BaseTrainer):
 
     def discriminator_loss(self, *args):
         """Hook: Training action (Put training here)
-
-        Parameters
-        ----------
-        batch : tuple
-            receives batch
-        batch_idx : int
-            index of batch
         """
         raise NotImplementedError
 
@@ -350,13 +350,6 @@ class GanTrainer(BaseTrainer):
 
     def generator_loss(self, *args):
         """Hook: Training action (Put training here)
-
-        Parameters
-        ----------
-        batch : tuple
-            receives batch
-        batch_idx : int
-            index of batch
         """
         raise NotImplementedError
 

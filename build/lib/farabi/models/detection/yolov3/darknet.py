@@ -1,10 +1,10 @@
+import numpy as np
 import torch
 import torch.nn as nn
-import numpy as np
 from farabi.utils.helpers import to_cpu
-from parsers import parse_model_config
 from farabi.models.blocks import Upsample, EmptyLayer
-from yolo_v3 import YOLOLayer
+from farabi.models.detection.yolov3.parsers import parse_model_config
+from farabi.models.detection.yolov3.yolo_v3 import YOLOLayer
 
 
 def create_modules(module_defs):

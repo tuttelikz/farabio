@@ -5,13 +5,13 @@ from visdom import Visdom
 import time
 import sys
 import datetime
-from farabi.prep.transforms import tensor2image
+from farabi.data.transforms import tensor2image
 import numpy as np
 import torch
 import skimage
 from skimage.measure import label
 from skimage import img_as_ubyte
-from farabi.prep.imgops import ImgOps
+from farabi.data.imgops import ImgOps
 
 
 class Logger(object):
@@ -141,7 +141,7 @@ def output2images(tensor, rawtensor=None):
         img_o[:, :, 1] = drug_color[label_max_drug+1][1]*largestCC
         img_o[:, :, 2] = drug_color[label_max_drug+1][2]*largestCC
 
-        img_over = Imgops.blend_imgs(
+        img_over = ImgOps.blend_imgs(
             img_hey, img_o, overlap=1, ratio=0.7)
 
         img_over[:, :, 0][largestCC == 0] = 0

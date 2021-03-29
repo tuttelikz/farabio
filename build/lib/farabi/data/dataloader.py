@@ -1,10 +1,10 @@
 from torchvision import transforms
-from farabi.prep.transforms import Normalize, ToTensor, ImgToTensor, ImgNormalize, ToLongTensor
+from farabi.data.transforms import Normalize, ToTensor, ImgToTensor, ImgNormalize, ToLongTensor
 from torch.utils.data.sampler import SubsetRandomSampler, WeightedRandomSampler
 import torch
 import numpy as np
 from farabi.data.datasets import XenopusDataset, ImgLabelDataset
-from farabi.prep.transforms import Compose, Dataraf, Datajit
+from farabi.data.transforms import Compose, Dataraf, Datajit
 from farabi.utils.helpers import _matches, calc_weights
 
 

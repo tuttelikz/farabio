@@ -18,7 +18,7 @@ from farabi.models.translation.cyclegan.cyclegan import Generator, Discriminator
 
 
 class CycleganTrainer(GanTrainer):
-    """Cyclegan trainer
+    """CycleganTrainer trainer class. Override with custom methods here.
 
     Parameters
     ----------
@@ -26,26 +26,40 @@ class CycleganTrainer(GanTrainer):
         Inherits GanTrainer class
     """
 
-    def init_attr(self):
-        self._cuda = config.cuda
-        self._start_epoch = config.start_epoch
-        self._dataroot = config.dataroot
-        self._learning_rate = config.learning_rate
-        self._decay_epoch = config.decay_epoch
-        self._size = config.size
-        self._in_ch = config.in_ch
-        self._out_ch = config.out_ch
-        self._batch_size = config.batch_size
-        self._num_workers = config.num_workers
-        self._cuda = config.cuda
-        self._genA2B_path = config.generator_A2B
-        self._genB2A_path = config.generator_A2B
-        self._model_save_dir = config.save_dir
-        self._output_dir = config.output_dir
-        self._has_eval = False
-        if config.optim == 'adam':
+    def define_data_attr(self):
+        self._dataroot = self.config.dataroot
+        self._size = self.config.size
+        self._in_ch = self.config.in_ch
+        self._out_ch = self.config.out_ch
+        self._batch_size = self.config.batch_size
+
+    def define_model_attr(self):
+        self._model_save_dir = self.config.save_dir
+        self._genA2B_path = self.config.generator_A2B
+        self._genB2A_path = self.config.generator_A2B
+
+    def define_train_attr(self):
+        self._num_epochs = self.config.num_epochs
+        self._start_epoch = self.config.start_epoch
+        self._learning_rate = self.config.learning_rate
+        self._decay_epoch = self.config.decay_epoch
+        self._has_eval = self.config.has_eval
+        if self.config.optim == 'adam':
             self._optim = torch.optim.Adam
         self._scheduler = torch.optim.lr_scheduler.LambdaLR
+
+    def define_test_attr(self):
+        self._output_dir = self.config.output_dir
+
+    def define_log_attr(self):
+        self._save_epoch = self.config.save_epoch
+
+    def define_compute_attr(self):
+        self._cuda = self.config.cuda
+        self._num_workers = self.config.num_workers
+
+    def define_misc_attr(self):
+        self._mode = self.config.mode
 
     def build_model(self):
         self.netG_A2B = Generator(self._in_ch, self._out_ch)
@@ -64,7 +78,7 @@ class CycleganTrainer(GanTrainer):
         self.netD_A.apply(weights_init_normal)
         self.netD_B.apply(weights_init_normal)
 
-        # Lossess
+        # Losses
         self.criterion_GAN = torch.nn.MSELoss()
         self.criterion_cycle = torch.nn.L1Loss()
         self.criterion_identity = torch.nn.L1Loss()
@@ -314,7 +328,9 @@ class CycleganTrainer(GanTrainer):
         self.lr_scheduler_D_A.step()
         self.lr_scheduler_D_B.step()
 
-        self.save_model()
+    def on_epoch_end(self):
+        if self.epoch % self._save_epoch == 0:
+            self.save_model()
 
     def get_trainloader(self):
         transforms_ = [transforms.Resize(int(self._size*1.12), Image.BICUBIC),
@@ -407,12 +423,3 @@ class CycleganTrainer(GanTrainer):
             self._output_dir, "B", idx+".png"))
         sys.stdout.write('\rGenerated images %04d of %04d' %
                          (self.i+1, len(self.test_loader)))
-
-
-if __name__ == "__main__":
-    start_time = time.time()
-
-    config, unparsed = get_config('cyclegan')
-
-    trnr = CycleganTrainer(config)
-    trnr.test()
