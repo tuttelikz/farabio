@@ -338,6 +338,8 @@ def define_cyclegan():
 
 
 def define_yolo():
+    """Defines Yolo-v3 configuration
+    """
     # Data
     data_arg = add_argument_group('Data')
     data_arg.add_argument("--batch_size", default=8,
@@ -422,6 +424,8 @@ def define_yolo():
 
 
 def define_faster_rcnn():
+    """Defines Faster R-CNN configuration
+    """
     # Data
     data_arg = add_argument_group('Data')
     data_arg.add_argument(
