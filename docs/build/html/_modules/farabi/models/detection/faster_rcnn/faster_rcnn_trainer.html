@@ -163,7 +163,6 @@
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
 <span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">functional</span> <span class="k">as</span> <span class="n">F</span>
 <span class="kn">from</span> <span class="nn">torch.utils</span> <span class="kn">import</span> <span class="n">data</span> <span class="k">as</span> <span class="n">data_</span>
-<span class="kn">from</span> <span class="nn">farabi.core.configs</span> <span class="kn">import</span> <span class="n">get_config</span>
 <span class="kn">from</span> <span class="nn">farabi.core.convnettrainer</span> <span class="kn">import</span> <span class="n">ConvnetTrainer</span>
 <span class="kn">from</span> <span class="nn">farabi.models.detection.faster_rcnn.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">TestDataset</span><span class="p">,</span> <span class="n">inverse_normalize</span>
 <span class="kn">from</span> <span class="nn">farabi.models.detection.faster_rcnn.faster_rcnn_vgg16</span> <span class="kn">import</span> <span class="n">FasterRCNNVGG16</span>
@@ -224,8 +223,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">anchor_target_creator</span> <span class="o">=</span> <span class="n">AnchorTargetCreator</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proposal_target_creator</span> <span class="o">=</span> <span class="n">ProposalTargetCreator</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_backbone</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">load_optimizer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_load_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">load_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;load_optimizer&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;load_path&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_best_path</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="FasterRCNNTrainer.define_log_attr"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_log_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_log_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -286,7 +285,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="FasterRCNNTrainer.save"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        
+
         <span class="n">save_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="n">save_dict</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
@@ -542,6 +541,7 @@
 
 <div class="viewcode-block" id="FasterRCNNTrainer.get_meter_data"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.get_meter_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_meter_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">value</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meters</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span></div></div>
+
 
 <span class="sd">&quot;&quot;&quot;Forward Faster R-CNN and calculate losses.</span>
 

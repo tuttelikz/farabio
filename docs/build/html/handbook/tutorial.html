@@ -194,7 +194,8 @@
 <h2><a class="toc-backref" href="#id1">How to train model</a><a class="headerlink" href="#how-to-train-model" title="Permalink to this headline">¶</a></h2>
 <p>Adjust the following code from <code class="code docutils literal notranslate"><span class="pre">farabi.kernel.py</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">farabi.core.configs</span> <span class="kn">import</span> <span class="n">get_config</span>
+<span class="kn">from</span> <span class="nn">farabi.core.configs</span> <span class="kn">import</span> <span class="n">default_cfgs</span>
+<span class="kn">from</span> <span class="nn">farabi.utils.helpers</span> <span class="kn">import</span> <span class="n">EasyDict</span> <span class="k">as</span> <span class="n">edict</span>
 <span class="kn">from</span> <span class="nn">farabi.models.segmentation.unet.unet_trainer</span> <span class="kn">import</span> <span class="n">UnetTrainer</span>
 <span class="kn">from</span> <span class="nn">farabi.models.segmentation.attunet.attunet_trainer</span> <span class="kn">import</span> <span class="n">AttunetTrainer</span>
 <span class="kn">from</span> <span class="nn">farabi.models.superres.srgan.srgan_trainer</span> <span class="kn">import</span> <span class="n">SrganTrainer</span>
@@ -212,14 +213,20 @@
     <span class="s2">&quot;faster_rcnn&quot;</span><span class="p">:</span> <span class="n">FasterRCNNTrainer</span>
 <span class="p">}</span>
 
-
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">itime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;unet&quot;</span>
-    <span class="n">config</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="c1"># Choose from list</span>
+    <span class="c1"># [&quot;unet&quot;, &quot;attunet&quot;, &quot;srgan&quot;, &quot;cyclegan&quot;, &quot;yolov3&quot;, &quot;faster_rcnn&quot;]</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;faster_rcnn&quot;</span>
 
+    <span class="c1"># Load configurations</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">default_cfgs</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">edict</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+
+    <span class="c1"># Init trainer</span>
     <span class="n">trnr</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="n">model</span><span class="p">](</span><span class="n">config</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
         <span class="n">trnr</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
     <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>

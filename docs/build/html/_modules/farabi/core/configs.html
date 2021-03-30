@@ -153,538 +153,270 @@
            <div itemprop="articleBody">
             
   <h1>Source code for farabi.core.configs</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">argparse</span>
-
-
-<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
-<span class="n">_arg_ls</span> <span class="o">=</span> <span class="p">[]</span>
-
-
-<span class="k">def</span> <span class="nf">add_argument_group</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="n">arg</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_argument_group</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-    <span class="n">_arg_ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">arg</span>
-
-<span class="c1">##########################</span>
-<span class="c1"># Add model config below</span>
-<span class="c1">##########################</span>
-
-
-<div class="viewcode-block" id="define_unet"><a class="viewcode-back" href="../../../reference/core.configs.html#farabi.core.configs.define_unet">[docs]</a><span class="k">def</span> <span class="nf">define_unet</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Defines U-Net configuration</span>
+<div class="viewcode-block" id="_cfg_unet"><a class="viewcode-back" href="../../../reference/core.configs.html#farabi.core.configs._cfg_unet">[docs]</a><span></span><span class="k">def</span> <span class="nf">_cfg_unet</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for U-Net</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Data</span>
-    <span class="n">data_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--batch_size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;batch size for training&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--val_split&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;split ratio&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--shuffle_data&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag to shuffle data&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--balanced&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;whether data is balanced&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--in_ch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;# channels of input image&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--out_ch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;# channels of output image&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--shape&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;dimension of image (square)&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--data_path&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/suzy/notebooks/one-time/stage1_train/&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;path to data directory&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Model</span>
-    <span class="n">model_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--save_epoch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;frequency to save model after #epochs&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--semantic&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag for semantic segmentation&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--model_save_name&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;unet.pt&quot;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;segmentation model&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--model_save_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet&#39;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;model save path directory&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Train</span>
-    <span class="n">train_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--learning_rate&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;learning rate&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--start_epoch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;training epoch start&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_epochs&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;training epochs number&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--has_eval&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;has evaluation loop&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--early_stop&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;early stop&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--patience&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;patience for early stop&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--optim&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;type of optimizer&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Test</span>
-    <span class="n">test_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--model_load_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet/unet.pt&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;path for pretrained model&#39;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output_img_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet/output/img&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;path to save output images&#39;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output_mask_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet/output/mask&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;path to save mask images&#39;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output_overlay_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/data/02_SSD4TB/suzy/models/unet/output/overlay&quot;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;path to save image overlay with masks&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Log</span>
-    <span class="n">log_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Log&#39;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--use_tensorboard&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag to use tensorboard&#39;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--use_visdom&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag to use visdom&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Compute</span>
-    <span class="n">compute_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Compute&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_workers&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of cpu threads to load batches&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--device&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;GPU device&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--num_gpu&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;use 0 to use all except one&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--cuda&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;use GPU computation&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--data_parallel&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag to use parallel GPU models (nn.DataParallel)&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Misc</span>
-    <span class="n">misc_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Miscellaneous&#39;</span><span class="p">)</span>
-    <span class="n">misc_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--random_seed&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;random seed&#39;</span><span class="p">)</span>
-    <span class="n">misc_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mode&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;mode of learning&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;val_split&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="s1">&#39;shuffle_data&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;balanced&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;in_ch&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;out_ch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span>
+        <span class="s1">&#39;data_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/suzy/notebooks/one-time/stage1_train/&#39;</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="s1">&#39;save_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;semantic&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;model_save_name&#39;</span><span class="p">:</span> <span class="s2">&quot;unet.pt&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;model_save_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet&#39;</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="s1">&#39;start_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s1">&#39;has_eval&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;early_stop&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;patience&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+        <span class="s1">&#39;optim&#39;</span><span class="p">:</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+        <span class="c1"># Test</span>
+        <span class="s1">&#39;model_load_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet/unet.pt&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_img_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet/output/img&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_mask_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet/output/mask&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_overlay_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet/output/overlay&#39;</span><span class="p">,</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;use_tensorboard&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;use_visdom&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;num_workers&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="s1">&#39;cuda&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;num_gpu&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;data_parallel&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;random_seed&#39;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span>
+    <span class="p">}</span></div>
 
 
-<span class="k">def</span> <span class="nf">define_attunet</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Define Attention U-Net configurations here</span>
+<div class="viewcode-block" id="_cfg_attunet"><a class="viewcode-back" href="../../../reference/core.configs.html#farabi.core.configs._cfg_attunet">[docs]</a><span class="k">def</span> <span class="nf">_cfg_attunet</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for Attention U-Net</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Data</span>
-    <span class="n">data_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--batch_size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;batch size for trasin&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--val_split&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;split ratio&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--shuffle_data&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag to shuffle data&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--balanced&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;whether data is balanced&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--in_ch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;# channels of input image&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--out_ch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;# channels of output image&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--shape&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;dimension of image (square)&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--data_path&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/suzy/notebooks/one-time/stage1_train/&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;path to data directory&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Model</span>
-    <span class="n">model_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--save_epoch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;frequency to save model after # epochs&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--semantic&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag for semantic segmentation&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--model_save_name&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;attunet.pt&quot;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;segmentation model&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--model_save_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet&#39;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;model save path directory&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Train</span>
-    <span class="n">train_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--learning_rate&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;learning rate&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--start_epoch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;training epoch start&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_epochs&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;training epochs number&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--has_eval&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;has evaluation loop&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--early_stop&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;early stop&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--patience&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;patience for early stop&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--optim&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;type of optimizer&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Test</span>
-    <span class="n">test_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--model_load_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet/attunet.pt&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;path for pretrained model&#39;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output_img_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet/output/img&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;path to save output images&#39;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output_mask_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet/output/mask&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;path to save mask images&#39;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output_overlay_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/data/02_SSD4TB/suzy/models/attunet/output/overlay&quot;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;path to save image overlay with masks&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Log</span>
-    <span class="n">log_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Log&#39;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--use_tensorboard&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag to use tensorboard&#39;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--use_visdom&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag to use visdom&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Compute</span>
-    <span class="n">compute_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Compute&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_workers&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of cpu threads to load batches&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--device&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;GPU device&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--num_gpu&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;use 0 to use all except one&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--cuda&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;use GPU computation&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--data_parallel&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag to use parallel GPU models (nn.DataParallel)&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Misc</span>
-    <span class="n">misc_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Miscellaneous&#39;</span><span class="p">)</span>
-    <span class="n">misc_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--random_seed&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;random seed&#39;</span><span class="p">)</span>
-    <span class="n">misc_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mode&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;mode of learning&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;val_split&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="s1">&#39;shuffle_data&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;balanced&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;in_ch&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;out_ch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span>
+        <span class="s1">&#39;data_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/suzy/notebooks/one-time/stage1_train/&#39;</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="s1">&#39;save_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;semantic&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;model_save_name&#39;</span><span class="p">:</span> <span class="s2">&quot;attunet.pt&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;model_save_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet&#39;</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="s1">&#39;start_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s1">&#39;has_eval&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;early_stop&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;patience&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+        <span class="s1">&#39;optim&#39;</span><span class="p">:</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+        <span class="c1"># Test</span>
+        <span class="s1">&#39;model_load_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet/attunet.pt&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_img_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet/output/img&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_mask_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet/output/mask&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_overlay_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet/output/overlay&#39;</span><span class="p">,</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;use_tensorboard&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;use_visdom&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;num_workers&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="s1">&#39;cuda&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;num_gpu&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;data_parallel&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;random_seed&#39;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span>
+    <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="define_srgan"><a class="viewcode-back" href="../../../reference/core.configs.html#farabi.core.configs.define_srgan">[docs]</a><span class="k">def</span> <span class="nf">define_srgan</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Defines SRGAN configuration</span>
+<div class="viewcode-block" id="_cfg_srgan"><a class="viewcode-back" href="../../../reference/core.configs.html#farabi.core.configs._cfg_srgan">[docs]</a><span class="k">def</span> <span class="nf">_cfg_srgan</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for SRGAN</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Data</span>
-    <span class="n">data_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--crop_size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">88</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;training images crop size&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--upscale_factor&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;super resolution upscale factor&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--train_set&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/div2k/DIV2K_train_HR&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;train set directory&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--valid_set&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/div2k/DIV2K_valid_HR&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;valid set directory&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--test_set&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/suzy/images&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;test set directory&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--batch_size_train&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;training batch size&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--batch_size_valid&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;validation batch size&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--batch_size_test&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;test batch size&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Model</span>
-    <span class="n">model_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--model_path&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/srgan/epochs/netG_epoch_4_1.pth&#39;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;pretrained model path&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--model_save_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/srgan&#39;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;model save path directory&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--save_csv_epoch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;frequency to save csv after #epochs&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Train</span>
-    <span class="n">train_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--start_epoch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;starting epoch number&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_epochs&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;train epoch number&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--has_eval&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;has evaluation loop&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--optim&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;optimizer&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Test</span>
-    <span class="n">test_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Log</span>
-    <span class="n">log_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Log&#39;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--save_epoch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;frequency to save model after #epochs&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Compute</span>
-    <span class="n">compute_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Misc&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_workers&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of workers for dataloader&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--cuda&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;use GPU&#39;</span><span class="p">)</span>
-    <span class="c1"># Misc</span>
-    <span class="n">misc_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Misc&#39;</span><span class="p">)</span>
-    <span class="n">misc_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mode&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-                          <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;mode of learning&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;crop_size&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span>
+        <span class="s1">&#39;upscale_factor&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;train_set&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/div2k/DIV2K_train_HR&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;valid_set&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/div2k/DIV2K_valid_HR&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;test_set&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/suzy/images&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;batch_size_train&#39;</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+        <span class="s1">&#39;batch_size_valid&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;batch_size_test&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="s1">&#39;model_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/srgan/epochs/netG_epoch_4_1.pth&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;model_save_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/srgan&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;save_csv_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;start_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s1">&#39;has_eval&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;optim&#39;</span><span class="p">:</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;save_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;num_workers&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span>
+    <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="define_cyclegan"><a class="viewcode-back" href="../../../reference/core.configs.html#farabi.core.configs.define_cyclegan">[docs]</a><span class="k">def</span> <span class="nf">define_cyclegan</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Defines CycleGAN configuration</span>
+<div class="viewcode-block" id="_cfg_cyclegan"><a class="viewcode-back" href="../../../reference/core.configs.html#farabi.core.configs._cfg_cyclegan">[docs]</a><span class="k">def</span> <span class="nf">_cfg_cyclegan</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for CycleGAN</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Data</span>
-    <span class="n">data_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--dataroot&#39;</span><span class="p">,</span>  <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/monet2photo/&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;root directory of the dataset&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--batch_size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;batch size for trasin&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--size&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;size of the data crop (squared assumed)&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--in_ch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of channels of input data&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--out_ch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of channels of output data&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--val_split&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;split ratio&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--shuffle_data&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag to shuffle data&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--balanced&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Whether data is balanced&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Model</span>
-    <span class="n">model_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--model&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;cyclegan&quot;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;translation model&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--save_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/cyclegan&#39;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;model save path directory&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--generator_A2B&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/data/02_SSD4TB/suzy/models/cyclegan/netG_A2B.pth&quot;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;directory of pretrained A2B generator&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--generator_B2A&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/data/02_SSD4TB/suzy/models/cyclegan/netG_B2A.pth&quot;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;directory of pretrained B2A generator&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Train</span>
-    <span class="n">train_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--start_epoch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;train starting epoch&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_epochs&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of epochs of training&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--has_eval&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;has evaluation loop&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--learning_rate&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0002</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;learning rate type&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--decay_epoch&#39;</span><span class="p">,</span>  <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;epoch to start linearly decaying the learning rate to 0&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--patience&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;patience for early stop&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--optim&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;learning optimizer&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Test</span>
-    <span class="n">test_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/cyclegan/output&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;directory to save output images&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Log</span>
-    <span class="n">log_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Log&#39;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--use_tensorboard&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag to log into tensorboard&#39;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--save_epoch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;frequency to save model after #epochs&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Compute</span>
-    <span class="n">compute_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Compute&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--num_workers&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of cpu threads to use during batch generation&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--cuda&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;use GPU computation&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--num_gpu&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;use 0 to use all except one&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--device&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;cuda:2&#39;</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;GPU device&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Misc</span>
-    <span class="n">misc_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Misc&#39;</span><span class="p">)</span>
-    <span class="n">misc_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mode&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;mode of learning&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--random_seed&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;random seed&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;dataroot&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/monet2photo/&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
+        <span class="s1">&#39;in_ch&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;out_ch&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;val_split&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="s1">&#39;shuffle_data&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;balanced&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s1">&#39;cyclegan&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;save_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/cyclegan&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;generator_A2B&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/cyclegan/netG_A2B.pth&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;generator_B2A&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/cyclegan/netG_B2A.pth&#39;</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;start_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+        <span class="s1">&#39;has_eval&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="mf">0.0002</span><span class="p">,</span>
+        <span class="s1">&#39;decay_epoch&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s1">&#39;patience&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s1">&#39;optim&#39;</span><span class="p">:</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+        <span class="c1"># Test</span>
+        <span class="s1">&#39;output_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/cyclegan/output&#39;</span><span class="p">,</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;use_tensorboard&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;save_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;num_workers&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;num_gpu&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="s1">&#39;cuda:2&#39;</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;random_seed&#39;</span><span class="p">:</span> <span class="mi">42</span>
+    <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="define_yolo"><a class="viewcode-back" href="../../../reference/core.configs.html#farabi.core.configs.define_yolo">[docs]</a><span class="k">def</span> <span class="nf">define_yolo</span><span class="p">():</span>
-    <span class="c1"># Data</span>
-    <span class="n">data_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--batch_size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;batch size for training&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--data_config&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/suzy/gitrepos/TBL-UNIST/tbl-ai/farabi/models/detection/yolov3/config/coco.data&quot;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;path to data config file&quot;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--img_size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">416</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;size of each image dimension&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Model</span>
-    <span class="n">model_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--model_def&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/suzy/gitrepos/TBL-UNIST/tbl-ai/farabi/models/detection/yolov3/config/yolov3.cfg&quot;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;path to model definition file&quot;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--pretrained_weights&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/data/02_SSD4TB/suzy/models/yolov3/weights/darknet53.conv.74&quot;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;if specified starts from checkpoint model&quot;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--weights_path&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/data/02_SSD4TB/suzy/models/yolov3/weights/yolov3.weights&quot;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;path to weights file&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Train</span>
-    <span class="n">train_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_epochs&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;train epoch number&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--gradient_accumulations&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;number of gradient accums before step&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--compute_map&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;if True computes mAP every tenth batch&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--multiscale_training&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;allow for multi-scale training&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--optim&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;learning optimizer&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--econf_thres&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;object confidence threshold during evaluation&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Test</span>
-    <span class="n">test_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--iou_thres&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;iou threshold required to qualify as detected&quot;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--conf_thres&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;object confidence threshold during test&quot;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--nms_thres&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;iou thresshold for non-maximum suppression&quot;</span><span class="p">)</span>
-    <span class="n">test_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--detect&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;flag whether bbox detections needed&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Detect</span>
-    <span class="n">detect_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Detect&#39;</span><span class="p">)</span>
-    <span class="n">detect_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--image_folder&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/data/02_SSD4TB/suzy/datasets/public/coco/images/check&quot;</span><span class="p">,</span>
-                            <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;choose sample images directory&quot;</span><span class="p">)</span>
-    <span class="n">detect_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--dconf_thres&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
-                            <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;object confidence threshold&quot;</span><span class="p">)</span>
-    <span class="n">detect_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--dnms_thres&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
-                            <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;iou thresshold for non-maximum suppression&quot;</span><span class="p">)</span>
-    <span class="n">detect_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--dbatch_size&quot;</span><span class="p">,</span>  <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                            <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;size of the batches&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Log</span>
-    <span class="n">log_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Log&#39;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--checkpoint_interval&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;interval between saving model weights&quot;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--evaluation_interval&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;interval evaluations on validation set&quot;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--logdir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/data/02_SSD4TB/suzy/models/yolov3/logs&quot;</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;choose log directory&quot;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--chckpt_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/data/02_SSD4TB/suzy/models/yolov3/checkpoints&quot;</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;choose checkpoint directory&quot;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--output_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/data/02_SSD4TB/suzy/models/yolov3/output&quot;</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;choose output directory&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Compute</span>
-    <span class="n">compute_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Compute&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--n_cpu&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;number of cpu threads to use during batch generation&quot;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--device&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;choose GPU device&quot;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--data_parallel&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;flag to use parallel GPU models (nn.DataParallel)&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Misc</span>
-    <span class="n">misc_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Misc&#39;</span><span class="p">)</span>
-    <span class="n">misc_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mode&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;detect&#39;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;mode of learning&#39;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="_cfg_yolov3"><a class="viewcode-back" href="../../../reference/core.configs.html#farabi.core.configs._cfg_yolov3">[docs]</a><span class="k">def</span> <span class="nf">_cfg_yolov3</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for SRGAN</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s1">&#39;data_config&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/suzy/gitrepos/tuttelikz/farabi/farabi/models/detection/yolov3/config/coco.data&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;img_size&#39;</span><span class="p">:</span> <span class="mi">416</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="s1">&#39;model_def&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/suzy/gitrepos/tuttelikz/farabi/farabi/models/detection/yolov3/config/yolov3.cfg&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;pretrained_weights&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/yolov3/weights/darknet53.conv.74&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;weights_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/yolov3/weights/yolov3.weights&#39;</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s1">&#39;gradient_accumulations&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s1">&#39;compute_map&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;multiscale_training&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;optim&#39;</span><span class="p">:</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;econf_thres&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="c1"># Test</span>
+        <span class="s1">&#39;iou_thres&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s1">&#39;conf_thres&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+        <span class="s1">&#39;nms_thres&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s1">&#39;detect&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># Detect</span>
+        <span class="s1">&#39;image_folder&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/coco/images/check&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dconf_thres&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+        <span class="s1">&#39;dnms_thres&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>
+        <span class="s1">&#39;dbatch_size&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;checkpoint_interval&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;evaluation_interval&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;logdir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/yolov3/logs&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;chckpt_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/yolov3/checkpoints&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/yolov3/output&#39;</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;n_cpu&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s1">&#39;data_parallel&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span>
+    <span class="p">}</span></div>
 
 
-<div class="viewcode-block" id="define_faster_rcnn"><a class="viewcode-back" href="../../../reference/core.configs.html#farabi.core.configs.define_faster_rcnn">[docs]</a><span class="k">def</span> <span class="nf">define_faster_rcnn</span><span class="p">():</span>
-    <span class="c1"># Data</span>
-    <span class="n">data_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">&quot;--voc_data_dir&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/pascalvoc/VOC2007&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--min_size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;min image resize&#39;</span><span class="p">)</span>
-    <span class="n">data_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--max_size&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;max image resize&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Model</span>
-    <span class="n">model_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--load_path&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--save_path&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/home/data/02_SSD4TB/suzy/models/faster-rcnn/checkpoints/&quot;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;path to save model&quot;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--load_optimizer&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;flag to load optimizer&quot;</span><span class="p">)</span>
-    <span class="n">model_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--pretrained_model&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;vgg16&quot;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;pretrained model for backbone&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Train</span>
-    <span class="n">train_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Train&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--data&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;voc&quot;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;dataset type&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--start_epoch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;train starting epoch&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_epochs&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of epochs of training&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--rpn_sigma&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">3.</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;l1_smooth_loss rpn&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--roi_sigma&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;l1_smooth_loss roi&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--weight_decay&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;weight_decay&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--scale_epoch&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;epoch to start decay&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--lr&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;lr&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--lr_decay&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;lr_decay&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--use_adam&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;flag for adam optimizer&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--use_chainer&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;try match everything as chainer&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--use_drop&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;use dropout in RoIHead&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--has_eval&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Has evaluation loop&quot;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--eval_interval&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;number of epochs between evaluations&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--debug_file&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;/tmp/debugf&quot;</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;debug_file&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Test</span>
-    <span class="n">test_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
-    <span class="n">train_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--test_num&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
-                           <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;test number&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Detect</span>
-    <span class="n">detect_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Detect&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Log</span>
-    <span class="n">log_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Log&#39;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--use_visdom&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;use visdom&quot;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--env&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;faster-rcnn&quot;</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;visdom env&quot;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--port&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">8097</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;visdom port&quot;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--plot_every&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;plot interval batch examples&quot;</span><span class="p">)</span>
-    <span class="n">log_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--save_optimizer&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                         <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;save optimizer&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Compute</span>
-    <span class="n">compute_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Compute&#39;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_workers&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;number of cpu threads to use during batch generation&quot;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--test_num_workers&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-                             <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;number of cpu threads to use during test batch generation&quot;</span><span class="p">)</span>
-    <span class="n">compute_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--cuda&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-                             <span class="n">help</span><span class="o">=</span><span class="s1">&#39;use GPU computation&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Misc</span>
-    <span class="n">misc_arg</span> <span class="o">=</span> <span class="n">add_argument_group</span><span class="p">(</span><span class="s1">&#39;Misc&#39;</span><span class="p">)</span>
-    <span class="n">misc_arg</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--mode&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span>
-                          <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">],</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;mode of learning&#39;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="_cfg_fasterrcnn"><a class="viewcode-back" href="../../../reference/core.configs.html#farabi.core.configs._cfg_fasterrcnn">[docs]</a><span class="k">def</span> <span class="nf">_cfg_fasterrcnn</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for Faster-RCNN</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;voc_data_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/pascalvoc/VOC2007&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;min_size&#39;</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span>
+        <span class="s1">&#39;max_size&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="s1">&#39;load_path&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;save_path&#39;</span><span class="p">:</span> <span class="s2">&quot;/home/data/02_SSD4TB/suzy/models/faster-rcnn/checkpoints/&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;load_optimizer&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;pretrained_model&#39;</span><span class="p">:</span> <span class="s2">&quot;vgg16&quot;</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s2">&quot;voc&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;start_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+        <span class="s1">&#39;rpn_sigma&#39;</span><span class="p">:</span> <span class="mf">3.</span><span class="p">,</span>
+        <span class="s1">&#39;roi_sigma&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">,</span>
+        <span class="s1">&#39;weight_decay&#39;</span><span class="p">:</span> <span class="mf">0.0005</span><span class="p">,</span>
+        <span class="s1">&#39;scale_epoch&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+        <span class="s1">&#39;lr&#39;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
+        <span class="s1">&#39;lr_decay&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s1">&#39;use_adam&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;use_chainer&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;use_drop&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;has_eval&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;eval_interval&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;debug_file&#39;</span><span class="p">:</span> <span class="s2">&quot;/tmp/debugf&quot;</span><span class="p">,</span>
+        <span class="c1"># Test</span>
+        <span class="s1">&#39;test_num&#39;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;use_visdom&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;env&#39;</span><span class="p">:</span> <span class="s2">&quot;faster-rcnn&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">8097</span><span class="p">,</span>
+        <span class="s1">&#39;plot_every&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
+        <span class="s1">&#39;save_optimizer&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;num_workers&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s1">&#39;test_num_workers&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span>
+    <span class="p">}</span></div>
 
 
-<span class="n">model_config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;srgan&quot;</span><span class="p">:</span> <span class="n">define_srgan</span><span class="p">,</span>
-    <span class="s2">&quot;cyclegan&quot;</span><span class="p">:</span> <span class="n">define_cyclegan</span><span class="p">,</span>
-    <span class="s2">&quot;unet&quot;</span><span class="p">:</span> <span class="n">define_unet</span><span class="p">,</span>
-    <span class="s2">&quot;attunet&quot;</span><span class="p">:</span> <span class="n">define_attunet</span><span class="p">,</span>
-    <span class="s2">&quot;yolov3&quot;</span><span class="p">:</span> <span class="n">define_yolo</span><span class="p">,</span>
-    <span class="s2">&quot;faster_rcnn&quot;</span><span class="p">:</span> <span class="n">define_faster_rcnn</span>
+<span class="n">default_cfgs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;unet&#39;</span><span class="p">:</span> <span class="n">_cfg_unet</span><span class="p">(),</span>
+    <span class="s1">&#39;attunet&#39;</span><span class="p">:</span> <span class="n">_cfg_attunet</span><span class="p">(),</span>
+    <span class="s1">&#39;srgan&#39;</span><span class="p">:</span> <span class="n">_cfg_srgan</span><span class="p">(),</span>
+    <span class="s1">&#39;cyclegan&#39;</span><span class="p">:</span> <span class="n">_cfg_cyclegan</span><span class="p">(),</span>
+    <span class="s1">&#39;yolov3&#39;</span><span class="p">:</span> <span class="n">_cfg_yolov3</span><span class="p">(),</span>
+    <span class="s1">&#39;faster_rcnn&#39;</span><span class="p">:</span> <span class="n">_cfg_fasterrcnn</span><span class="p">()</span>
 <span class="p">}</span>
-
-<span class="n">COUNT</span> <span class="o">=</span> <span class="mi">0</span>
-
-
-<span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">global</span> <span class="n">COUNT</span>
-    <span class="n">COUNT</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="n">COUNT</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">model_config</span><span class="p">[</span><span class="n">model</span><span class="p">]()</span>
-
-    <span class="n">config</span><span class="p">,</span> <span class="n">unparsed</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_known_args</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">config</span><span class="p">,</span> <span class="n">unparsed</span>
 </pre></div>
 
            </div>

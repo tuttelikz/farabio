@@ -181,24 +181,14 @@ arguments from argparse.ArgumentParser().</p>
 <div class="section" id="argument-groups">
 <h2>Argument groups<a class="headerlink" href="#argument-groups" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><dl class="std option">
-<dt id="cmdoption-arg-data_arg">
-<span id="cmdoption-arg-data-arg"></span><code class="sig-name descname"><span class="pre">data_arg</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-data_arg" title="Permalink to this definition">¶</a></dt>
+<li></li>
+<li><dl class="py data">
+<dt>
+<code class="sig-name descname"><span class="pre">`model`</span></code></dt>
 <dd></dd></dl>
 
 </li>
-<li><dl class="std option">
-<dt id="cmdoption-arg-model_arg">
-<span id="cmdoption-arg-model-arg"></span><code class="sig-name descname"><span class="pre">model_arg</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-model_arg" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</li>
-<li><dl class="std option">
-<dt id="cmdoption-arg-train_arg">
-<span id="cmdoption-arg-train-arg"></span><code class="sig-name descname"><span class="pre">train_arg</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-train_arg" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</li>
+<li></li>
 <li><dl class="std option">
 <dt id="cmdoption-arg-test_arg">
 <span id="cmdoption-arg-test-arg"></span><code class="sig-name descname"><span class="pre">test_arg</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-test_arg" title="Permalink to this definition">¶</a></dt>
@@ -229,32 +219,40 @@ arguments from argparse.ArgumentParser().</p>
 <h2>Non-lifecycle hooks<a class="headerlink" href="#non-lifecycle-hooks" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">config</span></code> package contains base configurations for models:</p>
 <dl class="py function">
-<dt id="farabi.core.configs.define_unet">
-<code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">define_unet</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#define_unet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs.define_unet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Defines U-Net configuration</p>
+<dt id="farabi.core.configs._cfg_unet">
+<code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">_cfg_unet</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#_cfg_unet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs._cfg_unet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configurations for U-Net</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="farabi.core.configs.define_srgan">
-<code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">define_srgan</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#define_srgan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs.define_srgan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Defines SRGAN configuration</p>
+<dt id="farabi.core.configs._cfg_attunet">
+<code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">_cfg_attunet</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#_cfg_attunet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs._cfg_attunet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configurations for Attention U-Net</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="farabi.core.configs.define_cyclegan">
-<code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">define_cyclegan</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#define_cyclegan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs.define_cyclegan" title="Permalink to this definition">¶</a></dt>
-<dd><p>Defines CycleGAN configuration</p>
+<dt id="farabi.core.configs._cfg_srgan">
+<code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">_cfg_srgan</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#_cfg_srgan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs._cfg_srgan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configurations for SRGAN</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="farabi.core.configs.define_yolo">
-<code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">define_yolo</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#define_yolo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs.define_yolo" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="farabi.core.configs._cfg_cyclegan">
+<code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">_cfg_cyclegan</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#_cfg_cyclegan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs._cfg_cyclegan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configurations for CycleGAN</p>
+</dd></dl>
 
 <dl class="py function">
-<dt id="farabi.core.configs.define_faster_rcnn">
-<code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">define_faster_rcnn</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#define_faster_rcnn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs.define_faster_rcnn" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="farabi.core.configs._cfg_yolov3">
+<code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">_cfg_yolov3</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#_cfg_yolov3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs._cfg_yolov3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configurations for SRGAN</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="farabi.core.configs._cfg_fasterrcnn">
+<code class="sig-prename descclassname"><span class="pre">farabi.core.configs.</span></code><code class="sig-name descname"><span class="pre">_cfg_fasterrcnn</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/configs.html#_cfg_fasterrcnn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.configs._cfg_fasterrcnn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configurations for Faster-RCNN</p>
+</dd></dl>
 
 </div>
 </div>
