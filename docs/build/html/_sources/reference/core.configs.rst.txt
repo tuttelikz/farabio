@@ -7,13 +7,13 @@ arguments from argparse.ArgumentParser().
 
 Argument groups
 ---------------------
-* .. :py:obj:`data`
-* .. py:data:: `model`
-* .. :py:attr: test
-* .. option:: test_arg
-* .. option:: log_arg
-* .. option:: compute_arg
-* .. option:: misc_arg
+* :py:obj:`data`
+* :py:obj:`model`
+* :py:obj:`test`
+* :py:obj:`test_arg`
+* :py:obj:`log_arg`
+* .. option:: compute_arg`
+* .. option:: misc_arg`
 
 Non-lifecycle hooks
 -----------------------
