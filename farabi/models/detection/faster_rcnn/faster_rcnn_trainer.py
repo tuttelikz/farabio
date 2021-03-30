@@ -8,7 +8,6 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 from torch.utils import data as data_
-from farabi.core.configs import get_config
 from farabi.core.convnettrainer import ConvnetTrainer
 from farabi.models.detection.faster_rcnn.dataset import Dataset, TestDataset, inverse_normalize
 from farabi.models.detection.faster_rcnn.faster_rcnn_vgg16 import FasterRCNNVGG16
@@ -69,8 +68,8 @@ class FasterRCNNTrainer(ConvnetTrainer):
         self.anchor_target_creator = AnchorTargetCreator()
         self.proposal_target_creator = ProposalTargetCreator()
         self._backbone = True
-        self.load_optimizer = self.config.load_optimizer
-        self._load_path = self.config.load_path
+        self.load_optimizer = self.config['load_optimizer']
+        self._load_path = self.config['load_path']
         self._best_path = None
 
     def define_log_attr(self):
@@ -131,7 +130,7 @@ class FasterRCNNTrainer(ConvnetTrainer):
             self.optimizer.load_state_dict(state_dict['optimizer'])
 
     def save(self, **kwargs):
-        
+
         save_dict = dict()
 
         save_dict['model'] = self.faster_rcnn.state_dict()
@@ -387,6 +386,7 @@ class FasterRCNNTrainer(ConvnetTrainer):
 
     def get_meter_data(self):
         return {k: v.value()[0] for k, v in list(self.meters.items())}
+
 
 """Forward Faster R-CNN and calculate losses.
 

@@ -1,5 +1,6 @@
 import time
-from farabi.core.configs import get_config
+from farabi.core.configs import default_cfgs
+from farabi.utils.helpers import EasyDict as edict
 from farabi.models.segmentation.unet.unet_trainer import UnetTrainer
 from farabi.models.segmentation.attunet.attunet_trainer import AttunetTrainer
 from farabi.models.superres.srgan.srgan_trainer import SrganTrainer
@@ -17,14 +18,20 @@ models = {
     "faster_rcnn": FasterRCNNTrainer
 }
 
-
 if __name__ == "__main__":
     itime = time.time()
 
-    model = "unet"
-    config, _ = get_config(model)
+    # Choose from list
+    # ["unet", "attunet", "srgan", "cyclegan", "yolov3", "faster_rcnn"]
+    model = "faster_rcnn"
 
+    # Load configurations
+    cfg = default_cfgs[model]
+    config = edict(cfg)
+
+    # Init trainer
     trnr = models[model](config)
+
     if config.mode == 'train':
         trnr.train()
     elif config.mode == 'test':

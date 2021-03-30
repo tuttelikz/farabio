@@ -5,9 +5,7 @@ from torch import nn
 from torch.nn import functional as F
 from farabi.utils.bboxtools import generate_anchor_base
 from farabi.models.detection.faster_rcnn.creator_tool import ProposalCreator
-from farabi.core.configs import get_config
 
-opt, _ = get_config("faster_rcnn")
 
 class RegionProposalNetwork(nn.Module):
     """Region Proposal Network introduced in Faster R-CNN.

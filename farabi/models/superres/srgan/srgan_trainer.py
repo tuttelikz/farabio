@@ -9,7 +9,6 @@ from torch.utils.data import DataLoader
 from torch.autograd import Variable
 import torchvision.utils as vutils
 from farabi.data.transforms import display_transform
-from farabi.core.configs import get_config
 from farabi.core.gantrainer import GanTrainer
 from farabi.utils.losses import GeneratorLoss
 from farabi.utils.metrics import ssim

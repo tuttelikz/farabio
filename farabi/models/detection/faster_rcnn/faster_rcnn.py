@@ -8,10 +8,15 @@ from torchvision.ops import nms
 import farabi.utils.helpers as helpers
 from farabi.utils.bboxtools import loc2bbox
 from farabi.models.detection.faster_rcnn.dataset import preprocess
-from farabi.core.configs import get_config
+from farabi.core.configs import default_cfgs
+from farabi.utils.helpers import EasyDict as edict
+#from farabi.kernel import config as config
+#from farabi.core.configs import get_config
+#config, _ = get_config("faster_rcnn")
+#config = default_cfgs["faster_rcnn"]
 
-
-config, _ = get_config("faster_rcnn")
+cfg = default_cfgs["faster_rcnn"]
+config = edict(cfg)
 
 
 def nograd(f):

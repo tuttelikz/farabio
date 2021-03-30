@@ -1,6 +1,5 @@
 import os
 import sys
-import time
 import itertools
 from PIL import Image
 import torch
@@ -9,7 +8,6 @@ from torch.utils.data import DataLoader
 from torchvision.utils import save_image
 import torchvision.transforms as transforms
 from farabi.core.gantrainer import GanTrainer
-from farabi.core.configs import get_config
 from farabi.data.datasets import ImageDataset
 from farabi.utils.helpers import ReplayBuffer
 from farabi.utils.loggers import SrganViz

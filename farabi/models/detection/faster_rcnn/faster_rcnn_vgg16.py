@@ -1,7 +1,6 @@
 """ 
 From: https://github.com/chenyuntc/simple-faster-rcnn-pytorch
 """
-
 import torch
 from torch import nn
 from torchvision.models import vgg16
@@ -9,10 +8,12 @@ from torchvision.ops import RoIPool
 from farabi.models.detection.faster_rcnn.region_proposal_network import RegionProposalNetwork
 from farabi.models.detection.faster_rcnn.faster_rcnn import FasterRCNN
 import farabi.utils.helpers as helpers
-from farabi.core.configs import get_config
+from farabi.core.configs import default_cfgs
+from farabi.utils.helpers import EasyDict as edict
 
-
-config, _ = get_config("faster_rcnn")
+#config, _ = get_config("faster_rcnn")
+cfg = default_cfgs["faster_rcnn"]
+config = edict(cfg)
 
 
 def decom_vgg16():
