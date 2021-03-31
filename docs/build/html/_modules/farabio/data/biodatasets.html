@@ -166,9 +166,9 @@
 <span class="sd">    &gt;&gt;&gt; TEST = &#39;test&#39;</span>
 <span class="sd">    &gt;&gt;&gt; VAL = &#39;val&#39;</span>
 <span class="sd">    &gt;&gt;&gt; TRAIN = &#39;train&#39;</span>
-
+<span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; chestxray_dataset = {x: ChestXray(split=x) for x in [TRAIN, VAL, TEST]}</span>
-
+<span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; dataloaders = {</span>
 <span class="sd">    &gt;&gt;&gt;     TRAIN: torch.utils.data.DataLoader(chestxray_dataset[TRAIN], batch_size = 4, shuffle=True),</span>
 <span class="sd">    &gt;&gt;&gt;     VAL: torch.utils.data.DataLoader(chestxray_dataset[VAL], batch_size = 1, shuffle=True),</span>

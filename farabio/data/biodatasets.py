@@ -11,9 +11,9 @@ class ChestXray(ImageFolder):
     >>> TEST = 'test'
     >>> VAL = 'val'
     >>> TRAIN = 'train'
-
+    >>>
     >>> chestxray_dataset = {x: ChestXray(split=x) for x in [TRAIN, VAL, TEST]}
-
+    >>>
     >>> dataloaders = {
     >>>     TRAIN: torch.utils.data.DataLoader(chestxray_dataset[TRAIN], batch_size = 4, shuffle=True),
     >>>     VAL: torch.utils.data.DataLoader(chestxray_dataset[VAL], batch_size = 1, shuffle=True),
