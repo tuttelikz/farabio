@@ -57,4 +57,4 @@ Public datasets
 Pretrained model weights
 ---------------------------
 
-Access from `Github Releases <https://github.com/tuttelikz/farabi/releases/tag/v0.0.1-weights>`
+Access from `Github Releases <https://github.com/tuttelikz/farabi/releases/tag/v0.0.1-weights>`_
