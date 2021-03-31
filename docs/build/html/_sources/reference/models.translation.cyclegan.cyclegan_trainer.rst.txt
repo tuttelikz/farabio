@@ -1,4 +1,4 @@
-:py:mod:`~farabi.models.translation.cyclegan.cyclegan_trainer` Module
+:py:mod:`~farabio.models.translation.cyclegan.cyclegan_trainer` Module
 =========================================================================
 
 .. image:: ../imgs/cyclegan.png
@@ -19,5 +19,5 @@ References
 :py:class:`~.CycleganTrainer` class
 -----------------------------------------
 
-.. autoclass:: farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer
+.. autoclass:: farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer
    :members:

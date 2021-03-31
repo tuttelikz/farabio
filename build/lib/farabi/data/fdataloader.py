@@ -1,11 +1,11 @@
 from torchvision import transforms
-from farabi.prep.transforms import Normalize, ToTensor, ImgToTensor, ImgNormalize, ToLongTensor
+from farabio.prep.transforms import Normalize, ToTensor, ImgToTensor, ImgNormalize, ToLongTensor
 from torch.utils.data.sampler import SubsetRandomSampler, WeightedRandomSampler
 import torch
 import numpy as np
-from farabi.data.datasets import XenopusDataset, ImgLabelDataset
-from farabi.prep.transforms import Compose, Dataraf, Datajit
-from farabi.utils.helpers import _matches, calc_weights
+from farabio.data.datasets import XenopusDataset, ImgLabelDataset
+from farabio.prep.transforms import Compose, Dataraf, Datajit
+from farabio.utils.helpers import _matches, calc_weights
 
 
 def get_trainloader(config, pth_train_img, pth_train_lbl, augment=False):

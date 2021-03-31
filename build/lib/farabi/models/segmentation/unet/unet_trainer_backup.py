@@ -1,20 +1,20 @@
 import os
 import time
-from farabi.data.dataloader import get_trainloader, get_testloader
+from farabio.data.dataloader import get_trainloader, get_testloader
 from config import get_config
-from farabi.utils.helpers import x, makedirs
+from farabio.utils.helpers import x, makedirs
 import pandas as pd
-from farabi.core.trainermod import BaseTrainer
-from farabi.models.segmentation.unet.unet import Unet
+from farabio.core.trainermod import BaseTrainer
+from farabio.models.segmentation.unet.unet import Unet
 import torch
-from farabi.utils.regul import EarlyStopping
-from farabi.utils.losses import Losses
-from farabi.utils.loggers import TensorBoard, UnetViz
+from farabio.utils.regul import EarlyStopping
+from farabio.utils.losses import Losses
+from farabio.utils.loggers import TensorBoard, UnetViz
 import numpy as np
 import skimage
 from skimage.io import imsave
 from skimage import img_as_ubyte
-from farabi.prep.imgops import ImgOps
+from farabio.prep.imgops import ImgOps
 from torchsummary import summary
 
 

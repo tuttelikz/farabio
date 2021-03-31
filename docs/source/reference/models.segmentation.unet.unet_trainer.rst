@@ -1,4 +1,4 @@
-:py:mod:`~farabi.models.segmentation.unet.unet_trainer` Module
+:py:mod:`~farabio.models.segmentation.unet.unet_trainer` Module
 =========================================================================
 
 .. image:: ../imgs/unet.png
@@ -19,5 +19,5 @@ References
 :py:class:`~.UnetTrainer` class
 -----------------------------------------
 
-.. autoclass:: farabi.models.segmentation.unet.unet_trainer.UnetTrainer
+.. autoclass:: farabio.models.segmentation.unet.unet_trainer.UnetTrainer
    :members:

@@ -1,7 +1,7 @@
 import argparse
 import time
 import os
-from farabi.utils.helpers import makedirs
+from farabio.utils.helpers import makedirs
 
 
 arg_lists = []

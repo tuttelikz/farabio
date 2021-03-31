@@ -12,17 +12,17 @@ from matplotlib.ticker import NullLocator
 from terminaltables import AsciiTable
 import torch
 from torch.autograd import Variable
-from farabi.core.configs import get_config
-from farabi.core.convnettrainer import ConvnetTrainer
-from farabi.data.datasets import ListDataset, ImageFolder
-from farabi.models.blocks import Upsample, EmptyLayer
-from farabi.models.detection.yolov3.darknet import Darknet
-from farabi.models.detection.yolov3.parsers import parse_data_config, parse_model_config
-from farabi.models.detection.yolov3.yolo_v3 import YOLOLayer
-from farabi.utils.helpers import rescale_boxes, load_classes, makedirs
-from farabi.utils.regul import weights_init_normal
-from farabi.utils.loggers import Logger
-from farabi.utils.losses import get_batch_statistics, non_max_suppression, ap_per_class, xywh2xyxy
+from farabio.core.configs import get_config
+from farabio.core.convnettrainer import ConvnetTrainer
+from farabio.data.datasets import ListDataset, ImageFolder
+from farabio.models.blocks import Upsample, EmptyLayer
+from farabio.models.detection.yolov3.darknet import Darknet
+from farabio.models.detection.yolov3.parsers import parse_data_config, parse_model_config
+from farabio.models.detection.yolov3.yolo_v3 import YOLOLayer
+from farabio.utils.helpers import rescale_boxes, load_classes, makedirs
+from farabio.utils.regul import weights_init_normal
+from farabio.utils.loggers import Logger
+from farabio.utils.losses import get_batch_statistics, non_max_suppression, ap_per_class, xywh2xyxy
 
 
 class YoloTrainer(ConvnetTrainer):

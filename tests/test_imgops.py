@@ -1,5 +1,5 @@
 import unittest
-from farabi.data.imgops import ImgOps
+from farabio.data.imgops import ImgOps
 import matplotlib.pyplot as plt
 
 

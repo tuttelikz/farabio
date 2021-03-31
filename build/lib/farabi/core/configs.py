@@ -342,14 +342,14 @@ def define_yolo():
     data_arg = add_argument_group('Data')
     data_arg.add_argument("--batch_size", default=8,
                           type=int, help='batch size for training')
-    data_arg.add_argument("--data_config", default="/home/suzy/gitrepos/TBL-UNIST/tbl-ai/farabi/models/detection/yolov3/config/coco.data",
+    data_arg.add_argument("--data_config", default="/home/suzy/gitrepos/TBL-UNIST/tbl-ai/farabio/models/detection/yolov3/config/coco.data",
                           type=str, help="path to data config file")
     data_arg.add_argument("--img_size", default=416,
                           type=int, help="size of each image dimension")
 
     # Model
     model_arg = add_argument_group('Model')
-    model_arg.add_argument("--model_def", default="/home/suzy/gitrepos/TBL-UNIST/tbl-ai/farabi/models/detection/yolov3/config/yolov3.cfg",
+    model_arg.add_argument("--model_def", default="/home/suzy/gitrepos/TBL-UNIST/tbl-ai/farabio/models/detection/yolov3/config/yolov3.cfg",
                            type=str, help="path to model definition file")
     model_arg.add_argument("--pretrained_weights", default="/home/data/02_SSD4TB/suzy/models/yolov3/weights/darknet53.conv.74",
                            type=str, help="if specified starts from checkpoint model")

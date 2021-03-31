@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>farabio.core.configs &mdash; farabio 0.0.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> farabio
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">farabio</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>farabio.core.configs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for farabio.core.configs</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="_cfg_unet"><a class="viewcode-back" href="../../../reference/core.configs.html#farabio.core.configs._cfg_unet">[docs]</a><span></span><span class="k">def</span> <span class="nf">_cfg_unet</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for U-Net</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;val_split&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="s1">&#39;shuffle_data&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;balanced&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;in_ch&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;out_ch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span>
+        <span class="s1">&#39;data_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/suzy/notebooks/one-time/stage1_train/&#39;</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="s1">&#39;save_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;semantic&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;model_save_name&#39;</span><span class="p">:</span> <span class="s2">&quot;unet.pt&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;model_save_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet&#39;</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="s1">&#39;start_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s1">&#39;has_eval&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;early_stop&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;patience&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+        <span class="s1">&#39;optim&#39;</span><span class="p">:</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+        <span class="c1"># Test</span>
+        <span class="s1">&#39;model_load_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet/unet.pt&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_img_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet/output/img&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_mask_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet/output/mask&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_overlay_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/unet/output/overlay&#39;</span><span class="p">,</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;use_tensorboard&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;use_visdom&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;num_workers&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="s1">&#39;cuda&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;num_gpu&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;data_parallel&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;random_seed&#39;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;test&#39;</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="_cfg_attunet"><a class="viewcode-back" href="../../../reference/core.configs.html#farabio.core.configs._cfg_attunet">[docs]</a><span class="k">def</span> <span class="nf">_cfg_attunet</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for Attention U-Net</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;val_split&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="s1">&#39;shuffle_data&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;balanced&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;in_ch&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;out_ch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;shape&#39;</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span>
+        <span class="s1">&#39;data_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/suzy/notebooks/one-time/stage1_train/&#39;</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="s1">&#39;save_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;semantic&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;model_save_name&#39;</span><span class="p">:</span> <span class="s2">&quot;attunet.pt&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;model_save_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet&#39;</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="s1">&#39;start_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s1">&#39;has_eval&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;early_stop&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;patience&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+        <span class="s1">&#39;optim&#39;</span><span class="p">:</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+        <span class="c1"># Test</span>
+        <span class="s1">&#39;model_load_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet/attunet.pt&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_img_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet/output/img&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_mask_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet/output/mask&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_overlay_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/attunet/output/overlay&#39;</span><span class="p">,</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;use_tensorboard&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;use_visdom&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;num_workers&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="s1">&#39;cuda&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;num_gpu&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;data_parallel&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;random_seed&#39;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="_cfg_srgan"><a class="viewcode-back" href="../../../reference/core.configs.html#farabio.core.configs._cfg_srgan">[docs]</a><span class="k">def</span> <span class="nf">_cfg_srgan</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for SRGAN</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;crop_size&#39;</span><span class="p">:</span> <span class="mi">88</span><span class="p">,</span>
+        <span class="s1">&#39;upscale_factor&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;train_set&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/div2k/DIV2K_train_HR&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;valid_set&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/div2k/DIV2K_valid_HR&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;test_set&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/suzy/images&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;batch_size_train&#39;</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+        <span class="s1">&#39;batch_size_valid&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;batch_size_test&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="s1">&#39;model_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/srgan/epochs/netG_epoch_4_1.pth&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;model_save_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/srgan&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;save_csv_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;start_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s1">&#39;has_eval&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;optim&#39;</span><span class="p">:</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;save_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;num_workers&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="_cfg_cyclegan"><a class="viewcode-back" href="../../../reference/core.configs.html#farabio.core.configs._cfg_cyclegan">[docs]</a><span class="k">def</span> <span class="nf">_cfg_cyclegan</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for CycleGAN</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;dataroot&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/monet2photo/&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
+        <span class="s1">&#39;in_ch&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;out_ch&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s1">&#39;val_split&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+        <span class="s1">&#39;shuffle_data&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;balanced&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s1">&#39;cyclegan&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;save_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/cyclegan&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;generator_A2B&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/cyclegan/netG_A2B.pth&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;generator_B2A&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/cyclegan/netG_B2A.pth&#39;</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;start_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+        <span class="s1">&#39;has_eval&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="mf">0.0002</span><span class="p">,</span>
+        <span class="s1">&#39;decay_epoch&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s1">&#39;patience&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s1">&#39;optim&#39;</span><span class="p">:</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+        <span class="c1"># Test</span>
+        <span class="s1">&#39;output_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/cyclegan/output&#39;</span><span class="p">,</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;use_tensorboard&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;save_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;num_workers&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;num_gpu&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="s1">&#39;cuda:2&#39;</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;random_seed&#39;</span><span class="p">:</span> <span class="mi">42</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="_cfg_yolov3"><a class="viewcode-back" href="../../../reference/core.configs.html#farabio.core.configs._cfg_yolov3">[docs]</a><span class="k">def</span> <span class="nf">_cfg_yolov3</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for SRGAN</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s1">&#39;data_config&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/suzy/gitrepos/tuttelikz/farabio/farabio/models/detection/yolov3/config/coco.data&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;img_size&#39;</span><span class="p">:</span> <span class="mi">416</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="s1">&#39;model_def&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/suzy/gitrepos/tuttelikz/farabio/farabio/models/detection/yolov3/config/yolov3.cfg&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;pretrained_weights&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/yolov3/weights/darknet53.conv.74&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;weights_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/yolov3/weights/yolov3.weights&#39;</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s1">&#39;gradient_accumulations&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s1">&#39;compute_map&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;multiscale_training&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;optim&#39;</span><span class="p">:</span> <span class="s1">&#39;adam&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;econf_thres&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="c1"># Test</span>
+        <span class="s1">&#39;iou_thres&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s1">&#39;conf_thres&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
+        <span class="s1">&#39;nms_thres&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s1">&#39;detect&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># Detect</span>
+        <span class="s1">&#39;image_folder&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/coco/images/check&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dconf_thres&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+        <span class="s1">&#39;dnms_thres&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>
+        <span class="s1">&#39;dbatch_size&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;checkpoint_interval&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;evaluation_interval&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;logdir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/yolov3/logs&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;chckpt_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/yolov3/checkpoints&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;output_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/models/yolov3/output&#39;</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;n_cpu&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s1">&#39;data_parallel&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="_cfg_fasterrcnn"><a class="viewcode-back" href="../../../reference/core.configs.html#farabio.core.configs._cfg_fasterrcnn">[docs]</a><span class="k">def</span> <span class="nf">_cfg_fasterrcnn</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for Faster-RCNN</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;voc_data_dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/pascalvoc/VOC2007&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;min_size&#39;</span><span class="p">:</span> <span class="mi">600</span><span class="p">,</span>
+        <span class="s1">&#39;max_size&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="s1">&#39;load_path&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;save_path&#39;</span><span class="p">:</span> <span class="s2">&quot;/home/data/02_SSD4TB/suzy/models/faster-rcnn/checkpoints/&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;load_optimizer&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;pretrained_model&#39;</span><span class="p">:</span> <span class="s2">&quot;vgg16&quot;</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s2">&quot;voc&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;start_epoch&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+        <span class="s1">&#39;rpn_sigma&#39;</span><span class="p">:</span> <span class="mf">3.</span><span class="p">,</span>
+        <span class="s1">&#39;roi_sigma&#39;</span><span class="p">:</span> <span class="mf">1.</span><span class="p">,</span>
+        <span class="s1">&#39;weight_decay&#39;</span><span class="p">:</span> <span class="mf">0.0005</span><span class="p">,</span>
+        <span class="s1">&#39;scale_epoch&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+        <span class="s1">&#39;lr&#39;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
+        <span class="s1">&#39;lr_decay&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s1">&#39;use_adam&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;use_chainer&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;use_drop&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;has_eval&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;eval_interval&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;debug_file&#39;</span><span class="p">:</span> <span class="s2">&quot;/tmp/debugf&quot;</span><span class="p">,</span>
+        <span class="c1"># Test</span>
+        <span class="s1">&#39;test_num&#39;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;use_visdom&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;env&#39;</span><span class="p">:</span> <span class="s2">&quot;faster-rcnn&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="mi">8097</span><span class="p">,</span>
+        <span class="s1">&#39;plot_every&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
+        <span class="s1">&#39;save_optimizer&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;num_workers&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s1">&#39;test_num_workers&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span>
+    <span class="p">}</span></div>
+
+
+<span class="n">default_cfgs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;unet&#39;</span><span class="p">:</span> <span class="n">_cfg_unet</span><span class="p">(),</span>
+    <span class="s1">&#39;attunet&#39;</span><span class="p">:</span> <span class="n">_cfg_attunet</span><span class="p">(),</span>
+    <span class="s1">&#39;srgan&#39;</span><span class="p">:</span> <span class="n">_cfg_srgan</span><span class="p">(),</span>
+    <span class="s1">&#39;cyclegan&#39;</span><span class="p">:</span> <span class="n">_cfg_cyclegan</span><span class="p">(),</span>
+    <span class="s1">&#39;yolov3&#39;</span><span class="p">:</span> <span class="n">_cfg_yolov3</span><span class="p">(),</span>
+    <span class="s1">&#39;faster_rcnn&#39;</span><span class="p">:</span> <span class="n">_cfg_fasterrcnn</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MIT License.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

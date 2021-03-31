@@ -1,6 +1,6 @@
 import argparse
 import time
-from farabi.utils.helpers import makedirs
+from farabio.utils.helpers import makedirs
 import os
 
 

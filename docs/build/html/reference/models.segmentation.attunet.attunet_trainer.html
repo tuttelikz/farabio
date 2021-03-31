@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>attunet_trainer Module &mdash; farabi 0.0.3 documentation</title>
+  <title>attunet_trainer Module &mdash; farabio 0.0.3 documentation</title>
   
 
   
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> farabi
+            <a href="../index.html" class="icon icon-home"> farabio
           
 
           
@@ -120,7 +120,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">farabi</a>
+          <a href="../index.html">farabio</a>
         
       </nav>
 
@@ -177,7 +177,7 @@
   <div class="section" id="attunet-trainer-module">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">attunet_trainer</span></code> Module<a class="headerlink" href="#attunet-trainer-module" title="Permalink to this headline">¶</a></h1>
 <a class="reference internal image-reference" href="../_images/attunet.jpg"><img alt="../_images/attunet.jpg" src="../_images/attunet.jpg" style="width: 600px;" /></a>
-<p><a class="reference internal" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer" title="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttunetTrainer</span></code></a> class uses Attention U-Net model, which is originally proposed in this <a class="reference external" href="https://arxiv.org/abs/1804.03999">arXiv</a> <a class="footnote-reference brackets" href="#id1" id="id2">1</a>.
+<p><a class="reference internal" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer" title="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttunetTrainer</span></code></a> class uses Attention U-Net model, which is originally proposed in this <a class="reference external" href="https://arxiv.org/abs/1804.03999">arXiv</a> <a class="footnote-reference brackets" href="#id1" id="id2">1</a>.
 Implemented trainer module uses this <a class="reference external" href="https://github.com/LeeJunHyun/Image_Segmentation">Git</a> <a class="footnote-reference brackets" href="#id3" id="id4">2</a> code as reference work.</p>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
@@ -190,10 +190,10 @@ Implemented trainer module uses this <a class="reference external" href="https:/
 </dd>
 </dl>
 <div class="section" id="attunettrainer-class">
-<h3><a class="reference internal" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer" title="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttunetTrainer</span></code></a> class<a class="headerlink" href="#attunettrainer-class" title="Permalink to this headline">¶</a></h3>
+<h3><a class="reference internal" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer" title="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">AttunetTrainer</span></code></a> class<a class="headerlink" href="#attunettrainer-class" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabi.models.segmentation.attunet.attunet_trainer.</span></code><code class="sig-name descname"><span class="pre">AttunetTrainer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.models.segmentation.attunet.attunet_trainer.</span></code><code class="sig-name descname"><span class="pre">AttunetTrainer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Attention U-Net trainer class. Override with custom methods here.
 Attention U-Net cannot fit into one GPU. Supports only parallel mode.</p>
 <dl class="field-list simple">
@@ -205,204 +205,204 @@ Attention U-Net cannot fit into one GPU. Supports only parallel mode.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_data_attr">
-<code class="sig-name descname"><span class="pre">define_data_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_data_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_data_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_data_attr">
+<code class="sig-name descname"><span class="pre">define_data_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_data_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_data_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define data related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_model_attr">
-<code class="sig-name descname"><span class="pre">define_model_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_model_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_model_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_model_attr">
+<code class="sig-name descname"><span class="pre">define_model_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_model_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_model_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define model related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_train_attr">
-<code class="sig-name descname"><span class="pre">define_train_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_train_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_train_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_train_attr">
+<code class="sig-name descname"><span class="pre">define_train_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_train_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_train_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define training related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_test_attr">
-<code class="sig-name descname"><span class="pre">define_test_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_test_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_test_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_test_attr">
+<code class="sig-name descname"><span class="pre">define_test_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_test_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_test_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define training related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_log_attr">
-<code class="sig-name descname"><span class="pre">define_log_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_log_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_log_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_log_attr">
+<code class="sig-name descname"><span class="pre">define_log_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_log_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_log_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define log related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_compute_attr">
-<code class="sig-name descname"><span class="pre">define_compute_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_compute_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_compute_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_compute_attr">
+<code class="sig-name descname"><span class="pre">define_compute_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_compute_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_compute_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define compute related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_misc_attr">
-<code class="sig-name descname"><span class="pre">define_misc_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_misc_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_misc_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_misc_attr">
+<code class="sig-name descname"><span class="pre">define_misc_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.define_misc_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.define_misc_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define miscellaneous attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.get_trainloader">
-<code class="sig-name descname"><span class="pre">get_trainloader</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.get_trainloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.get_trainloader" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.get_trainloader">
+<code class="sig-name descname"><span class="pre">get_trainloader</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.get_trainloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.get_trainloader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Retreives training set of torch.utils.data.DataLoader class</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.get_testloader">
-<code class="sig-name descname"><span class="pre">get_testloader</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.get_testloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.get_testloader" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.get_testloader">
+<code class="sig-name descname"><span class="pre">get_testloader</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.get_testloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.get_testloader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Retreives test set of torch.utils.data.DataLoader class</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.build_model">
-<code class="sig-name descname"><span class="pre">build_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.build_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.build_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.build_model">
+<code class="sig-name descname"><span class="pre">build_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.build_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.build_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract method that builds model</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.build_parallel_model">
-<code class="sig-name descname"><span class="pre">build_parallel_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.build_parallel_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.build_parallel_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.build_parallel_model">
+<code class="sig-name descname"><span class="pre">build_parallel_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.build_parallel_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.build_parallel_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract method that builds multi-GPU model in parallel</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.show_model_summary">
-<code class="sig-name descname"><span class="pre">show_model_summary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.show_model_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.show_model_summary" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.show_model_summary">
+<code class="sig-name descname"><span class="pre">show_model_summary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.show_model_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.show_model_summary" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.load_model">
-<code class="sig-name descname"><span class="pre">load_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.load_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.load_model">
+<code class="sig-name descname"><span class="pre">load_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.load_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: load model</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.load_parallel_model">
-<code class="sig-name descname"><span class="pre">load_parallel_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.load_parallel_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.load_parallel_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.load_parallel_model">
+<code class="sig-name descname"><span class="pre">load_parallel_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.load_parallel_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.load_parallel_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: load parallel model</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.start_logger">
-<code class="sig-name descname"><span class="pre">start_logger</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.start_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.start_logger" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.start_logger">
+<code class="sig-name descname"><span class="pre">start_logger</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.start_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.start_logger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Starts logger</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_train_epoch_start">
-<code class="sig-name descname"><span class="pre">on_train_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_train_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_train_epoch_start" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_train_epoch_start">
+<code class="sig-name descname"><span class="pre">on_train_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_train_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_train_epoch_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On epoch start</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_start_training_batch">
-<code class="sig-name descname"><span class="pre">on_start_training_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_start_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_start_training_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_start_training_batch">
+<code class="sig-name descname"><span class="pre">on_start_training_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_start_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_start_training_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On training batch start</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.optimizer_zero_grad">
-<code class="sig-name descname"><span class="pre">optimizer_zero_grad</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.optimizer_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.optimizer_zero_grad" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.optimizer_zero_grad">
+<code class="sig-name descname"><span class="pre">optimizer_zero_grad</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.optimizer_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.optimizer_zero_grad" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Zero gradients of optimizer</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.loss_backward">
-<code class="sig-name descname"><span class="pre">loss_backward</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.loss_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.loss_backward" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.loss_backward">
+<code class="sig-name descname"><span class="pre">loss_backward</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.loss_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.loss_backward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Loss back-propagation</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.optimizer_step">
-<code class="sig-name descname"><span class="pre">optimizer_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.optimizer_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.optimizer_step" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.optimizer_step">
+<code class="sig-name descname"><span class="pre">optimizer_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.optimizer_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.optimizer_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Optimizer step</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.training_step">
-<code class="sig-name descname"><span class="pre">training_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.training_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.training_step" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.training_step">
+<code class="sig-name descname"><span class="pre">training_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.training_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.training_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: During training batch</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_end_training_batch">
-<code class="sig-name descname"><span class="pre">on_end_training_batch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_end_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_end_training_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_end_training_batch">
+<code class="sig-name descname"><span class="pre">on_end_training_batch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_end_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_end_training_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On end of training batch</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_train_epoch_end">
-<code class="sig-name descname"><span class="pre">on_train_epoch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_train_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_train_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_train_epoch_end">
+<code class="sig-name descname"><span class="pre">on_train_epoch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_train_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_train_epoch_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On end of training epoch</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_evaluate_epoch_start">
-<code class="sig-name descname"><span class="pre">on_evaluate_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_evaluate_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_evaluate_epoch_start" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_evaluate_epoch_start">
+<code class="sig-name descname"><span class="pre">on_evaluate_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_evaluate_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_evaluate_epoch_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on evaluation start</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.evaluate_batch">
-<code class="sig-name descname"><span class="pre">evaluate_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.evaluate_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.evaluate_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.evaluate_batch">
+<code class="sig-name descname"><span class="pre">evaluate_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.evaluate_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.evaluate_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: batch of evaluation loop</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_evaluate_batch_end">
-<code class="sig-name descname"><span class="pre">on_evaluate_batch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_evaluate_batch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_evaluate_batch_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_evaluate_batch_end">
+<code class="sig-name descname"><span class="pre">on_evaluate_batch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_evaluate_batch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_evaluate_batch_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On evaluate batch end</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_evaluate_epoch_end">
-<code class="sig-name descname"><span class="pre">on_evaluate_epoch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_evaluate_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_evaluate_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_evaluate_epoch_end">
+<code class="sig-name descname"><span class="pre">on_evaluate_epoch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_evaluate_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_evaluate_epoch_end" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_epoch_end">
-<code class="sig-name descname"><span class="pre">on_epoch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_epoch_end">
+<code class="sig-name descname"><span class="pre">on_epoch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_epoch_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on epoch end</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.save_model">
-<code class="sig-name descname"><span class="pre">save_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.save_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.save_model">
+<code class="sig-name descname"><span class="pre">save_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.save_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: saves model</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.save_parallel_model">
-<code class="sig-name descname"><span class="pre">save_parallel_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.save_parallel_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.save_parallel_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.save_parallel_model">
+<code class="sig-name descname"><span class="pre">save_parallel_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.save_parallel_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.save_parallel_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: saves parallel model</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_test_start">
-<code class="sig-name descname"><span class="pre">on_test_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_test_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_test_start" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_test_start">
+<code class="sig-name descname"><span class="pre">on_test_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_test_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_test_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on test start</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.test_step">
-<code class="sig-name descname"><span class="pre">test_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.test_step" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.test_step">
+<code class="sig-name descname"><span class="pre">test_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.test_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test action (Put test here)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.generate_result_img">
-<code class="sig-name descname"><span class="pre">generate_result_img</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.generate_result_img"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.generate_result_img" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.generate_result_img">
+<code class="sig-name descname"><span class="pre">generate_result_img</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.generate_result_img"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.generate_result_img" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate image from batch: one by one</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_end_test_batch">
-<code class="sig-name descname"><span class="pre">on_end_test_batch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_end_test_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_end_test_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_end_test_batch">
+<code class="sig-name descname"><span class="pre">on_end_test_batch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/segmentation/attunet/attunet_trainer.html#AttunetTrainer.on_end_test_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer.on_end_test_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on end of batch test</p>
 </dd></dl>
 

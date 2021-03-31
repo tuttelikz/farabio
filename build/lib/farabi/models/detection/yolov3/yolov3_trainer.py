@@ -8,12 +8,12 @@ import numpy as np
 from parsers import parse_data_config
 from config import get_config
 from trainer import Trainer
-from farabi.core.trainermod import BaseTrainer
-from farabi.data.datasets import ListDataset, ImageFolder
-from farabi.utils.helpers import rescale_boxes, load_classes
-from farabi.utils.regul import weights_init_normal
-from farabi.utils.loggers import Logger
-from farabi.utils.losses import get_batch_statistics, non_max_suppression, ap_per_class, xywh2xyxy
+from farabio.core.trainermod import BaseTrainer
+from farabio.data.datasets import ListDataset, ImageFolder
+from farabio.utils.helpers import rescale_boxes, load_classes
+from farabio.utils.regul import weights_init_normal
+from farabio.utils.loggers import Logger
+from farabio.utils.losses import get_batch_statistics, non_max_suppression, ap_per_class, xywh2xyxy
 from PIL import Image
 from tqdm import tqdm
 from terminaltables import AsciiTable

@@ -6,12 +6,12 @@ from torch.utils.data import Dataset
 from torch.utils.data import SubsetRandomSampler
 import os
 from skimage.io import imread
-from farabi.utils.regul import EarlyStopping
+from farabio.utils.regul import EarlyStopping
 import torch.nn as nn
 import time
 from collections import defaultdict
 from tqdm import tqdm
-from farabi.utils.helpers import makedirs
+from farabio.utils.helpers import makedirs
 from attunet import AttUnet
 
 # class conv_block(nn.Module):

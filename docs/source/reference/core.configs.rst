@@ -1,7 +1,7 @@
-:py:mod:`~farabi.core.configs` Module
+:py:mod:`~farabio.core.configs` Module
 ==========================================
 
-:py:mod:`~farabi.core.configs` module combines is a main place for model configurations. These 
+:py:mod:`~farabio.core.configs` module combines is a main place for model configurations. These 
 settings are separately defined in their related functions.
 
 Categories of arguments
@@ -17,11 +17,11 @@ Categories of arguments
 Default configurations for models
 ------------------------------------
 
-The :py:mod:`~farabi.core.config` package contains base configurations for models:
+The :py:mod:`~farabio.core.config` package contains base configurations for models:
 
-.. autofunction:: farabi.core.configs._cfg_unet
-.. autofunction:: farabi.core.configs._cfg_attunet
-.. autofunction:: farabi.core.configs._cfg_srgan
-.. autofunction:: farabi.core.configs._cfg_cyclegan
-.. autofunction:: farabi.core.configs._cfg_yolov3
-.. autofunction:: farabi.core.configs._cfg_fasterrcnn
+.. autofunction:: farabio.core.configs._cfg_unet
+.. autofunction:: farabio.core.configs._cfg_attunet
+.. autofunction:: farabio.core.configs._cfg_srgan
+.. autofunction:: farabio.core.configs._cfg_cyclegan
+.. autofunction:: farabio.core.configs._cfg_yolov3
+.. autofunction:: farabio.core.configs._cfg_fasterrcnn

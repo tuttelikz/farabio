@@ -8,20 +8,20 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 from torch.utils import data as data_
-from farabi.core.configs import get_config
-from farabi.core.convnettrainer import ConvnetTrainer
-from farabi.models.detection.faster_rcnn.dataset import Dataset, TestDataset, inverse_normalize
-from farabi.models.detection.faster_rcnn.faster_rcnn_vgg16 import FasterRCNNVGG16
-from farabi.models.detection.faster_rcnn.creator_tool import AnchorTargetCreator, ProposalTargetCreator
-import farabi.utils.helpers as helpers
-from farabi.utils.losses import Losses
-from farabi.utils.metrics import eval_detection_voc
-from farabi.utils.meters import ConfusionMeter, AverageValueMeter
-from farabi.utils.vistools import Visualizer, visdom_bbox
+from farabio.core.configs import get_config
+from farabio.core.convnettrainer import ConvnetTrainer
+from farabio.models.detection.faster_rcnn.dataset import Dataset, TestDataset, inverse_normalize
+from farabio.models.detection.faster_rcnn.faster_rcnn_vgg16 import FasterRCNNVGG16
+from farabio.models.detection.faster_rcnn.creator_tool import AnchorTargetCreator, ProposalTargetCreator
+import farabio.utils.helpers as helpers
+from farabio.utils.losses import Losses
+from farabio.utils.metrics import eval_detection_voc
+from farabio.utils.meters import ConfusionMeter, AverageValueMeter
+from farabio.utils.vistools import Visualizer, visdom_bbox
 # fix for ulimit
 # https://github.com/pytorch/pytorch/issues/973#issuecomment-346405667
 import resource
-#from farabi.models.detection.faster_rcnn.config import opt
+#from farabio.models.detection.faster_rcnn.config import opt
 
 # Start train with: python train.py train --env='fasterrcnn' --plot-every=100
 rlimit = resource.getrlimit(resource.RLIMIT_NOFILE)

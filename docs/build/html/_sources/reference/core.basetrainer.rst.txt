@@ -1,5 +1,5 @@
-:py:mod:`~farabi.core.basetrainer` Module
+:py:mod:`~farabio.core.basetrainer` Module
 ==========================================
 
-.. autoclass:: farabi.core.basetrainer.BaseTrainer
+.. autoclass:: farabio.core.basetrainer.BaseTrainer
    :members:

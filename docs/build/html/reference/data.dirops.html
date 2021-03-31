@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>dirops Module &mdash; farabi 0.0.3 documentation</title>
+  <title>dirops Module &mdash; farabio 0.0.3 documentation</title>
   
 
   
@@ -53,7 +53,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> farabi
+            <a href="../index.html" class="icon icon-home"> farabio
           
 
           
@@ -115,7 +115,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">farabi</a>
+          <a href="../index.html">farabio</a>
         
       </nav>
 
@@ -171,17 +171,17 @@
             
   <div class="section" id="dirops-module">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">dirops</span></code> Module<a class="headerlink" href="#dirops-module" title="Permalink to this headline">¶</a></h1>
-<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">dirops</span></code> module provides a <a class="reference internal" href="#farabi.data.dirops.DirOps" title="farabi.data.dirops.DirOps"><code class="xref py py-class docutils literal notranslate"><span class="pre">DirOps</span></code></a> class
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">dirops</span></code> module provides a <a class="reference internal" href="#farabio.data.dirops.DirOps" title="farabio.data.dirops.DirOps"><code class="xref py py-class docutils literal notranslate"><span class="pre">DirOps</span></code></a> class
 which retrieves basic information, performs operations on path.</p>
 <div class="section" id="register-module">
 <h2>Register module<a class="headerlink" href="#register-module" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">farabi.data.imgops.DirOps</span> <span class="k">as</span> <span class="nn">DirOps</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">farabio.data.imgops.DirOps</span> <span class="k">as</span> <span class="nn">DirOps</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dir_path</span> <span class="o">=</span> <span class="s1">&#39;./images/&#39;</span>
 </pre></div>
 </div>
 <dl class="py class">
-<dt id="farabi.data.dirops.DirOps">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabi.data.dirops.</span></code><code class="sig-name descname"><span class="pre">DirOps</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/data/dirops.html#DirOps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.data.dirops.DirOps" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.data.dirops.DirOps">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.data.dirops.</span></code><code class="sig-name descname"><span class="pre">DirOps</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/dirops.html#DirOps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.dirops.DirOps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates instance of DirOps class</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -222,8 +222,8 @@ which retrieves basic information, performs operations on path.</p>
 </tbody>
 </table>
 <dl class="py method">
-<dt id="farabi.data.dirops.DirOps.dirinfo">
-<code class="sig-name descname"><span class="pre">dirinfo</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/data/dirops.html#DirOps.dirinfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.data.dirops.DirOps.dirinfo" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.data.dirops.DirOps.dirinfo">
+<code class="sig-name descname"><span class="pre">dirinfo</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/dirops.html#DirOps.dirinfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.dirops.DirOps.dirinfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints basic information in a neat format</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">DirOps</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span><span class="o">.</span><span class="n">dirinfo</span><span class="p">()</span>
@@ -232,8 +232,8 @@ which retrieves basic information, performs operations on path.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.data.dirops.DirOps.split_traintest">
-<code class="sig-name descname"><span class="pre">split_traintest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/data/dirops.html#DirOps.split_traintest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.data.dirops.DirOps.split_traintest" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.data.dirops.DirOps.split_traintest">
+<code class="sig-name descname"><span class="pre">split_traintest</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/dirops.html#DirOps.split_traintest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.dirops.DirOps.split_traintest" title="Permalink to this definition">¶</a></dt>
 <dd><p>Splits list of files in path into train and test</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -257,8 +257,8 @@ which retrieves basic information, performs operations on path.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.data.dirops.DirOps.lsmedia">
-<code class="sig-name descname"><span class="pre">lsmedia</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/data/dirops.html#DirOps.lsmedia"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.data.dirops.DirOps.lsmedia" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.data.dirops.DirOps.lsmedia">
+<code class="sig-name descname"><span class="pre">lsmedia</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/dirops.html#DirOps.lsmedia"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.dirops.DirOps.lsmedia" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns media files from path</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -277,8 +277,8 @@ aud_fns : list of audio files</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.data.dirops.DirOps.del_files">
-<code class="sig-name descname"><span class="pre">del_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reflist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/data/dirops.html#DirOps.del_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.data.dirops.DirOps.del_files" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.data.dirops.DirOps.del_files">
+<code class="sig-name descname"><span class="pre">del_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reflist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">match</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/dirops.html#DirOps.del_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.dirops.DirOps.del_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes files in current folder that matches / not matches with list</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

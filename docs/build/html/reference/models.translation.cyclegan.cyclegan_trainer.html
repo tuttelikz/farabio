@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>cyclegan_trainer Module &mdash; farabi 0.0.3 documentation</title>
+  <title>cyclegan_trainer Module &mdash; farabio 0.0.3 documentation</title>
   
 
   
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> farabi
+            <a href="../index.html" class="icon icon-home"> farabio
           
 
           
@@ -120,7 +120,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">farabi</a>
+          <a href="../index.html">farabio</a>
         
       </nav>
 
@@ -177,7 +177,7 @@
   <div class="section" id="cyclegan-trainer-module">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">cyclegan_trainer</span></code> Module<a class="headerlink" href="#cyclegan-trainer-module" title="Permalink to this headline">¶</a></h1>
 <a class="reference internal image-reference" href="../_images/cyclegan.png"><img alt="../_images/cyclegan.png" src="../_images/cyclegan.png" style="width: 600px;" /></a>
-<p><a class="reference internal" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer" title="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">CycleganTrainer</span></code></a> class uses Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks,
+<p><a class="reference internal" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer" title="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">CycleganTrainer</span></code></a> class uses Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks,
 which is originally proposed in this <a class="reference external" href="https://arxiv.org/abs/1703.10593">arXiv</a> <a class="footnote-reference brackets" href="#id1" id="id2">1</a>. Implemented trainer module uses this <a class="reference external" href="https://github.com/aitorzip/PyTorch-CycleGAN">Git</a> <a class="footnote-reference brackets" href="#id3" id="id4">2</a> code as reference work.</p>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
@@ -190,124 +190,124 @@ which is originally proposed in this <a class="reference external" href="https:/
 </dd>
 </dl>
 <div class="section" id="cyclegantrainer-class">
-<h3><a class="reference internal" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer" title="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">CycleganTrainer</span></code></a> class<a class="headerlink" href="#cyclegantrainer-class" title="Permalink to this headline">¶</a></h3>
+<h3><a class="reference internal" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer" title="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">CycleganTrainer</span></code></a> class<a class="headerlink" href="#cyclegantrainer-class" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabi.models.translation.cyclegan.cyclegan_trainer.</span></code><code class="sig-name descname"><span class="pre">CycleganTrainer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.models.translation.cyclegan.cyclegan_trainer.</span></code><code class="sig-name descname"><span class="pre">CycleganTrainer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer" title="Permalink to this definition">¶</a></dt>
 <dd><p>CycleganTrainer trainer class. Override with custom methods here.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>GanTrainer</strong><span class="classifier">farabi.core.basetrainer.BaseTrainer</span></dt><dd><p>Inherits GanTrainer class</p>
+<dt><strong>GanTrainer</strong><span class="classifier">farabio.core.basetrainer.BaseTrainer</span></dt><dd><p>Inherits GanTrainer class</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_data_attr">
-<code class="sig-name descname"><span class="pre">define_data_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_data_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_data_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_data_attr">
+<code class="sig-name descname"><span class="pre">define_data_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_data_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_data_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define data related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_model_attr">
-<code class="sig-name descname"><span class="pre">define_model_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_model_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_model_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_model_attr">
+<code class="sig-name descname"><span class="pre">define_model_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_model_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_model_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define model related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_train_attr">
-<code class="sig-name descname"><span class="pre">define_train_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_train_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_train_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_train_attr">
+<code class="sig-name descname"><span class="pre">define_train_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_train_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_train_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define training related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_test_attr">
-<code class="sig-name descname"><span class="pre">define_test_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_test_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_test_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_test_attr">
+<code class="sig-name descname"><span class="pre">define_test_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_test_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_test_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define training related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_log_attr">
-<code class="sig-name descname"><span class="pre">define_log_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_log_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_log_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_log_attr">
+<code class="sig-name descname"><span class="pre">define_log_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_log_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_log_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define log related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_compute_attr">
-<code class="sig-name descname"><span class="pre">define_compute_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_compute_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_compute_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_compute_attr">
+<code class="sig-name descname"><span class="pre">define_compute_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_compute_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_compute_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define compute related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_misc_attr">
-<code class="sig-name descname"><span class="pre">define_misc_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_misc_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_misc_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_misc_attr">
+<code class="sig-name descname"><span class="pre">define_misc_attr</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.define_misc_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.define_misc_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define miscellaneous attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.build_model">
-<code class="sig-name descname"><span class="pre">build_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.build_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.build_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.build_model">
+<code class="sig-name descname"><span class="pre">build_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.build_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.build_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract method that builds model</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_start">
-<code class="sig-name descname"><span class="pre">on_train_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_train_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_start" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_start">
+<code class="sig-name descname"><span class="pre">on_train_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_train_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On start of training loop</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.start_logger">
-<code class="sig-name descname"><span class="pre">start_logger</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.start_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.start_logger" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.start_logger">
+<code class="sig-name descname"><span class="pre">start_logger</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.start_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.start_logger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Starts logger</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_epoch_start">
-<code class="sig-name descname"><span class="pre">on_train_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_train_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_epoch_start" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_epoch_start">
+<code class="sig-name descname"><span class="pre">on_train_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_train_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_epoch_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On epoch start</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.train_batch">
-<code class="sig-name descname"><span class="pre">train_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.train_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.train_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.train_batch">
+<code class="sig-name descname"><span class="pre">train_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.train_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.train_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: batch of training loop</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_start_training_batch">
-<code class="sig-name descname"><span class="pre">on_start_training_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_start_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_start_training_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_start_training_batch">
+<code class="sig-name descname"><span class="pre">on_start_training_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_start_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_start_training_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On training batch start</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_zero_grad">
-<code class="sig-name descname"><span class="pre">generator_zero_grad</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.generator_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_zero_grad" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_zero_grad">
+<code class="sig-name descname"><span class="pre">generator_zero_grad</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.generator_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_zero_grad" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Zero gradients of generator</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_loss">
-<code class="sig-name descname"><span class="pre">generator_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.generator_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_loss" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_loss">
+<code class="sig-name descname"><span class="pre">generator_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.generator_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Total generator loss</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_backward">
-<code class="sig-name descname"><span class="pre">generator_backward</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.generator_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_backward" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_backward">
+<code class="sig-name descname"><span class="pre">generator_backward</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.generator_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_backward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: sends backward</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_optim_step">
-<code class="sig-name descname"><span class="pre">generator_optim_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.generator_optim_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_optim_step" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_optim_step">
+<code class="sig-name descname"><span class="pre">generator_optim_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.generator_optim_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.generator_optim_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Discriminator optimizer step</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.identity_g_loss">
-<code class="sig-name descname"><span class="pre">identity_g_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.identity_g_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.identity_g_loss" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.identity_g_loss">
+<code class="sig-name descname"><span class="pre">identity_g_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.identity_g_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.identity_g_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Identity loss</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -320,8 +320,8 @@ which is originally proposed in this <a class="reference external" href="https:/
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.gan_g_loss">
-<code class="sig-name descname"><span class="pre">gan_g_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.gan_g_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.gan_g_loss" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.gan_g_loss">
+<code class="sig-name descname"><span class="pre">gan_g_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.gan_g_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.gan_g_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>GAN loss</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -334,8 +334,8 @@ which is originally proposed in this <a class="reference external" href="https:/
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.cycle_g_loss">
-<code class="sig-name descname"><span class="pre">cycle_g_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.cycle_g_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.cycle_g_loss" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.cycle_g_loss">
+<code class="sig-name descname"><span class="pre">cycle_g_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.cycle_g_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.cycle_g_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cycle loss</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -348,19 +348,19 @@ which is originally proposed in this <a class="reference external" href="https:/
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_zero_grad">
-<code class="sig-name descname"><span class="pre">discriminatorA_zero_grad</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorA_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_zero_grad" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_zero_grad">
+<code class="sig-name descname"><span class="pre">discriminatorA_zero_grad</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorA_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_zero_grad" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_loss">
-<code class="sig-name descname"><span class="pre">discriminatorA_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorA_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_loss" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_loss">
+<code class="sig-name descname"><span class="pre">discriminatorA_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorA_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loss for discriminator A: fake and real.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.real_dA_loss">
-<code class="sig-name descname"><span class="pre">real_dA_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.real_dA_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.real_dA_loss" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.real_dA_loss">
+<code class="sig-name descname"><span class="pre">real_dA_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.real_dA_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.real_dA_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loss for discriminator A: real</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -373,8 +373,8 @@ which is originally proposed in this <a class="reference external" href="https:/
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.fake_dA_loss">
-<code class="sig-name descname"><span class="pre">fake_dA_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.fake_dA_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.fake_dA_loss" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.fake_dA_loss">
+<code class="sig-name descname"><span class="pre">fake_dA_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.fake_dA_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.fake_dA_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loss for discriminator A: fake</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -387,29 +387,29 @@ which is originally proposed in this <a class="reference external" href="https:/
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_backward">
-<code class="sig-name descname"><span class="pre">discriminatorA_backward</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorA_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_backward" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_backward">
+<code class="sig-name descname"><span class="pre">discriminatorA_backward</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorA_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_optim_step">
-<code class="sig-name descname"><span class="pre">discriminatorA_optim_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorA_optim_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_optim_step" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_optim_step">
+<code class="sig-name descname"><span class="pre">discriminatorA_optim_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorA_optim_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorA_optim_step" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_zero_grad">
-<code class="sig-name descname"><span class="pre">discriminatorB_zero_grad</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorB_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_zero_grad" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_zero_grad">
+<code class="sig-name descname"><span class="pre">discriminatorB_zero_grad</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorB_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_zero_grad" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_loss">
-<code class="sig-name descname"><span class="pre">discriminatorB_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorB_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_loss" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_loss">
+<code class="sig-name descname"><span class="pre">discriminatorB_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorB_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loss for discriminator B: fake and real.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.real_dB_loss">
-<code class="sig-name descname"><span class="pre">real_dB_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.real_dB_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.real_dB_loss" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.real_dB_loss">
+<code class="sig-name descname"><span class="pre">real_dB_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.real_dB_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.real_dB_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loss for discriminator B: real</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -422,8 +422,8 @@ which is originally proposed in this <a class="reference external" href="https:/
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.fake_dB_loss">
-<code class="sig-name descname"><span class="pre">fake_dB_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.fake_dB_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.fake_dB_loss" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.fake_dB_loss">
+<code class="sig-name descname"><span class="pre">fake_dB_loss</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.fake_dB_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.fake_dB_loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loss for discriminator B: fake</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -436,48 +436,48 @@ which is originally proposed in this <a class="reference external" href="https:/
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_backward">
-<code class="sig-name descname"><span class="pre">discriminatorB_backward</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorB_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_backward" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_backward">
+<code class="sig-name descname"><span class="pre">discriminatorB_backward</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorB_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_optim_step">
-<code class="sig-name descname"><span class="pre">discriminatorB_optim_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorB_optim_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_optim_step" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_optim_step">
+<code class="sig-name descname"><span class="pre">discriminatorB_optim_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.discriminatorB_optim_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.discriminatorB_optim_step" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_end_training_batch">
-<code class="sig-name descname"><span class="pre">on_end_training_batch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_end_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_end_training_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_end_training_batch">
+<code class="sig-name descname"><span class="pre">on_end_training_batch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_end_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_end_training_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On end of training batch</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_epoch_end">
-<code class="sig-name descname"><span class="pre">on_train_epoch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_train_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_epoch_end">
+<code class="sig-name descname"><span class="pre">on_train_epoch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_train_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_epoch_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On end of training epoch</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_epoch_end">
-<code class="sig-name descname"><span class="pre">on_epoch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_epoch_end">
+<code class="sig-name descname"><span class="pre">on_epoch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_epoch_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on epoch end</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.get_trainloader">
-<code class="sig-name descname"><span class="pre">get_trainloader</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.get_trainloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.get_trainloader" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.get_trainloader">
+<code class="sig-name descname"><span class="pre">get_trainloader</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.get_trainloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.get_trainloader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Retreives training set of torch.utils.data.DataLoader class</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.get_testloader">
-<code class="sig-name descname"><span class="pre">get_testloader</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.get_testloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.get_testloader" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.get_testloader">
+<code class="sig-name descname"><span class="pre">get_testloader</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.get_testloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.get_testloader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Retreives test set of torch.utils.data.DataLoader class</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.save_model">
-<code class="sig-name descname"><span class="pre">save_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.save_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.save_model">
+<code class="sig-name descname"><span class="pre">save_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.save_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save model</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -490,26 +490,26 @@ which is originally proposed in this <a class="reference external" href="https:/
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.load_model">
-<code class="sig-name descname"><span class="pre">load_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.load_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.load_model">
+<code class="sig-name descname"><span class="pre">load_model</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.load_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: load model</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_test_start">
-<code class="sig-name descname"><span class="pre">on_test_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_test_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_test_start" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_test_start">
+<code class="sig-name descname"><span class="pre">on_test_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_test_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_test_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on test start</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.test_step">
-<code class="sig-name descname"><span class="pre">test_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.test_step" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.test_step">
+<code class="sig-name descname"><span class="pre">test_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.test_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test action (Put test here)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_end_test_batch">
-<code class="sig-name descname"><span class="pre">on_end_test_batch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_end_test_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_end_test_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_end_test_batch">
+<code class="sig-name descname"><span class="pre">on_end_test_batch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/translation/cyclegan/cyclegan_trainer.html#CycleganTrainer.on_end_test_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_end_test_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on end of batch test</p>
 </dd></dl>
 

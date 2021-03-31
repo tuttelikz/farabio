@@ -3,9 +3,9 @@ import numpy as xp
 import torch
 from torch import nn
 from torch.nn import functional as F
-from farabi.utils.bboxtools import generate_anchor_base
-from farabi.models.detection.faster_rcnn.creator_tool import ProposalCreator
-from farabi.core.configs import get_config
+from farabio.utils.bboxtools import generate_anchor_base
+from farabio.models.detection.faster_rcnn.creator_tool import ProposalCreator
+from farabio.core.configs import get_config
 
 opt, _ = get_config("faster_rcnn")
 

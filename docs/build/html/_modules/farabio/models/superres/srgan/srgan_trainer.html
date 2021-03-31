@@ -1,0 +1,603 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>farabio.models.superres.srgan.srgan_trainer &mdash; farabio 0.0.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> farabio
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../reference/index.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">farabio</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>farabio.models.superres.srgan.srgan_trainer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for farabio.models.superres.srgan.srgan_trainer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="kn">import</span> <span class="nn">torchvision.utils</span> <span class="k">as</span> <span class="nn">vutils</span>
+<span class="kn">from</span> <span class="nn">farabio.data.transforms</span> <span class="kn">import</span> <span class="n">display_transform</span>
+<span class="kn">from</span> <span class="nn">farabio.core.gantrainer</span> <span class="kn">import</span> <span class="n">GanTrainer</span>
+<span class="kn">from</span> <span class="nn">farabio.utils.losses</span> <span class="kn">import</span> <span class="n">GeneratorLoss</span>
+<span class="kn">from</span> <span class="nn">farabio.utils.metrics</span> <span class="kn">import</span> <span class="n">ssim</span>
+<span class="kn">from</span> <span class="nn">farabio.utils.helpers</span> <span class="kn">import</span> <span class="n">x</span><span class="p">,</span> <span class="n">makedirs</span>
+<span class="kn">from</span> <span class="nn">farabio.models.superres.srgan.srgan</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Discriminator</span>
+<span class="kn">from</span> <span class="nn">farabio.data.datasets</span> <span class="kn">import</span> <span class="n">TrainDatasetFromFolder</span><span class="p">,</span> <span class="n">ValDatasetFromFolder</span><span class="p">,</span> <span class="n">TestDatasetFromFolder</span>
+
+
+<div class="viewcode-block" id="SrganTrainer"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer">[docs]</a><span class="k">class</span> <span class="nc">SrganTrainer</span><span class="p">(</span><span class="n">GanTrainer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;SrganTrainer trainer class. Override with custom methods here.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    GanTrainer : parent object</span>
+<span class="sd">        Parent object of SrganTrainer</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SrganTrainer.define_data_attr"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.define_data_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_data_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trainset_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">train_set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validset_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">valid_set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_testset_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">test_set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_batch_size_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">batch_size_train</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_batch_size_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">batch_size_valid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_batch_size_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">batch_size_test</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">upscale_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_crop_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">crop_size</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.define_model_attr"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.define_model_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_model_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_save_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_save_dir</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.define_train_attr"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.define_train_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_train_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_epochs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_epochs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">start_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_eval</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">optim</span> <span class="o">==</span> <span class="s1">&#39;adam&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optim</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.define_log_attr"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.define_log_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_log_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">save_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_csv_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">save_csv_epoch</span></div>
+    
+<div class="viewcode-block" id="SrganTrainer.define_compute_attr"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.define_compute_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_compute_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cuda</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">cuda</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_workers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_workers</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.define_misc_attr"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.define_misc_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_misc_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">mode</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.get_trainloader"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.get_trainloader">[docs]</a>    <span class="k">def</span> <span class="nf">get_trainloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
+            <span class="n">train_set</span> <span class="o">=</span> <span class="n">TrainDatasetFromFolder</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_trainset_dir</span><span class="p">,</span> <span class="n">crop_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_crop_size</span><span class="p">,</span> <span class="n">upscale_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span><span class="p">)</span>
+            <span class="n">valid_set</span> <span class="o">=</span> <span class="n">ValDatasetFromFolder</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_validset_dir</span><span class="p">,</span> <span class="n">upscale_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+                <span class="n">dataset</span><span class="o">=</span><span class="n">train_set</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_workers</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_batch_size_train</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valid_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">valid_set</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                                           <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_batch_size_valid</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.get_testloader"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.get_testloader">[docs]</a>    <span class="k">def</span> <span class="nf">get_testloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
+            <span class="n">test_set</span> <span class="o">=</span> <span class="n">TestDatasetFromFolder</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_testset_dir</span><span class="p">,</span> <span class="n">upscale_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+                <span class="n">dataset</span><span class="o">=</span><span class="n">test_set</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_workers</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_batch_size_test</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+            <span class="c1"># self.load_model(config.model_name)</span>
+
+<div class="viewcode-block" id="SrganTrainer.build_model"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.build_model">[docs]</a>    <span class="k">def</span> <span class="nf">build_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build model</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        epoch : int</span>
+<span class="sd">            current epoch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">netG</span> <span class="o">=</span> <span class="n">Generator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">netD</span> <span class="o">=</span> <span class="n">Discriminator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator_criterion</span> <span class="o">=</span> <span class="n">GeneratorLoss</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cuda</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">netD</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">generator_criterion</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizerG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizerD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">netD</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span></div>
+
+        <span class="c1"># print(&#39;# generator parameters:&#39;, sum(param.numel() for param in netG.parameters()))</span>
+        <span class="c1"># print(&#39;# discriminator parameters:&#39;, sum(param.numel() for param in netD.parameters()))</span>
+
+<div class="viewcode-block" id="SrganTrainer.start_logger"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.start_logger">[docs]</a>    <span class="k">def</span> <span class="nf">start_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;d_loss&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;g_loss&#39;</span><span class="p">:</span> <span class="p">[],</span>
+                        <span class="s1">&#39;d_score&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;g_score&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;psnr&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;ssim&#39;</span><span class="p">:</span> <span class="p">[]}</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.on_train_epoch_start"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.on_train_epoch_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_train_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_iter</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_loader</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;d_loss&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                                <span class="s1">&#39;g_loss&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;d_score&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;g_score&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">netD</span><span class="o">.</span><span class="n">train</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.train_batch"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.train_batch">[docs]</a>    <span class="k">def</span> <span class="nf">train_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_start_training_batch</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="c1">###### Discriminator ######</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">discriminator_zero_grad</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">discriminator_loss</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">discriminator_backward</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">discriminator_optim_step</span><span class="p">()</span>
+
+        <span class="c1">###### Generator ######</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator_zero_grad</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator_loss</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator_backward</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator_optim_step</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_end_training_batch</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.on_start_training_batch"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.on_start_training_batch">[docs]</a>    <span class="k">def</span> <span class="nf">on_start_training_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.discriminator_zero_grad"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.discriminator_zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">discriminator_zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">netD</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.discriminator_loss"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.discriminator_loss">[docs]</a>    <span class="k">def</span> <span class="nf">discriminator_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">############################</span>
+        <span class="c1"># (1) Update D network: maximize D(x)-1-D(G(z))</span>
+        <span class="c1">###########################</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">real_img</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cuda</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">real_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_img</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+        <span class="n">fake_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">real_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">netD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">real_img</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">fake_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">netD</span><span class="p">(</span><span class="n">fake_img</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_discriminator_loss</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_out</span> <span class="o">+</span> <span class="n">fake_out</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.discriminator_optim_step"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.discriminator_optim_step">[docs]</a>    <span class="k">def</span> <span class="nf">discriminator_optim_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Discriminator optimizer step</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizerD</span><span class="o">.</span><span class="n">step</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.generator_zero_grad"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.generator_zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">generator_zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Zero grad</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.generator_loss"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.generator_loss">[docs]</a>    <span class="k">def</span> <span class="nf">generator_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">############################</span>
+        <span class="c1"># (2) Update G network: minimize 1-D(G(z)) + Perception Loss + Image Loss + TV Loss</span>
+        <span class="c1">###########################</span>
+
+        <span class="n">fake_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fake_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">netD</span><span class="p">(</span><span class="n">fake_img</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generator_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator_criterion</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fake_out</span><span class="p">,</span> <span class="n">fake_img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_img</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.generator_backward"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.generator_backward">[docs]</a>    <span class="k">def</span> <span class="nf">generator_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Hook: sends backward</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generator_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.generator_optim_step"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.generator_optim_step">[docs]</a>    <span class="k">def</span> <span class="nf">generator_optim_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Discriminator optimizer step</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizerG</span><span class="o">.</span><span class="n">step</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.optimizer_zero_grad"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.optimizer_zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">optimizer_zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Zero grad</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">netD</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.discriminator_backward"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.discriminator_backward">[docs]</a>    <span class="k">def</span> <span class="nf">discriminator_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_discriminator_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">retain_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.on_end_training_batch"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.on_end_training_batch">[docs]</a>    <span class="k">def</span> <span class="nf">on_end_training_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># loss for current batch before optimization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;g_loss&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generator_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;d_loss&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_discriminator_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;d_score&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">real_out</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;g_score&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fake_out</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_iter</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="n">desc</span><span class="o">=</span><span class="s1">&#39;[</span><span class="si">%d</span><span class="s1">/</span><span class="si">%d</span><span class="s1">] Loss_D: </span><span class="si">%.4f</span><span class="s1"> Loss_G: </span><span class="si">%.4f</span><span class="s1"> D(x): </span><span class="si">%.4f</span><span class="s1"> D(G(z)): </span><span class="si">%.4f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_epochs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;d_loss&#39;</span><span class="p">]</span> <span class="o">/</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;g_loss&#39;</span><span class="p">]</span> <span class="o">/</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;d_score&#39;</span><span class="p">]</span> <span class="o">/</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;g_score&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.on_epoch_end"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.on_epoch_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_csv_epoch</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_model</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_csv</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.on_evaluate_epoch_start"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.on_evaluate_epoch_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_img_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_model_save_dir</span><span class="p">,</span>
+                                         <span class="s2">&quot;SRF_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span><span class="p">),</span> <span class="s2">&quot;output&quot;</span><span class="p">)</span>
+        <span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">out_img_path</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mse&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;ssims&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                               <span class="s1">&#39;psnr&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;ssim&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;batch_sizes&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_images</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid_epoch_iter</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valid_loader</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.evaluate_batch"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.evaluate_batch">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="n">val_lr</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">val_hr_restore</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">val_hr</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batch_size_valid</span>
+        <span class="n">lr</span> <span class="o">=</span> <span class="n">val_lr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hr</span> <span class="o">=</span> <span class="n">val_hr</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cuda</span><span class="p">:</span>
+            <span class="n">lr</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hr</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_hr_restore</span> <span class="o">=</span> <span class="n">val_hr_restore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_mse</span> <span class="o">=</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">hr</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;mse&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_mse</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batch_size_valid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_ssim</span> <span class="o">=</span> <span class="n">ssim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hr</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.on_evaluate_batch_end"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.on_evaluate_batch_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_batch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;ssims&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_ssim</span> <span class="o">*</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">_batch_size_valid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;psnr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">hr</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;mse&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;ssim&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;ssims&#39;</span><span class="p">]</span> <span class="o">/</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid_epoch_iter</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span>
+            <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;[converting LR images to SR images] PSNR: </span><span class="si">%.4f</span><span class="s1"> dB SSIM: </span><span class="si">%.4f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;psnr&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;ssim&#39;</span><span class="p">]))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_images</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">display_transform</span><span class="p">()(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_hr_restore</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span> <span class="n">display_transform</span><span class="p">()(</span><span class="bp">self</span><span class="o">.</span><span class="n">hr</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
+                <span class="n">display_transform</span><span class="p">()(</span><span class="bp">self</span><span class="o">.</span><span class="n">sr</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))])</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.on_evaluate_epoch_end"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.on_evaluate_epoch_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_images</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_images</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_images</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">val_images</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_images</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">//</span> <span class="mi">15</span><span class="p">)</span>
+        <span class="n">val_save_bar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_images</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;[saving training results]&#39;</span><span class="p">)</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">val_save_bar</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">vutils</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">nrow</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">vutils</span><span class="o">.</span><span class="n">save_image</span><span class="p">(</span>
+                <span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_img_path</span> <span class="o">+</span> <span class="s1">&#39;epoch_</span><span class="si">%d</span><span class="s1">_index_</span><span class="si">%d</span><span class="s1">.png&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="p">,</span> <span class="n">index</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.save_model"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.save_model">[docs]</a>    <span class="k">def</span> <span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save model</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        epoch : int</span>
+<span class="sd">            current epoch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out_model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_model_save_dir</span><span class="p">,</span> <span class="s2">&quot;epochs&quot;</span><span class="p">)</span>
+        <span class="n">makedirs</span><span class="p">(</span><span class="n">out_model_path</span><span class="p">)</span>
+
+        <span class="n">g_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;netG_epoch_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s1">.pth&#39;</span>
+        <span class="n">d_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;netD_epoch_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="si">}</span><span class="s1">.pth&#39;</span>
+
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+                   <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_model_path</span><span class="p">,</span> <span class="n">g_name</span><span class="p">))</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+                   <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_model_path</span><span class="p">,</span> <span class="n">d_name</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;d_loss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;d_loss&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;g_loss&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;g_loss&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;d_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;d_score&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;g_score&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;g_score&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_results</span><span class="p">[</span><span class="s1">&#39;batch_sizes&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;psnr&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;psnr&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;ssim&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valing_results</span><span class="p">[</span><span class="s1">&#39;ssim&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.save_csv"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.save_csv">[docs]</a>    <span class="k">def</span> <span class="nf">save_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># save loss\scores\psnr\ssim</span>
+        <span class="n">out_stat_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_model_save_dir</span><span class="p">,</span>
+                                     <span class="s2">&quot;SRF_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span><span class="p">),</span> <span class="s2">&quot;statistics&quot;</span><span class="p">)</span>
+
+        <span class="n">makedirs</span><span class="p">(</span><span class="n">out_stat_path</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;saving .csv file&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">)</span>
+        <span class="n">data_frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Loss_D&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;d_loss&#39;</span><span class="p">],</span> <span class="s1">&#39;Loss_G&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;g_loss&#39;</span><span class="p">],</span> <span class="s1">&#39;Score_D&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;d_score&#39;</span><span class="p">],</span>
+                  <span class="s1">&#39;Score_G&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;g_score&#39;</span><span class="p">],</span> <span class="s1">&#39;PSNR&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;psnr&#39;</span><span class="p">],</span> <span class="s1">&#39;SSIM&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;ssim&#39;</span><span class="p">]},</span>
+            <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="n">csv_name</span> <span class="o">=</span> <span class="s1">&#39;srf_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_train_results.csv&#39;</span>
+        <span class="n">data_frame</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">out_stat_path</span><span class="p">,</span> <span class="n">csv_name</span><span class="p">),</span> <span class="n">index_label</span><span class="o">=</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.load_model"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.load_model">[docs]</a>    <span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_model_path</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.test_batch"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.test_batch">[docs]</a>    <span class="k">def</span> <span class="nf">test_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.on_test_start"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.on_test_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_test_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Set5&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;psnr&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;ssim&#39;</span><span class="p">:</span> <span class="p">[]},</span> <span class="s1">&#39;Set14&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;psnr&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;ssim&#39;</span><span class="p">:</span> <span class="p">[]},</span> <span class="s1">&#39;BSD100&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;psnr&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;ssim&#39;</span><span class="p">:</span> <span class="p">[]},</span>
+                        <span class="s1">&#39;Urban100&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;psnr&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;ssim&#39;</span><span class="p">:</span> <span class="p">[]},</span> <span class="s1">&#39;SunHays80&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;psnr&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;ssim&#39;</span><span class="p">:</span> <span class="p">[]}}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_bench_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_model_save_dir</span><span class="p">,</span>
+                                           <span class="s2">&quot;SRF_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span><span class="p">),</span> <span class="s2">&quot;benchmark_results&quot;</span><span class="p">)</span>
+
+        <span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">out_bench_path</span><span class="p">)</span>
+
+        <span class="n">test_bar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_loader</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;[testing benchmark datasets]&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_loop_iter</span> <span class="o">=</span> <span class="n">test_bar</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.test_step"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.test_step">[docs]</a>    <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_arg</span><span class="p">):</span>
+        <span class="n">image_name</span> <span class="o">=</span> <span class="n">test_arg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">lr_image</span> <span class="o">=</span> <span class="n">test_arg</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">hr_restore_img</span> <span class="o">=</span> <span class="n">test_arg</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">hr_image</span> <span class="o">=</span> <span class="n">test_arg</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+        <span class="n">image_name</span> <span class="o">=</span> <span class="n">image_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">lr_image</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">lr_image</span><span class="p">)</span>
+        <span class="n">hr_image</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">hr_image</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cuda</span><span class="p">:</span>
+            <span class="n">lr_image</span> <span class="o">=</span> <span class="n">lr_image</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="n">hr_image</span> <span class="o">=</span> <span class="n">hr_image</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+        <span class="n">sr_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">netG</span><span class="p">(</span><span class="n">lr_image</span><span class="p">)</span>
+
+        <span class="n">mse</span> <span class="o">=</span> <span class="p">((</span><span class="n">hr_image</span> <span class="o">-</span> <span class="n">sr_image</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">psnr</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">mse</span><span class="p">)</span>
+        <span class="n">_ssim</span> <span class="o">=</span> <span class="n">ssim</span><span class="p">(</span><span class="n">sr_image</span><span class="p">,</span> <span class="n">hr_image</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>  <span class="c1"># data[0]</span>
+
+        <span class="n">test_images</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">display_transform</span><span class="p">()(</span><span class="n">hr_restore_img</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span> <span class="n">display_transform</span><span class="p">()(</span><span class="n">hr_image</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
+             <span class="n">display_transform</span><span class="p">()(</span><span class="n">sr_image</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))])</span>
+
+        <span class="n">image</span> <span class="o">=</span> <span class="n">vutils</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="n">test_images</span><span class="p">,</span> <span class="n">nrow</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">vutils</span><span class="o">.</span><span class="n">save_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_bench_path</span> <span class="o">+</span> <span class="n">image_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_psnr_</span><span class="si">%.4f</span><span class="s1">_ssim_</span><span class="si">%.4f</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">psnr</span><span class="p">,</span> <span class="n">_ssim</span><span class="p">)</span> <span class="o">+</span>
+                          <span class="n">image_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="c1"># save psnr\ssim</span>
+        <span class="c1"># print(image_name)</span>
+        <span class="c1"># print(image_name.split(&#39;_&#39;)[0])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;SunHays80&#39;</span><span class="p">][</span><span class="s1">&#39;psnr&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">psnr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;SunHays80&#39;</span><span class="p">][</span><span class="s1">&#39;ssim&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_ssim</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SrganTrainer.on_test_end"><a class="viewcode-back" href="../../../../../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer.on_test_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_test_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">out_stat_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_model_save_dir</span><span class="p">,</span>
+                                     <span class="s2">&quot;SRF_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span><span class="p">),</span> <span class="s2">&quot;statistics&quot;</span><span class="p">)</span>
+
+        <span class="n">makedirs</span><span class="p">(</span><span class="n">out_stat_path</span><span class="p">)</span>
+
+        <span class="n">saved_results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;psnr&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;ssim&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">psnr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;psnr&#39;</span><span class="p">])</span>
+            <span class="n">_ssim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;ssim&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">psnr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_ssim</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">psnr</span> <span class="o">=</span> <span class="s1">&#39;No data&#39;</span>
+                <span class="n">_ssim</span> <span class="o">=</span> <span class="s1">&#39;No data&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">psnr</span> <span class="o">=</span> <span class="n">psnr</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+                <span class="n">_ssim</span> <span class="o">=</span> <span class="n">_ssim</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="n">saved_results</span><span class="p">[</span><span class="s1">&#39;psnr&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">psnr</span><span class="p">)</span>
+            <span class="n">saved_results</span><span class="p">[</span><span class="s1">&#39;ssim&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_ssim</span><span class="p">)</span>
+
+        <span class="n">data_frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">saved_results</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">data_frame</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_stat_path</span><span class="p">,</span> <span class="s1">&#39;srf_&#39;</span> <span class="o">+</span>
+                                       <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upscale_factor</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_test_results.csv&#39;</span><span class="p">),</span> <span class="n">index_label</span><span class="o">=</span><span class="s1">&#39;DataSet&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MIT License.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

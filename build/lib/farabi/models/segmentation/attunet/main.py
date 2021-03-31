@@ -1,9 +1,9 @@
 import os
 import time
-from farabi.data.dataloader import get_trainloader, get_testloader
+from farabio.data.dataloader import get_trainloader, get_testloader
 from trainer import Trainer
 from config import get_config
-from farabi.utils.helpers import x, makedirs
+from farabio.utils.helpers import x, makedirs
 
 
 if __name__ == "__main__":

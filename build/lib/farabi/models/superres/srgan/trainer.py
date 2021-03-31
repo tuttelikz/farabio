@@ -1,14 +1,14 @@
 import os
 import torch
-from farabi.utils.helpers import makedirs
+from farabio.utils.helpers import makedirs
 import torchvision.utils as vutils
 from srgan import Generator, Discriminator
-from farabi.utils.losses import GeneratorLoss
+from farabio.utils.losses import GeneratorLoss
 from tqdm import tqdm
 from torch.autograd import Variable
-from farabi.utils.metrics import ssim
+from farabio.utils.metrics import ssim
 import math
-from farabi.prep.transforms import display_transform
+from farabio.prep.transforms import display_transform
 import pandas as pd
 import numpy as np
 

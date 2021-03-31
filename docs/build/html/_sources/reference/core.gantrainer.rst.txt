@@ -1,4 +1,4 @@
-:py:mod:`~farabi.core.gantrainer` Module
+:py:mod:`~farabio.core.gantrainer` Module
 =============================================
 
 :py:class:`~.GanTrainer` class makes use of hooks. Hooks are a collection of methods which provide
@@ -162,5 +162,5 @@ Test loop
 Docs
 ---------------------
 
-.. autoclass:: farabi.core.gantrainer.GanTrainer
+.. autoclass:: farabio.core.gantrainer.GanTrainer
    :members:

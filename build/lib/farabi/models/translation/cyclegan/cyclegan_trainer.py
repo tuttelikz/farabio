@@ -8,13 +8,13 @@ from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from torchvision.utils import save_image
 import torchvision.transforms as transforms
-from farabi.core.gantrainer import GanTrainer
-from farabi.core.configs import get_config
-from farabi.data.datasets import ImageDataset
-from farabi.utils.helpers import ReplayBuffer
-from farabi.utils.loggers import SrganViz
-from farabi.utils.regul import weights_init_normal, LambdaLR
-from farabi.models.translation.cyclegan.cyclegan import Generator, Discriminator
+from farabio.core.gantrainer import GanTrainer
+from farabio.core.configs import get_config
+from farabio.data.datasets import ImageDataset
+from farabio.utils.helpers import ReplayBuffer
+from farabio.utils.loggers import SrganViz
+from farabio.utils.regul import weights_init_normal, LambdaLR
+from farabio.models.translation.cyclegan.cyclegan import Generator, Discriminator
 
 
 class CycleganTrainer(GanTrainer):
@@ -22,7 +22,7 @@ class CycleganTrainer(GanTrainer):
 
     Parameters
     ----------
-    GanTrainer : farabi.core.basetrainer.BaseTrainer
+    GanTrainer : farabio.core.basetrainer.BaseTrainer
         Inherits GanTrainer class
     """
 

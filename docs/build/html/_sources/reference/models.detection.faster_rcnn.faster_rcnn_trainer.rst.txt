@@ -1,5 +1,5 @@
-:py:mod:`~farabi.models.detection.faster_rcnn.faster_rcnn_trainer` Module
-=========================================================================
+:py:mod:`~farabio.models.detection.faster_rcnn.faster_rcnn_trainer` Module
+==============================================================================
 
 .. image:: ../imgs/faster_rcnn.png
    :width: 600
@@ -19,5 +19,5 @@ References
 :py:class:`~.FasterRCNNTrainer` class
 -----------------------------------------
 
-.. autoclass:: farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer
+.. autoclass:: farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer
    :members:

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>convnettrainer Module &mdash; farabi 0.0.3 documentation</title>
+  <title>convnettrainer Module &mdash; farabio 0.0.3 documentation</title>
   
 
   
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> farabi
+            <a href="../index.html" class="icon icon-home"> farabio
           
 
           
@@ -120,7 +120,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">farabi</a>
+          <a href="../index.html">farabio</a>
         
       </nav>
 
@@ -176,7 +176,7 @@
             
   <div class="section" id="convnettrainer-module">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">convnettrainer</span></code> Module<a class="headerlink" href="#convnettrainer-module" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer" title="farabi.core.convnettrainer.ConvnetTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConvnetTrainer</span></code></a> class makes use of hooks. Hooks are a collection of methods which provide
+<p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer" title="farabio.core.convnettrainer.ConvnetTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConvnetTrainer</span></code></a> class makes use of hooks. Hooks are a collection of methods which provide
 quick access to exact entry in loop. In this way, we can override these methods with custom functionality
 in either training, evaluation or test loops.</p>
 <div class="section" id="non-lifecycle-hooks">
@@ -184,31 +184,31 @@ in either training, evaluation or test loops.</p>
 <div class="section" id="default-methods">
 <h3>Default methods<a class="headerlink" href="#default-methods" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.init_attr" title="farabi.core.convnettrainer.ConvnetTrainer.init_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">init_attr()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.get_trainloader" title="farabi.core.convnettrainer.ConvnetTrainer.get_trainloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trainloader()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.get_testloader" title="farabi.core.convnettrainer.ConvnetTrainer.get_testloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_testloader()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.build_model" title="farabi.core.convnettrainer.ConvnetTrainer.build_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_model()</span></code></a> | <a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.build_parallel_model" title="farabi.core.convnettrainer.ConvnetTrainer.build_parallel_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_parallel_model()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.init_attr" title="farabio.core.convnettrainer.ConvnetTrainer.init_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">init_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.get_trainloader" title="farabio.core.convnettrainer.ConvnetTrainer.get_trainloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_trainloader()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.get_testloader" title="farabio.core.convnettrainer.ConvnetTrainer.get_testloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_testloader()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.build_model" title="farabio.core.convnettrainer.ConvnetTrainer.build_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_model()</span></code></a> | <a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.build_parallel_model" title="farabio.core.convnettrainer.ConvnetTrainer.build_parallel_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_parallel_model()</span></code></a></p></li>
 </ul>
 </div>
 <div class="section" id="methods-to-initalize-class-attributes">
 <h3>Methods to initalize class attributes<a class="headerlink" href="#methods-to-initalize-class-attributes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.define_data_attr" title="farabi.core.convnettrainer.ConvnetTrainer.define_data_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_data_attr()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.define_model_attr" title="farabi.core.convnettrainer.ConvnetTrainer.define_model_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_model_attr()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.define_train_attr" title="farabi.core.convnettrainer.ConvnetTrainer.define_train_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_train_attr()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.define_test_attr" title="farabi.core.convnettrainer.ConvnetTrainer.define_test_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_test_attr()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.define_log_attr" title="farabi.core.convnettrainer.ConvnetTrainer.define_log_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_log_attr()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.define_compute_attr" title="farabi.core.convnettrainer.ConvnetTrainer.define_compute_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_compute_attr()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.define_misc_attr" title="farabi.core.convnettrainer.ConvnetTrainer.define_misc_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_misc_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.define_data_attr" title="farabio.core.convnettrainer.ConvnetTrainer.define_data_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_data_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.define_model_attr" title="farabio.core.convnettrainer.ConvnetTrainer.define_model_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_model_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.define_train_attr" title="farabio.core.convnettrainer.ConvnetTrainer.define_train_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_train_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.define_test_attr" title="farabio.core.convnettrainer.ConvnetTrainer.define_test_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_test_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.define_log_attr" title="farabio.core.convnettrainer.ConvnetTrainer.define_log_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_log_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.define_compute_attr" title="farabio.core.convnettrainer.ConvnetTrainer.define_compute_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_compute_attr()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.define_misc_attr" title="farabio.core.convnettrainer.ConvnetTrainer.define_misc_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_misc_attr()</span></code></a></p></li>
 </ul>
 </div>
 <div class="section" id="native-methods">
 <h3>Native methods<a class="headerlink" href="#native-methods" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.loss_backward" title="farabi.core.convnettrainer.ConvnetTrainer.loss_backward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loss_backward()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.optimizer_step" title="farabi.core.convnettrainer.ConvnetTrainer.optimizer_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimizer_step()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.load_model" title="farabi.core.convnettrainer.ConvnetTrainer.load_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_model()</span></code></a> | <a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.load_parallel_model" title="farabi.core.convnettrainer.ConvnetTrainer.load_parallel_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_parallel_model()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.save_model" title="farabi.core.convnettrainer.ConvnetTrainer.save_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_model()</span></code></a> | <a class="reference internal" href="#farabi.core.convnettrainer.ConvnetTrainer.save_parallel_model" title="farabi.core.convnettrainer.ConvnetTrainer.save_parallel_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_parallel_model()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.loss_backward" title="farabio.core.convnettrainer.ConvnetTrainer.loss_backward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loss_backward()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.optimizer_step" title="farabio.core.convnettrainer.ConvnetTrainer.optimizer_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimizer_step()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.load_model" title="farabio.core.convnettrainer.ConvnetTrainer.load_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_model()</span></code></a> | <a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.load_parallel_model" title="farabio.core.convnettrainer.ConvnetTrainer.load_parallel_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_parallel_model()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.save_model" title="farabio.core.convnettrainer.ConvnetTrainer.save_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_model()</span></code></a> | <a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.save_parallel_model" title="farabio.core.convnettrainer.ConvnetTrainer.save_parallel_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_parallel_model()</span></code></a></p></li>
 </ul>
 </div>
 </div>
@@ -314,8 +314,8 @@ in either training, evaluation or test loops.</p>
 <div class="section" id="docs">
 <h2>Docs<a class="headerlink" href="#docs" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabi.core.convnettrainer.</span></code><code class="sig-name descname"><span class="pre">ConvnetTrainer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.core.convnettrainer.</span></code><code class="sig-name descname"><span class="pre">ConvnetTrainer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer" title="Permalink to this definition">¶</a></dt>
 <dd><p>ConvnetTrainer is main trainer class for every ConvNet related
 architectures.</p>
 <dl class="field-list simple">
@@ -327,193 +327,193 @@ architectures.</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.__init__">
-<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.__init__" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes trainer object</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.default_attr">
-<code class="sig-name descname"><span class="pre">default_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.default_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.default_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.default_attr">
+<code class="sig-name descname"><span class="pre">default_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.default_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.default_attr" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.init_attr">
-<code class="sig-name descname"><span class="pre">init_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.init_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.init_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.init_attr">
+<code class="sig-name descname"><span class="pre">init_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.init_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.init_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract method that initializes object attributes</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.define_data_attr">
-<code class="sig-name descname"><span class="pre">define_data_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.define_data_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.define_data_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.define_data_attr">
+<code class="sig-name descname"><span class="pre">define_data_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.define_data_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.define_data_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define data related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.define_model_attr">
-<code class="sig-name descname"><span class="pre">define_model_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.define_model_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.define_model_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.define_model_attr">
+<code class="sig-name descname"><span class="pre">define_model_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.define_model_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.define_model_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define model related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.define_train_attr">
-<code class="sig-name descname"><span class="pre">define_train_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.define_train_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.define_train_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.define_train_attr">
+<code class="sig-name descname"><span class="pre">define_train_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.define_train_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.define_train_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define training related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.define_test_attr">
-<code class="sig-name descname"><span class="pre">define_test_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.define_test_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.define_test_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.define_test_attr">
+<code class="sig-name descname"><span class="pre">define_test_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.define_test_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.define_test_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define training related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.define_log_attr">
-<code class="sig-name descname"><span class="pre">define_log_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.define_log_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.define_log_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.define_log_attr">
+<code class="sig-name descname"><span class="pre">define_log_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.define_log_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.define_log_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define log related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.define_compute_attr">
-<code class="sig-name descname"><span class="pre">define_compute_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.define_compute_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.define_compute_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.define_compute_attr">
+<code class="sig-name descname"><span class="pre">define_compute_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.define_compute_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.define_compute_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define compute related attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.define_misc_attr">
-<code class="sig-name descname"><span class="pre">define_misc_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.define_misc_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.define_misc_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.define_misc_attr">
+<code class="sig-name descname"><span class="pre">define_misc_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.define_misc_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.define_misc_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define miscellaneous attributes here</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.build_model">
-<code class="sig-name descname"><span class="pre">build_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.build_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.build_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.build_model">
+<code class="sig-name descname"><span class="pre">build_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.build_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.build_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract method that builds model</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.build_parallel_model">
-<code class="sig-name descname"><span class="pre">build_parallel_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.build_parallel_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.build_parallel_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.build_parallel_model">
+<code class="sig-name descname"><span class="pre">build_parallel_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.build_parallel_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.build_parallel_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract method that builds multi-GPU model in parallel</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.get_trainloader">
-<code class="sig-name descname"><span class="pre">get_trainloader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.get_trainloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.get_trainloader" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.get_trainloader">
+<code class="sig-name descname"><span class="pre">get_trainloader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.get_trainloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.get_trainloader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Retreives training set of torch.utils.data.DataLoader class</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.get_testloader">
-<code class="sig-name descname"><span class="pre">get_testloader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.get_testloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.get_testloader" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.get_testloader">
+<code class="sig-name descname"><span class="pre">get_testloader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.get_testloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.get_testloader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Retreives test set of torch.utils.data.DataLoader class</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.train">
-<code class="sig-name descname"><span class="pre">train</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.train" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.train">
+<code class="sig-name descname"><span class="pre">train</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Training loop with hooksa</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.train_loop">
-<code class="sig-name descname"><span class="pre">train_loop</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.train_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.train_loop" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.train_loop">
+<code class="sig-name descname"><span class="pre">train_loop</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.train_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.train_loop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: training loop</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.train_epoch">
-<code class="sig-name descname"><span class="pre">train_epoch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.train_epoch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.train_epoch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.train_epoch">
+<code class="sig-name descname"><span class="pre">train_epoch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.train_epoch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.train_epoch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: epoch of training loop</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.train_batch">
-<code class="sig-name descname"><span class="pre">train_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.train_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.train_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.train_batch">
+<code class="sig-name descname"><span class="pre">train_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.train_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.train_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: batch of training loop</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_train_start">
-<code class="sig-name descname"><span class="pre">on_train_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_train_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_train_start" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_train_start">
+<code class="sig-name descname"><span class="pre">on_train_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_train_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_train_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On start of training loop</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.start_logger">
-<code class="sig-name descname"><span class="pre">start_logger</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.start_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.start_logger" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.start_logger">
+<code class="sig-name descname"><span class="pre">start_logger</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.start_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.start_logger" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Starts logger</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_train_epoch_start">
-<code class="sig-name descname"><span class="pre">on_train_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_train_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_train_epoch_start" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_train_epoch_start">
+<code class="sig-name descname"><span class="pre">on_train_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_train_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_train_epoch_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On epoch start</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_start_training_batch">
-<code class="sig-name descname"><span class="pre">on_start_training_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_start_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_start_training_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_start_training_batch">
+<code class="sig-name descname"><span class="pre">on_start_training_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_start_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_start_training_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On training batch start</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.optimizer_zero_grad">
-<code class="sig-name descname"><span class="pre">optimizer_zero_grad</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.optimizer_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.optimizer_zero_grad" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.optimizer_zero_grad">
+<code class="sig-name descname"><span class="pre">optimizer_zero_grad</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.optimizer_zero_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.optimizer_zero_grad" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Zero gradients of optimizer</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.training_step">
-<code class="sig-name descname"><span class="pre">training_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.training_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.training_step" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.training_step">
+<code class="sig-name descname"><span class="pre">training_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.training_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.training_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: During training batch</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.loss_backward">
-<code class="sig-name descname"><span class="pre">loss_backward</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.loss_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.loss_backward" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.loss_backward">
+<code class="sig-name descname"><span class="pre">loss_backward</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.loss_backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.loss_backward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Loss back-propagation</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.optimizer_step">
-<code class="sig-name descname"><span class="pre">optimizer_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.optimizer_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.optimizer_step" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.optimizer_step">
+<code class="sig-name descname"><span class="pre">optimizer_step</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.optimizer_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.optimizer_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Optimizer step</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_end_training_batch">
-<code class="sig-name descname"><span class="pre">on_end_training_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_end_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_end_training_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_end_training_batch">
+<code class="sig-name descname"><span class="pre">on_end_training_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_end_training_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_end_training_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On end of training batch</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_train_epoch_end">
-<code class="sig-name descname"><span class="pre">on_train_epoch_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_train_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_train_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_train_epoch_end">
+<code class="sig-name descname"><span class="pre">on_train_epoch_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_train_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_train_epoch_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On end of training epoch</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_train_end">
-<code class="sig-name descname"><span class="pre">on_train_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_train_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_train_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_train_end">
+<code class="sig-name descname"><span class="pre">on_train_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_train_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_train_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On end of training</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_epoch_end">
-<code class="sig-name descname"><span class="pre">on_epoch_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_epoch_end">
+<code class="sig-name descname"><span class="pre">on_epoch_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_epoch_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on epoch end</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.stop_train">
-<code class="sig-name descname"><span class="pre">stop_train</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.stop_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.stop_train" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.stop_train">
+<code class="sig-name descname"><span class="pre">stop_train</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.stop_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.stop_train" title="Permalink to this definition">¶</a></dt>
 <dd><p>On end of training</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.evaluate_epoch">
-<code class="sig-name descname"><span class="pre">evaluate_epoch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.evaluate_epoch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.evaluate_epoch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.evaluate_epoch">
+<code class="sig-name descname"><span class="pre">evaluate_epoch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.evaluate_epoch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.evaluate_epoch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: epoch of evaluation loop</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -526,114 +526,114 @@ architectures.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.evaluate_batch">
-<code class="sig-name descname"><span class="pre">evaluate_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.evaluate_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.evaluate_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.evaluate_batch">
+<code class="sig-name descname"><span class="pre">evaluate_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.evaluate_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.evaluate_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: batch of evaluation loop</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_start">
-<code class="sig-name descname"><span class="pre">on_evaluate_start</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_evaluate_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_start" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_evaluate_start">
+<code class="sig-name descname"><span class="pre">on_evaluate_start</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_evaluate_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_evaluate_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on evaluation end</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_epoch_start">
-<code class="sig-name descname"><span class="pre">on_evaluate_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_evaluate_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_epoch_start" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_evaluate_epoch_start">
+<code class="sig-name descname"><span class="pre">on_evaluate_epoch_start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_evaluate_epoch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_evaluate_epoch_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on evaluation start</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_batch_start">
-<code class="sig-name descname"><span class="pre">on_evaluate_batch_start</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_evaluate_batch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_batch_start" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_evaluate_batch_start">
+<code class="sig-name descname"><span class="pre">on_evaluate_batch_start</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_evaluate_batch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_evaluate_batch_start" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_batch_end">
-<code class="sig-name descname"><span class="pre">on_evaluate_batch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_evaluate_batch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_batch_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_evaluate_batch_end">
+<code class="sig-name descname"><span class="pre">on_evaluate_batch_end</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_evaluate_batch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_evaluate_batch_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: On evaluate batch end</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_epoch_end">
-<code class="sig-name descname"><span class="pre">on_evaluate_epoch_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_evaluate_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_evaluate_epoch_end">
+<code class="sig-name descname"><span class="pre">on_evaluate_epoch_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_evaluate_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_evaluate_epoch_end" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_end">
-<code class="sig-name descname"><span class="pre">on_evaluate_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_evaluate_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_evaluate_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_evaluate_end">
+<code class="sig-name descname"><span class="pre">on_evaluate_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_evaluate_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_evaluate_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on evaluation end</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.test">
-<code class="sig-name descname"><span class="pre">test</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.test" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.test">
+<code class="sig-name descname"><span class="pre">test</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.test" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: Test lifecycle</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.test_loop">
-<code class="sig-name descname"><span class="pre">test_loop</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.test_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.test_loop" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.test_loop">
+<code class="sig-name descname"><span class="pre">test_loop</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.test_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.test_loop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: test loop</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_test_start">
-<code class="sig-name descname"><span class="pre">on_test_start</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_test_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_test_start" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_test_start">
+<code class="sig-name descname"><span class="pre">on_test_start</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_test_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_test_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on test start</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_start_test_batch">
-<code class="sig-name descname"><span class="pre">on_start_test_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_start_test_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_start_test_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_start_test_batch">
+<code class="sig-name descname"><span class="pre">on_start_test_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_start_test_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_start_test_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on test batch start</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.test_step">
-<code class="sig-name descname"><span class="pre">test_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.test_step" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.test_step">
+<code class="sig-name descname"><span class="pre">test_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.test_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test action (Put test here)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_end_test_batch">
-<code class="sig-name descname"><span class="pre">on_end_test_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_end_test_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_end_test_batch" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_end_test_batch">
+<code class="sig-name descname"><span class="pre">on_end_test_batch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_end_test_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_end_test_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on end of batch test</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.on_test_end">
-<code class="sig-name descname"><span class="pre">on_test_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.on_test_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.on_test_end" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.on_test_end">
+<code class="sig-name descname"><span class="pre">on_test_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.on_test_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.on_test_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: on end test</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.load_model">
-<code class="sig-name descname"><span class="pre">load_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.load_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.load_model">
+<code class="sig-name descname"><span class="pre">load_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.load_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: load model</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.load_parallel_model">
-<code class="sig-name descname"><span class="pre">load_parallel_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.load_parallel_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.load_parallel_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.load_parallel_model">
+<code class="sig-name descname"><span class="pre">load_parallel_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.load_parallel_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.load_parallel_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: load parallel model</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.save_model">
-<code class="sig-name descname"><span class="pre">save_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.save_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.save_model">
+<code class="sig-name descname"><span class="pre">save_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.save_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: saves model</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.save_parallel_model">
-<code class="sig-name descname"><span class="pre">save_parallel_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.save_parallel_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.save_parallel_model" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.save_parallel_model">
+<code class="sig-name descname"><span class="pre">save_parallel_model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.save_parallel_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.save_parallel_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook: saves parallel model</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="farabi.core.convnettrainer.ConvnetTrainer.exit_trainer">
-<code class="sig-name descname"><span class="pre">exit_trainer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabi/core/convnettrainer.html#ConvnetTrainer.exit_trainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabi.core.convnettrainer.ConvnetTrainer.exit_trainer" title="Permalink to this definition">¶</a></dt>
+<dt id="farabio.core.convnettrainer.ConvnetTrainer.exit_trainer">
+<code class="sig-name descname"><span class="pre">exit_trainer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/core/convnettrainer.html#ConvnetTrainer.exit_trainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.core.convnettrainer.ConvnetTrainer.exit_trainer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exits trainer</p>
 </dd></dl>
 

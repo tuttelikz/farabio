@@ -6,10 +6,10 @@ import torch
 from torch import nn
 from torchvision.models import vgg16
 from torchvision.ops import RoIPool
-from farabi.models.detection.faster_rcnn.region_proposal_network import RegionProposalNetwork
-from farabi.models.detection.faster_rcnn.faster_rcnn import FasterRCNN
-import farabi.utils.helpers as helpers
-from farabi.core.configs import get_config
+from farabio.models.detection.faster_rcnn.region_proposal_network import RegionProposalNetwork
+from farabio.models.detection.faster_rcnn.faster_rcnn import FasterRCNN
+import farabio.utils.helpers as helpers
+from farabio.core.configs import get_config
 
 
 config, _ = get_config("faster_rcnn")

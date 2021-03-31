@@ -6,7 +6,7 @@ Recent Changes
 
 .. git_changelog::
     :revisions: 10
-    :filename_filter: farabi/.*\.py
+    :filename_filter: farabio/.*\.py
 
 .. git_commit_detail::
     :branch: pytorch-pip

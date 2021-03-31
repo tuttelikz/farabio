@@ -5,10 +5,10 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 from torchvision.ops import nms
-import farabi.utils.helpers as helpers
-from farabi.utils.bboxtools import loc2bbox
-from farabi.models.detection.faster_rcnn.dataset import preprocess
-from farabi.core.configs import get_config
+import farabio.utils.helpers as helpers
+from farabio.utils.bboxtools import loc2bbox
+from farabio.models.detection.faster_rcnn.dataset import preprocess
+from farabio.core.configs import get_config
 
 
 config, _ = get_config("faster_rcnn")

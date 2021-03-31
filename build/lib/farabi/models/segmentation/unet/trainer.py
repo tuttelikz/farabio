@@ -1,20 +1,20 @@
 import os
 import torch
 import torch.nn as nn
-from farabi.utils.regul import EarlyStopping
-from farabi.utils.loggers import TensorBoard, vi
-from farabi.utils.losses import Losses
-from farabi.models.segmentation.unet.unet import Unet
-from farabi.models.segmentation.attunet.attunet import AttUnet
-from farabi.prep.imgops import Imgops
-from farabi.utils.helpers import makedirs
+from farabio.utils.regul import EarlyStopping
+from farabio.utils.loggers import TensorBoard, vi
+from farabio.utils.losses import Losses
+from farabio.models.segmentation.unet.unet import Unet
+from farabio.models.segmentation.attunet.attunet import AttUnet
+from farabio.prep.imgops import Imgops
+from farabio.utils.helpers import makedirs
 import torchvision.utils as vutils
 import numpy as np
 import skimage
 from skimage.measure import *
 from skimage.io import imsave
 from skimage import img_as_ubyte
-from farabi.utils.helpers import equal_colors
+from farabio.utils.helpers import equal_colors
 
 
 class Trainer(object):

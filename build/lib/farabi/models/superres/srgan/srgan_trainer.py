@@ -8,14 +8,14 @@ import torch
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
 import torchvision.utils as vutils
-from farabi.data.transforms import display_transform
-from farabi.core.configs import get_config
-from farabi.core.gantrainer import GanTrainer
-from farabi.utils.losses import GeneratorLoss
-from farabi.utils.metrics import ssim
-from farabi.utils.helpers import x, makedirs
-from farabi.models.superres.srgan.srgan import Generator, Discriminator
-from farabi.data.datasets import TrainDatasetFromFolder, ValDatasetFromFolder, TestDatasetFromFolder
+from farabio.data.transforms import display_transform
+from farabio.core.configs import get_config
+from farabio.core.gantrainer import GanTrainer
+from farabio.utils.losses import GeneratorLoss
+from farabio.utils.metrics import ssim
+from farabio.utils.helpers import x, makedirs
+from farabio.models.superres.srgan.srgan import Generator, Discriminator
+from farabio.data.datasets import TrainDatasetFromFolder, ValDatasetFromFolder, TestDatasetFromFolder
 
 
 class SrganTrainer(GanTrainer):

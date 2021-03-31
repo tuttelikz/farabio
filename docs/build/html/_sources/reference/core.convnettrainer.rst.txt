@@ -1,4 +1,4 @@
-:py:mod:`~farabi.core.convnettrainer` Module
+:py:mod:`~farabio.core.convnettrainer` Module
 ==============================================
 
 :py:class:`~.ConvnetTrainer` class makes use of hooks. Hooks are a collection of methods which provide
@@ -141,6 +141,6 @@ Test loop
 Docs
 ---------------------
 
-.. autoclass:: farabi.core.convnettrainer.ConvnetTrainer
+.. autoclass:: farabio.core.convnettrainer.ConvnetTrainer
    :members:
 

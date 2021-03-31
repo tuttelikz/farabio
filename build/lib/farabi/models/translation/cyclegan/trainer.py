@@ -4,10 +4,10 @@ import os
 import sys
 from cyclegan import Generator, Discriminator
 from torch.autograd import Variable
-from farabi.utils.regul import weights_init_normal, LambdaLR
-from farabi.utils.helpers import ReplayBuffer
+from farabio.utils.regul import weights_init_normal, LambdaLR
+from farabio.utils.helpers import ReplayBuffer
 import itertools
-from farabi.utils.loggers import LoggerViz
+from farabio.utils.loggers import LoggerViz
 from torchvision.utils import save_image
 
 

@@ -12,10 +12,10 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib.ticker import NullLocator
 from darknet import Darknet
-from farabi.utils.helpers import rescale_boxes
-from farabi.utils.regul import weights_init_normal
-from farabi.utils.loggers import Logger
-from farabi.utils.losses import get_batch_statistics, non_max_suppression, ap_per_class, xywh2xyxy
+from farabio.utils.helpers import rescale_boxes
+from farabio.utils.regul import weights_init_normal
+from farabio.utils.loggers import Logger
+from farabio.utils.losses import get_batch_statistics, non_max_suppression, ap_per_class, xywh2xyxy
 
 
 class Trainer(object):

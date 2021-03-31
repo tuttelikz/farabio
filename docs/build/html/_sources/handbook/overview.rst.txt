@@ -28,16 +28,16 @@ Diagram
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. graphviz::
    
-   graph FarabiOverview {
+   graph farabioOverview {
 
    node [shape=box, colorscheme=set32 , style=rounded];
 
-   farabi -- core;
-   farabi -- data;
-   farabi -- models;
-   farabi -- utils;
+   farabio -- core;
+   farabio -- data;
+   farabio -- models;
+   farabio -- utils;
 
-   farabi  [fillcolor=1, style="rounded"]
+   farabio  [fillcolor=1, style="rounded"]
    core  [fillcolor=2, style="rounded"]
    data  [fillcolor=2, style="rounded"]
    models  [fillcolor=2, style="rounded"]
@@ -117,8 +117,8 @@ Tree structure
 Inheritance of trainers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. inheritance-diagram:: farabi.models.segmentation.unet.unet_trainer.UnetTrainer farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer farabi.models.superres.srgan.srgan_trainer.SrganTrainer farabi.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer farabi.models.detection.yolov3.yolo_trainer.YoloTrainer farabi.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer
-   :top-classes: farabi.core.basetrainer.BaseTrainer
+.. inheritance-diagram:: farabio.models.segmentation.unet.unet_trainer.UnetTrainer farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer farabio.models.superres.srgan.srgan_trainer.SrganTrainer farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer farabio.models.detection.yolov3.yolo_trainer.YoloTrainer farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer
+   :top-classes: farabio.core.basetrainer.BaseTrainer
    :parts: 1
 
 How to contribute?

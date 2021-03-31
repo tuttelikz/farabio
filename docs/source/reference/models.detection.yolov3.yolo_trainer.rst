@@ -1,4 +1,4 @@
-:py:mod:`~farabi.models.detection.yolov3.yolo_trainer` Module
+:py:mod:`~farabio.models.detection.yolov3.yolo_trainer` Module
 =========================================================================
 
 .. image:: ../imgs/yolov3.png
@@ -21,5 +21,5 @@ References
 :py:class:`~.YoloTrainer` class
 -----------------------------------------
 
-.. autoclass:: farabi.models.detection.yolov3.yolo_trainer.YoloTrainer
+.. autoclass:: farabio.models.detection.yolov3.yolo_trainer.YoloTrainer
    :members:

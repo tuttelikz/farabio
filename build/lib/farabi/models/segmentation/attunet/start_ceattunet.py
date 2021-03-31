@@ -1,12 +1,12 @@
 import os
 import time
 import torch
-from farabi.models.segmentation.Trainer_attunet import Trainer
-from farabi.models.segmentation.Config_attunet import get_config
-from farabi.data.dataloader import get_trainloader
-from farabi.data.datasets import ImgLabelDataset, XenopusDataset
-from farabi.prep.transforms import Compose, Dataraf, Datajit, ImgNormalize, ToLongTensor, ImgToTensor
-from farabi.utils.helpers import calc_weights
+from farabio.models.segmentation.Trainer_attunet import Trainer
+from farabio.models.segmentation.Config_attunet import get_config
+from farabio.data.dataloader import get_trainloader
+from farabio.data.datasets import ImgLabelDataset, XenopusDataset
+from farabio.prep.transforms import Compose, Dataraf, Datajit, ImgNormalize, ToLongTensor, ImgToTensor
+from farabio.utils.helpers import calc_weights
 from torchvision.transforms import transforms
 from torch.utils.data import WeightedRandomSampler, DataLoader
 

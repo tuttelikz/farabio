@@ -13,7 +13,7 @@ import torch.nn as nn
 import torch
 import sys
 from abc import ABC, abstractmethod
-from farabi.utils.helpers import get_gpu_memory_map
+from farabio.utils.helpers import get_gpu_memory_map
 
 
 class BaseTrainer(ABC):

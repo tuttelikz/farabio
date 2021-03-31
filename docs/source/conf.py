@@ -16,13 +16,13 @@ import sphinx_rtd_theme
 import shutil
 from recommonmark.parser import CommonMarkParser
 
-# sys.path.insert(0, os.path.abspath('../../farabi/models/'))  # models added here
-sys.path.insert(0, os.path.abspath('../../farabi/'))  # models added here
+# sys.path.insert(0, os.path.abspath('../../farabio/models/'))  # models added here
+sys.path.insert(0, os.path.abspath('../../farabio/'))  # models added here
 sys.path.insert(0, os.path.abspath('../../'))  # models added here
 
 # -- Project information -----------------------------------------------------
 
-project = 'farabi'
+project = 'farabio'
 copyright = '2021, MIT License'
 author = 'San Askaruly'
 

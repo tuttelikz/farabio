@@ -1,0 +1,627 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>farabio.models.detection.faster_rcnn.faster_rcnn_trainer &mdash; farabio 0.0.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home"> farabio
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../reference/index.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">farabio</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>farabio.models.detection.faster_rcnn.faster_rcnn_trainer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for farabio.models.detection.faster_rcnn.faster_rcnn_trainer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">ipdb</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">functional</span> <span class="k">as</span> <span class="n">F</span>
+<span class="kn">from</span> <span class="nn">torch.utils</span> <span class="kn">import</span> <span class="n">data</span> <span class="k">as</span> <span class="n">data_</span>
+<span class="kn">from</span> <span class="nn">farabio.core.convnettrainer</span> <span class="kn">import</span> <span class="n">ConvnetTrainer</span>
+<span class="kn">from</span> <span class="nn">farabio.models.detection.faster_rcnn.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">TestDataset</span><span class="p">,</span> <span class="n">inverse_normalize</span>
+<span class="kn">from</span> <span class="nn">farabio.models.detection.faster_rcnn.faster_rcnn_vgg16</span> <span class="kn">import</span> <span class="n">FasterRCNNVGG16</span>
+<span class="kn">from</span> <span class="nn">farabio.models.detection.faster_rcnn.creator_tool</span> <span class="kn">import</span> <span class="n">AnchorTargetCreator</span><span class="p">,</span> <span class="n">ProposalTargetCreator</span>
+<span class="kn">import</span> <span class="nn">farabio.utils.helpers</span> <span class="k">as</span> <span class="nn">helpers</span>
+<span class="kn">from</span> <span class="nn">farabio.utils.losses</span> <span class="kn">import</span> <span class="n">Losses</span>
+<span class="kn">from</span> <span class="nn">farabio.utils.metrics</span> <span class="kn">import</span> <span class="n">eval_detection_voc</span>
+<span class="kn">from</span> <span class="nn">farabio.utils.meters</span> <span class="kn">import</span> <span class="n">ConfusionMeter</span><span class="p">,</span> <span class="n">AverageValueMeter</span>
+<span class="kn">from</span> <span class="nn">farabio.utils.vistools</span> <span class="kn">import</span> <span class="n">Visualizer</span><span class="p">,</span> <span class="n">visdom_bbox</span>
+<span class="c1"># fix for ulimit</span>
+<span class="c1"># https://github.com/pytorch/pytorch/issues/973#issuecomment-346405667</span>
+<span class="kn">import</span> <span class="nn">resource</span>
+<span class="c1">#from farabio.models.detection.faster_rcnn.config import opt</span>
+
+<span class="c1"># Start train with: python train.py train --env=&#39;fasterrcnn&#39; --plot-every=100</span>
+<span class="n">rlimit</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">getrlimit</span><span class="p">(</span><span class="n">resource</span><span class="o">.</span><span class="n">RLIMIT_NOFILE</span><span class="p">)</span>
+<span class="n">resource</span><span class="o">.</span><span class="n">setrlimit</span><span class="p">(</span><span class="n">resource</span><span class="o">.</span><span class="n">RLIMIT_NOFILE</span><span class="p">,</span> <span class="p">(</span><span class="mi">20480</span><span class="p">,</span> <span class="n">rlimit</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;agg&#39;</span><span class="p">)</span>
+
+<span class="n">LossTuple</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;LossTuple&#39;</span><span class="p">,</span>
+                       <span class="p">[</span><span class="s1">&#39;rpn_loc_loss&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;rpn_cls_loss&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;roi_loc_loss&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;roi_cls_loss&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;total_loss&#39;</span>
+                        <span class="p">])</span>
+
+
+<div class="viewcode-block" id="FasterRCNNTrainer"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer">[docs]</a><span class="k">class</span> <span class="nc">FasterRCNNTrainer</span><span class="p">(</span><span class="n">ConvnetTrainer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;FasterRCNNTrainer trainer class. Override with custom methods here.</span>
+
+<span class="sd">    The losses include:</span>
+
+<span class="sd">    * :obj:`rpn_loc_loss`: The localization loss for \</span>
+<span class="sd">        Region Proposal Network (RPN).</span>
+<span class="sd">    * :obj:`rpn_cls_loss`: The classification loss for RPN.</span>
+<span class="sd">    * :obj:`roi_loc_loss`: The localization loss for the head module.</span>
+<span class="sd">    * :obj:`roi_cls_loss`: The classification loss for the head module.</span>
+<span class="sd">    * :obj:`total_loss`: The sum of 4 loss above.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        faster_rcnn (model.FasterRCNN):</span>
+<span class="sd">            A Faster R-CNN model that is going to be trained.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.define_train_attr"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_train_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_train_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">start_epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_epochs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_epochs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_eval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">has_eval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_interval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">eval_interval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_test_num</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">test_num</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rpn_sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">rpn_sigma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">roi_sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">roi_sigma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scale_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">scale_epoch</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.define_model_attr"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_model_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_model_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anchor_target_creator</span> <span class="o">=</span> <span class="n">AnchorTargetCreator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proposal_target_creator</span> <span class="o">=</span> <span class="n">ProposalTargetCreator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_backbone</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;load_optimizer&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;load_path&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_best_path</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.define_log_attr"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_log_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_log_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_use_visdom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">use_visdom</span>
+        <span class="c1"># indicators for training status</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rpn_cm</span> <span class="o">=</span> <span class="n">ConfusionMeter</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">roi_cm</span> <span class="o">=</span> <span class="n">ConfusionMeter</span><span class="p">(</span><span class="mi">21</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meters</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">AverageValueMeter</span><span class="p">()</span>
+                       <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">LossTuple</span><span class="o">.</span><span class="n">_fields</span><span class="p">}</span>  <span class="c1"># average loss</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">save_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">save_optimizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plot_every</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">plot_every</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_visdom</span><span class="p">:</span>
+            <span class="c1"># visdom wrapper</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vis</span> <span class="o">=</span> <span class="n">Visualizer</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">env</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.define_misc_attr"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_misc_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_misc_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">mode</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.get_trainloader"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.get_trainloader">[docs]</a>    <span class="k">def</span> <span class="nf">get_trainloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;load data&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_loader</span> <span class="o">=</span> <span class="n">data_</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span>
+                                             <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                             <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> \
+                                             <span class="c1"># pin_memory=True,</span>
+                                             <span class="n">num_workers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_workers</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.get_testloader"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.get_testloader">[docs]</a>    <span class="k">def</span> <span class="nf">get_testloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">testset</span> <span class="o">=</span> <span class="n">TestDataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_loader</span> <span class="o">=</span> <span class="n">data_</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">testset</span><span class="p">,</span>
+                                            <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                            <span class="n">num_workers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">test_num_workers</span><span class="p">,</span>
+                                            <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                            <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span>
+                                            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.build_model"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.build_model">[docs]</a>    <span class="k">def</span> <span class="nf">build_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span> <span class="o">=</span> <span class="n">FasterRCNNVGG16</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;model construct completed&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">cuda</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+        <span class="c1"># target creator create gt_bbox gt_label etc as training targets.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loc_normalize_mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">loc_normalize_mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loc_normalize_std</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">loc_normalize_std</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">get_optimizer</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.load_model"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.load_model">[docs]</a>    <span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">state_dict</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">load_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;model&#39;</span> <span class="ow">in</span> <span class="n">state_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># legacy way, for backward compatibility</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;optimizer&#39;</span> <span class="ow">in</span> <span class="n">state_dict</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_optimizer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.save"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">save_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="n">save_dict</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+        <span class="c1">#save_dict[&#39;config&#39;] = opt._state_dict()</span>
+        <span class="n">save_dict</span><span class="p">[</span><span class="s1">&#39;config&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">state_dict_from_namespace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">save_dict</span><span class="p">[</span><span class="s1">&#39;other_info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span>
+        <span class="n">save_dict</span><span class="p">[</span><span class="s1">&#39;vis_info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_save_optimizer</span><span class="p">:</span>
+            <span class="n">save_dict</span><span class="p">[</span><span class="s1">&#39;optimizer&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+
+        <span class="n">timestr</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%m</span><span class="si">%d</span><span class="s1">%H%M&#39;</span><span class="p">)</span>
+        <span class="n">save_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_save_path</span><span class="si">}</span><span class="s2">fasterrcnn_</span><span class="si">{</span><span class="n">timestr</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">k_</span><span class="p">,</span> <span class="n">v_</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">save_path</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;_</span><span class="si">{</span><span class="n">v_</span><span class="si">}</span><span class="s1">&#39;</span>
+
+        <span class="n">save_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+        <span class="n">helpers</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;saving&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">save_dict</span><span class="p">,</span> <span class="n">save_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">save</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">env</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_path</span> <span class="o">=</span> <span class="n">save_path</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.save_model"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.save_model">[docs]</a>    <span class="k">def</span> <span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save_dict</span><span class="p">,</span> <span class="n">save_path</span><span class="p">):</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">save_dict</span><span class="p">,</span> <span class="n">save_path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.on_train_start"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_train_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_train_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">load_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_model</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;load pretrained model from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">load_path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">best_map</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">lr</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.start_logger"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.start_logger">[docs]</a>    <span class="k">def</span> <span class="nf">start_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">label_names</span><span class="p">,</span> <span class="n">win</span><span class="o">=</span><span class="s1">&#39;labels&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.on_train_epoch_start"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_train_epoch_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_train_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_meters</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_iter</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_loader</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.on_start_training_batch"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_start_training_batch">[docs]</a>    <span class="k">def</span> <span class="nf">on_start_training_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ii</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bbox_</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.training_step"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.training_step">[docs]</a>    <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bbox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="o">.</span><span class="n">cuda</span><span class="p">(</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">bbox_</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_zero_grad</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_backward</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_step</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_meters</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ii</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visdom_plot</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.on_evaluate_epoch_start"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_evaluate_epoch_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_bboxes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_labels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_scores</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gt_bboxes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gt_labels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gt_difficults</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">valid_epoch_iter</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_loader</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.on_evaluate_batch_start"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_evaluate_batch_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_batch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ii</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imgs</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gt_bboxes_</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gt_labels_</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gt_difficults_</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.on_evaluate_epoch_end"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_evaluate_epoch_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval_result</span> <span class="o">=</span> <span class="n">eval_detection_voc</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pred_bboxes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_labels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pred_scores</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gt_bboxes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gt_labels</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gt_difficults</span><span class="p">,</span>
+            <span class="n">use_07_metric</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.visdom_plot"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.visdom_plot">[docs]</a>    <span class="k">def</span> <span class="nf">visdom_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">debug_file</span><span class="p">):</span>
+            <span class="n">ipdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
+
+        <span class="c1"># plot loss</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">plot_many</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meter_data</span><span class="p">())</span>
+
+        <span class="c1"># plot groud truth bboxes</span>
+        <span class="n">ori_img_</span> <span class="o">=</span> <span class="n">inverse_normalize</span><span class="p">(</span><span class="n">helpers</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">gt_img</span> <span class="o">=</span> <span class="n">visdom_bbox</span><span class="p">(</span><span class="n">ori_img_</span><span class="p">,</span>
+                             <span class="n">helpers</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bbox_</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                             <span class="n">helpers</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">img</span><span class="p">(</span><span class="s1">&#39;gt_img&#39;</span><span class="p">,</span> <span class="n">gt_img</span><span class="p">)</span>
+
+        <span class="c1"># plot predicti bboxes</span>
+        <span class="n">_bboxes</span><span class="p">,</span> <span class="n">_labels</span><span class="p">,</span> <span class="n">_scores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">ori_img_</span><span class="p">],</span> <span class="n">visualize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">pred_img</span> <span class="o">=</span> <span class="n">visdom_bbox</span><span class="p">(</span><span class="n">ori_img_</span><span class="p">,</span>
+                               <span class="n">helpers</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(</span><span class="n">_bboxes</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                               <span class="n">helpers</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(</span><span class="n">_labels</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+                               <span class="n">helpers</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(</span><span class="n">_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">img</span><span class="p">(</span><span class="s1">&#39;pred_img&#39;</span><span class="p">,</span> <span class="n">pred_img</span><span class="p">)</span>
+
+        <span class="c1"># rpn confusion matrix(meter)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rpn_cm</span><span class="o">.</span><span class="n">value</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()),</span> <span class="n">win</span><span class="o">=</span><span class="s1">&#39;rpn_cm&#39;</span><span class="p">)</span>
+        <span class="c1"># roi confusion matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">img</span><span class="p">(</span><span class="s1">&#39;roi_cm&#39;</span><span class="p">,</span> <span class="n">helpers</span><span class="o">.</span><span class="n">totensor</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">roi_cm</span><span class="o">.</span><span class="n">conf</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.on_epoch_end"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.on_epoch_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;test_map&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_result</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">])</span>
+        <span class="n">lr_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span>
+        <span class="n">log_info</span> <span class="o">=</span> <span class="s1">&#39;lr:</span><span class="si">{}</span><span class="s1">, map:</span><span class="si">{}</span><span class="s1">,loss:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">lr_</span><span class="p">),</span>
+                                                  <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_result</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">]),</span>
+                                                  <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_meter_data</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">log_info</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_result</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_map</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">best_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_result</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">best_map</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">best_map</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epoch</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale_epoch</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_model</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">scale_lr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">lr_decay</span><span class="p">)</span>
+            <span class="n">lr_</span> <span class="o">=</span> <span class="n">lr_</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">lr_decay</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epoch</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_epochs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop_train</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.evaluate_batch"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.evaluate_batch">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()]</span>
+        <span class="n">pred_bboxes_</span><span class="p">,</span> <span class="n">pred_labels_</span><span class="p">,</span> <span class="n">pred_scores_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imgs</span><span class="p">,</span> <span class="p">[</span>
+            <span class="n">sizes</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gt_bboxes</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gt_bboxes_</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gt_labels</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gt_labels_</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gt_difficults</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gt_difficults_</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_bboxes</span> <span class="o">+=</span> <span class="n">pred_bboxes_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_labels</span> <span class="o">+=</span> <span class="n">pred_labels_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pred_scores</span> <span class="o">+=</span> <span class="n">pred_scores_</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ii</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_num</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">exit_trainer</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.forward"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bbox</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Currently only batch size 1 is supported.&#39;</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">img_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
+
+        <span class="n">features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">extractor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">)</span>
+
+        <span class="n">rpn_locs</span><span class="p">,</span> <span class="n">rpn_scores</span><span class="p">,</span> <span class="n">rois</span><span class="p">,</span> <span class="n">roi_indices</span><span class="p">,</span> <span class="n">anchor</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">rpn</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">img_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+
+        <span class="c1"># Since batch size is one, convert variables to singular form</span>
+        <span class="n">bbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">rpn_score</span> <span class="o">=</span> <span class="n">rpn_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">rpn_loc</span> <span class="o">=</span> <span class="n">rpn_locs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">roi</span> <span class="o">=</span> <span class="n">rois</span>
+
+        <span class="c1"># Sample RoIs and forward</span>
+        <span class="c1"># it&#39;s fine to break the computation graph of rois,</span>
+        <span class="c1"># consider them as constant input</span>
+        <span class="n">sample_roi</span><span class="p">,</span> <span class="n">gt_roi_loc</span><span class="p">,</span> <span class="n">gt_roi_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proposal_target_creator</span><span class="p">(</span>
+            <span class="n">roi</span><span class="p">,</span>
+            <span class="n">helpers</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(</span><span class="n">bbox</span><span class="p">),</span>
+            <span class="n">helpers</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(</span><span class="n">label</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loc_normalize_mean</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loc_normalize_std</span><span class="p">)</span>
+        <span class="c1"># NOTE it&#39;s all zero because now it only support for batch=1 now</span>
+        <span class="n">sample_roi_index</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sample_roi</span><span class="p">))</span>
+        <span class="n">roi_cls_loc</span><span class="p">,</span> <span class="n">roi_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">head</span><span class="p">(</span>
+            <span class="n">features</span><span class="p">,</span>
+            <span class="n">sample_roi</span><span class="p">,</span>
+            <span class="n">sample_roi_index</span><span class="p">)</span>
+
+        <span class="c1"># ------------------ RPN losses -------------------#</span>
+        <span class="n">gt_rpn_loc</span><span class="p">,</span> <span class="n">gt_rpn_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">anchor_target_creator</span><span class="p">(</span>
+            <span class="n">helpers</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(</span><span class="n">bbox</span><span class="p">),</span>
+            <span class="n">anchor</span><span class="p">,</span>
+            <span class="n">img_size</span><span class="p">)</span>
+        <span class="n">gt_rpn_label</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">totensor</span><span class="p">(</span><span class="n">gt_rpn_label</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
+        <span class="n">gt_rpn_loc</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">totensor</span><span class="p">(</span><span class="n">gt_rpn_loc</span><span class="p">)</span>
+        <span class="n">rpn_loc_loss</span> <span class="o">=</span> <span class="n">Losses</span><span class="p">()</span><span class="o">.</span><span class="n">_fast_rcnn_loc_loss</span><span class="p">(</span>
+            <span class="n">rpn_loc</span><span class="p">,</span>
+            <span class="n">gt_rpn_loc</span><span class="p">,</span>
+            <span class="n">gt_rpn_label</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rpn_sigma</span><span class="p">)</span>
+
+        <span class="c1"># NOTE: default value of ignore_index is -100 ...</span>
+        <span class="n">rpn_cls_loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span>
+            <span class="n">rpn_score</span><span class="p">,</span> <span class="n">gt_rpn_label</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">ignore_index</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">_gt_rpn_label</span> <span class="o">=</span> <span class="n">gt_rpn_label</span><span class="p">[</span><span class="n">gt_rpn_label</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">_rpn_score</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(</span>
+            <span class="n">rpn_score</span><span class="p">)[</span><span class="n">helpers</span><span class="o">.</span><span class="n">tonumpy</span><span class="p">(</span><span class="n">gt_rpn_label</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rpn_cm</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">helpers</span><span class="o">.</span><span class="n">totensor</span><span class="p">(</span><span class="n">_rpn_score</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                        <span class="n">_gt_rpn_label</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">long</span><span class="p">())</span>
+
+        <span class="c1"># ------------------ ROI losses (fast rcnn loss) -------------------#</span>
+        <span class="n">n_sample</span> <span class="o">=</span> <span class="n">roi_cls_loc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">roi_cls_loc</span> <span class="o">=</span> <span class="n">roi_cls_loc</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">n_sample</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">roi_loc</span> <span class="o">=</span> <span class="n">roi_cls_loc</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_sample</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span>
+                              <span class="n">helpers</span><span class="o">.</span><span class="n">totensor</span><span class="p">(</span><span class="n">gt_roi_label</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()]</span>
+        <span class="n">gt_roi_label</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">totensor</span><span class="p">(</span><span class="n">gt_roi_label</span><span class="p">)</span><span class="o">.</span><span class="n">long</span><span class="p">()</span>
+        <span class="n">gt_roi_loc</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">totensor</span><span class="p">(</span><span class="n">gt_roi_loc</span><span class="p">)</span>
+
+        <span class="n">roi_loc_loss</span> <span class="o">=</span> <span class="n">Losses</span><span class="p">()</span><span class="o">.</span><span class="n">_fast_rcnn_loc_loss</span><span class="p">(</span>
+            <span class="n">roi_loc</span><span class="o">.</span><span class="n">contiguous</span><span class="p">(),</span>
+            <span class="n">gt_roi_loc</span><span class="p">,</span>
+            <span class="n">gt_roi_label</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">roi_sigma</span><span class="p">)</span>
+
+        <span class="n">roi_cls_loss</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()(</span><span class="n">roi_score</span><span class="p">,</span> <span class="n">gt_roi_label</span><span class="o">.</span><span class="n">cuda</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">roi_cm</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">helpers</span><span class="o">.</span><span class="n">totensor</span><span class="p">(</span><span class="n">roi_score</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+                        <span class="n">gt_roi_label</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">long</span><span class="p">())</span>
+
+        <span class="n">losses</span> <span class="o">=</span> <span class="p">[</span><span class="n">rpn_loc_loss</span><span class="p">,</span> <span class="n">rpn_cls_loss</span><span class="p">,</span> <span class="n">roi_loc_loss</span><span class="p">,</span> <span class="n">roi_cls_loss</span><span class="p">]</span>
+        <span class="n">losses</span> <span class="o">=</span> <span class="n">losses</span> <span class="o">+</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">losses</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_losses</span> <span class="o">=</span> <span class="n">LossTuple</span><span class="p">(</span><span class="o">*</span><span class="n">losses</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.optimizer_zero_grad"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.optimizer_zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">optimizer_zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.loss_backward"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.loss_backward">[docs]</a>    <span class="k">def</span> <span class="nf">loss_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_losses</span><span class="o">.</span><span class="n">total_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.optimizer_step"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.optimizer_step">[docs]</a>    <span class="k">def</span> <span class="nf">optimizer_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span></div>
+
+    <span class="c1">##########################</span>
+    <span class="c1"># Native methods</span>
+    <span class="c1">##########################</span>
+<div class="viewcode-block" id="FasterRCNNTrainer.update_meters"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.update_meters">[docs]</a>    <span class="k">def</span> <span class="nf">update_meters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">loss_d</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">helpers</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                  <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_losses</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">meter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">meter</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">loss_d</span><span class="p">[</span><span class="n">key</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.reset_meters"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.reset_meters">[docs]</a>    <span class="k">def</span> <span class="nf">reset_meters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">meter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">meter</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">roi_cm</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rpn_cm</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FasterRCNNTrainer.get_meter_data"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.get_meter_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_meter_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">value</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meters</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span></div></div>
+
+
+<span class="sd">&quot;&quot;&quot;Forward Faster R-CNN and calculate losses.</span>
+
+<span class="sd">Here are notations used.</span>
+
+<span class="sd">* :math:`N` is the batch size.</span>
+<span class="sd">* :math:`R` is the number of bounding boxes per image.</span>
+
+<span class="sd">Currently, only :math:`N=1` is supported.</span>
+<span class="sd">(~torch.autograd.Variable)</span>
+<span class="sd">Args:</span>
+<span class="sd">    imgs : A variable with a batch of images.</span>
+<span class="sd">    bboxes : A batch of bounding boxes.</span>
+<span class="sd">        Its shape is :math:`(N, R, 4)`.</span>
+<span class="sd">    labels : A batch of labels.</span>
+<span class="sd">        Its shape is :math:`(N, R)`. The background is excluded from</span>
+<span class="sd">        the definition, which means that the range of the value</span>
+<span class="sd">        is :math:`[0, L - 1]`. :math:`L` is the number of foreground</span>
+<span class="sd">        classes.</span>
+<span class="sd">    scale (float): Amount of scaling applied to</span>
+<span class="sd">        the raw image during preprocessing.</span>
+
+<span class="sd">Returns:</span>
+<span class="sd">    namedtuple of 5 losses</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;Serialize models include optimizer and other info</span>
+<span class="sd">return path where the model-file is stored.</span>
+
+<span class="sd">Args:</span>
+<span class="sd">    save_optimizer (bool): whether save optimizer.state_dict().</span>
+<span class="sd">    save_path (string): where to save model, if it&#39;s None, save_path</span>
+<span class="sd">        is generate using time str and info from kwargs.</span>
+
+<span class="sd">Returns:</span>
+<span class="sd">    save_path(str): the path to save models.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MIT License.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

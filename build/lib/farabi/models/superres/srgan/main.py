@@ -1,10 +1,10 @@
 import os
 import time
-from farabi.data.dataloader import get_trainloader, get_testloader
+from farabio.data.dataloader import get_trainloader, get_testloader
 from trainer import Trainer
 from config import get_config
-from farabi.utils.helpers import x, makedirs
-from farabi.data.datasets import TrainDatasetFromFolder, ValDatasetFromFolder, TestDatasetFromFolder
+from farabio.utils.helpers import x, makedirs
+from farabio.data.datasets import TrainDatasetFromFolder, ValDatasetFromFolder, TestDatasetFromFolder
 from torch.utils.data import DataLoader
 from srgan import Generator, Discriminator
 

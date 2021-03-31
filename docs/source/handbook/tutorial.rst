@@ -8,9 +8,9 @@ Tutorial
 How to train model
 ---------------------
 
-Adjust the following code from :code:`farabi.kernel.py`:
+Adjust the following code from :code:`farabio.kernel.py`:
 
-.. literalinclude:: ../../../farabi/kernel.py
+.. literalinclude:: ../../../farabio/kernel.py
    :language: python
 
 How to use Tensorboard
@@ -27,14 +27,14 @@ How to train Yolo-v3 on custom dataset
 
 .. code-block:: bash
 
-   $ cd farabi/models/detection/yolov3/config/          # Navigate to config dir
+   $ cd farabio/models/detection/yolov3/config/          # Navigate to config dir
    $ bash create_custom_model.sh <num-classes>  # Will create custom model 'yolov3-custom.cfg'
 
 2. Modify the 'custom.data' file according to the dataset:
 
 .. code-block:: bash
 
-   $ cd farabi/models/detection/config/          # Navigate to config dir
+   $ cd farabio/models/detection/config/          # Navigate to config dir
    $ nano custom.data                           # Change classes, train, valid and names fields
 
 3. Start YOLO trainer with settings:

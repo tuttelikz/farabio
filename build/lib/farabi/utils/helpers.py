@@ -8,7 +8,7 @@ from PIL import Image
 from collections import OrderedDict
 import torch
 from torch.autograd import Variable
-from farabi.utils.losses import bbox_iou, bbox_wh_iou
+from farabio.utils.losses import bbox_iou, bbox_wh_iou
 
 
 def _sdir(path): return sorted(os.listdir(path))

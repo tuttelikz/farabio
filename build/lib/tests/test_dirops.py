@@ -1,6 +1,6 @@
 import os
 import unittest
-from farabi.data.dirops import DirOps
+from farabio.data.dirops import DirOps
 
 
 class TestDirOps(unittest.TestCase):

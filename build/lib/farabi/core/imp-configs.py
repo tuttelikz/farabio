@@ -1,4 +1,4 @@
-from farabi.core.configs import get_config
+from farabio.core.configs import get_config
 
 config, unparsed = get_config('srgan')
 

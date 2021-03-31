@@ -2,7 +2,7 @@ Reference
 =========
 
 
-:py:mod:`~farabi.core` Package
+:py:mod:`~farabio.core` Package
 ---------------------------------
 .. toctree::
    :maxdepth: 1
@@ -12,7 +12,7 @@ Reference
    core.convnettrainer.rst
    core.gantrainer.rst
 
-:py:mod:`~farabi.models` Package
+:py:mod:`~farabio.models` Package
 ---------------------------------
 .. toctree::
    :maxdepth: 1
@@ -24,7 +24,7 @@ Reference
    models.detection.yolov3.yolo_trainer.rst
    models.detection.faster_rcnn.faster_rcnn_trainer.rst
 
-:py:mod:`~farabi.data` Package
+:py:mod:`~farabio.data` Package
 ---------------------------------
 .. toctree::
    :maxdepth: 1

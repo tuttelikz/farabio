@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 from PIL import Image
 from config import get_config
 from trainer import Trainer
-from farabi.data.datasets import ImageDataset
+from farabio.data.datasets import ImageDataset
 import sys
 
 # In another terminal screen, type:

@@ -1,11 +1,11 @@
 import time
-from farabi.core.configs import get_config
-from farabi.models.segmentation.unet.unet_trainer import UnetTrainer
-from farabi.models.segmentation.attunet.attunet_trainer import AttunetTrainer
-from farabi.models.superres.srgan.srgan_trainer import SrganTrainer
-from farabi.models.translation.cyclegan.cyclegan_trainer import CycleganTrainer
-from farabi.models.detection.yolov3.yolo_trainer import YoloTrainer
-from farabi.models.detection.faster_rcnn.faster_rcnn_trainer import FasterRCNNTrainer
+from farabio.core.configs import get_config
+from farabio.models.segmentation.unet.unet_trainer import UnetTrainer
+from farabio.models.segmentation.attunet.attunet_trainer import AttunetTrainer
+from farabio.models.superres.srgan.srgan_trainer import SrganTrainer
+from farabio.models.translation.cyclegan.cyclegan_trainer import CycleganTrainer
+from farabio.models.detection.yolov3.yolo_trainer import YoloTrainer
+from farabio.models.detection.faster_rcnn.faster_rcnn_trainer import FasterRCNNTrainer
 
 
 models = {

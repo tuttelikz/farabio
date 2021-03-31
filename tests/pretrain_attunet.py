@@ -1,16 +1,16 @@
-from farabi.data.tbldata import XenopusData
-from farabi.data.transforms import Normalize, ToTensor
+from farabio.data.tbldata import XenopusData
+from farabio.data.transforms import Normalize, ToTensor
 from torchvision import transforms
-from farabi.data.datasets import XenopusDataset
+from farabio.data.datasets import XenopusDataset
 import numpy as np
 from torch.utils.data.sampler import SubsetRandomSampler
 import torch
-from farabi.models.segmentation.AttUnet import AttUnet
-from farabi.utils.regul import EarlyStopping
+from farabio.models.segmentation.AttUnet import AttUnet
+from farabio.utils.regul import EarlyStopping
 import time
 from collections import defaultdict
 from tqdm import tqdm
-from farabi.utils.losses import Losses
+from farabio.utils.losses import Losses
 import os
 
 

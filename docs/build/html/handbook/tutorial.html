@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Tutorial &mdash; farabi 0.0.3 documentation</title>
+  <title>Tutorial &mdash; farabio 0.0.3 documentation</title>
   
 
   
@@ -54,7 +54,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> farabi
+            <a href="../index.html" class="icon icon-home"> farabio
           
 
           
@@ -121,7 +121,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">farabi</a>
+          <a href="../index.html">farabio</a>
         
       </nav>
 
@@ -192,16 +192,16 @@
 </div>
 <div class="section" id="how-to-train-model">
 <h2><a class="toc-backref" href="#id1">How to train model</a><a class="headerlink" href="#how-to-train-model" title="Permalink to this headline">¶</a></h2>
-<p>Adjust the following code from <code class="code docutils literal notranslate"><span class="pre">farabi.kernel.py</span></code>:</p>
+<p>Adjust the following code from <code class="code docutils literal notranslate"><span class="pre">farabio.kernel.py</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">farabi.core.configs</span> <span class="kn">import</span> <span class="n">default_cfgs</span>
-<span class="kn">from</span> <span class="nn">farabi.utils.helpers</span> <span class="kn">import</span> <span class="n">EasyDict</span> <span class="k">as</span> <span class="n">edict</span>
-<span class="kn">from</span> <span class="nn">farabi.models.segmentation.unet.unet_trainer</span> <span class="kn">import</span> <span class="n">UnetTrainer</span>
-<span class="kn">from</span> <span class="nn">farabi.models.segmentation.attunet.attunet_trainer</span> <span class="kn">import</span> <span class="n">AttunetTrainer</span>
-<span class="kn">from</span> <span class="nn">farabi.models.superres.srgan.srgan_trainer</span> <span class="kn">import</span> <span class="n">SrganTrainer</span>
-<span class="kn">from</span> <span class="nn">farabi.models.translation.cyclegan.cyclegan_trainer</span> <span class="kn">import</span> <span class="n">CycleganTrainer</span>
-<span class="kn">from</span> <span class="nn">farabi.models.detection.yolov3.yolo_trainer</span> <span class="kn">import</span> <span class="n">YoloTrainer</span>
-<span class="kn">from</span> <span class="nn">farabi.models.detection.faster_rcnn.faster_rcnn_trainer</span> <span class="kn">import</span> <span class="n">FasterRCNNTrainer</span>
+<span class="kn">from</span> <span class="nn">farabio.core.configs</span> <span class="kn">import</span> <span class="n">default_cfgs</span>
+<span class="kn">from</span> <span class="nn">farabio.utils.helpers</span> <span class="kn">import</span> <span class="n">EasyDict</span> <span class="k">as</span> <span class="n">edict</span>
+<span class="kn">from</span> <span class="nn">farabio.models.segmentation.unet.unet_trainer</span> <span class="kn">import</span> <span class="n">UnetTrainer</span>
+<span class="kn">from</span> <span class="nn">farabio.models.segmentation.attunet.attunet_trainer</span> <span class="kn">import</span> <span class="n">AttunetTrainer</span>
+<span class="kn">from</span> <span class="nn">farabio.models.superres.srgan.srgan_trainer</span> <span class="kn">import</span> <span class="n">SrganTrainer</span>
+<span class="kn">from</span> <span class="nn">farabio.models.translation.cyclegan.cyclegan_trainer</span> <span class="kn">import</span> <span class="n">CycleganTrainer</span>
+<span class="kn">from</span> <span class="nn">farabio.models.detection.yolov3.yolo_trainer</span> <span class="kn">import</span> <span class="n">YoloTrainer</span>
+<span class="kn">from</span> <span class="nn">farabio.models.detection.faster_rcnn.faster_rcnn_trainer</span> <span class="kn">import</span> <span class="n">FasterRCNNTrainer</span>
 
 
 <span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
@@ -251,14 +251,14 @@
 <ol class="arabic simple">
 <li><p>Create custom configuration Yolo:</p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> farabi/models/detection/yolov3/config/          <span class="c1"># Navigate to config dir</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> farabio/models/detection/yolov3/config/          <span class="c1"># Navigate to config dir</span>
 $ bash create_custom_model.sh &lt;num-classes&gt;  <span class="c1"># Will create custom model &#39;yolov3-custom.cfg&#39;</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
 <li><p>Modify the ‘custom.data’ file according to the dataset:</p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> farabi/models/detection/config/          <span class="c1"># Navigate to config dir</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> farabio/models/detection/config/          <span class="c1"># Navigate to config dir</span>
 $ nano custom.data                           <span class="c1"># Change classes, train, valid and names fields</span>
 </pre></div>
 </div>

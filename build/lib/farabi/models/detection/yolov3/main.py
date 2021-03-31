@@ -1,10 +1,10 @@
 import time
 import torch
-from farabi.data.datasets import ListDataset, ImageFolder
+from farabio.data.datasets import ListDataset, ImageFolder
 from parsers import parse_data_config
 from config import get_config
 from trainer import Trainer
-from farabi.utils.helpers import load_classes
+from farabio.utils.helpers import load_classes
 
 
 if __name__ == "__main__":

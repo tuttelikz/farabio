@@ -1,4 +1,4 @@
-:py:mod:`~farabi.models.superres.srgan.srgan_trainer` Module
+:py:mod:`~farabio.models.superres.srgan.srgan_trainer` Module
 =========================================================================
 
 .. image:: ../imgs/srgan.png
@@ -19,5 +19,5 @@ References
 :py:class:`~.SrganTrainer` class
 -----------------------------------------
 
-.. autoclass:: farabi.models.superres.srgan.srgan_trainer.SrganTrainer
+.. autoclass:: farabio.models.superres.srgan.srgan_trainer.SrganTrainer
    :members:

@@ -1,4 +1,4 @@
-:py:mod:`~farabi.models.segmentation.attunet.attunet_trainer` Module
+:py:mod:`~farabio.models.segmentation.attunet.attunet_trainer` Module
 =========================================================================
 
 .. image:: ../imgs/attunet.jpg
@@ -19,5 +19,5 @@ References
 :py:class:`~.AttunetTrainer` class
 -----------------------------------------
 
-.. autoclass:: farabi.models.segmentation.attunet.attunet_trainer.AttunetTrainer
+.. autoclass:: farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer
    :members:

@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
-from farabi.utils.regul import EarlyStopping
-from farabi.utils.loggers import TensorBoard
-from farabi.utils.losses import Losses
+from farabio.utils.regul import EarlyStopping
+from farabio.utils.loggers import TensorBoard
+from farabio.utils.losses import Losses
 from attunet import AttUnet
 import numpy as np
 import skimage
@@ -10,7 +10,7 @@ from skimage.measure import *
 from skimage.io import imsave
 from skimage import img_as_ubyte
 import os
-from farabi.utils.helpers import makedirs
+from farabio.utils.helpers import makedirs
 import torchvision.utils as vutils
 
 

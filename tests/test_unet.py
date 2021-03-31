@@ -1,15 +1,15 @@
 import os
 from torchvision import transforms
-from farabi.data.transforms import Normalize, ToTensor
-from farabi.data.datasets import XenopusDataset
+from farabio.data.transforms import Normalize, ToTensor
+from farabio.data.datasets import XenopusDataset
 import numpy as np
 from torch.utils.data.sampler import SubsetRandomSampler
 import torch
-from farabi.models.segmentation.Unet import Unet
-from farabi.models.segmentation.Config import get_config
+from farabio.models.segmentation.Unet import Unet
+from farabio.models.segmentation.Config import get_config
 import time
-from farabi.utils.regul import EarlyStopping
-from farabi.utils.losses import Losses
+from farabio.utils.regul import EarlyStopping
+from farabio.utils.losses import Losses
 
 
 def get_loader(config, pth_train_img, pth_train_lbl):

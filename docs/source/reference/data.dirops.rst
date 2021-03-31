@@ -1,7 +1,7 @@
-:py:mod:`~farabi.data.dirops` Module
+:py:mod:`~farabio.data.dirops` Module
 =========================================================================
 
-:py:mod:`~farabi.data.dirops` module provides a :py:class:`~farabi.data.dirops.DirOps` class
+:py:mod:`~farabio.data.dirops` module provides a :py:class:`~farabio.data.dirops.DirOps` class
 which retrieves basic information, performs operations on path.
 
 Register module
@@ -9,9 +9,9 @@ Register module
 
 .. code-block:: python
 
-    >>> import farabi.data.imgops.DirOps as DirOps
+    >>> import farabio.data.imgops.DirOps as DirOps
     >>> dir_path = './images/'
 
-.. autoclass:: farabi.data.dirops.DirOps
+.. autoclass:: farabio.data.dirops.DirOps
    :members:
    :exclude-members: __init__
