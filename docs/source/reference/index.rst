@@ -31,3 +31,4 @@ Reference
    
    data.imgops.rst
    data.dirops.rst
+   data.biodatasets.rst
