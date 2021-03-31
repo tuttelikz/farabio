@@ -2,21 +2,20 @@
 ==========================================
 
 :py:mod:`~farabi.core.configs` module combines is a main place for model configurations. These 
-settings are separately defined in their related functions. Each of these functions use group of 
-arguments from argparse.ArgumentParser().
+settings are separately defined in their related functions.
 
-Argument groups
----------------------
+Categories of arguments
+------------------------
 * :py:obj:`data`
 * :py:obj:`model`
 * :py:obj:`test`
 * :py:obj:`test_arg`
 * :py:obj:`log_arg`
-* .. option:: compute_arg`
-* .. option:: misc_arg`
+* :py:obj:`compute_arg`
+* :py:obj:`misc_arg`
 
-Non-lifecycle hooks
------------------------
+Default configurations for models
+------------------------------------
 
 The :py:mod:`~farabi.core.config` package contains base configurations for models:
 

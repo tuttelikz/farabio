@@ -57,12 +57,4 @@ Public datasets
 Pretrained model weights
 ---------------------------
 
-.. role:: bash(code)
-    :language: bash
-
-Path: :bash:`/home/data/02_SSD4TB/suzy/models`
-
-Wheels for **pip**
----------------------
-
-Path: :bash:`/home/data/02_SSD4TB/suzy/wheels`
+Access from `Github Releases <https://github.com/tuttelikz/farabi/releases/tag/v0.0.1-weights>`

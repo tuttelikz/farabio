@@ -91,8 +91,8 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#core-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">core</span></code> Package</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">configs</span></code> Module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#argument-groups">Argument groups</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#non-lifecycle-hooks">Non-lifecycle hooks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#categories-of-arguments">Categories of arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#default-configurations-for-models">Default configurations for models</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="core.basetrainer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">basetrainer</span></code> Module</a></li>
@@ -176,32 +176,21 @@
   <div class="section" id="configs-module">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">configs</span></code> Module<a class="headerlink" href="#configs-module" title="Permalink to this headline">¶</a></h1>
 <p><code class="xref py py-mod docutils literal notranslate"><span class="pre">configs</span></code> module combines is a main place for model configurations. These
-settings are separately defined in their related functions. Each of these functions use group of
-arguments from argparse.ArgumentParser().</p>
-<div class="section" id="argument-groups">
-<h2>Argument groups<a class="headerlink" href="#argument-groups" title="Permalink to this headline">¶</a></h2>
-<ul>
+settings are separately defined in their related functions.</p>
+<div class="section" id="categories-of-arguments">
+<h2>Categories of arguments<a class="headerlink" href="#categories-of-arguments" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">model</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">test</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_arg</span></code></p></li>
 <li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_arg</span></code></p></li>
-<li><dl class="std option">
-<dt id="cmdoption-arg-compute_arg">
-<span id="cmdoption-arg-compute-arg"></span><code class="sig-name descname"><span class="pre">compute_arg`</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-compute_arg" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</li>
-<li><dl class="std option">
-<dt id="cmdoption-arg-misc_arg">
-<span id="cmdoption-arg-misc-arg"></span><code class="sig-name descname"><span class="pre">misc_arg`</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-arg-misc_arg" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_arg</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">misc_arg</span></code></p></li>
 </ul>
 </div>
-<div class="section" id="non-lifecycle-hooks">
-<h2>Non-lifecycle hooks<a class="headerlink" href="#non-lifecycle-hooks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="default-configurations-for-models">
+<h2>Default configurations for models<a class="headerlink" href="#default-configurations-for-models" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">config</span></code> package contains base configurations for models:</p>
 <dl class="py function">
 <dt id="farabi.core.configs._cfg_unet">

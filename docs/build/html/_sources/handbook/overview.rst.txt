@@ -131,10 +131,6 @@ How to report an issue
 
 If you find a bug, please report it by opening an `issue on Git <https://github.com/TBL-UNIST/tbl-ai/issues/new>`_. 
 
-Before reporting, please skim through instructions below.
-
-.. literalinclude:: ./report.txt
-
 Clean code Caveat
 ^^^^^^^^^^^^^^^^^^^^
    - **Modules** should have short, *all-lowercase names. Underscores can be used* in the module name if it improves readability.
