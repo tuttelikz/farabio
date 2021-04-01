@@ -154,6 +154,7 @@
             
   <h1>Source code for farabio.data.imgops</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">skimage</span>
 <span class="kn">import</span> <span class="nn">PIL</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -562,6 +563,87 @@
         <span class="n">img_ov</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">][</span><span class="n">bw</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">return</span> <span class="n">img_ov</span></div>
+
+<div class="viewcode-block" id="ImgOps.random_flip"><a class="viewcode-back" href="../../../reference/data.imgops.html#farabio.data.imgops.ImgOps.random_flip">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">random_flip</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">y_random</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x_random</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">return_param</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Randomly flip an image in vertical or horizontal direction.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            img (~numpy.ndarray): An array that gets flipped. This is in CHW format.</span>
+<span class="sd">            y_random (bool): Randomly flip in vertical direction.</span>
+<span class="sd">            x_random (bool): Randomly flip in horizontal direction.</span>
+<span class="sd">            return_param (bool): Returns information of flip.</span>
+<span class="sd">            copy (bool): If False, a view of :obj:`img` will be returned.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~numpy.ndarray or (~numpy.ndarray, dict):</span>
+<span class="sd">            If :obj:`return_param = False`,</span>
+<span class="sd">            returns an array :obj:`out_img` that is the result of flipping.</span>
+<span class="sd">            If :obj:`return_param = True`,</span>
+<span class="sd">            returns a tuple whose elements are :obj:`out_img, param`.</span>
+<span class="sd">            :obj:`param` is a dictionary of intermediate parameters whose</span>
+<span class="sd">            contents are listed below with key, value-type and the description</span>
+<span class="sd">            of the value.</span>
+<span class="sd">            * **y_flip** (*bool*): Whether the image was flipped in the\</span>
+<span class="sd">                vertical direction or not.</span>
+<span class="sd">            * **x_flip** (*bool*): Whether the image was flipped in the\</span>
+<span class="sd">                horizontal direction or not.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">y_flip</span><span class="p">,</span> <span class="n">x_flip</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">y_random</span><span class="p">:</span>
+            <span class="n">y_flip</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">x_random</span><span class="p">:</span>
+            <span class="n">x_flip</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">y_flip</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">if</span> <span class="n">x_flip</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">copy</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">return_param</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;y_flip&#39;</span><span class="p">:</span> <span class="n">y_flip</span><span class="p">,</span> <span class="s1">&#39;x_flip&#39;</span><span class="p">:</span> <span class="n">x_flip</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">img</span></div>
+
+<div class="viewcode-block" id="ImgOps.read_image"><a class="viewcode-back" href="../../../reference/data.imgops.html#farabio.data.imgops.ImgOps.read_image">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">read_image</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read an image from a file.</span>
+<span class="sd">        This function reads an image from given file. The image is CHW format and</span>
+<span class="sd">        the range of its value is :math:`[0, 255]`. If :obj:`color = True`, the</span>
+<span class="sd">        order of the channels is RGB.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str): A path of image file.</span>
+<span class="sd">            dtype: The type of array. The default value is :obj:`~numpy.float32`.</span>
+<span class="sd">            color (bool): The option determines # channels. RGB if :obj:`True`, grayscale for :obj:`False`</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~numpy.ndarray: An image.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">f</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">)</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s1">&#39;close&#39;</span><span class="p">):</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># reshape (H, W) -&gt; (1, H, W)</span>
+            <span class="k">return</span> <span class="n">img</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># transpose (H, W, C) -&gt; (C, H, W)</span>
+            <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="ImgOps.profile_img"><a class="viewcode-back" href="../../../reference/data.imgops.html#farabio.data.imgops.ImgOps.profile_img">[docs]</a>    <span class="k">def</span> <span class="nf">profile_img</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pt1</span><span class="p">,</span> <span class="n">pt2</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Plots image profile (x and y)</span>

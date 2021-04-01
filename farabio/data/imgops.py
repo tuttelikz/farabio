@@ -411,12 +411,11 @@ class ImgOps:
 
     @staticmethod
     def random_flip(img, y_random=False, x_random=False,
-                return_param=False, copy=False):
+                    return_param=False, copy=False):
         """Randomly flip an image in vertical or horizontal direction.
 
         Args:
-            img (~numpy.ndarray): An array that gets flipped. This is in
-                CHW format.
+            img (~numpy.ndarray): An array that gets flipped. This is in CHW format.
             y_random (bool): Randomly flip in vertical direction.
             x_random (bool): Randomly flip in horizontal direction.
             return_param (bool): Returns information of flip.
@@ -424,16 +423,13 @@ class ImgOps:
 
         Returns:
             ~numpy.ndarray or (~numpy.ndarray, dict):
-
             If :obj:`return_param = False`,
             returns an array :obj:`out_img` that is the result of flipping.
-
             If :obj:`return_param = True`,
             returns a tuple whose elements are :obj:`out_img, param`.
             :obj:`param` is a dictionary of intermediate parameters whose
             contents are listed below with key, value-type and the description
             of the value.
-
             * **y_flip** (*bool*): Whether the image was flipped in the\
                 vertical direction or not.
             * **x_flip** (*bool*): Whether the image was flipped in the\
@@ -462,7 +458,6 @@ class ImgOps:
     @staticmethod
     def read_image(path, dtype=np.float32, color=True):
         """Read an image from a file.
-
         This function reads an image from given file. The image is CHW format and
         the range of its value is :math:`[0, 255]`. If :obj:`color = True`, the
         order of the channels is RGB.
@@ -470,13 +465,11 @@ class ImgOps:
         Args:
             path (str): A path of image file.
             dtype: The type of array. The default value is :obj:`~numpy.float32`.
-            color (bool): This option determines the number of channels.
-                If :obj:`True`, the number of channels is three. In this case,
-                the order of the channels is RGB. This is the default behaviour.
-                If :obj:`False`, this function returns a grayscale image.
+            color (bool): The option determines # channels. RGB if :obj:`True`, grayscale for :obj:`False`
 
         Returns:
             ~numpy.ndarray: An image.
+
         """
 
         f = Image.open(path)
@@ -496,7 +489,7 @@ class ImgOps:
         else:
             # transpose (H, W, C) -> (C, H, W)
             return img.transpose((2, 0, 1))
-        
+
     def profile_img(self, pt1, pt2):
         """Plots image profile (x and y)
 

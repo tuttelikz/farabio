@@ -33,6 +33,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -446,6 +447,48 @@ containing basic interaction methods with image file.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ImgOps</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">mask_img</span><span class="p">(</span><span class="n">img_mask</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabio.data.imgops.ImgOps.random_flip">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">random_flip</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_random</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_random</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/imgops.html#ImgOps.random_flip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.imgops.ImgOps.random_flip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly flip an image in vertical or horizontal direction.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>img (~numpy.ndarray): An array that gets flipped. This is in CHW format.
+y_random (bool): Randomly flip in vertical direction.
+x_random (bool): Randomly flip in horizontal direction.
+return_param (bool): Returns information of flip.
+copy (bool): If False, a view of <code class="xref py py-obj docutils literal notranslate"><span class="pre">img</span></code> will be returned.</p>
+</dd>
+<dt>Returns:</dt><dd><p>~numpy.ndarray or (~numpy.ndarray, dict):
+If <code class="xref py py-obj docutils literal notranslate"><span class="pre">return_param</span> <span class="pre">=</span> <span class="pre">False</span></code>,
+returns an array <code class="xref py py-obj docutils literal notranslate"><span class="pre">out_img</span></code> that is the result of flipping.
+If <code class="xref py py-obj docutils literal notranslate"><span class="pre">return_param</span> <span class="pre">=</span> <span class="pre">True</span></code>,
+returns a tuple whose elements are <code class="xref py py-obj docutils literal notranslate"><span class="pre">out_img,</span> <span class="pre">param</span></code>.
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">param</span></code> is a dictionary of intermediate parameters whose
+contents are listed below with key, value-type and the description
+of the value.
+* <strong>y_flip</strong> (<em>bool</em>): Whether the image was flipped in the                vertical direction or not.
+* <strong>x_flip</strong> (<em>bool</em>): Whether the image was flipped in the                horizontal direction or not.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabio.data.imgops.ImgOps.read_image">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">read_image</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">path</span></em>, <em class="sig-param"><span class="pre">dtype=&lt;class</span> <span class="pre">'numpy.float32'&gt;</span></em>, <em class="sig-param"><span class="pre">color=True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/imgops.html#ImgOps.read_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.imgops.ImgOps.read_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read an image from a file.
+This function reads an image from given file. The image is CHW format and
+the range of its value is <span class="math notranslate nohighlight">\([0, 255]\)</span>. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">color</span> <span class="pre">=</span> <span class="pre">True</span></code>, the
+order of the channels is RGB.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>path (str): A path of image file.
+dtype: The type of array. The default value is <code class="xref py py-obj docutils literal notranslate"><span class="pre">float32</span></code>.
+color (bool): The option determines # channels. RGB if <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, grayscale for <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+<dt>Returns:</dt><dd><p>~numpy.ndarray: An image.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

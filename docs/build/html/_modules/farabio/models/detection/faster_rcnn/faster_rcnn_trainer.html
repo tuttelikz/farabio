@@ -171,7 +171,7 @@
 <span class="kn">from</span> <span class="nn">farabio.utils.losses</span> <span class="kn">import</span> <span class="n">Losses</span>
 <span class="kn">from</span> <span class="nn">farabio.utils.metrics</span> <span class="kn">import</span> <span class="n">eval_detection_voc</span>
 <span class="kn">from</span> <span class="nn">farabio.utils.meters</span> <span class="kn">import</span> <span class="n">ConfusionMeter</span><span class="p">,</span> <span class="n">AverageValueMeter</span>
-<span class="kn">from</span> <span class="nn">farabio.utils.vistools</span> <span class="kn">import</span> <span class="n">Visualizer</span><span class="p">,</span> <span class="n">visdom_bbox</span>
+<span class="kn">from</span> <span class="nn">farabio.utils.visdom</span> <span class="kn">import</span> <span class="n">FasterRCNNViz</span><span class="p">,</span> <span class="n">visdom_bbox</span>
 <span class="c1"># fix for ulimit</span>
 <span class="c1"># https://github.com/pytorch/pytorch/issues/973#issuecomment-346405667</span>
 <span class="kn">import</span> <span class="nn">resource</span>
@@ -240,7 +240,7 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_visdom</span><span class="p">:</span>
             <span class="c1"># visdom wrapper</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">vis</span> <span class="o">=</span> <span class="n">Visualizer</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">env</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vis</span> <span class="o">=</span> <span class="n">FasterRCNNViz</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">env</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="FasterRCNNTrainer.define_misc_attr"><a class="viewcode-back" href="../../../../../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer.define_misc_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_misc_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">mode</span></div>

@@ -165,7 +165,7 @@
 <span class="kn">from</span> <span class="nn">farabio.core.gantrainer</span> <span class="kn">import</span> <span class="n">GanTrainer</span>
 <span class="kn">from</span> <span class="nn">farabio.data.datasets</span> <span class="kn">import</span> <span class="n">ImageDataset</span>
 <span class="kn">from</span> <span class="nn">farabio.utils.helpers</span> <span class="kn">import</span> <span class="n">ReplayBuffer</span>
-<span class="kn">from</span> <span class="nn">farabio.utils.loggers</span> <span class="kn">import</span> <span class="n">SrganViz</span>
+<span class="kn">from</span> <span class="nn">farabio.utils.visdom</span> <span class="kn">import</span> <span class="n">CycleganViz</span>
 <span class="kn">from</span> <span class="nn">farabio.utils.regul</span> <span class="kn">import</span> <span class="n">weights_init_normal</span><span class="p">,</span> <span class="n">LambdaLR</span>
 <span class="kn">from</span> <span class="nn">farabio.models.translation.cyclegan.cyclegan</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Discriminator</span>
 
@@ -269,7 +269,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fake_B_buffer</span> <span class="o">=</span> <span class="n">ReplayBuffer</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="CycleganTrainer.start_logger"><a class="viewcode-back" href="../../../../../reference/models.translation.cyclegan.cyclegan_trainer.html#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.start_logger">[docs]</a>    <span class="k">def</span> <span class="nf">start_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">SrganViz</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_epochs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_loader</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">CycleganViz</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_epochs</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_loader</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="CycleganTrainer.on_train_epoch_start"><a class="viewcode-back" href="../../../../../reference/models.translation.cyclegan.cyclegan_trainer.html#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer.on_train_epoch_start">[docs]</a>    <span class="k">def</span> <span class="nf">on_train_epoch_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_iter</span> <span class="o">=</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_loader</span><span class="p">)</span></div>
