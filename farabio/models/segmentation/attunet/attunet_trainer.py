@@ -9,7 +9,7 @@ from farabio.core.convnettrainer import ConvnetTrainer
 from farabio.models.segmentation.attunet.attunet import AttUnet
 from farabio.utils.regul import EarlyStopping
 from farabio.utils.losses import Losses
-from farabio.utils.loggers import TensorBoard
+from farabio.utils.tensorboard import TensorBoard
 from farabio.utils.helpers import makedirs, parallel_state_dict
 import skimage
 from skimage import io, transform, img_as_ubyte

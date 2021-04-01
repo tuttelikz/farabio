@@ -1,12 +1,14 @@
+import sys
 import time
+import datetime
 import numpy as np
 import matplotlib
+import matplotlib.pyplot as plt
 import torch
-import visdom
-
-matplotlib.use('Agg')
-from matplotlib import pyplot as plot
+from visdom import Visdom
 from farabio.data.datasets import VOC_BBOX_LABEL_NAMES
+from farabio.data.transforms import tensor2image
+matplotlib.use('Agg')
 
 
 def vis_image(img, ax=None):
@@ -26,7 +28,7 @@ def vis_image(img, ax=None):
     """
 
     if ax is None:
-        fig = plot.figure()
+        fig = plt.figure()
         ax = fig.add_subplot(1, 1, 1)
     # CHW -> HWC
     img = img.transpose((1, 2, 0))
@@ -80,7 +82,7 @@ def vis_bbox(img, bbox, label=None, score=None, ax=None):
         xy = (bb[1], bb[0])
         height = bb[2] - bb[0]
         width = bb[3] - bb[1]
-        ax.add_patch(plot.Rectangle(
+        ax.add_patch(plt.Rectangle(
             xy, width, height, fill=False, edgecolor='red', linewidth=2))
 
         caption = list()
@@ -129,7 +131,7 @@ def fig4vis(fig):
     """
     ax = fig.get_figure()
     img_data = fig2data(ax).astype(np.int32)
-    plot.close()
+    plt.close()
     # HWC->CHW
     return img_data[:, :, :3].transpose((2, 0, 1)) / 255.
 
@@ -140,7 +142,7 @@ def visdom_bbox(*args, **kwargs):
     return data
 
 
-class Visualizer(object):
+class FasterRCNNViz(object):
     """
     wrapper for visdom
     you can still access naive visdom function by 
@@ -149,7 +151,8 @@ class Visualizer(object):
     """
 
     def __init__(self, env='default', **kwargs):
-        self.vis = visdom.Visdom('localhost',env=env, use_incoming_socket=False, **kwargs)
+        self.vis = Visdom('localhost', env=env,
+                                 use_incoming_socket=False, **kwargs)
         self._vis_kw = kwargs
 
         # e.g.('loss',23) the 23th value of loss
@@ -160,7 +163,7 @@ class Visualizer(object):
         """
         change the config of visdom
         """
-        self.vis = visdom.Visdom(env=env, **kwargs)
+        self.vis = Visdom(env=env, **kwargs)
         return self
 
     def plot_many(self, d):
@@ -208,7 +211,7 @@ class Visualizer(object):
         self.log({'loss':1,'lr':0.0001})
         """
         self.log_text += ('[{time}] {info} <br>'.format(
-            time=time.strftime('%m%d_%H%M%S'), \
+            time=time.strftime('%m%d_%H%M%S'),
             info=info))
         self.vis.text(self.log_text, win)
 
@@ -224,7 +227,76 @@ class Visualizer(object):
         }
 
     def load_state_dict(self, d):
-        self.vis = visdom.Visdom(env=d.get('env', self.vis.env), **(self.d.get('vis_kw')))
+        self.vis = Visdom(
+            env=d.get('env', self.vis.env), **(self.d.get('vis_kw')))
         self.log_text = d.get('log_text', '')
         self.index = d.get('index', dict())
         return self
+
+
+class CycleganViz():
+    def __init__(self, n_epochs, batches_epoch):
+        self.viz = Visdom()
+        self.n_epochs = n_epochs
+        self.batches_epoch = batches_epoch
+        self.epoch = 1
+        self.batch = 1
+        self.prev_time = time.time()
+        self.mean_period = 0
+        self.losses = {}
+        self.loss_windows = {}
+        self.image_windows = {}
+
+    def log(self, losses=None, images=None):
+        self.mean_period += (time.time() - self.prev_time)
+        self.prev_time = time.time()
+
+        sys.stdout.write('\rEpoch %03d/%03d [%04d/%04d] -- ' %
+                         (self.epoch, self.n_epochs, self.batch, self.batches_epoch))
+
+        for i, loss_name in enumerate(losses.keys()):
+            if loss_name not in self.losses:
+                self.losses[loss_name] = losses[loss_name].data.cpu().numpy()
+            else:
+                self.losses[loss_name] += losses[loss_name].data.cpu().numpy()
+
+            if (i+1) == len(losses.keys()):
+                sys.stdout.write('%s: %.4f -- ' %
+                                 (loss_name, self.losses[loss_name]/self.batch))
+            else:
+                sys.stdout.write('%s: %.4f | ' %
+                                 (loss_name, self.losses[loss_name]/self.batch))
+
+        batches_done = self.batches_epoch*(self.epoch - 1) + self.batch
+        batches_left = self.batches_epoch * \
+            (self.n_epochs - self.epoch) + self.batches_epoch - self.batch
+        sys.stdout.write('ETA: %s' % (datetime.timedelta(
+            seconds=batches_left*self.mean_period/batches_done)))
+
+        # Draw images
+        for image_name, tensor in images.items():
+            if image_name not in self.image_windows:
+                self.image_windows[image_name] = self.viz.image(
+                    tensor2image(tensor.data), opts={'title': image_name})
+            else:
+                self.viz.image(tensor2image(
+                    tensor.data), win=self.image_windows[image_name], opts={'title': image_name})
+
+        # End of epoch
+        if (self.batch % self.batches_epoch) == 0:
+            # Plot losses
+            for loss_name, loss in self.losses.items():
+                if loss_name not in self.loss_windows:
+                    self.loss_windows[loss_name] = self.viz.line(X=np.array([self.epoch]), Y=np.array([loss/self.batch]),
+                                                                 opts={'xlabel': 'epochs', 'ylabel': loss_name, 'title': loss_name})
+                else:
+                    self.viz.line(X=np.array([self.epoch]), Y=np.array(
+                        [loss/self.batch]), win=self.loss_windows[loss_name], update='append')
+                # Reset losses for next epoch
+                self.losses[loss_name] = 0.0
+
+            self.epoch += 1
+            self.batch = 1
+            sys.stdout.write('\n')
+        else:
+            self.batch += 1

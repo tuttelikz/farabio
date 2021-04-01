@@ -10,7 +10,7 @@ import torchvision.transforms as transforms
 from farabio.core.gantrainer import GanTrainer
 from farabio.data.datasets import ImageDataset
 from farabio.utils.helpers import ReplayBuffer
-from farabio.utils.loggers import SrganViz
+from farabio.utils.visdom import CycleganViz
 from farabio.utils.regul import weights_init_normal, LambdaLR
 from farabio.models.translation.cyclegan.cyclegan import Generator, Discriminator
 
@@ -114,7 +114,7 @@ class CycleganTrainer(GanTrainer):
         self.fake_B_buffer = ReplayBuffer()
 
     def start_logger(self):
-        self.logger = SrganViz(self._num_epochs, len(self.train_loader))
+        self.logger = CycleganViz(self._num_epochs, len(self.train_loader))
 
     def on_train_epoch_start(self):
         self.train_epoch_iter = enumerate(self.train_loader)

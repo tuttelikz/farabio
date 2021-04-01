@@ -106,13 +106,13 @@ Tree structure
         ├── collect_env.py
         ├── exceptions.py
         ├── helpers.py
-        ├── loggers.py
+        ├── tensorboard.py
         ├── losses.py
         ├── meters.py
         ├── metrics.py
         ├── misc.py
         ├── regul.py
-        └── vistools.py
+        └── visdom.py
 
 Inheritance of trainers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

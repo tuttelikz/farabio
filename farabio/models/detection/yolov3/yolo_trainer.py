@@ -17,7 +17,7 @@ from farabio.models.detection.yolov3.darknet import Darknet
 from farabio.models.detection.yolov3.parsers import parse_data_config
 from farabio.utils.helpers import load_classes, makedirs
 from farabio.utils.regul import weights_init_normal
-from farabio.utils.loggers import Logger
+from farabio.utils.tensorboard import Logger
 from farabio.utils.losses import get_batch_statistics, non_max_suppression, ap_per_class, xywh2xyxy
 from farabio.utils.bboxtools import rescale_boxes
 

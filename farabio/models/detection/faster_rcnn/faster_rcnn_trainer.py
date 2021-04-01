@@ -16,7 +16,7 @@ import farabio.utils.helpers as helpers
 from farabio.utils.losses import Losses
 from farabio.utils.metrics import eval_detection_voc
 from farabio.utils.meters import ConfusionMeter, AverageValueMeter
-from farabio.utils.vistools import Visualizer, visdom_bbox
+from farabio.utils.visdom import FasterRCNNViz, visdom_bbox
 # fix for ulimit
 # https://github.com/pytorch/pytorch/issues/973#issuecomment-346405667
 import resource
@@ -85,7 +85,7 @@ class FasterRCNNTrainer(ConvnetTrainer):
 
         if self._use_visdom:
             # visdom wrapper
-            self.vis = Visualizer(env=self.config.env)
+            self.vis = FasterRCNNViz(env=self.config.env)
 
     def define_misc_attr(self):
         self._mode = self.config.mode
