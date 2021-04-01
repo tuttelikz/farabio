@@ -19,7 +19,7 @@ class ChestXray(ImageFolder):
     >>>     VAL: torch.utils.data.DataLoader(chestxray_dataset[VAL], batch_size = 1, shuffle=True),
     >>>     TEST: torch.utils.data.DataLoader(chestxray_dataset[TEST], batch_size = 1, shuffle=True)
     >>> }
-
+    >>>
     >>> inputs, classes = next(iter(dataloaders[TRAIN]))
     """
     def __init__(self, root='/home/data/02_SSD4TB/suzy/datasets/public/chest-xray/', split='train', transform=None):

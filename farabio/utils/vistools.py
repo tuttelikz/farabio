@@ -1,8 +1,7 @@
 import time
-
 import numpy as np
 import matplotlib
-import torch as t
+import torch
 import visdom
 
 matplotlib.use('Agg')
@@ -217,13 +216,13 @@ class Visualizer(object):
 
     def img(self, name, img_, **kwargs):
         """
-        self.img('input_img',t.Tensor(64,64))
-        self.img('input_imgs',t.Tensor(3,64,64))
-        self.img('input_imgs',t.Tensor(100,1,64,64))
-        self.img('input_imgs',t.Tensor(100,3,64,64),nrows=10)
-        !!don't ~~self.img('input_imgs',t.Tensor(100,64,64),nrows=10)~~!!
+        self.img('input_img',torch.Tensor(64,64))
+        self.img('input_imgs',torch.Tensor(3,64,64))
+        self.img('input_imgs',torch.Tensor(100,1,64,64))
+        self.img('input_imgs',torch.Tensor(100,3,64,64),nrows=10)
+        !!don't ~~self.img('input_imgs',torch.Tensor(100,64,64),nrows=10)~~!!
         """
-        self.vis.images(t.Tensor(img_).cpu().numpy(),
+        self.vis.images(torch.Tensor(img_).cpu().numpy(),
                         win=name,
                         opts=dict(title=name),
                         **kwargs
