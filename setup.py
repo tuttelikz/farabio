@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="farabio",
-    version="0.0.1",
+    version="0.0.2",
     author="San Askaruly",
     author_email="s.askaruly@gmail.com",
     description="farabio - Deep learning for biomedical imaging",
