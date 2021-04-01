@@ -6,32 +6,7 @@ import visdom
 
 matplotlib.use('Agg')
 from matplotlib import pyplot as plot
-
-# from data.voc_dataset import VOC_BBOX_LABEL_NAMES
-
-
-VOC_BBOX_LABEL_NAMES = (
-    'fly',
-    'bike',
-    'bird',
-    'boat',
-    'pin',
-    'bus',
-    'c',
-    'cat',
-    'chair',
-    'cow',
-    'table',
-    'dog',
-    'horse',
-    'moto',
-    'p',
-    'plant',
-    'shep',
-    'sofa',
-    'train',
-    'tv',
-)
+from farabio.data.datasets import VOC_BBOX_LABEL_NAMES
 
 
 def vis_image(img, ax=None):

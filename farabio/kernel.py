@@ -18,12 +18,13 @@ models = {
     "faster_rcnn": FasterRCNNTrainer
 }
 
+
 if __name__ == "__main__":
     itime = time.time()
 
     # Choose from list
     # ["unet", "attunet", "srgan", "cyclegan", "yolov3", "faster_rcnn"]
-    model = "yolov3"
+    model = "attunet"
 
     # Load configurations
     cfg = default_cfgs[model]

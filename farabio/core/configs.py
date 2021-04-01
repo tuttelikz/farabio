@@ -40,7 +40,7 @@ def _cfg_unet():
         'data_parallel': True,
         # Misc
         'random_seed': 42,
-        'mode': 'test'
+        'mode': 'train'
     }
 
 

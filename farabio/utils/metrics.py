@@ -121,6 +121,7 @@ class SegMetrics:
         Calculates dice score of union
     """
 
+    @staticmethod
     def iou(res, gdt):
         """Returns IOU score [0..1]
 
@@ -138,6 +139,7 @@ class SegMetrics:
         """
         return np.count_nonzero(res & gdt) / np.count_nonzero(res | gdt)
 
+    @staticmethod
     def dice(res, gdt):
         """Returns Dice score [0..1]
 

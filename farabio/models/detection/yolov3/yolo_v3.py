@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
-from farabio.utils.helpers import to_cpu, build_targets
+from farabio.utils.helpers import to_cpu
+from farabio.utils.bboxtools import build_targets
 
 
 class YOLOLayer(nn.Module):

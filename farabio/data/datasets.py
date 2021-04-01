@@ -1,20 +1,41 @@
 
 import os
 import glob
+import random
+import numpy as np
+from PIL import Image
 import skimage
+from skimage import io
+import xml.etree.ElementTree as ET
 import torch
 from torch.utils.data import Dataset
 import torchvision.transforms as tt
-from skimage import io
-from PIL import Image
-from farabio.data.transforms import imresize, pad_to_square, horizontal_flip
-from farabio.utils.helpers import _sdir, _rjoin
-import random
-import numpy as np
+from farabio.data.imgops import ImgOps
+from farabio.data.transforms import imresize, pad_to_square, horizontal_flip, train_hr_transform, train_lr_transform
 from farabio.utils.helpers import is_image_file, calculate_valid_crop_size
-from farabio.data.transforms import train_hr_transform, train_lr_transform
-import xml.etree.ElementTree as ET
-from farabio.utils.helpers import read_image
+
+
+VOC_BBOX_LABEL_NAMES = (
+    'aeroplane',
+    'bicycle',
+    'bird',
+    'boat',
+    'bottle',
+    'bus',
+    'car',
+    'cat',
+    'chair',
+    'cow',
+    'diningtable',
+    'dog',
+    'horse',
+    'motorbike',
+    'person',
+    'pottedplant',
+    'sheep',
+    'sofa',
+    'train',
+    'tvmonitor')
 
 
 class ImageFolder(Dataset):
@@ -148,7 +169,7 @@ class ImageDataset(Dataset):
             glob.glob(os.path.join(root, f'{mode}A') + '/*.*'))
         self.files_B = sorted(
             glob.glob(os.path.join(root, f'{mode}B') + '/*.*'))
-            #glob.glob(os.path.join(root, '%s/B' % mode) + '/*.*'))
+        # glob.glob(os.path.join(root, '%s/B' % mode) + '/*.*'))
 
     def __getitem__(self, index):
         item_A = self.transform(Image.open(
@@ -348,37 +369,15 @@ class VOCBboxDataset:
         bbox = np.stack(bbox).astype(np.float32)
         label = np.stack(label).astype(np.int32)
         # When `use_difficult==False`, all elements in `difficult` are False.
-        difficult = np.array(difficult, dtype=np.bool).astype(np.uint8)  # PyTorch don't support np.bool
+        difficult = np.array(difficult, dtype=np.bool).astype(
+            np.uint8)  # PyTorch don't support np.bool
 
         # Load a image
         img_file = os.path.join(self.data_dir, 'JPEGImages', id_ + '.jpg')
-        img = read_image(img_file, color=True)
+        img = ImgOps.read_image(img_file, color=True)
 
         # if self.return_difficult:
         #     return img, bbox, label, difficult
         return img, bbox, label, difficult
 
     __getitem__ = get_example
-
-
-VOC_BBOX_LABEL_NAMES = (
-    'aeroplane',
-    'bicycle',
-    'bird',
-    'boat',
-    'bottle',
-    'bus',
-    'car',
-    'cat',
-    'chair',
-    'cow',
-    'diningtable',
-    'dog',
-    'horse',
-    'motorbike',
-    'person',
-    'pottedplant',
-    'sheep',
-    'sofa',
-    'train',
-    'tvmonitor')

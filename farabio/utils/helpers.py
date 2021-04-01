@@ -8,14 +8,11 @@ from PIL import Image
 from collections import OrderedDict
 import torch
 from torch.autograd import Variable
-from farabio.utils.losses import bbox_iou, bbox_wh_iou
 
 
-def _sdir(path): return sorted(os.listdir(path))
-def _rjoin(root, fname): return os.path.join(root, fname)
-def _matches(a, img_dir): return [i for i in os.listdir(img_dir) if a in i]
-
-
+##########################
+# Print
+##########################
 def dump(obj):
     """Prints every attribute of object
 
@@ -28,11 +25,12 @@ def dump(obj):
         print("obj.%s = %r" % (attr, getattr(obj, attr)))
 
 
+##########################
+# Paths
+##########################
 def x(adir, a): return os.path.join(adir, a)
-
-
-def to_cpu(tensor):
-    return tensor.detach().cpu()
+def _sdir(path): return sorted(os.listdir(path))
+def _matches(a, img_dir): return [i for i in os.listdir(img_dir) if a in i]
 
 
 def makedirs(*args):
@@ -48,65 +46,6 @@ def load_classes(path):
     fp = open(path, "r")
     names = fp.read().split("\n")[:-1]
     return names
-
-
-def build_targets(pred_boxes, pred_cls, target, anchors, ignore_thres):
-
-    BoolTensor = torch.cuda.BoolTensor if pred_boxes.is_cuda else torch.BoolTensor
-    FloatTensor = torch.cuda.FloatTensor if pred_boxes.is_cuda else torch.FloatTensor
-
-    nB = pred_boxes.size(0)
-    nA = pred_boxes.size(1)
-    nC = pred_cls.size(-1)
-    nG = pred_boxes.size(2)
-
-    # Output tensors
-    obj_mask = BoolTensor(nB, nA, nG, nG).fill_(0)
-    noobj_mask = BoolTensor(nB, nA, nG, nG).fill_(1)
-    class_mask = FloatTensor(nB, nA, nG, nG).fill_(0)
-    iou_scores = FloatTensor(nB, nA, nG, nG).fill_(0)
-    tx = FloatTensor(nB, nA, nG, nG).fill_(0)
-    ty = FloatTensor(nB, nA, nG, nG).fill_(0)
-    tw = FloatTensor(nB, nA, nG, nG).fill_(0)
-    th = FloatTensor(nB, nA, nG, nG).fill_(0)
-    tcls = FloatTensor(nB, nA, nG, nG, nC).fill_(0)
-
-    # Convert to position relative to box
-    target_boxes = target[:, 2:6] * nG
-    gxy = target_boxes[:, :2]
-    gwh = target_boxes[:, 2:]
-    # Get anchors with best iou
-    ious = torch.stack([bbox_wh_iou(anchor, gwh) for anchor in anchors])
-    best_ious, best_n = ious.max(0)
-    # Separate target values
-    b, target_labels = target[:, :2].long().t()
-    gx, gy = gxy.t()
-    gw, gh = gwh.t()
-    gi, gj = gxy.long().t()
-    # Set masks
-    obj_mask[b, best_n, gj, gi] = 1
-    noobj_mask[b, best_n, gj, gi] = 0
-
-    # Set noobj mask to zero where iou exceeds ignore threshold
-    for i, anchor_ious in enumerate(ious.t()):
-        noobj_mask[b[i], anchor_ious > ignore_thres, gj[i], gi[i]] = 0
-
-    # Coordinates
-    tx[b, best_n, gj, gi] = gx - gx.floor()
-    ty[b, best_n, gj, gi] = gy - gy.floor()
-    # Width and height
-    tw[b, best_n, gj, gi] = torch.log(gw / anchors[best_n][:, 0] + 1e-16)
-    th[b, best_n, gj, gi] = torch.log(gh / anchors[best_n][:, 1] + 1e-16)
-    # One-hot encoding of label
-    tcls[b, best_n, gj, gi, target_labels] = 1
-    # Compute label correctness and iou at best anchor
-    class_mask[b, best_n, gj, gi] = (
-        pred_cls[b, best_n, gj, gi].argmax(-1) == target_labels).float()
-    iou_scores[b, best_n, gj, gi] = bbox_iou(
-        pred_boxes[b, best_n, gj, gi], target_boxes, x1y1x2y2=False)
-
-    tconf = obj_mask.float()
-    return iou_scores, class_mask, obj_mask, noobj_mask, tx, ty, tw, th, tcls, tconf
 
 
 def calc_weights(*args):
@@ -131,34 +70,9 @@ def calc_weights(*args):
     return weights
 
 
-def dict_info(sample_dict):
-    """Returns number of elements for each key of dictionary
-
-    Parameters
-    ----------
-    sample_dict : dict
-        Dictionary of interest
-
-    Returns
-    -------
-    tuple of dicts
-        first tuple count of elements, second tuple max count
-    """
-    max_dict = {}
-    count_dict = {}
-    max_len = 0
-    for key in sample_dict.keys():
-        if len(sample_dict[key]) > max_len:
-            max_dict['max'] = (key, len(sample_dict[key]))
-            max_len = len(sample_dict[key])
-        count_dict[key] = len(sample_dict[key])
-        print(key, ": ", len(sample_dict[key]))
-
-    print(max_dict['max'])
-
-    return (count_dict, max_dict)
-
-
+##########################
+# Buffer
+##########################
 class ReplayBuffer():
     def __init__(self, max_size=50):
         assert (
@@ -183,6 +97,9 @@ class ReplayBuffer():
         return Variable(torch.cat(to_return))
 
 
+##########################
+# Image
+##########################
 def is_image_file(filename):
     return any(filename.endswith(extension) for extension in ['.png', '.jpg', '.jpeg', '.bmp', '.PNG', '.JPG', '.JPEG', '.BMP'])
 
@@ -191,6 +108,9 @@ def calculate_valid_crop_size(crop_size, upscale_factor):
     return crop_size - (crop_size % upscale_factor)
 
 
+##########################
+# Colors
+##########################
 def equal_colors(n_colors, int_flag=True):
     list_ = sns.color_palette("husl", n_colors)[:]
     if int_flag:
@@ -217,6 +137,13 @@ def _raw_equal_colors(num_colors, int_flag=True):
             colors.append(rgbs)
 
     return colors
+
+
+##########################
+# CPU/GPU
+##########################
+def to_cpu(tensor):
+    return tensor.detach().cpu()
 
 
 def get_gpu_memory_map():
@@ -257,94 +184,9 @@ def state_dict_from_namespace(cfg):
             if not k.startswith('_')}
 
 
-def read_image(path, dtype=np.float32, color=True):
-    """Read an image from a file.
-
-    This function reads an image from given file. The image is CHW format and
-    the range of its value is :math:`[0, 255]`. If :obj:`color = True`, the
-    order of the channels is RGB.
-
-    Args:
-        path (str): A path of image file.
-        dtype: The type of array. The default value is :obj:`~numpy.float32`.
-        color (bool): This option determines the number of channels.
-            If :obj:`True`, the number of channels is three. In this case,
-            the order of the channels is RGB. This is the default behaviour.
-            If :obj:`False`, this function returns a grayscale image.
-
-    Returns:
-        ~numpy.ndarray: An image.
-    """
-
-    f = Image.open(path)
-    try:
-        if color:
-            img = f.convert('RGB')
-        else:
-            img = f.convert('P')
-        img = np.asarray(img, dtype=dtype)
-    finally:
-        if hasattr(f, 'close'):
-            f.close()
-
-    if img.ndim == 2:
-        # reshape (H, W) -> (1, H, W)
-        return img[np.newaxis]
-    else:
-        # transpose (H, W, C) -> (C, H, W)
-        return img.transpose((2, 0, 1))
-
-
-def random_flip(img, y_random=False, x_random=False,
-                return_param=False, copy=False):
-    """Randomly flip an image in vertical or horizontal direction.
-
-    Args:
-        img (~numpy.ndarray): An array that gets flipped. This is in
-            CHW format.
-        y_random (bool): Randomly flip in vertical direction.
-        x_random (bool): Randomly flip in horizontal direction.
-        return_param (bool): Returns information of flip.
-        copy (bool): If False, a view of :obj:`img` will be returned.
-
-    Returns:
-        ~numpy.ndarray or (~numpy.ndarray, dict):
-
-        If :obj:`return_param = False`,
-        returns an array :obj:`out_img` that is the result of flipping.
-
-        If :obj:`return_param = True`,
-        returns a tuple whose elements are :obj:`out_img, param`.
-        :obj:`param` is a dictionary of intermediate parameters whose
-        contents are listed below with key, value-type and the description
-        of the value.
-
-        * **y_flip** (*bool*): Whether the image was flipped in the\
-            vertical direction or not.
-        * **x_flip** (*bool*): Whether the image was flipped in the\
-            horizontal direction or not.
-
-    """
-    y_flip, x_flip = False, False
-    if y_random:
-        y_flip = random.choice([True, False])
-    if x_random:
-        x_flip = random.choice([True, False])
-
-    if y_flip:
-        img = img[:, ::-1, :]
-    if x_flip:
-        img = img[:, :, ::-1]
-
-    if copy:
-        img = img.copy()
-
-    if return_param:
-        return img, {'y_flip': y_flip, 'x_flip': x_flip}
-    else:
-        return img
-
-
+##########################
+# Convert
+##########################
 def tonumpy(data):
     if isinstance(data, np.ndarray):
         return data
@@ -369,101 +211,39 @@ def scalar(data):
         return data.item()
 
 
-class EasyDict(dict):
+##########################
+# Dicts
+##########################
+def dict_info(sample_dict):
+    """Returns number of elements for each key of dictionary
+
+    Parameters
+    ----------
+    sample_dict : dict
+        Dictionary of interest
+
+    Returns
+    -------
+    tuple of dicts
+        first tuple count of elements, second tuple max count
     """
-    Get attributes
-    >>> d = EasyDict({'foo':3})
-    >>> d['foo']
-    3
-    >>> d.foo
-    3
-    >>> d.bar
-    Traceback (most recent call last):
-    ...
-    AttributeError: 'EasyDict' object has no attribute 'bar'
-    Works recursively
-    >>> d = EasyDict({'foo':3, 'bar':{'x':1, 'y':2}})
-    >>> isinstance(d.bar, dict)
-    True
-    >>> d.bar.x
-    1
-    Bullet-proof
-    >>> EasyDict({})
-    {}
-    >>> EasyDict(d={})
-    {}
-    >>> EasyDict(None)
-    {}
-    >>> d = {'a': 1}
-    >>> EasyDict(**d)
-    {'a': 1}
-    Set attributes
-    >>> d = EasyDict()
-    >>> d.foo = 3
-    >>> d.foo
-    3
-    >>> d.bar = {'prop': 'value'}
-    >>> d.bar.prop
-    'value'
-    >>> d
-    {'foo': 3, 'bar': {'prop': 'value'}}
-    >>> d.bar.prop = 'newer'
-    >>> d.bar.prop
-    'newer'
-    Values extraction
-    >>> d = EasyDict({'foo':0, 'bar':[{'x':1, 'y':2}, {'x':3, 'y':4}]})
-    >>> isinstance(d.bar, list)
-    True
-    >>> from operator import attrgetter
-    >>> map(attrgetter('x'), d.bar)
-    [1, 3]
-    >>> map(attrgetter('y'), d.bar)
-    [2, 4]
-    >>> d = EasyDict()
-    >>> d.keys()
-    []
-    >>> d = EasyDict(foo=3, bar=dict(x=1, y=2))
-    >>> d.foo
-    3
-    >>> d.bar.x
-    1
-    Still like a dict though
-    >>> o = EasyDict({'clean':True})
-    >>> o.items()
-    [('clean', True)]
-    And like a class
-    >>> class Flower(EasyDict):
-    ...     power = 1
-    ...
-    >>> f = Flower()
-    >>> f.power
-    1
-    >>> f = Flower({'height': 12})
-    >>> f.height
-    12
-    >>> f['power']
-    1
-    >>> sorted(f.keys())
-    ['height', 'power']
-    update and pop items
-    >>> d = EasyDict(a=1, b='2')
-    >>> e = EasyDict(c=3.0, a=9.0)
-    >>> d.update(e)
-    >>> d.c
-    3.0
-    >>> d['c']
-    3.0
-    >>> d.get('c')
-    3.0
-    >>> d.update(a=4, b=4)
-    >>> d.b
-    4
-    >>> d.pop('a')
-    4
-    >>> d.a
-    Traceback (most recent call last):
-    ...
-    AttributeError: 'EasyDict' object has no attribute 'a'
+    max_dict = {}
+    count_dict = {}
+    max_len = 0
+    for key in sample_dict.keys():
+        if len(sample_dict[key]) > max_len:
+            max_dict['max'] = (key, len(sample_dict[key]))
+            max_len = len(sample_dict[key])
+        count_dict[key] = len(sample_dict[key])
+        print(key, ": ", len(sample_dict[key]))
+
+    print(max_dict['max'])
+
+    return (count_dict, max_dict)
+
+
+class EasyDict(dict):
+    """EasyDict definition from https://github.com/makinacorpus/easydict
     """
 
     def __init__(self, d=None, **kwargs):

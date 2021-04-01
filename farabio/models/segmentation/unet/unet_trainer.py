@@ -9,7 +9,7 @@ from farabio.core.convnettrainer import ConvnetTrainer
 from farabio.models.segmentation.unet.unet import Unet
 from farabio.utils.regul import EarlyStopping
 from farabio.utils.losses import Losses
-from farabio.utils.loggers import TensorBoard, UnetViz
+from farabio.utils.loggers import TensorBoard
 from farabio.utils.helpers import makedirs, parallel_state_dict
 import skimage
 from skimage import io, transform, img_as_ubyte
@@ -133,7 +133,7 @@ class UnetTrainer(ConvnetTrainer):
 
     def start_logger(self):
         if self._use_visdom:
-            self.logger = UnetViz(self._num_epochs, len(self.train_loader))
+            self.logger = None
 
     def on_train_epoch_start(self):
         self.batch_tloss = 0

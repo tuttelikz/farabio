@@ -1,13 +1,13 @@
 
 
-import torch
 import numpy as np
-from farabio.data.datasets import VOCBboxDataset
 from skimage import transform as sktsf
+import torch
 from torchvision import transforms as tvtsf
-import farabio.utils.helpers as util
+from farabio.data.imgops import ImgOps
+from farabio.data.datasets import VOCBboxDataset
 from farabio.utils.bboxtools import resize_bbox, flip_bbox
-
+#import farabio.utils.helpers as util
 
 def inverse_normalize(img):
     # approximate un-normalize for visualize
@@ -72,7 +72,7 @@ class Transform(object):
         bbox = resize_bbox(bbox, (H, W), (o_H, o_W))
 
         # horizontally flip
-        img, params = util.random_flip(
+        img, params = ImgOps.random_flip(
             img, x_random=True, return_param=True)
         bbox = flip_bbox(
             bbox, (o_H, o_W), x_flip=params['x_flip'])
