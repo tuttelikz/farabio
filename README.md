@@ -1,6 +1,6 @@
 # farabio - Deep learning for biomedical imaging
 
-![Logo](./logo/Sanzhar_PyTorch - Final_WhiteBG.png)
+![logo](logo/whitebg.png)
 
 ## Abstract
 
