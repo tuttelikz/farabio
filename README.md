@@ -1,7 +1,11 @@
 # farabio - Deep learning for biomedical imaging
 
-Deep learning has transformed many aspects of industrial pipelines nowadays. Scientists involved in biomedical imaging research are also benefiting from the power of artificial intelligence to tackle complex challenges. Although academic community has widely accepted image analysis tools, such as scikit-image, ImageJ, there is still a need for a tool which integrates deep learning into analysis. We propose a minimal, but convenient Python package based on PyTorch with popular deep learning models, extended by trainers and datasets, providing great flexibility. Preliminary applications include classification, segmentation, detection, super-resolution, and image translation, which are crucial to perform variety of biomedical tasks.
+## Abstract
+Deep learning has transformed many aspects of industrial pipelines recently. Scientists involved in biomedical imaging research are also benefiting from the power of AI to tackle complex challenges (Kim, 2019). Although academic community has widely accepted image processing tools, such as scikit-image, ImageJ, there is still a need for a tool which integrates deep learning into biomedical image analysis. We propose a minimal, but convenient Python package based on PyTorch with common deep learning models, extended by flexible trainers and medical datasets.
 
+
+## News
+This work was selected for poster on PyTorch Ecosystem Day to be held on April 21, 2021. You can find more at: https://pytorchecosystemday.fbreg.com/
 
 ## Installation
 

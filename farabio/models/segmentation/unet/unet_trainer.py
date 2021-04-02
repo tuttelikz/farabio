@@ -295,18 +295,6 @@ class UnetTrainer(ConvnetTrainer):
         print(f"{self.cur_batch} / {len(self.test_loader)}")
 
 
-def drug_color(self):
-    drug_color = {
-        1: (255, 0, 0),
-        2: (255, 0, 255),
-        3: (0, 0, 255),
-        4: (0, 255, 255),
-        5: (255, 255, 0),
-        6: (0, 255, 0),  # 7th for white color artifact
-    }
-    return drug_color
-
-
 def format_image(img):
     img = np.array(np.transpose(img, (1, 2, 0)))
     mean = np.array((0.485, 0.456, 0.406))
