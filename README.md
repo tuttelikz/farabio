@@ -38,8 +38,8 @@ You can find the API documentation on the pytorch website: https://farabio.readt
 
 ## Contributors
 
-Nurbolat Aimakov: [@aimakov](github.com/aimakov)  
-Alisher Iskakov: [@finesome](github.com/finesome)
+Nurbolat Aimakov: [@aimakov](https://github.com/aimakov)  
+Alisher Iskakov: [@finesome](https://github.com/finesome)
 
 ## License
 
