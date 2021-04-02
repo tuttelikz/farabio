@@ -36,6 +36,11 @@ $ pip install farabio
 
 You can find the API documentation on the pytorch website: https://farabio.readthedocs.io
 
+## Contributors
+
+Nurbolat Aimakov: [@aimakov](github.com/aimakov)
+Alisher Iskakov: [@finesome](github.com/finesome)
+
 ## License
 
 farabio has a MIT License, as found in the [LICENSE](LICENSE) file.
