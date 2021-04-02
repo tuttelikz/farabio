@@ -1,6 +1,6 @@
 # farabio - Deep learning for biomedical imaging
 
-![logo](logo/Final_Cropped_2.png)
+![logo](logo/Final_Cropped_3.png)
 
 ## Abstract
 
