@@ -54,10 +54,6 @@ San Askaruly [@tuttelikz](https://github.com/tuttelikz)
 Nurbolat Aimakov [@aimakov](https://github.com/aimakov)  
 Alisher Iskakov [@finesome](https://github.com/finesome)
 
-## License
-
-farabio has a MIT License, as can be found in the  file.
-
 ## Links
 
 - API documentations: https://farabio.readthedocs.io
