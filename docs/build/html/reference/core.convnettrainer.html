@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>convnettrainer Module &mdash; farabio 0.0.1 documentation</title>
@@ -174,14 +175,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="convnettrainer-module">
+  <section id="convnettrainer-module">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">convnettrainer</span></code> Module<a class="headerlink" href="#convnettrainer-module" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer" title="farabio.core.convnettrainer.ConvnetTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConvnetTrainer</span></code></a> class makes use of hooks. Hooks are a collection of methods which provide
 quick access to exact entry in loop. In this way, we can override these methods with custom functionality
 in either training, evaluation or test loops.</p>
-<div class="section" id="non-lifecycle-hooks">
+<section id="non-lifecycle-hooks">
 <h2>Non-lifecycle hooks<a class="headerlink" href="#non-lifecycle-hooks" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="default-methods">
+<section id="default-methods">
 <h3>Default methods<a class="headerlink" href="#default-methods" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.init_attr" title="farabio.core.convnettrainer.ConvnetTrainer.init_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">init_attr()</span></code></a></p></li>
@@ -189,8 +190,8 @@ in either training, evaluation or test loops.</p>
 <li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.get_testloader" title="farabio.core.convnettrainer.ConvnetTrainer.get_testloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_testloader()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.build_model" title="farabio.core.convnettrainer.ConvnetTrainer.build_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_model()</span></code></a> | <a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.build_parallel_model" title="farabio.core.convnettrainer.ConvnetTrainer.build_parallel_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_parallel_model()</span></code></a></p></li>
 </ul>
-</div>
-<div class="section" id="methods-to-initalize-class-attributes">
+</section>
+<section id="methods-to-initalize-class-attributes">
 <h3>Methods to initalize class attributes<a class="headerlink" href="#methods-to-initalize-class-attributes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.define_data_attr" title="farabio.core.convnettrainer.ConvnetTrainer.define_data_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_data_attr()</span></code></a></p></li>
@@ -201,8 +202,8 @@ in either training, evaluation or test loops.</p>
 <li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.define_compute_attr" title="farabio.core.convnettrainer.ConvnetTrainer.define_compute_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_compute_attr()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.define_misc_attr" title="farabio.core.convnettrainer.ConvnetTrainer.define_misc_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_misc_attr()</span></code></a></p></li>
 </ul>
-</div>
-<div class="section" id="native-methods">
+</section>
+<section id="native-methods">
 <h3>Native methods<a class="headerlink" href="#native-methods" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.loss_backward" title="farabio.core.convnettrainer.ConvnetTrainer.loss_backward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">loss_backward()</span></code></a></p></li>
@@ -210,11 +211,11 @@ in either training, evaluation or test loops.</p>
 <li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.load_model" title="farabio.core.convnettrainer.ConvnetTrainer.load_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_model()</span></code></a> | <a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.load_parallel_model" title="farabio.core.convnettrainer.ConvnetTrainer.load_parallel_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_parallel_model()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.save_model" title="farabio.core.convnettrainer.ConvnetTrainer.save_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_model()</span></code></a> | <a class="reference internal" href="#farabio.core.convnettrainer.ConvnetTrainer.save_parallel_model" title="farabio.core.convnettrainer.ConvnetTrainer.save_parallel_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_parallel_model()</span></code></a></p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="lifecycle-hooks">
+</section>
+</section>
+<section id="lifecycle-hooks">
 <h2>Lifecycle hooks<a class="headerlink" href="#lifecycle-hooks" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="training-loop">
+<section id="training-loop">
 <h3>Training loop<a class="headerlink" href="#training-loop" title="Permalink to this headline">¶</a></h3>
 <div class="graphviz"><img src="../_images/graphviz-b0135dfdd258e9482aa7c36b1fc1ede56aab04bd.png" alt="digraph Trainloop {
 
@@ -254,8 +255,8 @@ in either training, evaluation or test loops.</p>
    on_end_training_batch  [fillcolor=5, style=&quot;rounded,filled&quot;]
 
    }" class="graphviz" /></div>
-</div>
-<div class="section" id="evaluation-loop">
+</section>
+<section id="evaluation-loop">
 <h3>Evaluation Loop<a class="headerlink" href="#evaluation-loop" title="Permalink to this headline">¶</a></h3>
 <div class="graphviz"><img src="../_images/graphviz-c89ebde466d33e5463f672d5f1bc2f70ca2a0c30.png" alt="digraph Evalloop {
 
@@ -278,8 +279,8 @@ in either training, evaluation or test loops.</p>
    on_evaluate_batch_end  [fillcolor=6, style=&quot;rounded,filled&quot;]
 
    }" class="graphviz" /></div>
-</div>
-<div class="section" id="test-loop">
+</section>
+<section id="test-loop">
 <h3>Test loop<a class="headerlink" href="#test-loop" title="Permalink to this headline">¶</a></h3>
 <div class="graphviz"><img src="../_images/graphviz-5bc494dc6b18073c49013be228656aa7902c6f2b.png" alt="digraph Testloop {
 
@@ -309,9 +310,9 @@ in either training, evaluation or test loops.</p>
    on_end_test_batch  [fillcolor=3, style=&quot;rounded,filled&quot;]
 
    }" class="graphviz" /></div>
-</div>
-</div>
-<div class="section" id="docs">
+</section>
+</section>
+<section id="docs">
 <h2>Docs<a class="headerlink" href="#docs" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="farabio.core.convnettrainer.ConvnetTrainer">
@@ -639,8 +640,8 @@ architectures.</p>
 
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

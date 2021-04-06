@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>gantrainer Module &mdash; farabio 0.0.1 documentation</title>
@@ -174,14 +175,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="gantrainer-module">
+  <section id="gantrainer-module">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">gantrainer</span></code> Module<a class="headerlink" href="#gantrainer-module" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference internal" href="#farabio.core.gantrainer.GanTrainer" title="farabio.core.gantrainer.GanTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">GanTrainer</span></code></a> class makes use of hooks. Hooks are a collection of methods which provide
 quick access to exact entry in loop. In this way, we can override these methods with custom functionality
 in either training, evaluation or test loops.</p>
-<div class="section" id="non-lifecycle-hooks">
+<section id="non-lifecycle-hooks">
 <h2>Non-lifecycle hooks<a class="headerlink" href="#non-lifecycle-hooks" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="default-methods">
+<section id="default-methods">
 <h3>Default methods<a class="headerlink" href="#default-methods" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="#farabio.core.gantrainer.GanTrainer.init_attr" title="farabio.core.gantrainer.GanTrainer.init_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">init_attr()</span></code></a></p></li>
@@ -189,8 +190,8 @@ in either training, evaluation or test loops.</p>
 <li><p><a class="reference internal" href="#farabio.core.gantrainer.GanTrainer.get_testloader" title="farabio.core.gantrainer.GanTrainer.get_testloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_testloader()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#farabio.core.gantrainer.GanTrainer.build_model" title="farabio.core.gantrainer.GanTrainer.build_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">build_model()</span></code></a> | <code class="xref py py-meth docutils literal notranslate"><span class="pre">build_parallel_model()</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="methods-to-initalize-class-attributes">
+</section>
+<section id="methods-to-initalize-class-attributes">
 <h3>Methods to initalize class attributes<a class="headerlink" href="#methods-to-initalize-class-attributes" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="#farabio.core.gantrainer.GanTrainer.define_data_attr" title="farabio.core.gantrainer.GanTrainer.define_data_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_data_attr()</span></code></a></p></li>
@@ -201,8 +202,8 @@ in either training, evaluation or test loops.</p>
 <li><p><a class="reference internal" href="#farabio.core.gantrainer.GanTrainer.define_compute_attr" title="farabio.core.gantrainer.GanTrainer.define_compute_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_compute_attr()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#farabio.core.gantrainer.GanTrainer.define_misc_attr" title="farabio.core.gantrainer.GanTrainer.define_misc_attr"><code class="xref py py-meth docutils literal notranslate"><span class="pre">define_misc_attr()</span></code></a></p></li>
 </ul>
-</div>
-<div class="section" id="native-methods">
+</section>
+<section id="native-methods">
 <h3>Native methods<a class="headerlink" href="#native-methods" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference internal" href="#farabio.core.gantrainer.GanTrainer.discriminator_zero_grad" title="farabio.core.gantrainer.GanTrainer.discriminator_zero_grad"><code class="xref py py-meth docutils literal notranslate"><span class="pre">discriminator_zero_grad()</span></code></a></p></li>
@@ -216,11 +217,11 @@ in either training, evaluation or test loops.</p>
 <li><p><a class="reference internal" href="#farabio.core.gantrainer.GanTrainer.load_model" title="farabio.core.gantrainer.GanTrainer.load_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">load_model()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#farabio.core.gantrainer.GanTrainer.save_model" title="farabio.core.gantrainer.GanTrainer.save_model"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_model()</span></code></a></p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="lifecycle-hooks">
+</section>
+</section>
+<section id="lifecycle-hooks">
 <h2>Lifecycle hooks<a class="headerlink" href="#lifecycle-hooks" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="training-loop">
+<section id="training-loop">
 <h3>Training loop<a class="headerlink" href="#training-loop" title="Permalink to this headline">¶</a></h3>
 <div class="graphviz"><img src="../_images/graphviz-b7789a4a7e343da2025efa3d6b40d5578b18027d.png" alt="digraph Trainloop {
 
@@ -273,8 +274,8 @@ in either training, evaluation or test loops.</p>
    generator_optim_step  [fillcolor=5, style=&quot;rounded,filled&quot;]
    on_end_training_batch  [fillcolor=5, style=&quot;rounded,filled&quot;]
    }" class="graphviz" /></div>
-</div>
-<div class="section" id="evaluation-loop">
+</section>
+<section id="evaluation-loop">
 <h3>Evaluation Loop<a class="headerlink" href="#evaluation-loop" title="Permalink to this headline">¶</a></h3>
 <div class="graphviz"><img src="../_images/graphviz-5a30baec4d0266c5e7e5019fa2529c141b9cdbbf.png" alt="digraph Evalloop {
 
@@ -297,8 +298,8 @@ in either training, evaluation or test loops.</p>
    on_evaluate_batch_end  [fillcolor=6, style=&quot;rounded,filled&quot;]
 
    }" class="graphviz" /></div>
-</div>
-<div class="section" id="test-loop">
+</section>
+<section id="test-loop">
 <h3>Test loop<a class="headerlink" href="#test-loop" title="Permalink to this headline">¶</a></h3>
 <div class="graphviz"><img src="../_images/graphviz-b3e8647cf34a3508b60e77569227f4ea5695629c.png" alt="digraph Testloop {
 
@@ -328,9 +329,9 @@ in either training, evaluation or test loops.</p>
    on_end_test_batch  [fillcolor=3, style=&quot;rounded,filled&quot;]
 
    }" class="graphviz" /></div>
-</div>
-</div>
-<div class="section" id="docs">
+</section>
+</section>
+<section id="docs">
 <h2>Docs<a class="headerlink" href="#docs" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="farabio.core.gantrainer.GanTrainer">
@@ -654,8 +655,8 @@ in either training, evaluation or test loops.</p>
 
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

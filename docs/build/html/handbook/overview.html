@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Overview &mdash; farabio 0.0.1 documentation</title>
@@ -181,31 +182,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="overview">
+  <section id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
 <p>Deep learning has transformed the way biomedical engineers approach complex problems. Especially, whose work is associated with day-to-day medical/optical imaging equipment are able to integrate deep learning techniques rapidly. There are several biomedical applications we in our lab are interested to pursue in research, for instance, classfication for screening, segmentation for accurate border/region detection, super-resolution for quality enhancement and generative models, eg. digital histopathology.</p>
 <p>The pipeline of integrating deep learning for our applications is as follows:</p>
 <div class="line-block">
 <div class="line">1. Prepare data <span class="raw-html">&rarr;</span> 2. Customize model <span class="raw-html">&rarr;</span> 3. Train/test <span class="raw-html">&rarr;</span> 4. Analyze/Visualize</div>
 </div>
-<div class="section" id="purpose">
+<section id="purpose">
 <h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Prototyping: code reuse</p></li>
 <li><p>Educational: tutorials</p></li>
 </ul>
-</div>
-<div class="section" id="what-can-i-do-with-this-package">
+</section>
+<section id="what-can-i-do-with-this-package">
 <h2>What can I do with this package?<a class="headerlink" href="#what-can-i-do-with-this-package" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Image data (pre)processing</p></li>
 <li><p>Train/customize deep learning models</p></li>
 <li><p>Visualize/monitor results</p></li>
 </ul>
-</div>
-<div class="section" id="package-organization">
+</section>
+<section id="package-organization">
 <h2>Package organization<a class="headerlink" href="#package-organization" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="diagram">
+<section id="diagram">
 <h3>Diagram<a class="headerlink" href="#diagram" title="Permalink to this headline">¶</a></h3>
 <div class="graphviz"><img src="../_images/graphviz-f7c2a07e0fc535fd8860802ccb7b007d6d668470.png" alt="graph farabioOverview {
 
@@ -222,8 +223,8 @@ data  [fillcolor=2, style=&quot;rounded&quot;]
 models  [fillcolor=2, style=&quot;rounded&quot;]
 utils  [fillcolor=2, style=&quot;rounded&quot;]
 }" class="graphviz" /></div>
-</div>
-<div class="section" id="tree-structure">
+</section>
+<section id="tree-structure">
 <h3>Tree structure<a class="headerlink" href="#tree-structure" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
 ├── kernel.py
@@ -292,8 +293,8 @@ utils  [fillcolor=2, style=&quot;rounded&quot;]
     └── visdom.py
 </pre></div>
 </div>
-</div>
-<div class="section" id="inheritance-of-trainers">
+</section>
+<section id="inheritance-of-trainers">
 <h3>Inheritance of trainers<a class="headerlink" href="#inheritance-of-trainers" title="Permalink to this headline">¶</a></h3>
 <div class="graphviz"><img src="../_images/inheritance-911f39814576f00ab5b887aa316c5b72e56afe0b.png" alt="Inheritance diagram of farabio.models.segmentation.unet.unet_trainer.UnetTrainer, farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer, farabio.models.superres.srgan.srgan_trainer.SrganTrainer, farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer, farabio.models.detection.yolov3.yolo_trainer.YoloTrainer, farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer" usemap="#inheritance3c1cb5eb72" class="inheritance graphviz" /></div>
 <map id="inheritance3c1cb5eb72" name="inheritance3c1cb5eb72">
@@ -306,16 +307,16 @@ utils  [fillcolor=2, style=&quot;rounded&quot;]
 <area shape="rect" id="node5" href="../reference/core.gantrainer.html#farabio.core.gantrainer.GanTrainer" target="_top" title="GanTrainer" alt="" coords="166,203,258,228"/>
 <area shape="rect" id="node4" href="../reference/models.translation.cyclegan.cyclegan_trainer.html#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer" target="_top" title="CycleganTrainer trainer class. Override with custom methods here." alt="" coords="328,203,455,228"/>
 <area shape="rect" id="node7" href="../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer" target="_top" title="SrganTrainer trainer class. Override with custom methods here." alt="" coords="340,252,443,277"/>
-</map></div>
-</div>
-<div class="section" id="how-to-contribute">
+</map></section>
+</section>
+<section id="how-to-contribute">
 <h2>How to contribute?<a class="headerlink" href="#how-to-contribute" title="Permalink to this headline">¶</a></h2>
 <p>You can contribute to this package by reporting issues and/or by sending pull request.</p>
-<div class="section" id="how-to-report-an-issue">
+<section id="how-to-report-an-issue">
 <h3>How to report an issue<a class="headerlink" href="#how-to-report-an-issue" title="Permalink to this headline">¶</a></h3>
 <p>If you find a bug, please report it by opening an <a class="reference external" href="https://github.com/TBL-UNIST/tbl-ai/issues/new">issue on Git</a>.</p>
-</div>
-<div class="section" id="clean-code-caveat">
+</section>
+<section id="clean-code-caveat">
 <h3>Clean code Caveat<a class="headerlink" href="#clean-code-caveat" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
@@ -328,9 +329,9 @@ utils  [fillcolor=2, style=&quot;rounded&quot;]
 </ul>
 <p class="attribution">—from <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/#package-and-module-names">PEP 8</a>.</p>
 </div></blockquote>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

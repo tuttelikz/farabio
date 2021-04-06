@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Tutorial &mdash; farabio 0.0.1 documentation</title>
@@ -175,7 +176,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="tutorial">
+  <section id="tutorial">
 <h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
 <div class="contents local topic" id="table-of-contents">
 <p class="topic-title">Table of Contents</p>
@@ -190,7 +191,7 @@
 </li>
 </ul>
 </div>
-<div class="section" id="how-to-train-model">
+<section id="how-to-train-model">
 <h2><a class="toc-backref" href="#id1">How to train model</a><a class="headerlink" href="#how-to-train-model" title="Permalink to this headline">¶</a></h2>
 <p>Adjust the following code from <code class="code docutils literal notranslate"><span class="pre">farabio.kernel.py</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
@@ -219,7 +220,7 @@
 
     <span class="c1"># Choose from list</span>
     <span class="c1"># [&quot;unet&quot;, &quot;attunet&quot;, &quot;srgan&quot;, &quot;cyclegan&quot;, &quot;yolov3&quot;, &quot;faster_rcnn&quot;]</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;attunet&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;cyclegan&quot;</span>
 
     <span class="c1"># Load configurations</span>
     <span class="n">cfg</span> <span class="o">=</span> <span class="n">default_cfgs</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
@@ -240,14 +241,14 @@
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Complete in </span><span class="si">{</span><span class="n">etime</span> <span class="o">//</span> <span class="mi">60</span><span class="si">}</span><span class="s1">m </span><span class="si">{</span><span class="n">etime</span> <span class="o">%</span> <span class="mi">60</span><span class="si">:</span><span class="s1"> .2f</span><span class="si">}</span><span class="s1">s&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="how-to-use-tensorboard">
+</section>
+<section id="how-to-use-tensorboard">
 <h2><a class="toc-backref" href="#id2">How to use Tensorboard</a><a class="headerlink" href="#how-to-use-tensorboard" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ tensorboard --logdir<span class="o">=</span>&lt;DIR-WHERE-TFRECORDS-FILE-STORED&gt; --port <span class="m">6006</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="how-to-train-yolo-v3-on-custom-dataset">
+</section>
+<section id="how-to-train-yolo-v3-on-custom-dataset">
 <h2><a class="toc-backref" href="#id3">How to train Yolo-v3 on custom dataset</a><a class="headerlink" href="#how-to-train-yolo-v3-on-custom-dataset" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Create custom configuration Yolo:</p></li>
@@ -270,17 +271,17 @@ $ nano custom.data                           <span class="c1"># Change classes, 
 $ python kernel.py --mode &lt;test<span class="p">|</span>detect&gt; --model_def &lt;yolov3-custom.cfg&gt; --data_config &lt;custom.data&gt; --weights_path &lt;weights.pth&gt;         <span class="c1"># Start test/detecting</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="linux-related">
+</section>
+<section id="linux-related">
 <h2><a class="toc-backref" href="#id4">Linux related</a><a class="headerlink" href="#linux-related" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="get-the-user-of-pid">
+<section id="get-the-user-of-pid">
 <h3><a class="toc-backref" href="#id5">Get the user of PID</a><a class="headerlink" href="#get-the-user-of-pid" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ps -u -p &lt;PID&gt;
 </pre></div>
 </div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
