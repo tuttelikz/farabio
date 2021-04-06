@@ -3,6 +3,7 @@ autopep8==1.5.5
 fire==0.4.0
 imageio==2.9.0
 ipdb==0.13.6
+kaggle==1.5.12
 matplotlib==3.3.4
 numpy==1.19.4
 numpydoc==1.1.0

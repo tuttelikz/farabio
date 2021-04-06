@@ -154,8 +154,60 @@
             
   <h1>Source code for farabio.data.biodatasets</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">from</span> <span class="nn">torchvision.datasets</span> <span class="kn">import</span> <span class="n">ImageFolder</span>
 <span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+
+
+<span class="n">kaggle_biodatasets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;aptos2019-blindness-detection&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;chest-xray-pneumonia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data-science-bowl-2018&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;histopathologic-cancer-detection&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;intel-mobileodt-cervical-cancer-screening&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;skin-cancer-mnist&quot;</span>
+<span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">download_datasets</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tag : str</span>
+<span class="sd">        tag for dataset</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            available tags:</span>
+<span class="sd">            kaggle_biodatasets = [</span>
+<span class="sd">                &quot;aptos2019-blindness-detection&quot;,</span>
+<span class="sd">                &quot;chest-xray-pneumonia&quot;,</span>
+<span class="sd">                &quot;data-science-bowl-2018&quot;,</span>
+<span class="sd">                &quot;histopathologic-cancer-detection&quot;,</span>
+<span class="sd">                &quot;intel-mobileodt-cervical-cancer-screening&quot;,</span>
+<span class="sd">                &quot;skin-cancer-mnist&quot;</span>
+<span class="sd">            ]</span>
+<span class="sd">    path : str, optional</span>
+<span class="sd">        path where to save dataset, by default &quot;.&quot;</span>
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; download_datasets(tag=&quot;skin-cancer-mnist&quot;, path=&quot;.&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;chest-xray-pneumonia&quot;</span><span class="p">:</span>
+        <span class="n">bash_c_tag</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kaggle&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;download&quot;</span><span class="p">,</span> <span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;paultimothymooney/chest-xray-pneumonia&quot;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;skin-cancer-mnist&quot;</span><span class="p">:</span>
+        <span class="n">bash_c_tag</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kaggle&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;download&quot;</span><span class="p">,</span> <span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;kmader/skin-cancer-mnist-ham10000&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bash_c</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kaggle&quot;</span><span class="p">,</span> <span class="s2">&quot;competitions&quot;</span><span class="p">,</span> <span class="s2">&quot;download&quot;</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">]</span>
+        <span class="n">bash_c_tag</span> <span class="o">=</span> <span class="n">bash_c</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">bash_c_tag</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+    
+    <span class="n">prev_cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">bash_c_tag</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+    <span class="n">output</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">prev_cwd</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="ChestXray"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.ChestXray">[docs]</a><span class="k">class</span> <span class="nc">ChestXray</span><span class="p">(</span><span class="n">ImageFolder</span><span class="p">):</span>
