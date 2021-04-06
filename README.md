@@ -9,7 +9,7 @@ This work was selected for poster on PyTorch Ecosystem Day to be held on April 2
 
 ## Installation
 
-1. Activate conda environment:
+### 1. Activate conda environment:
 
 ```bash
 $ conda create -n coolenv python=3.8
@@ -17,21 +17,28 @@ $ conda activate coolenv
 $ conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
 ```
 
-2. Install prerequisites:
+### 2. Install prerequisites:
 
 ```bash
+$ git clone https://github.com/tuttelikz/farabio.git && cd farabio
 $ pip install -r requirements.txt
 ```
 
-3. Install **farabio**:
+### 3. Install **farabio**:
 
+**A. With pip**:
 ```bash
 $ pip install farabio 
 ```
 
+**B. Setup from source**:
+```bash
+$ pip install [-e] .      # flag for editable mode
+```
+
 ## Documentation
 
-You can find the API documentation on the pytorch website: https://farabio.readthedocs.io
+You can find the API documentation here: https://farabio.readthedocs.io
 
 ## License
 
