@@ -1,4 +1,4 @@
-# farabio - Deep learning for biomedical imaging
+# farabio - Deep learning toolkit for biomedical imaging
 
 ![logo](logo/Final_Cropped_3.png)
 
