@@ -1,13 +1,21 @@
 # farabio - Deep learning for biomedical imaging
 
-## Abstract
-Deep learning has transformed many aspects of industrial pipelines recently. Scientists involved in biomedical imaging research are also benefiting from the power of AI to tackle complex challenges. Although academic community has widely accepted image processing tools, such as scikit-image, ImageJ, there is still a need for a tool which integrates deep learning into biomedical image analysis. We propose a minimal, but convenient Python package based on PyTorch with common deep learning models, extended by flexible trainers and medical datasets.
+![logo](logo/Final_Cropped_3.png)
 
+[![GitHub](https://img.shields.io/github/license/tuttelikz/farabio)](https://opensource.org/licenses/MIT) [![Documentation Status](https://readthedocs.org/projects/farabio/badge/?version=latest)](https://farabio.readthedocs.io/en/latest)
+[![PyPI version](https://img.shields.io/pypi/v/farabio)](https://badge.fury.io/py/farabio)
 
-## News
-This work was selected for poster on PyTorch Ecosystem Day to be held on April 21, 2021. You can find more at: https://pytorchecosystemday.fbreg.com/
+**farabi** is a minimal [open-source](LICENSE) Python package based on [PyTorch](https://pytorch.org/) for out-of-the-box deep leaarning support in biomedical imaging. 
 
-## Installation
+## Features:
+
+- Image (pre)processing
+- Flexible PyTorch trainers
+- Common DL models
+- Biomedical datasets
+- Loggers, visualization 
+
+## Getting started
 
 ### 1. Activate conda environment:
 
@@ -36,10 +44,23 @@ $ pip install farabio
 $ pip install [-e] .      # flag for editable mode
 ```
 
-## Documentation
+## Updates
+[21-04-02] Release of [`farabio==0.0.1`](https://pypi.org/project/farabio/)  
+[21-03-27] This work is selected for poster on [PyTorch Ecosystem Day](https://pytorchecosystemday.fbreg.com/) to be held on April 21, 2021.
 
-You can find the API documentation here: https://farabio.readthedocs.io
+## Team of contributors
+
+San Askaruly [@tuttelikz](https://github.com/tuttelikz)  
+Nurbolat Aimakov [@aimakov](https://github.com/aimakov)  
+Alisher Iskakov [@finesome](https://github.com/finesome)
 
 ## License
 
-farabio has a MIT License, as found in the [LICENSE](LICENSE) file.
+farabio has a MIT License, as can be found in the  file.
+
+## Links
+
+- API documentations: https://farabio.readthedocs.io
+- Code: https://github.com/tuttelikz/farabio
+- Issue tracker: https://github.com/tuttelikz/farabio/issues
+- PyPI package: https://pypi.org/project/farabio/
