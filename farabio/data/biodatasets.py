@@ -20,7 +20,8 @@ kaggle_biodatasets = [
     "skin-cancer-mnist"
 ]
 
-def download_datasets(tag, path = "."):
+
+def download_datasets(tag, path="."):
     """[summary]
 
     Parameters
@@ -45,14 +46,16 @@ def download_datasets(tag, path = "."):
     >>> download_datasets(tag="skin-cancer-mnist", path=".")
     """
     if tag == "chest-xray-pneumonia":
-        bash_c_tag = ["kaggle", "datasets", "download", "-d", "paultimothymooney/chest-xray-pneumonia"]
+        bash_c_tag = ["kaggle", "datasets", "download",
+                      "-d", "paultimothymooney/chest-xray-pneumonia"]
     elif tag == "skin-cancer-mnist":
-        bash_c_tag = ["kaggle", "datasets", "download", "-d", "kmader/skin-cancer-mnist-ham10000"]
+        bash_c_tag = ["kaggle", "datasets", "download",
+                      "-d", "kmader/skin-cancer-mnist-ham10000"]
     else:
         bash_c = ["kaggle", "competitions", "download", "-c"]
         bash_c_tag = bash_c.copy()
         bash_c_tag.append(tag)
-    
+
     prev_cwd = os.getcwd()
     os.chdir(path)
     process = subprocess.Popen(bash_c_tag, stdout=subprocess.PIPE)
@@ -61,23 +64,25 @@ def download_datasets(tag, path = "."):
 
     os.chdir(prev_cwd)
 
-def extract_zip(fzip, fnew):
-    with ZipFile(fzip, 'r') as zip: 
-        print('Extracting all the train files now...') 
+
+def extract_zip(fzip, fnew=None):
+    with ZipFile(fzip, 'r') as zip:
+        print('Extracting all the train files now...')
         zip.extractall(fnew)
-        print('Done!') 
+        print('Done!')
 
 
 class RetinopathyDataset(Dataset):
     """Retinopathy Dataset from https://www.kaggle.com/c/aptos2019-blindness-detection/overview
     """
+
     def __init__(self, root: str, train: bool = True, download: bool = True):
         tag = "aptos2019-blindness-detection"
 
         if download:
             download_datasets(tag, path=root)
 
-        extract_zip(os.path.join(root, tag+".zip"),os.path.join(root, tag))
+        extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
 
         if train:
             self.csv_path = os.path.join(root, tag, "train.csv")
@@ -89,11 +94,12 @@ class RetinopathyDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, idx):
-        img_name = os.path.join(self.img_path, self.data.loc[idx, 'id_code'] + '.png')
+        img_name = os.path.join(
+            self.img_path, self.data.loc[idx, 'id_code'] + '.png')
         image = Image.open(img_name)
         image = image.resize((256, 256), resample=Image.BILINEAR)
         label = torch.tensor(self.data.loc[idx, 'diagnosis'])
-        return {   
+        return {
             'image': transforms.ToTensor()(image),
             'labels': label
         }
@@ -101,7 +107,7 @@ class RetinopathyDataset(Dataset):
 
 class DSB18(Dataset):
     """Nuclei segmentation dataset from DSB 18: https://www.kaggle.com/c/data-science-bowl-2018/overview
-    
+
     Examples
     ----------
     >>> train_dataset = DSB18(root=".", transform=None)
@@ -117,7 +123,7 @@ class DSB18(Dataset):
 
         if train:
             self.path = os.path.join(root, tag, "stage1_train")
-            extract_zip(os.path.join(root, tag, "stage1_train.zip"),self.path)
+            extract_zip(os.path.join(root, tag, "stage1_train.zip"), self.path)
 
         if transform is None:
             self.transforms = self.get_train_transform(shape)
@@ -163,7 +169,8 @@ class DSB18(Dataset):
         return A.Compose(
             [
                 A.Resize(img_shape, img_shape),
-                A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+                A.Normalize(mean=(0.485, 0.456, 0.406),
+                            std=(0.229, 0.224, 0.225)),
                 A.HorizontalFlip(p=0.25),
                 A.VerticalFlip(p=0.25),
                 ToTensor()
@@ -171,33 +178,30 @@ class DSB18(Dataset):
 
 
 class ChestXray(ImageFolder):
-    """Chest X-ray dataset from
-
+    """Chest X-ray dataset from https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia
+    
     Examples
     ----------
-    >>> TEST = 'test'
-    >>> VAL = 'val'
-    >>> TRAIN = 'train'
-    >>>
-    >>> chestxray_dataset = {x: ChestXray(split=x) for x in [TRAIN, VAL, TEST]}
-    >>>
-    >>> dataloaders = {
-    >>>     TRAIN: torch.utils.data.DataLoader(chestxray_dataset[TRAIN], batch_size = 4, shuffle=True),
-    >>>     VAL: torch.utils.data.DataLoader(chestxray_dataset[VAL], batch_size = 1, shuffle=True),
-    >>>     TEST: torch.utils.data.DataLoader(chestxray_dataset[TEST], batch_size = 1, shuffle=True)
-    >>> }
-    >>>
-    >>> inputs, classes = next(iter(dataloaders[TRAIN]))
+    >>> train_dataset = ChestXray(".", download=False)
     """
-    def __init__(self, root='/home/data/02_SSD4TB/suzy/datasets/public/chest-xray/', split='train', transform=None):
-        transform = transforms.Compose([
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-        ])
-        super(ChestXray, self).__init__(
-            root=os.path.join(root, split), transform=transform)
+
+    def __init__(self, root: str, train: bool = True, shape: int = 256, transform=None, target_transform=None, download: bool = True):
+        tag = "chest-xray-pneumonia"
+
+        if download:
+            download_datasets(tag, path=root)
+
+        extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
+
+        self.target_transform = target_transform
+        if transform is None:
+            self.transform = self.get_train_transform(shape)
+
+        if train:
+            train_path = os.path.join(
+                root, tag, "chest_xray", "train")
+            super(ChestXray, self).__init__(
+                root=train_path, transform=transform)
 
     def __getitem__(self, index):
         path, target = self.samples[index]
@@ -207,3 +211,13 @@ class ChestXray(ImageFolder):
         if self.target_transform is not None:
             target = self.target_transform(target)
         return sample, target
+
+    def get_train_transform(self, img_shape):
+        """Albumentations transform
+        """
+        return transforms.Compose([
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+        ])
