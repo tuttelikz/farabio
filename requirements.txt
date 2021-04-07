@@ -20,6 +20,9 @@ tensorboardX==2.1
 tensorflow==2.4.1
 terminaltables==3.1.0
 tabulate==0.8.9
+torch==1.7.1+cu110
+torchvision==0.8.2+cu110
+torchaudio==0.7.2
 torchsummary==1.5.1
 tqdm==4.58.0
 visdom==0.1.8.9
