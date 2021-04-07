@@ -1,12 +1,14 @@
 import os
 import subprocess
+import pandas as pd
+from PIL import Image
+import albumentations as A
+from albumentations.pytorch import ToTensor
+import torch
 from torch.utils.data import Dataset
 from torchvision.datasets import ImageFolder
 from torchvision import transforms
 from zipfile import ZipFile
-import pandas as pd
-from PIL import Image
-import torch
 
 
 kaggle_biodatasets = [
@@ -67,7 +69,7 @@ def extract_zip(fzip, fnew):
 
 
 class RetinopathyDataset(Dataset):
-    """RetinopathyDataset from https://www.kaggle.com/c/aptos2019-blindness-detection/overview
+    """Retinopathy Dataset from https://www.kaggle.com/c/aptos2019-blindness-detection/overview
     """
     def __init__(self, root: str, train: bool = True, download: bool = True):
         tag = "aptos2019-blindness-detection"
@@ -95,6 +97,77 @@ class RetinopathyDataset(Dataset):
             'image': transforms.ToTensor()(image),
             'labels': label
         }
+
+
+class DSB18(Dataset):
+    """Nuclei segmentation dataset from DSB 18: https://www.kaggle.com/c/data-science-bowl-2018/overview
+    
+    Examples
+    ----------
+    >>> train_dataset = DSB18(root=".", transform=None)
+    """
+
+    def __init__(self, root: str, train: bool = True, shape: int = 512, transform=None, download: bool = True):
+        tag = "data-science-bowl-2018"
+
+        if download:
+            download_datasets(tag, path=root)
+
+        extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
+
+        if train:
+            self.path = os.path.join(root, tag, "stage1_train")
+            extract_zip(os.path.join(root, tag, "stage1_train.zip"),self.path)
+
+        if transform is None:
+            self.transforms = self.get_train_transform(shape)
+
+        self.folders = os.listdir(self.path)
+        self.shape = shape
+
+    def __len__(self):
+        return len(self.folders)
+
+    def __getitem__(self, idx):
+        image_folder = os.path.join(self.path, self.folders[idx], 'images/')
+        mask_folder = os.path.join(self.path, self.folders[idx], 'masks/')
+        fname = os.listdir(image_folder)[0]
+        image_path = os.path.join(image_folder, fname)
+
+        img = io.imread(image_path)[:, :, :3].astype('float32')
+        img = transform.resize(img, (self.shape, self.shape))
+
+        mask = self.get_mask(mask_folder, self.shape,
+                             self.shape).astype('float32')
+
+        augmented = self.transforms(image=img, mask=mask)
+        img = augmented['image']
+        mask = augmented['mask']
+
+        mask = mask[0].permute(2, 0, 1)
+        return (img, mask, fname)
+
+    def get_mask(self, mask_folder, IMG_HEIGHT, IMG_WIDTH):
+        mask = np.zeros((IMG_HEIGHT, IMG_WIDTH, 1), dtype=np.bool)
+        for mask_ in os.listdir(mask_folder):
+            mask_ = io.imread(os.path.join(mask_folder, mask_))
+            mask_ = transform.resize(mask_, (IMG_HEIGHT, IMG_WIDTH))
+            mask_ = np.expand_dims(mask_, axis=-1)
+            mask = np.maximum(mask, mask_)
+
+        return mask
+
+    def get_train_transform(self, img_shape):
+        """Albumentations transform
+        """
+        return A.Compose(
+            [
+                A.Resize(img_shape, img_shape),
+                A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+                A.HorizontalFlip(p=0.25),
+                A.VerticalFlip(p=0.25),
+                ToTensor()
+            ])
 
 
 class ChestXray(ImageFolder):

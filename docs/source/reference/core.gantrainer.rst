@@ -162,5 +162,5 @@ Test loop
 Docs
 ---------------------
 
-.. autoclass:: ../../../farabio.core.gantrainer.GanTrainer
+.. autoclass:: farabio.core.gantrainer.GanTrainer
    :members:
