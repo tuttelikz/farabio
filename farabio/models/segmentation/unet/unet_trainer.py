@@ -15,6 +15,8 @@ import skimage
 from skimage import io, transform, img_as_ubyte
 from skimage.io import imsave
 from torchsummary import summary
+from torchvision.datasets import ImageFolder
+from farabio.data.biodatasets import DSB18Dataset
 
 
 class UnetTrainer(ConvnetTrainer):
@@ -80,10 +82,7 @@ class UnetTrainer(ConvnetTrainer):
         self._val_losses = []
 
     def get_trainloader(self):
-        train_dataset = LoadDataSet(
-            self._data_path,
-            shape=self._in_shape,
-            transform=get_train_transform(self._in_shape))
+        train_dataset = DSB18Dataset(root=self._data_path, transform=None, download=False)
 
         split_ratio = 0.25
         train_size = int(
@@ -309,58 +308,3 @@ def format_mask(mask):
     mask = np.squeeze(np.transpose(mask, (1, 2, 0)))
     return mask
 
-
-def get_train_transform(img_shape):
-    """Albumentations transform
-    """
-    return A.Compose(
-        [
-            A.Resize(img_shape, img_shape),
-            A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-            A.HorizontalFlip(p=0.25),
-            A.VerticalFlip(p=0.25),
-            ToTensor()
-        ])
-
-
-class LoadDataSet(Dataset):
-    """Dataset loader
-    """
-
-    def __init__(self, path, shape, transform=None):
-        self.path = path
-        self.folders = os.listdir(path)
-        self.transforms = get_train_transform(shape)
-        self.shape = shape
-
-    def __len__(self):
-        return len(self.folders)
-
-    def __getitem__(self, idx):
-        image_folder = os.path.join(self.path, self.folders[idx], 'images/')
-        mask_folder = os.path.join(self.path, self.folders[idx], 'masks/')
-        fname = os.listdir(image_folder)[0]
-        image_path = os.path.join(image_folder, fname)
-
-        img = io.imread(image_path)[:, :, :3].astype('float32')
-        img = transform.resize(img, (self.shape, self.shape))
-
-        mask = self.get_mask(mask_folder, self.shape,
-                             self.shape).astype('float32')
-
-        augmented = self.transforms(image=img, mask=mask)
-        img = augmented['image']
-        mask = augmented['mask']
-
-        mask = mask[0].permute(2, 0, 1)
-        return (img, mask, fname)
-
-    def get_mask(self, mask_folder, IMG_HEIGHT, IMG_WIDTH):
-        mask = np.zeros((IMG_HEIGHT, IMG_WIDTH, 1), dtype=np.bool)
-        for mask_ in os.listdir(mask_folder):
-            mask_ = io.imread(os.path.join(mask_folder, mask_))
-            mask_ = transform.resize(mask_, (IMG_HEIGHT, IMG_WIDTH))
-            mask_ = np.expand_dims(mask_, axis=-1)
-            mask = np.maximum(mask, mask_)
-
-        return mask

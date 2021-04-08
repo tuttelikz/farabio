@@ -10,7 +10,7 @@ def _cfg_unet():
         'in_ch': 3,
         'out_ch': 1,
         'shape': 512,
-        'data_path': '/home/suzy/notebooks/one-time/stage1_train/',
+        'data_path': '/home/data/02_SSD4TB/suzy/datasets/public', #replace with own path
         # Model
         'save_epoch': 1,
         'semantic': False,

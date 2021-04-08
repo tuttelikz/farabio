@@ -1,5 +1,6 @@
 import os
 import subprocess
+import numpy as np
 import pandas as pd
 from PIL import Image
 import albumentations as A
@@ -9,6 +10,7 @@ from torch.utils.data import Dataset
 from torchvision.datasets import ImageFolder
 from torchvision import transforms
 from zipfile import ZipFile
+from skimage import io, transform
 
 
 kaggle_biodatasets = [
@@ -131,8 +133,7 @@ class DSB18Dataset(Dataset):
 
         if download:
             download_datasets(tag, path=root)
-
-        extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
+            extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
 
         if train:
             self.path = os.path.join(root, tag, "stage1_train")
