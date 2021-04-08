@@ -72,45 +72,58 @@ def extract_zip(fzip, fnew=None):
         print('Done!')
 
 
-class RetinopathyDataset(Dataset):
-    """Retinopathy Dataset from https://www.kaggle.com/c/aptos2019-blindness-detection/overview
+class ChestXrayDataset(ImageFolder):
+    """Chest X-ray dataset from https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia
+
+    Examples
+    ----------
+    >>> train_dataset = ChestXrayDataset(".", download=False)
     """
 
-    def __init__(self, root: str, train: bool = True, download: bool = True):
-        tag = "aptos2019-blindness-detection"
+    def __init__(self, root: str, train: bool = True, shape: int = 256, transform=None, target_transform=None, download: bool = True):
+        tag = "chest-xray-pneumonia"
 
         if download:
             download_datasets(tag, path=root)
 
         extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
 
+        self.target_transform = target_transform
+        if transform is None:
+            self.transform = self.get_train_transform(shape)
+
         if train:
-            self.csv_path = os.path.join(root, tag, "train.csv")
-            self.img_path = os.path.join(root, tag, "train_images")
+            train_path = os.path.join(
+                root, tag, "chest_xray", "train")
+            super(ChestXray, self).__init__(
+                root=train_path, transform=transform)
 
-        self.data = pd.read_csv(self.csv_path)
+    def __getitem__(self, index):
+        path, target = self.samples[index]
+        sample = self.loader(path)
+        if self.transform is not None:
+            sample = self.transform(sample)
+        if self.target_transform is not None:
+            target = self.target_transform(target)
+        return sample, target
 
-    def __len__(self):
-        return len(self.data)
-
-    def __getitem__(self, idx):
-        img_name = os.path.join(
-            self.img_path, self.data.loc[idx, 'id_code'] + '.png')
-        image = Image.open(img_name)
-        image = image.resize((256, 256), resample=Image.BILINEAR)
-        label = torch.tensor(self.data.loc[idx, 'diagnosis'])
-        return {
-            'image': transforms.ToTensor()(image),
-            'labels': label
-        }
+    def get_train_transform(self, img_shape):
+        """Albumentations transform
+        """
+        return transforms.Compose([
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+        ])
 
 
-class DSB18(Dataset):
+class DSB18Dataset(Dataset):
     """Nuclei segmentation dataset from DSB 18: https://www.kaggle.com/c/data-science-bowl-2018/overview
 
     Examples
     ----------
-    >>> train_dataset = DSB18(root=".", transform=None)
+    >>> train_dataset = DSB18Dataset(root=".", transform=None)
     """
 
     def __init__(self, root: str, train: bool = True, shape: int = 512, transform=None, download: bool = True):
@@ -177,47 +190,38 @@ class DSB18(Dataset):
             ])
 
 
-class ChestXray(ImageFolder):
-    """Chest X-ray dataset from https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia
-    
+class RetinopathyDataset(Dataset):
+    """Retinopathy Dataset from https://www.kaggle.com/c/aptos2019-blindness-detection/overview
+
     Examples
     ----------
-    >>> train_dataset = ChestXray(".", download=False)
+    >>> train_dataset = RetinopathyDataset(root=".", transform=None)
     """
 
-    def __init__(self, root: str, train: bool = True, shape: int = 256, transform=None, target_transform=None, download: bool = True):
-        tag = "chest-xray-pneumonia"
+    def __init__(self, root: str, train: bool = True, download: bool = True):
+        tag = "aptos2019-blindness-detection"
 
         if download:
             download_datasets(tag, path=root)
 
         extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
 
-        self.target_transform = target_transform
-        if transform is None:
-            self.transform = self.get_train_transform(shape)
-
         if train:
-            train_path = os.path.join(
-                root, tag, "chest_xray", "train")
-            super(ChestXray, self).__init__(
-                root=train_path, transform=transform)
+            self.csv_path = os.path.join(root, tag, "train.csv")
+            self.img_path = os.path.join(root, tag, "train_images")
 
-    def __getitem__(self, index):
-        path, target = self.samples[index]
-        sample = self.loader(path)
-        if self.transform is not None:
-            sample = self.transform(sample)
-        if self.target_transform is not None:
-            target = self.target_transform(target)
-        return sample, target
+        self.data = pd.read_csv(self.csv_path)
 
-    def get_train_transform(self, img_shape):
-        """Albumentations transform
-        """
-        return transforms.Compose([
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-        ])
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        img_name = os.path.join(
+            self.img_path, self.data.loc[idx, 'id_code'] + '.png')
+        image = Image.open(img_name)
+        image = image.resize((256, 256), resample=Image.BILINEAR)
+        label = torch.tensor(self.data.loc[idx, 'diagnosis'])
+        return {
+            'image': transforms.ToTensor()(image),
+            'labels': label
+        }

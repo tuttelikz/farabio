@@ -155,8 +155,15 @@
   <h1>Source code for farabio.data.biodatasets</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">albumentations</span> <span class="k">as</span> <span class="nn">A</span>
+<span class="kn">from</span> <span class="nn">albumentations.pytorch</span> <span class="kn">import</span> <span class="n">ToTensor</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="kn">from</span> <span class="nn">torchvision.datasets</span> <span class="kn">import</span> <span class="n">ImageFolder</span>
 <span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+<span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">ZipFile</span>
 
 
 <span class="n">kaggle_biodatasets</span> <span class="o">=</span> <span class="p">[</span>
@@ -168,7 +175,8 @@
     <span class="s2">&quot;skin-cancer-mnist&quot;</span>
 <span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">download_datasets</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">download_datasets</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;[summary]</span>
 
 <span class="sd">    Parameters</span>
@@ -193,14 +201,16 @@
 <span class="sd">    &gt;&gt;&gt; download_datasets(tag=&quot;skin-cancer-mnist&quot;, path=&quot;.&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;chest-xray-pneumonia&quot;</span><span class="p">:</span>
-        <span class="n">bash_c_tag</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kaggle&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;download&quot;</span><span class="p">,</span> <span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;paultimothymooney/chest-xray-pneumonia&quot;</span><span class="p">]</span>
+        <span class="n">bash_c_tag</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kaggle&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;download&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;paultimothymooney/chest-xray-pneumonia&quot;</span><span class="p">]</span>
     <span class="k">elif</span> <span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;skin-cancer-mnist&quot;</span><span class="p">:</span>
-        <span class="n">bash_c_tag</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kaggle&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;download&quot;</span><span class="p">,</span> <span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;kmader/skin-cancer-mnist-ham10000&quot;</span><span class="p">]</span>
+        <span class="n">bash_c_tag</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kaggle&quot;</span><span class="p">,</span> <span class="s2">&quot;datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;download&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;kmader/skin-cancer-mnist-ham10000&quot;</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">bash_c</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kaggle&quot;</span><span class="p">,</span> <span class="s2">&quot;competitions&quot;</span><span class="p">,</span> <span class="s2">&quot;download&quot;</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">]</span>
         <span class="n">bash_c_tag</span> <span class="o">=</span> <span class="n">bash_c</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">bash_c_tag</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
-    
+
     <span class="n">prev_cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
     <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">bash_c_tag</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
@@ -210,34 +220,38 @@
     <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">prev_cwd</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ChestXray"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.ChestXray">[docs]</a><span class="k">class</span> <span class="nc">ChestXray</span><span class="p">(</span><span class="n">ImageFolder</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Chest X-ray dataset from</span>
+<span class="k">def</span> <span class="nf">extract_zip</span><span class="p">(</span><span class="n">fzip</span><span class="p">,</span> <span class="n">fnew</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">fzip</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="nb">zip</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Extracting all the train files now...&#39;</span><span class="p">)</span>
+        <span class="nb">zip</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">fnew</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Done!&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ChestXrayDataset"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.ChestXrayDataset">[docs]</a><span class="k">class</span> <span class="nc">ChestXrayDataset</span><span class="p">(</span><span class="n">ImageFolder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Chest X-ray dataset from https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    ----------</span>
-<span class="sd">    &gt;&gt;&gt; TEST = &#39;test&#39;</span>
-<span class="sd">    &gt;&gt;&gt; VAL = &#39;val&#39;</span>
-<span class="sd">    &gt;&gt;&gt; TRAIN = &#39;train&#39;</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; chestxray_dataset = {x: ChestXray(split=x) for x in [TRAIN, VAL, TEST]}</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; dataloaders = {</span>
-<span class="sd">    &gt;&gt;&gt;     TRAIN: torch.utils.data.DataLoader(chestxray_dataset[TRAIN], batch_size = 4, shuffle=True),</span>
-<span class="sd">    &gt;&gt;&gt;     VAL: torch.utils.data.DataLoader(chestxray_dataset[VAL], batch_size = 1, shuffle=True),</span>
-<span class="sd">    &gt;&gt;&gt;     TEST: torch.utils.data.DataLoader(chestxray_dataset[TEST], batch_size = 1, shuffle=True)</span>
-<span class="sd">    &gt;&gt;&gt; }</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; inputs, classes = next(iter(dataloaders[TRAIN]))</span>
+<span class="sd">    &gt;&gt;&gt; train_dataset = ChestXrayDataset(&quot;.&quot;, download=False)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="s1">&#39;/home/data/02_SSD4TB/suzy/datasets/public/chest-xray/&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
-            <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>
-            <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
-            <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
-            <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">]),</span>
-        <span class="p">])</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ChestXray</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">root</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">split</span><span class="p">),</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ChestXrayDataset.__init__"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.ChestXrayDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;chest-xray-pneumonia&quot;</span>
+
+        <span class="k">if</span> <span class="n">download</span><span class="p">:</span>
+            <span class="n">download_datasets</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+
+        <span class="n">extract_zip</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="o">+</span><span class="s2">&quot;.zip&quot;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_transform</span> <span class="o">=</span> <span class="n">target_transform</span>
+        <span class="k">if</span> <span class="n">transform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_train_transform</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
+            <span class="n">train_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;chest_xray&quot;</span><span class="p">,</span> <span class="s2">&quot;train&quot;</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">ChestXray</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="n">root</span><span class="o">=</span><span class="n">train_path</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="n">path</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
@@ -246,7 +260,126 @@
             <span class="n">sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_transform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_transform</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">sample</span><span class="p">,</span> <span class="n">target</span></div>
+        <span class="k">return</span> <span class="n">sample</span><span class="p">,</span> <span class="n">target</span>
+
+<div class="viewcode-block" id="ChestXrayDataset.get_train_transform"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.ChestXrayDataset.get_train_transform">[docs]</a>    <span class="k">def</span> <span class="nf">get_train_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_shape</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Albumentations transform</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">([</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">]),</span>
+        <span class="p">])</span></div></div>
+
+
+<div class="viewcode-block" id="DSB18Dataset"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.DSB18Dataset">[docs]</a><span class="k">class</span> <span class="nc">DSB18Dataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Nuclei segmentation dataset from DSB 18: https://www.kaggle.com/c/data-science-bowl-2018/overview</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; train_dataset = DSB18Dataset(root=&quot;.&quot;, transform=None)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DSB18Dataset.__init__"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.DSB18Dataset.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;data-science-bowl-2018&quot;</span>
+
+        <span class="k">if</span> <span class="n">download</span><span class="p">:</span>
+            <span class="n">download_datasets</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+
+        <span class="n">extract_zip</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="o">+</span><span class="s2">&quot;.zip&quot;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;stage1_train&quot;</span><span class="p">)</span>
+            <span class="n">extract_zip</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;stage1_train.zip&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">transform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_train_transform</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">folders</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span></div>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folders</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="n">image_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">folders</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s1">&#39;images/&#39;</span><span class="p">)</span>
+        <span class="n">mask_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">folders</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s1">&#39;masks/&#39;</span><span class="p">)</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">image_folder</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">image_folder</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+
+        <span class="n">img</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">image_path</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+        <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span><span class="n">mask_folder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span>
+
+        <span class="n">augmented</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">augmented</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">]</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">augmented</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">]</span>
+
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DSB18Dataset.get_mask"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.DSB18Dataset.get_mask">[docs]</a>    <span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask_folder</span><span class="p">,</span> <span class="n">IMG_HEIGHT</span><span class="p">,</span> <span class="n">IMG_WIDTH</span><span class="p">):</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">IMG_HEIGHT</span><span class="p">,</span> <span class="n">IMG_WIDTH</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">mask_</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">mask_folder</span><span class="p">):</span>
+            <span class="n">mask_</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mask_folder</span><span class="p">,</span> <span class="n">mask_</span><span class="p">))</span>
+            <span class="n">mask_</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">mask_</span><span class="p">,</span> <span class="p">(</span><span class="n">IMG_HEIGHT</span><span class="p">,</span> <span class="n">IMG_WIDTH</span><span class="p">))</span>
+            <span class="n">mask_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">mask_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">mask_</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mask</span></div>
+
+<div class="viewcode-block" id="DSB18Dataset.get_train_transform"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.DSB18Dataset.get_train_transform">[docs]</a>    <span class="k">def</span> <span class="nf">get_train_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_shape</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Albumentations transform</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">A</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">A</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">img_shape</span><span class="p">,</span> <span class="n">img_shape</span><span class="p">),</span>
+                <span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">),</span>
+                            <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">)),</span>
+                <span class="n">A</span><span class="o">.</span><span class="n">HorizontalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.25</span><span class="p">),</span>
+                <span class="n">A</span><span class="o">.</span><span class="n">VerticalFlip</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.25</span><span class="p">),</span>
+                <span class="n">ToTensor</span><span class="p">()</span>
+            <span class="p">])</span></div></div>
+
+
+<div class="viewcode-block" id="RetinopathyDataset"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RetinopathyDataset">[docs]</a><span class="k">class</span> <span class="nc">RetinopathyDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retinopathy Dataset from https://www.kaggle.com/c/aptos2019-blindness-detection/overview</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; train_dataset = RetinopathyDataset(root=&quot;.&quot;, transform=None)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RetinopathyDataset.__init__"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RetinopathyDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;aptos2019-blindness-detection&quot;</span>
+
+        <span class="k">if</span> <span class="n">download</span><span class="p">:</span>
+            <span class="n">download_datasets</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+
+        <span class="n">extract_zip</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="o">+</span><span class="s2">&quot;.zip&quot;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">csv_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">img_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;train_images&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csv_path</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="n">img_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">img_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;id_code&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_name</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span> <span class="n">resample</span><span class="o">=</span><span class="n">Image</span><span class="o">.</span><span class="n">BILINEAR</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;diagnosis&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;image&#39;</span><span class="p">:</span> <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()(</span><span class="n">image</span><span class="p">),</span>
+            <span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="n">label</span>
+        <span class="p">}</span></div>
 </pre></div>
 
            </div>

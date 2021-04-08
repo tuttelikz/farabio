@@ -4,6 +4,11 @@
 :py:mod:`~farabio.data.biodatasets` module provides classes to load public biomedical datasets
 in a PyTorch friendly manner.
 
-.. autoclass:: farabio.data.biodatasets.ChestXray
+.. autoclass:: farabio.data.biodatasets.ChestXrayDataset
    :members:
-   :exclude-members: __init__
+
+.. autoclass:: farabio.data.biodatasets.DSB18Dataset
+   :members:
+
+.. autoclass:: farabio.data.biodatasets.RetinopathyDataset
+   :members:
