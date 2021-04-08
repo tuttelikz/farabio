@@ -6,6 +6,8 @@
 farabio
 =================================
 
+.. image:: ../../logo/Final_Cropped_3.png
+
 Overview
 =========
 
