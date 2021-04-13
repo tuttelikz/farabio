@@ -64,4 +64,4 @@ Alisher Iskakov [@finesome](https://github.com/finesome)
 
 ## Acknowledgement
 
-This work started as a fun project at Translational Biophotonics Lab, UNIST, and was supported with computational resources of the laboratory.
+This work started as a fun project at [Translational Biophotonics Lab, UNIST](https://www.tbl.unist.ac.kr/), and was supported with computational resources of the laboratory.
