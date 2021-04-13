@@ -17,7 +17,7 @@ Biomedical datasets
     Histopathologic Cancer Detection from `Kaggle Histopathologic Cancer Detection <https://www.kaggle.com/c/histopathologic-cancer-detection/data>`_
 
 `Intel & MobileODT Cervical Cancer Screening`_
-    Dataset of cervical images from `Kaggle Intel & MobileODT Cervical Cancer Screening <https://www.kaggle.com/c/histopathologic-cancer-detection/data>`_
+    Dataset of cervical images from `Kaggle Intel & MobileODT Cervical Cancer Screening <https://www.kaggle.com/c/intel-mobileodt-cervical-cancer-screening>`_
 
 `Skin Cancer MNIST`_
     Collection of multi-source dermatoscopic images of pigmented lesions from `Kaggle Skin Cancer MNIST: HAM10000 <https://www.kaggle.com/kmader/skin-cancer-mnist-ham10000>`_

@@ -5,6 +5,7 @@ import pandas as pd
 from PIL import Image
 import albumentations as A
 from albumentations.pytorch import ToTensor
+import matplotlib.pyplot as plt
 import torch
 from torch.utils.data import Dataset
 from torchvision.datasets import ImageFolder
@@ -12,6 +13,7 @@ from torchvision import transforms
 from zipfile import ZipFile
 #import gzip
 from skimage import io, transform
+import random
 from sklearn.model_selection import train_test_split
 
 
@@ -127,20 +129,23 @@ class DSB18Dataset(Dataset):
 
     Examples
     ----------
-    >>> train_dataset = DSB18Dataset(root=".", transform=None)
+    >>> train_dataset = DSB18Dataset(root=".", transform=None, download=True)
+    >>> dsb18_plt = train_dataset.visualize_dataset(5)
+    >>> dsb18_plt.show()
     """
 
     def __init__(self, root: str, train: bool = True, shape: int = 512, transform=None, download: bool = True):
         tag = "data-science-bowl-2018"
-
+        
+        path = os.path.join(root, tag, "stage1_train")
         if download:
             download_datasets(tag, path=root)
             extract_zip(os.path.join(root, tag+".zip"),
                         os.path.join(root, tag))
+            extract_zip(os.path.join(root, tag, "stage1_train.zip"), path)
 
         if train:
-            self.path = os.path.join(root, tag, "stage1_train")
-            extract_zip(os.path.join(root, tag, "stage1_train.zip"), self.path)
+            self.path = path
 
         if transform is None:
             self.transforms = self.get_train_transform(shape)
@@ -193,7 +198,44 @@ class DSB18Dataset(Dataset):
                 ToTensor()
             ])
 
+    @staticmethod
+    def format_image(img):
+        img = np.array(np.transpose(img, (1,2,0)))
+        mean=np.array((0.485, 0.456, 0.406))
+        std=np.array((0.229, 0.224, 0.225))
+        img  = std * img + mean
+        img = img*255
+        img = img.astype(np.uint8)
+        return img
 
+    @staticmethod
+    def format_mask(mask):
+        mask = np.squeeze(np.transpose(mask, (1,2,0)))
+        return mask
+
+    def visualize_dataset(self, n_images, predict=None):
+        """
+        Function to visualize images and masks
+        """
+        images = random.sample(range(0, 670), n_images)
+        figure, ax = plt.subplots(nrows=len(images), ncols=2, figsize=(5, 8))
+        print(images)
+        for i in range(0, len(images)):
+            img_no = images[i]
+            image, mask, fname = self.__getitem__(img_no)
+            image = self.format_image(image)
+            mask = self.format_mask(mask)
+            ax[i, 0].imshow(image)
+            ax[i, 1].imshow(mask, interpolation="nearest", cmap="gray")
+            ax[i, 0].set_title("Ground Truth Image")
+            ax[i, 1].set_title("Mask")
+            ax[i, 0].set_axis_off()
+            ax[i, 1].set_axis_off()
+            plt.tight_layout()
+
+        return plt
+
+# train_dataset = DSB18Dataset(root="/home/data/02_SSD4TB/suzy/datasets/public/", transform=None, download=False)
 class RetinopathyDataset(Dataset):
     """Retinopathy Dataset from https://www.kaggle.com/c/aptos2019-blindness-detection/overview
 
