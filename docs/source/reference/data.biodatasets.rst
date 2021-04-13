@@ -4,6 +4,15 @@
 :py:mod:`~farabio.data.biodatasets` module provides classes to load public biomedical datasets
 in a PyTorch friendly manner.
 
+.. code-block:: python
+
+   train_dataset = DSB18Dataset(root="/home/data/02_SSD4TB/suzy/datasets/public/", transform=None, download=False)
+   dsb18_plt = train_dataset.visualize_dataset(5)
+   dsb18_plt.show()
+
+.. image:: ../imgs/ChestXrayDataset.png
+   :width: 300
+
 .. autoclass:: farabio.data.biodatasets.ChestXrayDataset
    :members:
 

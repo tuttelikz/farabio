@@ -8,7 +8,9 @@ from albumentations.pytorch import ToTensor
 import matplotlib.pyplot as plt
 import torch
 from torch.utils.data import Dataset
+import torchvision
 from torchvision.datasets import ImageFolder
+from torch.utils.data import DataLoader
 from torchvision import transforms
 from zipfile import ZipFile
 #import gzip
@@ -84,6 +86,8 @@ class ChestXrayDataset(ImageFolder):
     Examples
     ----------
     >>> train_dataset = ChestXrayDataset(".", download=False)
+    .. image:: ../imgs/ChestXrayDataset.png
+        :width: 300
     """
 
     def __init__(self, root: str, train: bool = True, shape: int = 256, transform=None, target_transform=None, download: bool = True):
@@ -91,18 +95,22 @@ class ChestXrayDataset(ImageFolder):
 
         if download:
             download_datasets(tag, path=root)
-
-        extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
+            extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
 
         self.target_transform = target_transform
         if transform is None:
             self.transform = self.get_train_transform(shape)
 
         if train:
-            train_path = os.path.join(
-                root, tag, "chest_xray", "train")
-            super(ChestXray, self).__init__(
-                root=train_path, transform=transform)
+            if download:
+                train_path = os.path.join(
+                    root, tag, "chest_xray", "train")
+            else:
+                train_path = os.path.join(
+                    root, "chest-xray", "train")
+
+        super(ChestXrayDataset, self).__init__(
+            root=train_path, transform=self.transform)
 
     def __getitem__(self, index):
         path, target = self.samples[index]
@@ -122,6 +130,36 @@ class ChestXrayDataset(ImageFolder):
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
         ])
+
+    @staticmethod
+    def imshow(inp, title=None):
+        inp = inp.numpy().transpose((1, 2, 0))
+        mean = np.array([0.485, 0.456, 0.406])
+        std = np.array([0.229, 0.224, 0.225])
+        inp = std * inp + mean
+        inp = np.clip(inp, 0, 1)
+        fig = plt.gcf()
+        plt.imshow(inp)
+        if title is not None:
+            plt.title(title)
+        #plt.pause(0.001)  
+        #     plt.show()
+        #     plt.draw()
+        #fig.savefig('asxd.png')
+        return fig
+
+    def visualize_dataset(self):
+        """
+        Function to visualize images and masks
+        """
+        train_dataset = ChestXrayDataset("/home/data/02_SSD4TB/suzy/datasets/public/", download=False)
+        train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True)
+        inputs, classes = next(iter(train_loader))
+        class_names = train_dataset.classes
+
+        #inputs, classes = next(iter(train_loader))
+        out = torchvision.utils.make_grid(inputs)
+        self.imshow(out, title=[class_names[x] for x in classes])
 
 
 class DSB18Dataset(Dataset):
