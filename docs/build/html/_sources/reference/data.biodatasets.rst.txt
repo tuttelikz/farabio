@@ -41,6 +41,18 @@ Docs of ``DSB18Dataset``
 
 :py:class:`~farabio.data.biodatasets.RetinopathyDataset` Class
 ------------------------------------------------------------------------------
+How to load and visualize  ``RetinopathyDataset`` dataset
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: python
+
+   train_dataset = RetinopathyDataset(root=".", transform=None, download=True)
+   train_dataset.visualize_dataset(9)
+
+.. image:: ../imgs/RetinopathyDataset.png
+   :width: 300
+
+Docs of ``RetinopathyDataset``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. autoclass:: farabio.data.biodatasets.RetinopathyDataset
    :members:
 

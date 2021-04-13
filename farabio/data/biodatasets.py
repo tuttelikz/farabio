@@ -159,7 +159,7 @@ class ChestXrayDataset(ImageFolder):
         out = torchvision.utils.make_grid(inputs)
         self.imshow(out, title=[class_names[x] for x in classes])
 
-
+    
 class DSB18Dataset(Dataset):
     """Nuclei segmentation dataset from DSB 18: https://www.kaggle.com/c/data-science-bowl-2018/overview
 
@@ -278,19 +278,21 @@ class RetinopathyDataset(Dataset):
     >>> train_dataset = RetinopathyDataset(root=".", transform=None)
     """
 
-    def __init__(self, root: str, train: bool = True, download: bool = True):
+    def __init__(self, root: str, train: bool = True, download: bool = True, transform=None):
         tag = "aptos2019-blindness-detection"
 
         if download:
             download_datasets(tag, path=root)
-
-        extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
+            extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
 
         if train:
             self.csv_path = os.path.join(root, tag, "train.csv")
             self.img_path = os.path.join(root, tag, "train_images")
 
         self.data = pd.read_csv(self.csv_path)
+        
+        if transform is None:
+            self.transform = transforms.ToTensor()
 
     def __len__(self):
         return len(self.data)
@@ -301,11 +303,26 @@ class RetinopathyDataset(Dataset):
         image = Image.open(img_name)
         image = image.resize((256, 256), resample=Image.BILINEAR)
         label = torch.tensor(self.data.loc[idx, 'diagnosis'])
+
         return {
-            'image': transforms.ToTensor()(image),
+            'image': self.transform(image),
             'labels': label
         }
 
+    def visualize_dataset(self, n_images=9):
+        """
+        Function to visualize blindness images
+        """
+        train_csv = self.data
+        fig = plt.figure(figsize=(30, 30))
+        train_imgs = os.listdir(self.img_path)
+
+        for idx, img in enumerate(np.random.choice(train_imgs, n_images)):
+            ax = fig.add_subplot(3, n_images//3, idx+1, xticks=[], yticks=[])
+            im = Image.open(os.path.join(self.img_path, img))
+            plt.imshow(im)
+            lab = train_csv.loc[train_csv['id_code'] == img.split('.')[0], 'diagnosis'].values[0]
+            ax.set_title('Severity: %s'%lab, fontsize=40)
 
 class HistocancerDataset(Dataset):
     """Histopathologic Cancer Dataset from https://www.kaggle.com/c/histopathologic-cancer-detection/overview
