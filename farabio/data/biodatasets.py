@@ -79,7 +79,7 @@ def extract_zip(fzip, fnew=None):
 
 
 class ChestXrayDataset(ImageFolder):
-    """Chest X-ray dataset from https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia
+    """Chest X-ray dataset class
 
     Examples
     ----------
@@ -158,7 +158,7 @@ class ChestXrayDataset(ImageFolder):
 
 
 class DSB18Dataset(Dataset):
-    """Nuclei segmentation dataset from DSB 18: https://www.kaggle.com/c/data-science-bowl-2018/overview
+    """Nuclei segmentation dataset class
 
     Examples
     ----------
@@ -270,7 +270,7 @@ class DSB18Dataset(Dataset):
 
 
 class RetinopathyDataset(Dataset):
-    """Retinopathy Dataset from https://www.kaggle.com/c/aptos2019-blindness-detection/overview
+    """Retinopathy Dataset class
 
     Examples
     ----------
@@ -327,7 +327,7 @@ class RetinopathyDataset(Dataset):
 
 
 class HistocancerDataset(Dataset):
-    """Histopathologic Cancer Dataset from https://www.kaggle.com/c/histopathologic-cancer-detection/overview
+    """Histopathologic Cancer Dataset class
 
     Examples
     ----------
