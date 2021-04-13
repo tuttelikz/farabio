@@ -60,6 +60,7 @@ Alisher Iskakov [@finesome](https://github.com/finesome)
 - Code: https://github.com/tuttelikz/farabio
 - Issue tracker: https://github.com/tuttelikz/farabio/issues
 - PyPI package: https://pypi.org/project/farabio/
+- Wiki: https://github.com/tuttelikz/farabio/wiki
 
 ## Acknowledgement
 
