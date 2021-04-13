@@ -1,4 +1,5 @@
 import os
+import random
 import subprocess
 import numpy as np
 import pandas as pd
@@ -6,17 +7,14 @@ from PIL import Image
 import albumentations as A
 from albumentations.pytorch import ToTensor
 import matplotlib.pyplot as plt
-import torch
-from torch.utils.data import Dataset
-import torchvision
-from torchvision.datasets import ImageFolder
-from torch.utils.data import DataLoader
-from torchvision import transforms
-from zipfile import ZipFile
-#import gzip
 from skimage import io, transform
-import random
 from sklearn.model_selection import train_test_split
+import torch
+from torch.utils.data import Dataset, DataLoader
+import torchvision
+from torchvision import transforms
+from torchvision.datasets import ImageFolder
+from zipfile import ZipFile
 
 
 kaggle_biodatasets = [

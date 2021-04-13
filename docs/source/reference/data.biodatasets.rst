@@ -4,9 +4,10 @@
 :py:mod:`~farabio.data.biodatasets` module provides classes to load public biomedical datasets
 in a PyTorch friendly manner.
 
-:py:class:`~farabio.data.biodatasets.ChestXrayDataset` Class
+:py:class:`~.ChestXrayDataset` Class
 ------------------------------------------------------------------------------
-How to load and visualize  ``ChestXrayDataset`` dataset
+
+Load :py:class:`~.ChestXrayDataset` dataset
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: python
 
@@ -16,14 +17,15 @@ How to load and visualize  ``ChestXrayDataset`` dataset
 .. image:: ../imgs/ChestXrayDataset.png
    :width: 300
 
-Docs of ``ChestXrayDataset``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Docs of :py:class:`~.ChestXrayDataset`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. autoclass:: farabio.data.biodatasets.ChestXrayDataset
    :members:
 
-:py:class:`~farabio.data.biodatasets.DSB18Dataset` Class
+:py:class:`~.DSB18Dataset` Class
 ------------------------------------------------------------------------------
-How to load and visualize  ``DSB18Dataset`` dataset
+
+Load :py:class:`~.DSB18Dataset` dataset
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: python
 
@@ -34,14 +36,15 @@ How to load and visualize  ``DSB18Dataset`` dataset
 .. image:: ../imgs/DSB18Dataset.png
    :width: 300
 
-Docs of ``DSB18Dataset``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Docs of :py:class:`~.DSB18Dataset`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. autoclass:: farabio.data.biodatasets.DSB18Dataset
    :members:
 
-:py:class:`~farabio.data.biodatasets.RetinopathyDataset` Class
+:py:class:`~.RetinopathyDataset` Class
 ------------------------------------------------------------------------------
-How to load and visualize  ``RetinopathyDataset`` dataset
+
+Load :py:class:`~.RetinopathyDataset` dataset
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: python
 
@@ -51,8 +54,8 @@ How to load and visualize  ``RetinopathyDataset`` dataset
 .. image:: ../imgs/RetinopathyDataset.png
    :width: 300
 
-Docs of ``RetinopathyDataset``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Docs of :py:class:`~.RetinopathyDataset`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. autoclass:: farabio.data.biodatasets.RetinopathyDataset
    :members:
 
