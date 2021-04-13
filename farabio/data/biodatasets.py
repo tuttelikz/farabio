@@ -10,7 +10,9 @@ from torch.utils.data import Dataset
 from torchvision.datasets import ImageFolder
 from torchvision import transforms
 from zipfile import ZipFile
+#import gzip
 from skimage import io, transform
+from sklearn.model_selection import train_test_split
 
 
 kaggle_biodatasets = [
@@ -68,7 +70,7 @@ def download_datasets(tag, path="."):
 
 
 def extract_zip(fzip, fnew=None):
-    with ZipFile(fzip, 'r') as zip:
+    with ZipFile(fzip, 'r') as zip:  # ZipFile(fzip, 'r') as zip:
         print('Extracting all the train files now...')
         zip.extractall(fnew)
         print('Done!')
@@ -133,7 +135,8 @@ class DSB18Dataset(Dataset):
 
         if download:
             download_datasets(tag, path=root)
-            extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
+            extract_zip(os.path.join(root, tag+".zip"),
+                        os.path.join(root, tag))
 
         if train:
             self.path = os.path.join(root, tag, "stage1_train")
@@ -226,3 +229,68 @@ class RetinopathyDataset(Dataset):
             'image': transforms.ToTensor()(image),
             'labels': label
         }
+
+
+class HistocancerDataset(Dataset):
+    """Histopathologic Cancer Dataset from https://www.kaggle.com/c/histopathologic-cancer-detection/overview
+
+    Examples
+    ----------
+    >>> train_dataset = HistocancerDataset(root="./", download=None, train=True)
+    """
+
+    def __init__(self, root: str, train: bool = True, transform=None, download: bool = True):
+        tag = "histopathologic-cancer-detection"
+
+        if download:
+            download_datasets(tag, path=root)
+            extract_zip(os.path.join(root, tag+".zip"),
+                        os.path.join(root, tag))
+
+        if train:
+            self.csv_path = os.path.join(root, tag, "train_labels.csv")
+            self.img_path = os.path.join(root, tag, "train")
+            labels = pd.read_csv(self.csv_path)
+            train_data, val_data = train_test_split(
+                labels, stratify=labels.label, test_size=0.1)
+        else:
+            self.img_path = os.path.join(root, tag, "test")
+
+        self.df = train_data.values
+
+        if transform is None:
+            self.transform = self.get_train_transform
+        else:
+            self.transform = transform
+
+    def __len__(self):
+        return len(self.df)
+
+    def __getitem__(self, index):
+        img_name, label = self.df[index]
+        img_path = os.path.join(self.data_dir, img_name+'.tif')
+        image = cv2.imread(img_path)
+        if self.transform is not None:
+            image = self.transform(image)
+        return image, label
+
+    @staticmethod
+    def get_train_transform(self):
+        """Default transform for training data
+        """
+        return transforms.Compose([transforms.ToPILImage(),
+                                   transforms.Pad(64, padding_mode='reflect'),
+                                   transforms.RandomHorizontalFlip(),
+                                   transforms.RandomVerticalFlip(),
+                                   transforms.RandomRotation(20),
+                                   transforms.ToTensor(),
+                                   transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
+
+    @staticmethod
+    def get_valid_transform(self):
+        """Default transform for validation data
+        """
+        return transforms.Compose([transforms.ToPILImage(),
+                                   transforms.Pad(64, padding_mode='reflect'),
+                                   transforms.ToTensor(),
+                                   transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])

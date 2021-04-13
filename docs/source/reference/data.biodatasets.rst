@@ -12,3 +12,6 @@ in a PyTorch friendly manner.
 
 .. autoclass:: farabio.data.biodatasets.RetinopathyDataset
    :members:
+
+.. autoclass:: farabio.data.biodatasets.HistocancerDataset
+   :members:
