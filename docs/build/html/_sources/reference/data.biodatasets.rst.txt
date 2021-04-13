@@ -7,8 +7,6 @@ in a PyTorch friendly manner.
 :py:class:`~.ChestXrayDataset` Class
 ------------------------------------------------------------------------------
 
-Load :py:class:`~.ChestXrayDataset` dataset
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: python
 
    train_dataset = ChestXrayDataset(root=".", transform=None, download=True)
@@ -25,8 +23,6 @@ Docs of :py:class:`~.ChestXrayDataset`
 :py:class:`~.DSB18Dataset` Class
 ------------------------------------------------------------------------------
 
-Load :py:class:`~.DSB18Dataset` dataset
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: python
 
    train_dataset = DSB18Dataset(root=".", transform=None, download=False)
@@ -44,8 +40,6 @@ Docs of :py:class:`~.DSB18Dataset`
 :py:class:`~.RetinopathyDataset` Class
 ------------------------------------------------------------------------------
 
-Load :py:class:`~.RetinopathyDataset` dataset
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: python
 
    train_dataset = RetinopathyDataset(root=".", transform=None, download=True)
