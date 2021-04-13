@@ -14,7 +14,7 @@ in a PyTorch friendly manner.
    dsb18_plt.show()
 
 .. image:: ../imgs/DSB18Dataset.png
-   :width: 600
+   :width: 300
 
 .. autoclass:: farabio.data.biodatasets.DSB18Dataset
    :members:
