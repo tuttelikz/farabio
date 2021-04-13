@@ -91,7 +91,8 @@ class ChestXrayDataset(ImageFolder):
 
         if download:
             download_datasets(tag, path=root)
-            extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
+            extract_zip(os.path.join(root, tag+".zip"),
+                        os.path.join(root, tag))
 
         self.target_transform = target_transform
         if transform is None:
@@ -138,17 +139,15 @@ class ChestXrayDataset(ImageFolder):
         plt.imshow(inp)
         if title is not None:
             plt.title(title)
-        #plt.pause(0.001)  
-        #     plt.show()
-        #     plt.draw()
-        #fig.savefig('asxd.png')
+        plt.pause(0.001)
         return fig
 
     def visualize_dataset(self):
         """
         Function to visualize images and masks
         """
-        train_dataset = ChestXrayDataset("/home/data/02_SSD4TB/suzy/datasets/public/", download=False)
+        train_dataset = ChestXrayDataset(
+            "/home/data/02_SSD4TB/suzy/datasets/public/", download=False)
         train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True)
         inputs, classes = next(iter(train_loader))
         class_names = train_dataset.classes
@@ -157,7 +156,7 @@ class ChestXrayDataset(ImageFolder):
         out = torchvision.utils.make_grid(inputs)
         self.imshow(out, title=[class_names[x] for x in classes])
 
-    
+
 class DSB18Dataset(Dataset):
     """Nuclei segmentation dataset from DSB 18: https://www.kaggle.com/c/data-science-bowl-2018/overview
 
@@ -168,7 +167,7 @@ class DSB18Dataset(Dataset):
 
     def __init__(self, root: str, train: bool = True, shape: int = 512, transform=None, download: bool = True):
         tag = "data-science-bowl-2018"
-        
+
         path = os.path.join(root, tag, "stage1_train")
         if download:
             download_datasets(tag, path=root)
@@ -232,17 +231,17 @@ class DSB18Dataset(Dataset):
 
     @staticmethod
     def format_image(img):
-        img = np.array(np.transpose(img, (1,2,0)))
-        mean=np.array((0.485, 0.456, 0.406))
-        std=np.array((0.229, 0.224, 0.225))
-        img  = std * img + mean
+        img = np.array(np.transpose(img, (1, 2, 0)))
+        mean = np.array((0.485, 0.456, 0.406))
+        std = np.array((0.229, 0.224, 0.225))
+        img = std * img + mean
         img = img*255
         img = img.astype(np.uint8)
         return img
 
     @staticmethod
     def format_mask(mask):
-        mask = np.squeeze(np.transpose(mask, (1,2,0)))
+        mask = np.squeeze(np.transpose(mask, (1, 2, 0)))
         return mask
 
     def visualize_dataset(self, n_images, predict=None):
@@ -268,6 +267,8 @@ class DSB18Dataset(Dataset):
         return plt
 
 # train_dataset = DSB18Dataset(root="/home/data/02_SSD4TB/suzy/datasets/public/", transform=None, download=False)
+
+
 class RetinopathyDataset(Dataset):
     """Retinopathy Dataset from https://www.kaggle.com/c/aptos2019-blindness-detection/overview
 
@@ -281,14 +282,15 @@ class RetinopathyDataset(Dataset):
 
         if download:
             download_datasets(tag, path=root)
-            extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
+            extract_zip(os.path.join(root, tag+".zip"),
+                        os.path.join(root, tag))
 
         if train:
             self.csv_path = os.path.join(root, tag, "train.csv")
             self.img_path = os.path.join(root, tag, "train_images")
 
         self.data = pd.read_csv(self.csv_path)
-        
+
         if transform is None:
             self.transform = transforms.ToTensor()
 
@@ -319,8 +321,10 @@ class RetinopathyDataset(Dataset):
             ax = fig.add_subplot(3, n_images//3, idx+1, xticks=[], yticks=[])
             im = Image.open(os.path.join(self.img_path, img))
             plt.imshow(im)
-            lab = train_csv.loc[train_csv['id_code'] == img.split('.')[0], 'diagnosis'].values[0]
-            ax.set_title('Severity: %s'%lab, fontsize=40)
+            lab = train_csv.loc[train_csv['id_code'] ==
+                                img.split('.')[0], 'diagnosis'].values[0]
+            ax.set_title('Severity: %s' % lab, fontsize=40)
+
 
 class HistocancerDataset(Dataset):
     """Histopathologic Cancer Dataset from https://www.kaggle.com/c/histopathologic-cancer-detection/overview
@@ -341,9 +345,9 @@ class HistocancerDataset(Dataset):
         if train:
             self.csv_path = os.path.join(root, tag, "train_labels.csv")
             self.img_path = os.path.join(root, tag, "train")
-            labels = pd.read_csv(self.csv_path)
+            self.labels = pd.read_csv(self.csv_path)
             train_data, val_data = train_test_split(
-                labels, stratify=labels.label, test_size=0.1)
+                self.labels, stratify=self.labels.label, test_size=0.1)
         else:
             self.img_path = os.path.join(root, tag, "test")
 
@@ -385,3 +389,18 @@ class HistocancerDataset(Dataset):
                                    transforms.Pad(64, padding_mode='reflect'),
                                    transforms.ToTensor(),
                                    transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
+
+    def visualize_dataset(self, n_images=10):
+        fig = plt.figure(figsize=(12, 4))
+
+        train_imgs = os.listdir(self.img_path)
+        for idx, img in enumerate(np.random.choice(train_imgs, n_images)):
+            ax = fig.add_subplot(2, n_images//2, idx+1, xticks=[], yticks=[])
+            im = Image.open(os.path.join(self.img_path, img))
+            plt.imshow(im)
+            lab = self.labels.loc[self.labels['id'] ==
+                                  img.split('.')[0], 'label'].values[0]
+            if lab == 1:
+                ax.set_title(f'{lab} = tumor')
+            else:
+                ax.set_title(f'{lab} = non-tumor')

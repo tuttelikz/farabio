@@ -321,6 +321,13 @@ in a PyTorch friendly manner.</p>
 </section>
 <section id="histocancerdataset-class">
 <h2><a class="reference internal" href="#farabio.data.biodatasets.HistocancerDataset" title="farabio.data.biodatasets.HistocancerDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistocancerDataset</span></code></a> Class<a class="headerlink" href="#histocancerdataset-class" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">HistocancerDataset</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">train_dataset</span><span class="o">.</span><span class="n">visualize_dataset</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/HistocancerDataset.png"><img alt="../_images/HistocancerDataset.png" src="../_images/HistocancerDataset.png" style="width: 300px;" /></a>
+<section id="docs-of-histocancerdataset">
+<h3>Docs of <a class="reference internal" href="#farabio.data.biodatasets.HistocancerDataset" title="farabio.data.biodatasets.HistocancerDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistocancerDataset</span></code></a><a class="headerlink" href="#docs-of-histocancerdataset" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="farabio.data.biodatasets.HistocancerDataset">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.data.biodatasets.</span></code><code class="sig-name descname"><span class="pre">HistocancerDataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#HistocancerDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.HistocancerDataset" title="Permalink to this definition">¶</a></dt>
@@ -347,8 +354,14 @@ in a PyTorch friendly manner.</p>
 <dd><p>Default transform for validation data</p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="farabio.data.biodatasets.HistocancerDataset.visualize_dataset">
+<code class="sig-name descname"><span class="pre">visualize_dataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#HistocancerDataset.visualize_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.HistocancerDataset.visualize_dataset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
+</section>
 </section>
 </section>
 

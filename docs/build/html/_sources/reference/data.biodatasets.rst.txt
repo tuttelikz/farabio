@@ -59,7 +59,19 @@ Docs of :py:class:`~.RetinopathyDataset`
 .. autoclass:: farabio.data.biodatasets.RetinopathyDataset
    :members:
 
-:py:class:`~farabio.data.biodatasets.HistocancerDataset` Class
+
+:py:class:`~.HistocancerDataset` Class
 ------------------------------------------------------------------------------
+
+.. code-block:: python
+
+   train_dataset = HistocancerDataset(root=".", download=True, train=True)
+   train_dataset.visualize_dataset()
+
+.. image:: ../imgs/HistocancerDataset.png
+   :width: 300
+
+Docs of :py:class:`~.HistocancerDataset`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. autoclass:: farabio.data.biodatasets.HistocancerDataset
    :members:
