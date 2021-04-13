@@ -60,3 +60,7 @@ Alisher Iskakov [@finesome](https://github.com/finesome)
 - Code: https://github.com/tuttelikz/farabio
 - Issue tracker: https://github.com/tuttelikz/farabio/issues
 - PyPI package: https://pypi.org/project/farabio/
+
+## Acknowledgement
+
+This work started as a hobby project at Translational Biophotonics Lab, UNIST, and was supported with computational resources of the laboratory.

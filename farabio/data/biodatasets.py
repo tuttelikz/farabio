@@ -331,7 +331,7 @@ class HistocancerDataset(Dataset):
 
     Examples
     ----------
-    >>> train_dataset = HistocancerDataset(root="./", download=None, train=True)
+    >>> train_dataset = HistocancerDataset(root="./", download=False, train=True)
     """
 
     def __init__(self, root: str, train: bool = True, transform=None, download: bool = True):
