@@ -13,7 +13,8 @@ in a PyTorch friendly manner.
    dsb18_plt = train_dataset.visualize_dataset(5)
    dsb18_plt.show()
 
-.. plot:: handbook/pyplots/biodatasets.py
+.. image:: ../imgs/DSB18Dataset.png
+   :width: 600
 
 .. autoclass:: farabio.data.biodatasets.DSB18Dataset
    :members:

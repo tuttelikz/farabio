@@ -28,7 +28,7 @@ kaggle_biodatasets = [
 
 
 def download_datasets(tag, path="."):
-    """[summary]
+    """Helper function to download datasets
 
     Parameters
     ----------
@@ -130,8 +130,6 @@ class DSB18Dataset(Dataset):
     Examples
     ----------
     >>> train_dataset = DSB18Dataset(root=".", transform=None, download=True)
-    >>> dsb18_plt = train_dataset.visualize_dataset(5)
-    >>> dsb18_plt.show()
     """
 
     def __init__(self, root: str, train: bool = True, shape: int = 512, transform=None, download: bool = True):
