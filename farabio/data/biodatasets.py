@@ -86,8 +86,6 @@ class ChestXrayDataset(ImageFolder):
     Examples
     ----------
     >>> train_dataset = ChestXrayDataset(".", download=False)
-    .. image:: ../imgs/ChestXrayDataset.png
-        :width: 300
     """
 
     def __init__(self, root: str, train: bool = True, shape: int = 256, transform=None, target_transform=None, download: bool = True):
