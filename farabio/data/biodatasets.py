@@ -86,7 +86,7 @@ class ChestXrayDataset(ImageFolder):
     >>> train_dataset = ChestXrayDataset(".", download=False)
     """
 
-    def __init__(self, root: str, train: bool = True, shape: int = 256, transform=None, target_transform=None, download: bool = True):
+    def __init__(self, root: str, mode: str = "train", shape: int = 256, transform=None, target_transform=None, download: bool = True):
         tag = "chest-xray-pneumonia"
 
         if download:
@@ -98,7 +98,7 @@ class ChestXrayDataset(ImageFolder):
         if transform is None:
             self.transform = self.get_train_transform(shape)
 
-        if train:
+        if mode == "train":
             if download:
                 train_path = os.path.join(
                     root, tag, "chest_xray", "train")
@@ -106,8 +106,28 @@ class ChestXrayDataset(ImageFolder):
                 train_path = os.path.join(
                     root, "chest-xray", "train")
 
-        super(ChestXrayDataset, self).__init__(
-            root=train_path, transform=self.transform)
+            super(ChestXrayDataset, self).__init__(
+                root=train_path, transform=self.transform)
+        elif mode == "val":
+            if download:
+                val_path = os.path.join(
+                    root, tag, "chest_xray", "val")
+            else:
+                val_path = os.path.join(
+                    root, "chest-xray", "val")
+
+            super(ChestXrayDataset, self).__init__(
+                root=val_path, transform=self.transform)
+        elif mode == "test":
+            if download:
+                test_path = os.path.join(
+                    root, tag, "chest_xray", "test")
+            else:
+                test_path = os.path.join(
+                    root, "chest-xray", "test")
+
+            super(ChestXrayDataset, self).__init__(
+                root=test_path, transform=self.transform)
 
     def __getitem__(self, index):
         path, target = self.samples[index]

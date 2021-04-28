@@ -1,3 +1,50 @@
+def _cfg_vggnet():
+    """Configurations for U-Net
+    """
+    return {
+        # Data
+        'batch_size_train': 4,
+        'batch_size_valid': 1,
+        'batch_size_test': 1,
+        'val_split': 0.2,
+        'shuffle_data': True,
+        'data_path': '/home/data/02_SSD4TB/suzy/datasets/public', #replace with own path
+        # Model
+        'save_epoch': 1,
+        'semantic': False,
+        'model_save_name': "unet.pt",
+        'model_save_dir': '/home/data/02_SSD4TB/suzy/models/vgg',
+        # Train
+        'learning_rate': 0.001,
+        'momentum': 0.9,
+        'weight_decay': 0.01,
+        'step_size': 10,
+        'gamma': 0.1,
+        'start_epoch': 1,
+        'num_epochs': 30,
+        'has_eval': True,
+        'early_stop': True,
+        'patience': 13,
+        'optim': 'adam',
+        # Test
+        'model_load_dir': '/home/data/02_SSD4TB/suzy/models/vgg/vggnet.pt',
+        # Log
+        'use_tensorboard': True,
+        'use_visdom': False,
+        # Compute
+        'num_workers': 32,
+        'device': 'cuda',
+        'num_gpu': 1,
+        'cuda': True,
+        'data_parallel': True,
+        # Misc
+        'TRAIN': 'train',
+        'TEST': 'test',
+        'VAL': 'val',
+        'mode': 'train'
+    }
+
+
 def _cfg_unet():
     """Configurations for U-Net
     """
