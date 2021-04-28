@@ -1,6 +1,7 @@
 import time
 from farabio.core.configs import default_cfgs
 from farabio.utils.helpers import EasyDict as edict
+from farabio.models.classification.vgg.vgg_trainer import VggTrainer
 from farabio.models.segmentation.unet.unet_trainer import UnetTrainer
 from farabio.models.segmentation.attunet.attunet_trainer import AttunetTrainer
 from farabio.models.superres.srgan.srgan_trainer import SrganTrainer
@@ -10,6 +11,7 @@ from farabio.models.detection.faster_rcnn.faster_rcnn_trainer import FasterRCNNT
 
 
 models = {
+    "vgg": VggTrainer,
     "unet": UnetTrainer,
     "attunet": AttunetTrainer,
     "srgan": SrganTrainer,
@@ -23,7 +25,7 @@ if __name__ == "__main__":
     itime = time.time()
 
     # Choose from list
-    # ["unet", "attunet", "srgan", "cyclegan", "yolov3", "faster_rcnn"]
+    # ["vgg", "unet", "attunet", "srgan", "cyclegan", "yolov3", "faster_rcnn"]
     model = "unet"
 
     # Load configurations

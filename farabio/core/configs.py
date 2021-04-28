@@ -33,7 +33,7 @@ def _cfg_vggnet():
         'use_visdom': False,
         # Compute
         'num_workers': 32,
-        'device': 'cuda',
+        'device': 'cuda:0',
         'num_gpu': 1,
         'cuda': True,
         'data_parallel': True,
