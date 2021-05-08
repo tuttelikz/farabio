@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     # Choose from list
     # ["vgg", "unet", "attunet", "srgan", "cyclegan", "yolov3", "faster_rcnn"]
-    model = "unet"
+    model = "vgg"
 
     # Load configurations
     cfg = default_cfgs[model]
