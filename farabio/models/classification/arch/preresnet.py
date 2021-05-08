@@ -1,6 +1,7 @@
 import torch.nn as nn
 import math
 
+__all__ = ['preresnet']
 
 def conv3x3(in_planes, out_planes, stride=1):
     "3x3 convolution with padding"
@@ -148,3 +149,10 @@ class PreResNet(nn.Module):
         x = self.fc(x)
 
         return x
+
+
+def preresnet(**kwargs):
+    """
+    Constructs a ResNet model.
+    """
+    return PreResNet(**kwargs)

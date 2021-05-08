@@ -3,12 +3,19 @@ import torch.utils.model_zoo as model_zoo
 import math
 
 
+__all__ = [
+    'VGG', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn',
+    'vgg19_bn', 'vgg19',
+]
+
+
 model_urls = {
     'vgg11': 'https://download.pytorch.org/models/vgg11-bbd30ac9.pth',
     'vgg13': 'https://download.pytorch.org/models/vgg13-c768596a.pth',
     'vgg16': 'https://download.pytorch.org/models/vgg16-397923af.pth',
     'vgg19': 'https://download.pytorch.org/models/vgg19-dcbb9e9d.pth',
 }
+
 
 
 class VGG(nn.Module):
@@ -122,4 +129,3 @@ def vgg19(**kwargs):
 def vgg19_bn(**kwargs):
     """VGG 19-layer model (configuration 'E') with batch normalization"""
     model = VGG(make_layers(cfg['E'], batch_norm=True), **kwargs)
-    return model

@@ -2,6 +2,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn import init
 
+__all__ = ['resnext']
 
 class ResNeXtBottleneck(nn.Module):
     """
@@ -117,3 +118,8 @@ class CifarResNeXt(nn.Module):
         x = F.avg_pool2d(x, 8, 1)
         x = x.view(-1, 1024)
         return self.classifier(x)
+
+def resnext(**kwargs):
+    """Constructs a ResNeXt.
+    """
+    model = CifarResNeXt(**kwargs)

@@ -2,7 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import math
+from torch.autograd import Variable
 
+__all__ = ['densenet']
 
 class Bottleneck(nn.Module):
     def __init__(self, inplanes, expansion=4, growthRate=12, dropRate=0):
@@ -137,3 +139,10 @@ class DenseNet(nn.Module):
         x = self.fc(x)
 
         return x
+
+
+def densenet(**kwargs):
+    """
+    Constructs a ResNet model.
+    """
+    return DenseNet(**kwargs)

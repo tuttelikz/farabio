@@ -1,9 +1,8 @@
 import torch.nn as nn
 
-class AlexNet(nn.Module):
-    """AlexNet from https://arxiv.org/abs/1404.5997
-    """
+__all__ = ['alexnet']
 
+class AlexNet(nn.Module):
     def __init__(self, num_classes=10):
         super(AlexNet, self).__init__()
         self.features = nn.Sequential(
@@ -28,3 +27,10 @@ class AlexNet(nn.Module):
         x = x.view(x.size(0), -1)
         x = self.classifier(x)
         return x
+
+def alexnet(**kwargs):
+    r"""AlexNet model architecture from the
+    `"One weird trick..." <https://arxiv.org/abs/1404.5997>`_ paper.
+    """
+    model = AlexNet(**kwargs)
+    return model
