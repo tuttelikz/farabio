@@ -46,7 +46,7 @@ $ pip install [-e] .      # flag for editable mode
 
 ## Updates
 [21-04-02] Release of [`farabio==0.0.1`](https://pypi.org/project/farabio/)  
-[21-03-27] This work is selected for poster on [PyTorch Ecosystem Day](https://pytorchecosystemday.fbreg.com/) to be held on April 21, 2021.
+[21-03-27] This work is selected for poster on [PyTorch Ecosystem Day](https://pytorch.org/ecosystem/pted/2021) to be held on April 21, 2021.
 
 ## Team of contributors
 

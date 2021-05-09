@@ -1,46 +1,42 @@
-def _cfg_vggnet():
-    """Configurations for U-Net
+def _cfg_alexnet():
+    """Configurations for AlexNet
     """
     return {
         # Data
-        'batch_size_train': 4,
-        'batch_size_valid': 1,
-        'batch_size_test': 1,
-        'val_split': 0.2,
-        'shuffle_data': True,
-        'data_path': '/home/data/02_SSD4TB/suzy/datasets/public', #replace with own path
+        'dataset': 'cifar10',
+        'num_classes': 10,
+        'batch_size_train': 128,
+        'batch_size_test': 100,
         # Model
-        'save_epoch': 1,
-        'semantic': False,
-        'model_save_name': "unet.pt",
-        'model_save_dir': '/home/data/02_SSD4TB/suzy/models/vgg',
+        'arch': 'resnet',
+        'depth': 20,
+        'block_name': 'BasicBlock',
+        'cardinality': 8,
+        'widen_factor': 4,
+        'growth_rate': 12,
+        'compression_rate': 2,
         # Train
-        'learning_rate': 0.001,
-        'momentum': 0.9,
-        'weight_decay': 0.01,
-        'step_size': 10,
+        'start_epoch': 0,
+        'num_epochs': 300,
+        'learning_rate': 0.1,
+        'dropout': 0,
+        'schedule': [150, 225],
         'gamma': 0.1,
-        'start_epoch': 1,
-        'num_epochs': 30,
-        'has_eval': True,
-        'early_stop': True,
-        'patience': 13,
-        'optim': 'adam',
+        'momentum': 0.9,
+        'weight_decay': 5e-4,
         # Test
-        'model_load_dir': '/home/data/02_SSD4TB/suzy/models/vgg/vggnet.pt',
         # Log
-        'use_tensorboard': True,
-        'use_visdom': False,
+        'checkpoint': 'checkpoint',
+        'resume': 'resume',
         # Compute
-        'num_workers': 32,
-        'device': 'cuda:0',
-        'num_gpu': 1,
+        'num_workers': 4,
         'cuda': True,
-        'data_parallel': True,
+        'device': 'cuda',
+        'gpu_id': 0,
+        'data_parallel': False,
         # Misc
-        'TRAIN': 'train',
-        'TEST': 'test',
-        'VAL': 'val',
+        'manual_seed': 5,
+        'evaluate': True,
         'mode': 'train'
     }
 
@@ -302,6 +298,7 @@ def _cfg_fasterrcnn():
 
 
 default_cfgs = {
+    'alexnet': _cfg_alexnet(),
     'unet': _cfg_unet(),
     'attunet': _cfg_attunet(),
     'srgan': _cfg_srgan(),
@@ -309,3 +306,49 @@ default_cfgs = {
     'yolov3': _cfg_yolov3(),
     'faster_rcnn': _cfg_fasterrcnn()
 }
+
+# def _cfg_vggnet():
+#     """Configurations for U-Net
+#     """
+#     return {
+#         # Data
+#         'batch_size_train': 4,
+#         'batch_size_valid': 1,
+#         'batch_size_test': 1,
+#         'val_split': 0.2,
+#         'shuffle_data': True,
+#         'data_path': '/home/data/02_SSD4TB/suzy/datasets/public', #replace with own path
+#         # Model
+#         'save_epoch': 1,
+#         'semantic': False,
+#         'model_save_name': "unet.pt",
+#         'model_save_dir': '/home/data/02_SSD4TB/suzy/models/vgg',
+#         # Train
+#         'learning_rate': 0.001,
+#         'momentum': 0.9,
+#         'weight_decay': 0.01,
+#         'step_size': 10,
+#         'gamma': 0.1,
+#         'start_epoch': 1,
+#         'num_epochs': 30,
+#         'has_eval': True,
+#         'early_stop': True,
+#         'patience': 13,
+#         'optim': 'adam',
+#         # Test
+#         'model_load_dir': '/home/data/02_SSD4TB/suzy/models/vgg/vggnet.pt',
+#         # Log
+#         'use_tensorboard': True,
+#         'use_visdom': False,
+#         # Compute
+#         'num_workers': 32,
+#         'device': 'cuda:0',
+#         'num_gpu': 1,
+#         'cuda': True,
+#         'data_parallel': True,
+#         # Misc
+#         'TRAIN': 'train',
+#         'TEST': 'test',
+#         'VAL': 'val',
+#         'mode': 'train'
+#     }
