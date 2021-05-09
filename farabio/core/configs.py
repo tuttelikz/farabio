@@ -3,6 +3,7 @@ def _cfg_alexnet():
     """
     return {
         # Data
+        'title': 'cifar-10',
         'dataset': 'cifar10',
         'num_classes': 10,
         'batch_size_train': 128,

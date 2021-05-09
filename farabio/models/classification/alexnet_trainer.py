@@ -1,4 +1,5 @@
 import os
+import time
 import numpy as np
 import torch
 import torch.nn as nn
@@ -19,7 +20,11 @@ from torchsummary import summary
 from torchvision.datasets import ImageFolder
 import torchvision.transforms as transforms
 from farabio.data.biodatasets import DSB18Dataset
+from farabio.utils.loggers import Logger, savefig
+from farabio.utils.metrics import accuracy
+from farabio.utils.meters import AverageMeter
 import farabio.models.classification.arch as models
+from progress.bar import Bar
 
 
 class AlexTrainer(ConvnetTrainer):
@@ -32,6 +37,7 @@ class AlexTrainer(ConvnetTrainer):
     """
 
     def define_data_attr(self, *args):
+        self._title = self.config.title + self.config.arch
         self._train_batch_size = self.config.batch_size_train
         self._test_batch_size = self.config.batch_size_test
     
@@ -50,12 +56,19 @@ class AlexTrainer(ConvnetTrainer):
         self._lr = self.config.learning_rate
         self._momentum = self.config.momentum
         self._weight_decay = self.config.weight_decay
-
+        self._schedule = self.config.schedule
+        self._gamma = self.config.gamma
+        self._num_epochs = self._num_epochs
+    
     def define_compute_attr(self, *args):
         self._cuda = self.config.cuda
         self._device = self.config.device
         self._num_workers = self.config.num_workers
         self._data_parallel = self.config.data_parallel
+
+    def define_log_attr(self):
+        self.best_accuracy = 0
+        self._checkpoint = self.config.checkpoint
 
     def get_trainloader(self):
         transform_train = transforms.Compose([
@@ -154,3 +167,186 @@ class AlexTrainer(ConvnetTrainer):
         self.model = torch.nn.DataParallel(self.model).cuda()
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self._lr, momentum=self._momentum, weight_decay=self._weight_decay)
+
+    def start_logger(self):
+       self.logger = Logger(os.path.join(self._checkpoint, 'log.txt'), title=self._title)
+       self.logger.set_names(['Learning Rate', 'Train Loss', 'Valid Loss', 'Train Acc.', 'Valid Acc.'])
+
+    def on_train_epoch_start(self):
+        self.model.train()
+        
+        self.batch_time = AverageMeter()
+        self.data_time = AverageMeter()
+        self.losses = AverageMeter()
+        self.top1 = AverageMeter()
+        self.top5 = AverageMeter()
+        self.end = time.time()
+
+        self.bar = Bar('Processing', max=len(self.train_loader))
+
+        self.adjust_learning_rate()
+        self.train_epoch_iter = enumerate(self.train_loader)
+
+        print(f'\nEpoch: [{self._epoch + 1} | {self._num_epochs}] LR: {self._lr}')
+    
+    def on_start_training_batch(self, args):
+        self.batch_idx = args[0]
+        self.inputs = args[-1][0]
+        self.targets = args[-1][0]
+        self.data_time.update(time.time() - self.end)
+    
+    def training_step(self):
+        if self._cuda:
+            self.inputs = self.inputs.to(self._device)
+            self.targets = self.targets.to(self._device) #async?
+
+        #self.inputs = torch.autograd.Variable(self.inputs)
+        #self.targets = torch.autograd.Variable(self.targets)
+
+        self.inputs = torch.tensor(self.inputs, device=self._device)
+        self.targets = torch.tensor(self.targets, dtype=torch.long, device=self._device)
+        #self.targets = self.targets.long()
+
+        self.outputs = self.model(self.inputs)
+        
+        self.loss = self.criterion(self.outputs, self.targets)
+        prec1, prec5 = accuracy(self.outputs.data, self.targets.data, topk=(1, 5))
+
+        self.losses.update(self.loss.data[0], self.inputs.size(0))
+        self.top1.update(prec1[0], self.inputs.size(0))
+        self.top5.update(prec5[0], self.inputs.size(0))
+
+        self.optimizer_zero_grad()
+        self.loss_backward()
+        self.optimizer_step()
+
+    def on_end_training_batch(self):
+        # measure elapsed time
+        self.batch_time.update(time.time() - self.end)
+        self.end = time.time()
+
+        # plot progress
+        self.bar.suffix  = '({batch}/{size}) Data: {data:.3f}s | Batch: {bt:.3f}s | Total: {total:} | ETA: {eta:} | Loss: {loss:.4f} | top1: {top1: .4f} | top5: {top5: .4f}'.format(
+            batch=self.batch_idx + 1,
+            size=len(self.train_loader),
+            data=self.data_time.avg,
+            bt=self.batch_time.avg,
+            total=self.bar.elapsed_td,
+            eta=self.bar.eta_td,
+            loss=self.losses.avg,
+            top1=self.top1.avg,
+            top5=self.top5.avg,
+            )
+
+        self.bar.next()
+
+    def on_train_epoch_end(self):
+        self.bar.finish()
+        self.train_loss = self.losses.avg
+        self.train_accuracy = self.top1.avg
+        
+    def optimizer_zero_grad(self):
+        self.optimizer.zero_grad()
+    
+    def optimizer_step(self):
+        self.optimizer.step()
+    
+    def loss_backward(self):
+        self.loss.backward()
+
+    def on_evaluate_epoch_start(self):
+        self.batch_time = AverageMeter()
+        self.data_time = AverageMeter()
+        self.losses = AverageMeter()
+        self.top1 = AverageMeter()
+        self.top5 = AverageMeter()
+        
+        self.model.eval()
+        
+        self.end = time.time()
+        self.valid_epoch_iter = enumerate(self.test_loader)
+
+        self.bar = Bar('Processing', max=len(self.test_loader))
+
+    def on_evaluate_batch_start(self, args):
+        self.data_time.update(time.time() - self.end)
+        
+        self.batch_idx = args[0]
+        self.inputs = args[-1][0]
+        self.targets = args[-1][-1]
+
+    def evaluate_batch(self, args):
+        if self._cuda:
+            self.inputs = self.inputs.to(self._device)
+            self.targets = self.targets.to(self._device) #async?
+
+        self.inputs = torch.autograd.Variable(self.inputs, volatile=True)
+        self.targets = torch.autograd.Variable(self.targets)
+
+        # compute output
+        self.outputs = self.model(self.inputs)
+        self.loss = self.criterion(self.outputs, self.targets)
+
+        # measure accuracy and record loss
+        self.prec1, self.prec5 = accuracy(self.outputs.data, self.targets.data, topk=(1, 5))
+        
+    def on_evaluate_batch_end(self):
+        self.losses.update(self.loss.data[0], self.inputs.size(0))
+        self.top1.update(self.prec1[0], self.inputs.size(0))
+        self.top5.update(self.prec5[0], self.inputs.size(0))
+        # measure elapsed time
+        self.batch_time.update(time.time() - self.end)
+        self.end = time.time()
+        # plot progress
+        self.bar.suffix  = '({batch}/{size}) Data: {data:.3f}s | Batch: {bt:.3f}s | Total: {total:} | ETA: {eta:} | Loss: {loss:.4f} | top1: {top1: .4f} | top5: {top5: .4f}'.format(
+                    batch=self.batch_idx + 1,
+                    size=len(self.test_loader),
+                    data=self.data_time.avg,
+                    bt=self.batch_time.avg,
+                    total=self.bar.elapsed_td,
+                    eta=self.bar.eta_td,
+                    loss=self.losses.avg,
+                    top1=self.top1.avg,
+                    top5=self.top5.avg,
+                    )
+        self.bar.next()
+    
+    def on_evaluate_epoch_end(self):
+        self.bar.finish()
+        self.test_loss = self.losses.avg
+        self.test_accuracy = self.top1.avg
+
+    def on_epoch_end(self):
+        # append logger file
+        self.logger.append([state['lr'], self.train_loss, self.test_loss, self.train_accuracy, self.test_accuracy])
+
+        # save model
+        is_best = self.test_accuracy > self.best_accuracy
+        self.best_accuracy = max(self.test_accuracy, self.best_accuracy)
+        self.save_checkpoint({
+                'epoch': self._epoch + 1,
+                'state_dict': self.model.state_dict(),
+                'acc': self.test_accuracy,
+                'best_acc': self.best_accuracy,
+                'optimizer' : self.optimizer.state_dict(),
+            }, is_best, checkpoint=self.config.checkpoint)
+
+    def on_train_end(self):
+        self.logger.close()
+        self.logger.plot()
+        savefig(os.path.join(self._checkpoint, 'log.eps'))
+
+        print('Best acc:')
+        print(self.best_accuracy)
+
+    def adjust_learning_rate(self):
+        if self._epoch in self._schedule:
+            self._lr *= self._gamma
+            for param_group in self.optimizer.param_groups:
+                param_group['lr'] = self._lr
+
+    def save_checkpoint(state, is_best, checkpoint='checkpoint', filename='checkpoint.pth.tar'):
+        filepath = os.path.join(checkpoint, filename)
+        torch.save(state, filepath)
+        if is_best:
+            shutil.copyfile(filepath, os.path.join(checkpoint, 'model_best.pth.tar'))
