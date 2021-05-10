@@ -3,6 +3,7 @@
 
 :py:class:`~.ClassTrainer` class uses several classification models.
 
+
 .. list-table:: CIFAR10-classification
    :widths: 25 25
    :header-rows: 1
@@ -19,24 +20,27 @@
      - 93.75%
    * - `RegNetX_200MF`_
      - 94.24%
-   * - RegNetY_400MF
+   * - `RegNetY_400MF`_
      - 94.29% 
    * - `MobileNetV2`_
      - 94.43%
    * - `ResNeXt29(32x4d)`_
      - 94.73%
-   * - ResNeXt29(2x64d)
+   * - `ResNeXt29(2x64d)`
      - 94.82%
    * - `SimpleDLA`_
      - 94.89%
    * - `DenseNet121`_
      - 95.04%
    * - `PreActResNet18`_
-     - 95.04%
+     - 95.11%
    * - `DPN92`_
      - 95.16%
    * - `DLA`_
      - 95.47%
+
+.. image:: ../imgs/unet.png
+   :width: 600
 
 ************
 References
@@ -59,8 +63,6 @@ References
 .. _`DPN92`: https://arxiv.org/abs/1707.01629
 .. _`DLA`: https://arxiv.org/pdf/1707.06484.pdf
 
-.. image:: ../imgs/unet.png
-   :width: 600
 
 :py:class:`~.ClassTrainer` class
 -----------------------------------------
