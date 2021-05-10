@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Usage &mdash; farabio 0.0.1 documentation</title>
@@ -166,9 +165,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="usage">
+  <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<section id="prerequisites">
+<div class="section" id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python=3.8
 numpy=1.19
@@ -206,34 +205,34 @@ tqdm=4.58.0
 visdom=0.1.8.9
 </pre></div>
 </div>
-</details></section>
-<section id="how-to-install">
+</details></div>
+<div class="section" id="how-to-install">
 <h2>How to install<a class="headerlink" href="#how-to-install" title="Permalink to this headline">¶</a></h2>
-<section id="clone-repository-from-git">
+<div class="section" id="clone-repository-from-git">
 <h3>1. Clone repository from Git<a class="headerlink" href="#clone-repository-from-git" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone -b pytorch-pip https://github.com/TBL-UNIST/tbl-ai.git
 $ <span class="nb">cd</span> tbl-ai
 </pre></div>
 </div>
-</section>
-<section id="activate-conda-environment">
+</div>
+<div class="section" id="activate-conda-environment">
 <h3>2. Activate conda environment<a class="headerlink" href="#activate-conda-environment" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ conda create -n coolenv <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8
 $ conda activate coolenv
 $ conda install <span class="nv">pytorch</span><span class="o">==</span><span class="m">1</span>.7.1 <span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.8.2 <span class="nv">torchaudio</span><span class="o">==</span><span class="m">0</span>.7.2 <span class="nv">cudatoolkit</span><span class="o">=</span><span class="m">11</span>.0 -c pytorch
 </pre></div>
 </div>
-</section>
-<section id="install-with-pip">
+</div>
+<div class="section" id="install-with-pip">
 <h3>3. Install with pip<a class="headerlink" href="#install-with-pip" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python -m pip install --upgrade pip setuptools wheel  <span class="c1"># ensure up-to-date</span>
 $ pip install -r <span class="o">[</span>from_local.txt<span class="p">|</span>from_pip.txt<span class="o">]</span>          <span class="c1"># install requirements from local or pypi</span>
 $ pip install <span class="o">[</span>-e<span class="o">]</span> .                                    <span class="c1"># flag for editable mode</span>
 </pre></div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
            </div>

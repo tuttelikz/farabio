@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Tutorial &mdash; farabio 0.0.1 documentation</title>
@@ -176,7 +175,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="tutorial">
+  <div class="section" id="tutorial">
 <h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
 <div class="contents local topic" id="table-of-contents">
 <p class="topic-title">Table of Contents</p>
@@ -191,12 +190,13 @@
 </li>
 </ul>
 </div>
-<section id="how-to-train-model">
+<div class="section" id="how-to-train-model">
 <h2><a class="toc-backref" href="#id1">How to train model</a><a class="headerlink" href="#how-to-train-model" title="Permalink to this headline">¶</a></h2>
 <p>Adjust the following code from <code class="code docutils literal notranslate"><span class="pre">farabio.kernel.py</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">farabio.core.configs</span> <span class="kn">import</span> <span class="n">default_cfgs</span>
 <span class="kn">from</span> <span class="nn">farabio.utils.helpers</span> <span class="kn">import</span> <span class="n">EasyDict</span> <span class="k">as</span> <span class="n">edict</span>
+<span class="kn">from</span> <span class="nn">farabio.models.classification.class_trainer</span> <span class="kn">import</span> <span class="n">ClassTrainer</span>
 <span class="kn">from</span> <span class="nn">farabio.models.segmentation.unet.unet_trainer</span> <span class="kn">import</span> <span class="n">UnetTrainer</span>
 <span class="kn">from</span> <span class="nn">farabio.models.segmentation.attunet.attunet_trainer</span> <span class="kn">import</span> <span class="n">AttunetTrainer</span>
 <span class="kn">from</span> <span class="nn">farabio.models.superres.srgan.srgan_trainer</span> <span class="kn">import</span> <span class="n">SrganTrainer</span>
@@ -205,13 +205,38 @@
 <span class="kn">from</span> <span class="nn">farabio.models.detection.faster_rcnn.faster_rcnn_trainer</span> <span class="kn">import</span> <span class="n">FasterRCNNTrainer</span>
 
 
+<span class="c1"># models = {</span>
+<span class="c1">#     &quot;alexnet&quot;: AlexTrainer,</span>
+<span class="c1">#     &quot;unet&quot;: UnetTrainer,</span>
+<span class="c1">#     &quot;attunet&quot;: AttunetTrainer,</span>
+<span class="c1">#     &quot;srgan&quot;: SrganTrainer,</span>
+<span class="c1">#     &quot;cyclegan&quot;: CycleganTrainer,</span>
+<span class="c1">#     &quot;yolov3&quot;: YoloTrainer,</span>
+<span class="c1">#     &quot;faster_rcnn&quot;: FasterRCNNTrainer</span>
+<span class="c1"># }</span>
+
 <span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;unet&quot;</span><span class="p">:</span> <span class="n">UnetTrainer</span><span class="p">,</span>
-    <span class="s2">&quot;attunet&quot;</span><span class="p">:</span> <span class="n">AttunetTrainer</span><span class="p">,</span>
-    <span class="s2">&quot;srgan&quot;</span><span class="p">:</span> <span class="n">SrganTrainer</span><span class="p">,</span>
-    <span class="s2">&quot;cyclegan&quot;</span><span class="p">:</span> <span class="n">CycleganTrainer</span><span class="p">,</span>
-    <span class="s2">&quot;yolov3&quot;</span><span class="p">:</span> <span class="n">YoloTrainer</span><span class="p">,</span>
-    <span class="s2">&quot;faster_rcnn&quot;</span><span class="p">:</span> <span class="n">FasterRCNNTrainer</span>
+    <span class="s2">&quot;classification&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="p">(</span><span class="s2">&quot;vgg&quot;</span><span class="p">,</span> <span class="s2">&quot;resnet&quot;</span><span class="p">,</span> <span class="s2">&quot;preactresnet&quot;</span><span class="p">,</span> <span class="s2">&quot;googlenet&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;densenet&quot;</span><span class="p">,</span> <span class="s2">&quot;resnext&quot;</span><span class="p">,</span> <span class="s2">&quot;mobilenet&quot;</span><span class="p">,</span> <span class="s2">&quot;mobilenet2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dpn92&quot;</span><span class="p">,</span> <span class="s2">&quot;shufflenet2&quot;</span><span class="p">,</span> <span class="s2">&quot;efficientnet&quot;</span><span class="p">,</span> <span class="s2">&quot;regnet&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;simpledla&quot;</span><span class="p">):</span> <span class="n">ClassTrainer</span><span class="p">,</span>
+
+    <span class="p">},</span>
+    <span class="s2">&quot;segmentation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;unet&quot;</span><span class="p">:</span> <span class="n">UnetTrainer</span><span class="p">,</span>
+        <span class="s2">&quot;attunet&quot;</span><span class="p">:</span> <span class="n">AttunetTrainer</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;superres&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;srgan&quot;</span><span class="p">:</span> <span class="n">SrganTrainer</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;translation&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;cyclegan&quot;</span><span class="p">:</span> <span class="n">CycleganTrainer</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;detection&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;yolov3&quot;</span><span class="p">:</span> <span class="n">YoloTrainer</span><span class="p">,</span>
+        <span class="s2">&quot;faster_rcnn&quot;</span><span class="p">:</span> <span class="n">FasterRCNNTrainer</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 
 
@@ -219,36 +244,42 @@
     <span class="n">itime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
     <span class="c1"># Choose from list</span>
-    <span class="c1"># [&quot;unet&quot;, &quot;attunet&quot;, &quot;srgan&quot;, &quot;cyclegan&quot;, &quot;yolov3&quot;, &quot;faster_rcnn&quot;]</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;unet&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;classification&quot;</span><span class="p">,</span> <span class="s2">&quot;simpledla&quot;</span><span class="p">)</span>
+    <span class="c1">#model = (&quot;segmentation&quot;, &quot;unet&quot;)</span>
 
-    <span class="c1"># Load configurations</span>
-    <span class="n">cfg</span> <span class="o">=</span> <span class="n">default_cfgs</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="n">edict</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-
-    <span class="c1"># Init trainer</span>
-    <span class="n">trnr</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="n">model</span><span class="p">](</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;classification&quot;</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">default_cfgs</span><span class="p">[</span><span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">edict</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">trnr</span> <span class="o">=</span> <span class="n">ClassTrainer</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">default_cfgs</span><span class="p">[</span><span class="n">model</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">edict</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+        <span class="n">trnr</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">model</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]](</span><span class="n">config</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
         <span class="n">trnr</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
-        <span class="n">trnr</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;detect&#39;</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">&quot;yolov3&quot;</span><span class="p">,</span> <span class="s2">&quot;detect mode works only for yolo!&quot;</span>
-        <span class="n">trnr</span><span class="o">.</span><span class="n">detect_perform</span><span class="p">()</span>
 
-    <span class="n">etime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">itime</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Complete in </span><span class="si">{</span><span class="n">etime</span> <span class="o">//</span> <span class="mi">60</span><span class="si">}</span><span class="s1">m </span><span class="si">{</span><span class="n">etime</span> <span class="o">%</span> <span class="mi">60</span><span class="si">:</span><span class="s1"> .2f</span><span class="si">}</span><span class="s1">s&#39;</span><span class="p">)</span>
+    <span class="c1"># if config.mode == &#39;train&#39;:</span>
+    <span class="c1">#     trnr.train()</span>
+    <span class="c1"># elif config.mode == &#39;test&#39;:</span>
+    <span class="c1">#     trnr.test()</span>
+    <span class="c1"># elif config.mode == &#39;detect&#39;:</span>
+    <span class="c1">#     assert model == &quot;yolov3&quot;, &quot;detect mode works only for yolo!&quot;</span>
+    <span class="c1">#     trnr.detect_perform()</span>
+
+    <span class="c1"># etime = time.time() - itime</span>
+    <span class="c1"># print(f&#39;Complete in {etime // 60}m {etime % 60: .2f}s&#39;)</span>
 </pre></div>
 </div>
-</section>
-<section id="how-to-use-tensorboard">
+</div>
+<div class="section" id="how-to-use-tensorboard">
 <h2><a class="toc-backref" href="#id2">How to use Tensorboard</a><a class="headerlink" href="#how-to-use-tensorboard" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ tensorboard --logdir<span class="o">=</span>&lt;DIR-WHERE-TFRECORDS-FILE-STORED&gt; --port <span class="m">6006</span>
 </pre></div>
 </div>
-</section>
-<section id="how-to-train-yolo-v3-on-custom-dataset">
+</div>
+<div class="section" id="how-to-train-yolo-v3-on-custom-dataset">
 <h2><a class="toc-backref" href="#id3">How to train Yolo-v3 on custom dataset</a><a class="headerlink" href="#how-to-train-yolo-v3-on-custom-dataset" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Create custom configuration Yolo:</p></li>
@@ -271,17 +302,17 @@ $ nano custom.data                           <span class="c1"># Change classes, 
 $ python kernel.py --mode &lt;test<span class="p">|</span>detect&gt; --model_def &lt;yolov3-custom.cfg&gt; --data_config &lt;custom.data&gt; --weights_path &lt;weights.pth&gt;         <span class="c1"># Start test/detecting</span>
 </pre></div>
 </div>
-</section>
-<section id="linux-related">
+</div>
+<div class="section" id="linux-related">
 <h2><a class="toc-backref" href="#id4">Linux related</a><a class="headerlink" href="#linux-related" title="Permalink to this headline">¶</a></h2>
-<section id="get-the-user-of-pid">
+<div class="section" id="get-the-user-of-pid">
 <h3><a class="toc-backref" href="#id5">Get the user of PID</a><a class="headerlink" href="#get-the-user-of-pid" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ps -u -p &lt;PID&gt;
 </pre></div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
            </div>

@@ -17,7 +17,7 @@ from farabio.models.classification.arch import *
 
 
 class ClassTrainer(ConvnetTrainer):
-    """U-Net trainer class. Override with custom methods here.
+    """Classification trainer class. Override with custom methods here.
 
     Parameters
     ----------
@@ -107,6 +107,7 @@ class ClassTrainer(ConvnetTrainer):
         }
 
         self.model = class_models[self._arch]
+        print(self._arch)
 
         if self._cuda:
             self.model.to(self._device)

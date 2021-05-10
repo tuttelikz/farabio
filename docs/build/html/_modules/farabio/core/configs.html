@@ -153,7 +153,52 @@
            <div itemprop="articleBody">
             
   <h1>Source code for farabio.core.configs</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="_cfg_unet"><a class="viewcode-back" href="../../../reference/core.configs.html#farabio.core.configs._cfg_unet">[docs]</a><span></span><span class="k">def</span> <span class="nf">_cfg_unet</span><span class="p">():</span>
+<span></span><span class="k">def</span> <span class="nf">_cfg_class</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Configurations for Classification models</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="c1"># Data</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;cifar-10&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;dataset&#39;</span><span class="p">:</span> <span class="s1">&#39;cifar10&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;num_classes&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s1">&#39;batch_size_train&#39;</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="s1">&#39;batch_size_test&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="c1"># Model</span>
+        <span class="c1">#&#39;arch&#39;: &#39;simpledla&#39;,</span>
+        <span class="s1">&#39;depth&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="s1">&#39;block_name&#39;</span><span class="p">:</span> <span class="s1">&#39;BasicBlock&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;cardinality&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="s1">&#39;widen_factor&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;growth_rate&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="s1">&#39;compression_rate&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="c1"># Train</span>
+        <span class="s1">&#39;start_epoch&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;num_epochs&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+        <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s1">&#39;dropout&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">225</span><span class="p">],</span>
+        <span class="s1">&#39;gamma&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s1">&#39;momentum&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
+        <span class="s1">&#39;weight_decay&#39;</span><span class="p">:</span> <span class="mf">5e-4</span><span class="p">,</span>
+        <span class="s1">&#39;resume&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="c1"># Test</span>
+        <span class="c1"># Log</span>
+        <span class="s1">&#39;checkpoint&#39;</span><span class="p">:</span> <span class="s1">&#39;checkpoint&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;resume&#39;</span><span class="p">:</span> <span class="s1">&#39;resume&#39;</span><span class="p">,</span>
+        <span class="c1"># Compute</span>
+        <span class="s1">&#39;num_workers&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s1">&#39;cuda&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="s1">&#39;cuda&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;gpu_id&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;data_parallel&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="c1"># Misc</span>
+        <span class="s1">&#39;manual_seed&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s1">&#39;evaluate&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="s1">&#39;train&#39;</span>
+    <span class="p">}</span>
+
+
+<div class="viewcode-block" id="_cfg_unet"><a class="viewcode-back" href="../../../reference/core.configs.html#farabio.core.configs._cfg_unet">[docs]</a><span class="k">def</span> <span class="nf">_cfg_unet</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Configurations for U-Net</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span>
@@ -410,6 +455,7 @@
 
 
 <span class="n">default_cfgs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;classification&#39;</span><span class="p">:</span> <span class="n">_cfg_class</span><span class="p">(),</span>
     <span class="s1">&#39;unet&#39;</span><span class="p">:</span> <span class="n">_cfg_unet</span><span class="p">(),</span>
     <span class="s1">&#39;attunet&#39;</span><span class="p">:</span> <span class="n">_cfg_attunet</span><span class="p">(),</span>
     <span class="s1">&#39;srgan&#39;</span><span class="p">:</span> <span class="n">_cfg_srgan</span><span class="p">(),</span>
@@ -417,6 +463,95 @@
     <span class="s1">&#39;yolov3&#39;</span><span class="p">:</span> <span class="n">_cfg_yolov3</span><span class="p">(),</span>
     <span class="s1">&#39;faster_rcnn&#39;</span><span class="p">:</span> <span class="n">_cfg_fasterrcnn</span><span class="p">()</span>
 <span class="p">}</span>
+
+<span class="c1"># def _cfg_vggnet():</span>
+<span class="c1">#     &quot;&quot;&quot;Configurations for U-Net</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     return {</span>
+<span class="c1">#         # Data</span>
+<span class="c1">#         &#39;batch_size_train&#39;: 4,</span>
+<span class="c1">#         &#39;batch_size_valid&#39;: 1,</span>
+<span class="c1">#         &#39;batch_size_test&#39;: 1,</span>
+<span class="c1">#         &#39;val_split&#39;: 0.2,</span>
+<span class="c1">#         &#39;shuffle_data&#39;: True,</span>
+<span class="c1">#         &#39;data_path&#39;: &#39;/home/data/02_SSD4TB/suzy/datasets/public&#39;, #replace with own path</span>
+<span class="c1">#         # Model</span>
+<span class="c1">#         &#39;save_epoch&#39;: 1,</span>
+<span class="c1">#         &#39;semantic&#39;: False,</span>
+<span class="c1">#         &#39;model_save_name&#39;: &quot;unet.pt&quot;,</span>
+<span class="c1">#         &#39;model_save_dir&#39;: &#39;/home/data/02_SSD4TB/suzy/models/vgg&#39;,</span>
+<span class="c1">#         # Train</span>
+<span class="c1">#         &#39;learning_rate&#39;: 0.001,</span>
+<span class="c1">#         &#39;momentum&#39;: 0.9,</span>
+<span class="c1">#         &#39;weight_decay&#39;: 0.01,</span>
+<span class="c1">#         &#39;step_size&#39;: 10,</span>
+<span class="c1">#         &#39;gamma&#39;: 0.1,</span>
+<span class="c1">#         &#39;start_epoch&#39;: 1,</span>
+<span class="c1">#         &#39;num_epochs&#39;: 30,</span>
+<span class="c1">#         &#39;has_eval&#39;: True,</span>
+<span class="c1">#         &#39;early_stop&#39;: True,</span>
+<span class="c1">#         &#39;patience&#39;: 13,</span>
+<span class="c1">#         &#39;optim&#39;: &#39;adam&#39;,</span>
+<span class="c1">#         # Test</span>
+<span class="c1">#         &#39;model_load_dir&#39;: &#39;/home/data/02_SSD4TB/suzy/models/vgg/vggnet.pt&#39;,</span>
+<span class="c1">#         # Log</span>
+<span class="c1">#         &#39;use_tensorboard&#39;: True,</span>
+<span class="c1">#         &#39;use_visdom&#39;: False,</span>
+<span class="c1">#         # Compute</span>
+<span class="c1">#         &#39;num_workers&#39;: 32,</span>
+<span class="c1">#         &#39;device&#39;: &#39;cuda:0&#39;,</span>
+<span class="c1">#         &#39;num_gpu&#39;: 1,</span>
+<span class="c1">#         &#39;cuda&#39;: True,</span>
+<span class="c1">#         &#39;data_parallel&#39;: True,</span>
+<span class="c1">#         # Misc</span>
+<span class="c1">#         &#39;TRAIN&#39;: &#39;train&#39;,</span>
+<span class="c1">#         &#39;TEST&#39;: &#39;test&#39;,</span>
+<span class="c1">#         &#39;VAL&#39;: &#39;val&#39;,</span>
+<span class="c1">#         &#39;mode&#39;: &#39;train&#39;</span>
+<span class="c1">#     }</span>
+
+<span class="c1"># def _cfg_alexnet():</span>
+<span class="c1">#     &quot;&quot;&quot;Configurations for AlexNet</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     return {</span>
+<span class="c1">#         # Data</span>
+<span class="c1">#         &#39;title&#39;: &#39;cifar-10&#39;,</span>
+<span class="c1">#         &#39;dataset&#39;: &#39;cifar10&#39;,</span>
+<span class="c1">#         &#39;num_classes&#39;: 10,</span>
+<span class="c1">#         &#39;batch_size_train&#39;: 128,</span>
+<span class="c1">#         &#39;batch_size_test&#39;: 100,</span>
+<span class="c1">#         # Model</span>
+<span class="c1">#         &#39;arch&#39;: &#39;resnet&#39;,</span>
+<span class="c1">#         &#39;depth&#39;: 20,</span>
+<span class="c1">#         &#39;block_name&#39;: &#39;BasicBlock&#39;,</span>
+<span class="c1">#         &#39;cardinality&#39;: 8,</span>
+<span class="c1">#         &#39;widen_factor&#39;: 4,</span>
+<span class="c1">#         &#39;growth_rate&#39;: 12,</span>
+<span class="c1">#         &#39;compression_rate&#39;: 2,</span>
+<span class="c1">#         # Train</span>
+<span class="c1">#         &#39;start_epoch&#39;: 0,</span>
+<span class="c1">#         &#39;num_epochs&#39;: 300,</span>
+<span class="c1">#         &#39;learning_rate&#39;: 0.1,</span>
+<span class="c1">#         &#39;dropout&#39;: 0,</span>
+<span class="c1">#         &#39;schedule&#39;: [150, 225],</span>
+<span class="c1">#         &#39;gamma&#39;: 0.1,</span>
+<span class="c1">#         &#39;momentum&#39;: 0.9,</span>
+<span class="c1">#         &#39;weight_decay&#39;: 5e-4,</span>
+<span class="c1">#         # Test</span>
+<span class="c1">#         # Log</span>
+<span class="c1">#         &#39;checkpoint&#39;: &#39;checkpoint&#39;,</span>
+<span class="c1">#         &#39;resume&#39;: &#39;resume&#39;,</span>
+<span class="c1">#         # Compute</span>
+<span class="c1">#         &#39;num_workers&#39;: 4,</span>
+<span class="c1">#         &#39;cuda&#39;: True,</span>
+<span class="c1">#         &#39;device&#39;: &#39;cuda&#39;,</span>
+<span class="c1">#         &#39;gpu_id&#39;: 0,</span>
+<span class="c1">#         &#39;data_parallel&#39;: False,</span>
+<span class="c1">#         # Misc</span>
+<span class="c1">#         &#39;manual_seed&#39;: 5,</span>
+<span class="c1">#         &#39;evaluate&#39;: True,</span>
+<span class="c1">#         &#39;mode&#39;: &#39;train&#39;</span>
+<span class="c1">#     }</span>
 </pre></div>
 
            </div>

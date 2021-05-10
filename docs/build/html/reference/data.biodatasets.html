@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>biodatasets Module &mdash; farabio 0.0.1 documentation</title>
@@ -174,11 +173,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="biodatasets-module">
+  <div class="section" id="biodatasets-module">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">biodatasets</span></code> Module<a class="headerlink" href="#biodatasets-module" title="Permalink to this headline">¶</a></h1>
 <p><code class="xref py py-mod docutils literal notranslate"><span class="pre">biodatasets</span></code> module provides classes to load public biomedical datasets
 in a PyTorch friendly manner.</p>
-<section id="chestxraydataset-class">
+<div class="section" id="chestxraydataset-class">
 <h2><a class="reference internal" href="#farabio.data.biodatasets.ChestXrayDataset" title="farabio.data.biodatasets.ChestXrayDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChestXrayDataset</span></code></a> Class<a class="headerlink" href="#chestxraydataset-class" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia">Kaggle Chest X-Ray Images</a> competition dataset to detect pneumonia.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">ChestXrayDataset</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -186,11 +185,11 @@ in a PyTorch friendly manner.</p>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/ChestXrayDataset.png"><img alt="../_images/ChestXrayDataset.png" src="../_images/ChestXrayDataset.png" style="width: 300px;" /></a>
-<section id="docs-of-chestxraydataset">
+<div class="section" id="docs-of-chestxraydataset">
 <h3>Docs of <a class="reference internal" href="#farabio.data.biodatasets.ChestXrayDataset" title="farabio.data.biodatasets.ChestXrayDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ChestXrayDataset</span></code></a><a class="headerlink" href="#docs-of-chestxraydataset" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="farabio.data.biodatasets.ChestXrayDataset">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.data.biodatasets.</span></code><code class="sig-name descname"><span class="pre">ChestXrayDataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#ChestXrayDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.ChestXrayDataset" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.data.biodatasets.</span></code><code class="sig-name descname"><span class="pre">ChestXrayDataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'train'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#ChestXrayDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.ChestXrayDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Chest X-ray dataset class</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">ChestXrayDataset</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -198,7 +197,7 @@ in a PyTorch friendly manner.</p>
 </div>
 <dl class="py method">
 <dt id="farabio.data.biodatasets.ChestXrayDataset.__init__">
-<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#ChestXrayDataset.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.ChestXrayDataset.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'train'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#ChestXrayDataset.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.ChestXrayDataset.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
@@ -221,9 +220,9 @@ in a PyTorch friendly manner.</p>
 
 </dd></dl>
 
-</section>
-</section>
-<section id="dsb18dataset-class">
+</div>
+</div>
+<div class="section" id="dsb18dataset-class">
 <h2><a class="reference internal" href="#farabio.data.biodatasets.DSB18Dataset" title="farabio.data.biodatasets.DSB18Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">DSB18Dataset</span></code></a> Class<a class="headerlink" href="#dsb18dataset-class" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://www.kaggle.com/c/data-science-bowl-2018/overview">Kaggle 2018 Data Science Bowl</a> competition dataset for segmented nuclei images.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">DSB18Dataset</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -231,7 +230,7 @@ in a PyTorch friendly manner.</p>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/DSB18Dataset.png"><img alt="../_images/DSB18Dataset.png" src="../_images/DSB18Dataset.png" style="width: 300px;" /></a>
-<section id="docs-of-dsb18dataset">
+<div class="section" id="docs-of-dsb18dataset">
 <h3>Docs of <a class="reference internal" href="#farabio.data.biodatasets.DSB18Dataset" title="farabio.data.biodatasets.DSB18Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">DSB18Dataset</span></code></a><a class="headerlink" href="#docs-of-dsb18dataset" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="farabio.data.biodatasets.DSB18Dataset">
@@ -276,9 +275,9 @@ in a PyTorch friendly manner.</p>
 
 </dd></dl>
 
-</section>
-</section>
-<section id="retinopathydataset-class">
+</div>
+</div>
+<div class="section" id="retinopathydataset-class">
 <h2><a class="reference internal" href="#farabio.data.biodatasets.RetinopathyDataset" title="farabio.data.biodatasets.RetinopathyDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">RetinopathyDataset</span></code></a> Class<a class="headerlink" href="#retinopathydataset-class" title="Permalink to this headline">¶</a></h2>
 <p>Retina images taken using fundus photography from <a class="reference external" href="https://www.kaggle.com/c/aptos2019-blindness-detection/data">Kaggle APTOS 2019 Blindness Detection</a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">RetinopathyDataset</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -286,7 +285,7 @@ in a PyTorch friendly manner.</p>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/RetinopathyDataset.png"><img alt="../_images/RetinopathyDataset.png" src="../_images/RetinopathyDataset.png" style="width: 300px;" /></a>
-<section id="docs-of-retinopathydataset">
+<div class="section" id="docs-of-retinopathydataset">
 <h3>Docs of <a class="reference internal" href="#farabio.data.biodatasets.RetinopathyDataset" title="farabio.data.biodatasets.RetinopathyDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">RetinopathyDataset</span></code></a><a class="headerlink" href="#docs-of-retinopathydataset" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="farabio.data.biodatasets.RetinopathyDataset">
@@ -310,9 +309,9 @@ in a PyTorch friendly manner.</p>
 
 </dd></dl>
 
-</section>
-</section>
-<section id="histocancerdataset-class">
+</div>
+</div>
+<div class="section" id="histocancerdataset-class">
 <h2><a class="reference internal" href="#farabio.data.biodatasets.HistocancerDataset" title="farabio.data.biodatasets.HistocancerDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistocancerDataset</span></code></a> Class<a class="headerlink" href="#histocancerdataset-class" title="Permalink to this headline">¶</a></h2>
 <p>Histopathologic Cancer Detection from <a class="reference external" href="https://www.kaggle.com/c/histopathologic-cancer-detection/data">Kaggle Histopathologic Cancer Detection</a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">HistocancerDataset</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -320,7 +319,7 @@ in a PyTorch friendly manner.</p>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/HistocancerDataset.png"><img alt="../_images/HistocancerDataset.png" src="../_images/HistocancerDataset.png" style="width: 600px;" /></a>
-<section id="docs-of-histocancerdataset">
+<div class="section" id="docs-of-histocancerdataset">
 <h3>Docs of <a class="reference internal" href="#farabio.data.biodatasets.HistocancerDataset" title="farabio.data.biodatasets.HistocancerDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistocancerDataset</span></code></a><a class="headerlink" href="#docs-of-histocancerdataset" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="farabio.data.biodatasets.HistocancerDataset">
@@ -355,9 +354,9 @@ in a PyTorch friendly manner.</p>
 
 </dd></dl>
 
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
            </div>

@@ -49,12 +49,10 @@ if __name__ == "__main__":
     itime = time.time()
 
     # Choose from list
-    #model = ("classification", "simpledla")
-    model = ("segmentation", "unet")
+    model = ("classification", "simpledla")
+    #model = ("segmentation", "unet")
 
-    # Init trainer
     if model[0] == "classification":
-        # Load configurations
         cfg = default_cfgs[model[0]]
         config = edict(cfg)
         config.arch = model[-1]
@@ -63,8 +61,6 @@ if __name__ == "__main__":
         cfg = default_cfgs[model[-1]]
         config = edict(cfg)
         trnr = models[model[0]][model[-1]](config)
-        #trnr = models[model](config)
-    #print(config)
 
     if config.mode == 'train':
         trnr.train()
