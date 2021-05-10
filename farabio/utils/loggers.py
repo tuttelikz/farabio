@@ -4,6 +4,7 @@ import os
 import time
 import sys
 import numpy as np
+import shutil
 
 
 __all__ = ['Logger', 'savefig', 'progress_bar']
@@ -72,8 +73,8 @@ def savefig(fname, dpi=None):
     dpi = 150 if dpi == None else dpi
     plt.savefig(fname, dpi=dpi)
 
-
-_, term_width = os.popen('stty size', 'r').read().split()
+_, term_width = shutil.get_terminal_size()
+#_, term_width = os.popen('stty size', 'r').read().split()
 term_width = int(term_width)
 
 TOTAL_BAR_LENGTH = 65.

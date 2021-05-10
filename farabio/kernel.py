@@ -49,7 +49,7 @@ if __name__ == "__main__":
     itime = time.time()
 
     # Choose from list
-    model = ("classification", "simpledla")
+    model = ("classification", "resnet")
     #model = ("segmentation", "unet")
 
     if model[0] == "classification":
