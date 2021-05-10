@@ -1,5 +1,5 @@
-def _cfg_alexnet():
-    """Configurations for AlexNet
+def _cfg_class():
+    """Configurations for Classification models
     """
     return {
         # Data
@@ -9,7 +9,7 @@ def _cfg_alexnet():
         'batch_size_train': 128,
         'batch_size_test': 100,
         # Model
-        'arch': 'resnet',
+        #'arch': 'simpledla',
         'depth': 20,
         'block_name': 'BasicBlock',
         'cardinality': 8,
@@ -18,13 +18,14 @@ def _cfg_alexnet():
         'compression_rate': 2,
         # Train
         'start_epoch': 0,
-        'num_epochs': 300,
+        'num_epochs': 200,
         'learning_rate': 0.1,
         'dropout': 0,
         'schedule': [150, 225],
         'gamma': 0.1,
         'momentum': 0.9,
         'weight_decay': 5e-4,
+        'resume': True,
         # Test
         # Log
         'checkpoint': 'checkpoint',
@@ -299,7 +300,7 @@ def _cfg_fasterrcnn():
 
 
 default_cfgs = {
-    'alexnet': _cfg_alexnet(),
+    'classification': _cfg_class(),
     'unet': _cfg_unet(),
     'attunet': _cfg_attunet(),
     'srgan': _cfg_srgan(),
@@ -351,5 +352,48 @@ default_cfgs = {
 #         'TRAIN': 'train',
 #         'TEST': 'test',
 #         'VAL': 'val',
+#         'mode': 'train'
+#     }
+
+# def _cfg_alexnet():
+#     """Configurations for AlexNet
+#     """
+#     return {
+#         # Data
+#         'title': 'cifar-10',
+#         'dataset': 'cifar10',
+#         'num_classes': 10,
+#         'batch_size_train': 128,
+#         'batch_size_test': 100,
+#         # Model
+#         'arch': 'resnet',
+#         'depth': 20,
+#         'block_name': 'BasicBlock',
+#         'cardinality': 8,
+#         'widen_factor': 4,
+#         'growth_rate': 12,
+#         'compression_rate': 2,
+#         # Train
+#         'start_epoch': 0,
+#         'num_epochs': 300,
+#         'learning_rate': 0.1,
+#         'dropout': 0,
+#         'schedule': [150, 225],
+#         'gamma': 0.1,
+#         'momentum': 0.9,
+#         'weight_decay': 5e-4,
+#         # Test
+#         # Log
+#         'checkpoint': 'checkpoint',
+#         'resume': 'resume',
+#         # Compute
+#         'num_workers': 4,
+#         'cuda': True,
+#         'device': 'cuda',
+#         'gpu_id': 0,
+#         'data_parallel': False,
+#         # Misc
+#         'manual_seed': 5,
+#         'evaluate': True,
 #         'mode': 'train'
 #     }

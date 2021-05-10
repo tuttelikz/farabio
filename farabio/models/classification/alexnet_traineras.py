@@ -192,7 +192,7 @@ class AlexTrainer(ConvnetTrainer):
     def on_start_training_batch(self, args):
         self.batch_idx = args[0]
         self.inputs = args[-1][0]
-        self.targets = args[-1][0]
+        self.targets = args[-1][-1]
         self.data_time.update(time.time() - self.end)
     
     def training_step(self):
@@ -200,15 +200,9 @@ class AlexTrainer(ConvnetTrainer):
             self.inputs = self.inputs.to(self._device)
             self.targets = self.targets.to(self._device) #async?
 
-        #self.inputs = torch.autograd.Variable(self.inputs)
-        #self.targets = torch.autograd.Variable(self.targets)
-
-        self.inputs = torch.tensor(self.inputs, device=self._device)
-        self.targets = torch.tensor(self.targets, dtype=torch.long, device=self._device)
-        #self.targets = self.targets.long()
+        self.inputs, self.targets = torch.autograd.Variable(self.inputs), torch.autograd.Variable(self.targets)
 
         self.outputs = self.model(self.inputs)
-        
         self.loss = self.criterion(self.outputs, self.targets)
         prec1, prec5 = accuracy(self.outputs.data, self.targets.data, topk=(1, 5))
 

@@ -1,7 +1,7 @@
 import time
 from farabio.core.configs import default_cfgs
 from farabio.utils.helpers import EasyDict as edict
-from farabio.models.classification.alexnet_trainer import AlexTrainer
+from farabio.models.classification.class_trainer import ClassTrainer
 from farabio.models.segmentation.unet.unet_trainer import UnetTrainer
 from farabio.models.segmentation.attunet.attunet_trainer import AttunetTrainer
 from farabio.models.superres.srgan.srgan_trainer import SrganTrainer
@@ -10,14 +10,38 @@ from farabio.models.detection.yolov3.yolo_trainer import YoloTrainer
 from farabio.models.detection.faster_rcnn.faster_rcnn_trainer import FasterRCNNTrainer
 
 
+# models = {
+#     "alexnet": AlexTrainer,
+#     "unet": UnetTrainer,
+#     "attunet": AttunetTrainer,
+#     "srgan": SrganTrainer,
+#     "cyclegan": CycleganTrainer,
+#     "yolov3": YoloTrainer,
+#     "faster_rcnn": FasterRCNNTrainer
+# }
+
 models = {
-    "alexnet": AlexTrainer,
-    "unet": UnetTrainer,
-    "attunet": AttunetTrainer,
-    "srgan": SrganTrainer,
-    "cyclegan": CycleganTrainer,
-    "yolov3": YoloTrainer,
-    "faster_rcnn": FasterRCNNTrainer
+    "classification": {
+        ("vgg", "resnet", "preactresnet", "googlenet",
+        "densenet", "resnext", "mobilenet", "mobilenet2",
+        "dpn92", "shufflenet2", "efficientnet", "regnet",
+        "simpledla"): ClassTrainer,
+
+    },
+    "segmentation": {
+        "unet": UnetTrainer,
+        "attunet": AttunetTrainer,
+    },
+    "superres": {
+        "srgan": SrganTrainer,
+    },
+    "translation": {
+        "cyclegan": CycleganTrainer,
+    },
+    "detection": {
+        "yolov3": YoloTrainer,
+        "faster_rcnn": FasterRCNNTrainer
+    }
 }
 
 
@@ -25,22 +49,25 @@ if __name__ == "__main__":
     itime = time.time()
 
     # Choose from list
-    # ["alexnet", "unet", "attunet", "srgan", "cyclegan", "yolov3", "faster_rcnn"]
-    model = "alexnet"
-
-    # Load configurations
-    cfg = default_cfgs[model]
-    config = edict(cfg)
-    print(config)
+    #model = ("classification", "simpledla")
+    model = ("segmentation", "unet")
 
     # Init trainer
-    trnr = models[model](config)
+    if model[0] == "classification":
+        # Load configurations
+        cfg = default_cfgs[model[0]]
+        config = edict(cfg)
+        config.arch = model[-1]
+        trnr = ClassTrainer(config)
+    else:
+        cfg = default_cfgs[model[-1]]
+        config = edict(cfg)
+        trnr = models[model[0]][model[-1]](config)
+        #trnr = models[model](config)
+    #print(config)
 
     if config.mode == 'train':
         trnr.train()
-
-    # # Init trainer
-    # trnr = models[model](config)
 
     # if config.mode == 'train':
     #     trnr.train()
