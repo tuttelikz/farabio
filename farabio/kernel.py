@@ -10,16 +10,6 @@ from farabio.models.detection.yolov3.yolo_trainer import YoloTrainer
 from farabio.models.detection.faster_rcnn.faster_rcnn_trainer import FasterRCNNTrainer
 
 
-# models = {
-#     "alexnet": AlexTrainer,
-#     "unet": UnetTrainer,
-#     "attunet": AttunetTrainer,
-#     "srgan": SrganTrainer,
-#     "cyclegan": CycleganTrainer,
-#     "yolov3": YoloTrainer,
-#     "faster_rcnn": FasterRCNNTrainer
-# }
-
 models = {
     "classification": {
         ("vgg", "resnet", "preactresnet", "googlenet",

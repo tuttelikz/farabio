@@ -42,50 +42,68 @@ Available architectures
      - 95.47%
 
 
-:py:class:`farabio.models.classification.arch.vgg.VGG`
+:py:class:`.arch.vgg.VGG`
 
-.. image:: ../imgs/vgg.png
+.. figure:: ../imgs/vgg.png
    :width: 400
 
-:py:class:`farabio.models.classification.arch.resnet.ResNet`
+   `VGG16`_
 
-.. image:: ../imgs/resnet.png
+:py:class:`.arch.resnet.ResNet`
+
+.. figure:: ../imgs/resnet.png
    :width: 600
 
-:py:class:`farabio.models.classification.arch.resnet.RegNet`
+   `ResNet18`_
 
-.. image:: ../imgs/regnet.png
+:py:class:`.arch.resnet.RegNet`
+
+.. figure:: ../imgs/regnet.png
    :width: 400
 
-:py:class:`farabio.models.classification.arch.mobilenetv2.MobileNetV2`
+   `RegNetX_200MF`_
 
-.. image:: ../imgs/mobilenet2.png
+:py:class:`.arch.mobilenetv2.MobileNetV2`
+
+.. figure:: ../imgs/mobilenet2.png
    :width: 400
 
-:py:class:`farabio.models.classification.arch.resnext.ResNeXt`
+   `MobileNetV2`_
 
-.. image:: ../imgs/resnext.png
+:py:class:`.arch.resnext.ResNeXt`
+
+.. figure:: ../imgs/resnext.png
    :width: 400
 
-:py:class:`farabio.models.classification.arch.densenet.DenseNet`
+   `ResNeXt29(32x4d)`_
 
-.. image:: ../imgs/densenet.png
+:py:class:`.arch.densenet.DenseNet`
+
+.. figure:: ../imgs/densenet.png
    :width: 400
 
-:py:class:`farabio.models.classification.arch.preact_resnet.PreActResNet`
+   `DenseNet121`_
 
-.. image:: ../imgs/preactresnet.png
+:py:class:`.arch.preact_resnet.PreActResNet`
+
+.. figure:: ../imgs/preactresnet.png
    :width: 250
 
-:py:class:`farabio.models.classification.arch.dpn.DPN`
+   `PreActResNet18`_
 
-.. image:: ../imgs/dpn.png
+:py:class:`.arch.dpn.DPN`
+
+.. figure:: ../imgs/dpn.png
    :width: 400
 
-:py:class:`farabio.models.classification.arch.dla_simple.SimpleDLA`
+   `DPN92`_
 
-.. image:: ../imgs/simpledla.png
+:py:class:`.arch.dla_simple.SimpleDLA`
+
+.. figure:: ../imgs/simpledla.png
    :width: 600
+
+   `DLA`_
 
 ************
 References
