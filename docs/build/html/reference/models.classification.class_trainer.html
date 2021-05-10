@@ -92,7 +92,7 @@
 <li class="toctree-l2"><a class="reference internal" href="index.html#core-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">core</span></code> Package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#models-package"><code class="xref py py-mod docutils literal notranslate"><span class="pre">models</span></code> Package</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">class_trainer</span></code> Module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#available-architectures">Available architectures</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="models.segmentation.unet.unet_trainer.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">unet_trainer</span></code> Module</a></li>
@@ -177,7 +177,9 @@
             
   <div class="section" id="class-trainer-module">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">class_trainer</span></code> Module<a class="headerlink" href="#class-trainer-module" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference internal" href="#farabio.models.classification.class_trainer.ClassTrainer" title="farabio.models.classification.class_trainer.ClassTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClassTrainer</span></code></a> class uses several classification models.</p>
+<p><a class="reference internal" href="#farabio.models.classification.class_trainer.ClassTrainer" title="farabio.models.classification.class_trainer.ClassTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClassTrainer</span></code></a> class offers several classification models.</p>
+<div class="section" id="available-architectures">
+<h2>Available architectures<a class="headerlink" href="#available-architectures" title="Permalink to this headline">¶</a></h2>
 <table class="colwidths-given docutils align-default" id="id1">
 <caption><span class="caption-text">CIFAR10-classification</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
 <colgroup>
@@ -234,8 +236,26 @@
 </tr>
 </tbody>
 </table>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">farabio.models.classification.arch.vgg.VGG</span></code></p>
+<a class="reference internal image-reference" href="../_images/vgg.png"><img alt="../_images/vgg.png" src="../_images/vgg.png" style="width: 400px;" /></a>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">farabio.models.classification.arch.resnet.ResNet</span></code></p>
+<a class="reference internal image-reference" href="../_images/resnet.png"><img alt="../_images/resnet.png" src="../_images/resnet.png" style="width: 600px;" /></a>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">farabio.models.classification.arch.resnet.RegNet</span></code></p>
+<a class="reference internal image-reference" href="../_images/regnet.png"><img alt="../_images/regnet.png" src="../_images/regnet.png" style="width: 400px;" /></a>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">farabio.models.classification.arch.mobilenetv2.MobileNetV2</span></code></p>
+<a class="reference internal image-reference" href="../_images/mobilenet2.png"><img alt="../_images/mobilenet2.png" src="../_images/mobilenet2.png" style="width: 400px;" /></a>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">farabio.models.classification.arch.resnext.ResNeXt</span></code></p>
+<a class="reference internal image-reference" href="../_images/resnext.png"><img alt="../_images/resnext.png" src="../_images/resnext.png" style="width: 400px;" /></a>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">farabio.models.classification.arch.densenet.DenseNet</span></code></p>
+<a class="reference internal image-reference" href="../_images/densenet.png"><img alt="../_images/densenet.png" src="../_images/densenet.png" style="width: 400px;" /></a>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">farabio.models.classification.arch.preact_resnet.PreActResNet</span></code></p>
+<a class="reference internal image-reference" href="../_images/preactresnet.png"><img alt="../_images/preactresnet.png" src="../_images/preactresnet.png" style="width: 250px;" /></a>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">farabio.models.classification.arch.dpn.DPN</span></code></p>
+<a class="reference internal image-reference" href="../_images/dpn.png"><img alt="../_images/dpn.png" src="../_images/dpn.png" style="width: 400px;" /></a>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">farabio.models.classification.arch.dla_simple.SimpleDLA</span></code></p>
+<a class="reference internal image-reference" href="../_images/simpledla.png"><img alt="../_images/simpledla.png" src="../_images/simpledla.png" style="width: 600px;" /></a>
 <div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
 <dl class="footnote brackets">
 <dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
 <dd><p><a class="reference external" href="https://arxiv.org/abs/1409.1556">https://arxiv.org/abs/1409.1556</a></p>
@@ -268,17 +288,8 @@
 <dd><p><a class="reference external" href="https://arxiv.org/pdf/1707.06484.pdf">https://arxiv.org/pdf/1707.06484.pdf</a></p>
 </dd>
 </dl>
-<a class="reference internal image-reference" href="../_images/vgg.png"><img alt="../_images/vgg.png" src="../_images/vgg.png" style="width: 400px;" /></a>
-<a class="reference internal image-reference" href="../_images/resnet.png"><img alt="../_images/resnet.png" src="../_images/resnet.png" style="width: 400px;" /></a>
-<a class="reference internal image-reference" href="../_images/regnet.png"><img alt="../_images/regnet.png" src="../_images/regnet.png" style="width: 400px;" /></a>
-<a class="reference internal image-reference" href="../_images/mobilenet2.png"><img alt="../_images/mobilenet2.png" src="../_images/mobilenet2.png" style="width: 400px;" /></a>
-<a class="reference internal image-reference" href="../_images/resnext.png"><img alt="../_images/resnext.png" src="../_images/resnext.png" style="width: 400px;" /></a>
-<a class="reference internal image-reference" href="../_images/densenet.png"><img alt="../_images/densenet.png" src="../_images/densenet.png" style="width: 400px;" /></a>
-<a class="reference internal image-reference" href="../_images/preactresnet.png"><img alt="../_images/preactresnet.png" src="../_images/preactresnet.png" style="width: 400px;" /></a>
-<a class="reference internal image-reference" href="../_images/dpn.png"><img alt="../_images/dpn.png" src="../_images/dpn.png" style="width: 400px;" /></a>
-<a class="reference internal image-reference" href="../_images/simpledla.png"><img alt="../_images/simpledla.png" src="../_images/simpledla.png" style="width: 400px;" /></a>
 <div class="section" id="classtrainer-class">
-<h3><a class="reference internal" href="#farabio.models.classification.class_trainer.ClassTrainer" title="farabio.models.classification.class_trainer.ClassTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClassTrainer</span></code></a> class<a class="headerlink" href="#classtrainer-class" title="Permalink to this headline">¶</a></h3>
+<h4><a class="reference internal" href="#farabio.models.classification.class_trainer.ClassTrainer" title="farabio.models.classification.class_trainer.ClassTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClassTrainer</span></code></a> class<a class="headerlink" href="#classtrainer-class" title="Permalink to this headline">¶</a></h4>
 <dl class="py class">
 <dt id="farabio.models.classification.class_trainer.ClassTrainer">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.models.classification.class_trainer.</span></code><code class="sig-name descname"><span class="pre">ClassTrainer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/models/classification/class_trainer.html#ClassTrainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.models.classification.class_trainer.ClassTrainer" title="Permalink to this definition">¶</a></dt>
@@ -423,6 +434,7 @@
 
 </dd></dl>
 
+</div>
 </div>
 </div>
 </div>
