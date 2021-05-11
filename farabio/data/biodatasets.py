@@ -15,7 +15,7 @@ import torchvision
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from zipfile import ZipFile
-
+from sklearn.preprocessing import OrdinalEncoder
 
 kaggle_biodatasets = [
     "aptos2019-blindness-detection",
@@ -23,6 +23,7 @@ kaggle_biodatasets = [
     "data-science-bowl-2018",
     "histopathologic-cancer-detection",
     "intel-mobileodt-cervical-cancer-screening",
+    "ranzcr-clip-catheter-line-classification",
     "skin-cancer-mnist"
 ]
 
@@ -43,6 +44,7 @@ def download_datasets(tag, path="."):
                 "data-science-bowl-2018",
                 "histopathologic-cancer-detection",
                 "intel-mobileodt-cervical-cancer-screening",
+                "ranzcr-clip-catheter-line-classification",
                 "skin-cancer-mnist"
             ]
     path : str, optional
@@ -76,6 +78,108 @@ def extract_zip(fzip, fnew=None):
         print('Extracting all the train files now...')
         zip.extractall(fnew)
         print('Done!')
+
+
+class RANZCRDataset(Dataset):
+    """RANZCR 2021 dataset class
+
+    Examples
+    ----------
+    >>> train_dataset = RANZCRDataset(".", train=True, transform=None, download=True)
+    """
+
+    def __init__(self, root: str, train: bool = True, transform=None, download: bool = False):
+        tag = "ranzcr-clip-catheter-line-classification"
+
+        if download:
+            #download_datasets(tag, path=root)
+            extract_zip(os.path.join(root, tag+".zip"),
+                        os.path.join(root, tag))
+
+        train_path = os.path.join(root, tag, "train")
+        test_path = os.path.join(root, tag, "test")
+
+        # juggling
+        data = pd.read_csv(os.path.join(root, tag, "train_annotations.csv"))
+        data = data.drop(["data"], axis=1)
+
+        # Converting the columns into integers.
+        data_org = data['label']
+        ord_enc = OrdinalEncoder()
+        data[['label']] = ord_enc.fit_transform(data[['label']])
+
+        # Converting the Labels from floats to integers.
+        data.label = data.label.astype("int")
+
+        # Grabbing the labels as a list.
+        label = data["label"]
+        label = label.to_list()
+
+        seed = 42
+        train_list = []
+
+        for i in data.index:
+
+            # Grabbing the file name.
+            a = data["StudyInstanceUID"].loc[i]
+
+            # Attaching the file's path to it.
+            b = train_path + "/" + a + ".jpg"
+
+            # Puttting it in a tupple along with it's label.
+            train_list.append((b, data['label'].loc[i]))
+
+        train_list, valid_list = train_test_split(train_list,
+                                                  test_size=0.2,
+                                                  random_state=seed)
+
+        if transform is None:
+            self.transforms = self.get_transform()
+
+        if train:
+            self.file_list = train_list
+        else:
+            self.file_list = valid_list
+
+    def __len__(self):
+        self.filelength = len(self.file_list)
+        return self.filelength
+
+    def __getitem__(self, idx):
+
+        # Note that file list consists of tuples.
+        # The first item in tuple is the image.
+        img_path = self.file_list[idx][0]
+        img = Image.open(img_path).convert("RGB")
+        img_transformed = self.transforms(img)
+
+        # The second item in the tuple is the label.
+        label = self.file_list[idx][1]
+
+        return img_transformed, label
+
+    def get_transform(self):
+        """Default transform
+        """
+        return transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.RandomResizedCrop(224),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+        ])
+    
+    def visualize_dataset(self, n_images=5):
+        random_idx = np.random.randint(1, len(self.file_list), size=16)
+        fig, axes = plt.subplots(5,5, figsize=(13,13))
+
+        for idx, ax in enumerate(axes.ravel()):
+            img = Image.open(self.file_list[idx][0])
+            ax.set_title(self.file_list[idx][-1])
+            ax.imshow(img)
+
+        fig.savefig('RANZCRDataset.png')
+
 
 
 class ChestXrayDataset(ImageFolder):

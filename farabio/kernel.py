@@ -13,10 +13,9 @@ from farabio.models.detection.faster_rcnn.faster_rcnn_trainer import FasterRCNNT
 models = {
     "classification": {
         ("vgg", "resnet", "preactresnet", "googlenet",
-        "densenet", "resnext", "mobilenet", "mobilenet2",
-        "dpn92", "shufflenet2", "efficientnet", "regnet",
-        "simpledla"): ClassTrainer,
-
+         "densenet", "resnext", "mobilenet", "mobilenet2",
+         "dpn92", "shufflenet2", "efficientnet", "regnet",
+         "simpledla"): ClassTrainer,
     },
     "segmentation": {
         "unet": UnetTrainer,

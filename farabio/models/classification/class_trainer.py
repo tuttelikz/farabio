@@ -13,14 +13,14 @@ from farabio.core.convnettrainer import ConvnetTrainer
 from farabio.utils.helpers import makedirs, parallel_state_dict
 from farabio.utils.losses import Losses
 from farabio.utils.loggers import Logger, savefig, progress_bar
-from farabio.models.classification.arch import *
+from farabio.models.classification.conv import *
 
 
 class ClassTrainer(ConvnetTrainer):
     """Classification trainer class. Override with custom methods here.
 
     Parameters
-    ----------
+    -----------
     ConvnetTrainer : BaseTrainer
         Inherits ConvnetTrainer class
     """

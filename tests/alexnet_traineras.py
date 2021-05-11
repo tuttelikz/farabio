@@ -23,7 +23,7 @@ from farabio.data.biodatasets import DSB18Dataset
 from farabio.utils.loggers import Logger, savefig
 from farabio.utils.metrics import accuracy
 from farabio.utils.meters import AverageMeter
-import farabio.models.classification.arch as models
+import farabio.models.classification.conv as models
 from progress.bar import Bar
 
 
