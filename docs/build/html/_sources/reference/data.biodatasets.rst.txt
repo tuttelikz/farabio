@@ -76,3 +76,21 @@ Docs of :py:class:`~.HistocancerDataset`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. autoclass:: farabio.data.biodatasets.HistocancerDataset
    :members:
+
+:py:class:`~.RANZCRDataset` Class
+------------------------------------------------------------------------------
+
+Catheters presence and position detection from `RANZCR CLiP - Catheter and Line Position Challenge <https://www.kaggle.com/c/ranzcr-clip-catheter-line-classification/data>`_
+
+.. code-block:: python
+
+   train_dataset = RANZCRDataset(".", train=True, transform=None, download=True)
+   train_dataset.visualize_dataset()
+
+.. image:: ../imgs/RANZCRDataset.png
+   :width: 600
+
+Docs of :py:class:`~.RANZCRDataset`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. autoclass:: farabio.data.biodatasets.RANZCRDataset
+   :members:

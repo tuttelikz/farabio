@@ -98,6 +98,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#dsb18dataset-class"><code class="xref py py-class docutils literal notranslate"><span class="pre">DSB18Dataset</span></code> Class</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#retinopathydataset-class"><code class="xref py py-class docutils literal notranslate"><span class="pre">RetinopathyDataset</span></code> Class</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#histocancerdataset-class"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistocancerDataset</span></code> Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ranzcrdataset-class"><code class="xref py py-class docutils literal notranslate"><span class="pre">RANZCRDataset</span></code> Class</a></li>
 </ul>
 </li>
 </ul>
@@ -350,6 +351,45 @@ in a PyTorch friendly manner.</p>
 <dl class="py method">
 <dt id="farabio.data.biodatasets.HistocancerDataset.visualize_dataset">
 <code class="sig-name descname"><span class="pre">visualize_dataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#HistocancerDataset.visualize_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.HistocancerDataset.visualize_dataset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="ranzcrdataset-class">
+<h2><a class="reference internal" href="#farabio.data.biodatasets.RANZCRDataset" title="farabio.data.biodatasets.RANZCRDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">RANZCRDataset</span></code></a> Class<a class="headerlink" href="#ranzcrdataset-class" title="Permalink to this headline">¶</a></h2>
+<p>Catheters presence and position detection from <a class="reference external" href="https://www.kaggle.com/c/ranzcr-clip-catheter-line-classification/data">RANZCR CLiP - Catheter and Line Position Challenge</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">RANZCRDataset</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">train_dataset</span><span class="o">.</span><span class="n">visualize_dataset</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/RANZCRDataset.png"><img alt="../_images/RANZCRDataset.png" src="../_images/RANZCRDataset.png" style="width: 600px;" /></a>
+<div class="section" id="docs-of-ranzcrdataset">
+<h3>Docs of <a class="reference internal" href="#farabio.data.biodatasets.RANZCRDataset" title="farabio.data.biodatasets.RANZCRDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">RANZCRDataset</span></code></a><a class="headerlink" href="#docs-of-ranzcrdataset" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="farabio.data.biodatasets.RANZCRDataset">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.data.biodatasets.</span></code><code class="sig-name descname"><span class="pre">RANZCRDataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#RANZCRDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.RANZCRDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>RANZCR 2021 dataset class</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">RANZCRDataset</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="farabio.data.biodatasets.RANZCRDataset.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#RANZCRDataset.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.RANZCRDataset.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabio.data.biodatasets.RANZCRDataset.get_transform">
+<code class="sig-name descname"><span class="pre">get_transform</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#RANZCRDataset.get_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.RANZCRDataset.get_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default transform</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="farabio.data.biodatasets.RANZCRDataset.visualize_dataset">
+<code class="sig-name descname"><span class="pre">visualize_dataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_images</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#RANZCRDataset.visualize_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.RANZCRDataset.visualize_dataset" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

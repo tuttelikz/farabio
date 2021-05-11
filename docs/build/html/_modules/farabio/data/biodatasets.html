@@ -170,7 +170,7 @@
 <span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
 <span class="kn">from</span> <span class="nn">torchvision.datasets</span> <span class="kn">import</span> <span class="n">ImageFolder</span>
 <span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">ZipFile</span>
-
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OrdinalEncoder</span>
 
 <span class="n">kaggle_biodatasets</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;aptos2019-blindness-detection&quot;</span><span class="p">,</span>
@@ -178,6 +178,7 @@
     <span class="s2">&quot;data-science-bowl-2018&quot;</span><span class="p">,</span>
     <span class="s2">&quot;histopathologic-cancer-detection&quot;</span><span class="p">,</span>
     <span class="s2">&quot;intel-mobileodt-cervical-cancer-screening&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ranzcr-clip-catheter-line-classification&quot;</span><span class="p">,</span>
     <span class="s2">&quot;skin-cancer-mnist&quot;</span>
 <span class="p">]</span>
 
@@ -198,6 +199,7 @@
 <span class="sd">                &quot;data-science-bowl-2018&quot;,</span>
 <span class="sd">                &quot;histopathologic-cancer-detection&quot;,</span>
 <span class="sd">                &quot;intel-mobileodt-cervical-cancer-screening&quot;,</span>
+<span class="sd">                &quot;ranzcr-clip-catheter-line-classification&quot;,</span>
 <span class="sd">                &quot;skin-cancer-mnist&quot;</span>
 <span class="sd">            ]</span>
 <span class="sd">    path : str, optional</span>
@@ -231,6 +233,107 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Extracting all the train files now...&#39;</span><span class="p">)</span>
         <span class="nb">zip</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">fnew</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Done!&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="RANZCRDataset"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RANZCRDataset">[docs]</a><span class="k">class</span> <span class="nc">RANZCRDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;RANZCR 2021 dataset class</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; train_dataset = RANZCRDataset(&quot;.&quot;, train=True, transform=None, download=True)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RANZCRDataset.__init__"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RANZCRDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;ranzcr-clip-catheter-line-classification&quot;</span>
+
+        <span class="k">if</span> <span class="n">download</span><span class="p">:</span>
+            <span class="c1">#download_datasets(tag, path=root)</span>
+            <span class="n">extract_zip</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="o">+</span><span class="s2">&quot;.zip&quot;</span><span class="p">),</span>
+                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="p">))</span>
+
+        <span class="n">train_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;train&quot;</span><span class="p">)</span>
+        <span class="n">test_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+        <span class="c1"># juggling</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="s2">&quot;train_annotations.csv&quot;</span><span class="p">))</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Converting the columns into integers.</span>
+        <span class="n">data_org</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
+        <span class="n">ord_enc</span> <span class="o">=</span> <span class="n">OrdinalEncoder</span><span class="p">()</span>
+        <span class="n">data</span><span class="p">[[</span><span class="s1">&#39;label&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ord_enc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s1">&#39;label&#39;</span><span class="p">]])</span>
+
+        <span class="c1"># Converting the Labels from floats to integers.</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Grabbing the labels as a list.</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+
+        <span class="n">seed</span> <span class="o">=</span> <span class="mi">42</span>
+        <span class="n">train_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+
+            <span class="c1"># Grabbing the file name.</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;StudyInstanceUID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="c1"># Attaching the file&#39;s path to it.</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">train_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">a</span> <span class="o">+</span> <span class="s2">&quot;.jpg&quot;</span>
+
+            <span class="c1"># Puttting it in a tupple along with it&#39;s label.</span>
+            <span class="n">train_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">b</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+        <span class="n">train_list</span><span class="p">,</span> <span class="n">valid_list</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">train_list</span><span class="p">,</span>
+                                                  <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                                                  <span class="n">random_state</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">transform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_transform</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_list</span> <span class="o">=</span> <span class="n">train_list</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_list</span> <span class="o">=</span> <span class="n">valid_list</span></div>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filelength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filelength</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+
+        <span class="c1"># Note that file list consists of tuples.</span>
+        <span class="c1"># The first item in tuple is the image.</span>
+        <span class="n">img_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_list</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">)</span>
+        <span class="n">img_transformed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+        <span class="c1"># The second item in the tuple is the label.</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_list</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">img_transformed</span><span class="p">,</span> <span class="n">label</span>
+
+<div class="viewcode-block" id="RANZCRDataset.get_transform"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RANZCRDataset.get_transform">[docs]</a>    <span class="k">def</span> <span class="nf">get_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Default transform</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)),</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">RandomResizedCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">RandomHorizontalFlip</span><span class="p">(),</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">))</span>
+        <span class="p">])</span></div>
+    
+<div class="viewcode-block" id="RANZCRDataset.visualize_dataset"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RANZCRDataset.visualize_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_images</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">random_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_list</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="mi">13</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()):</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_list</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_list</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></div></div>
+
+        <span class="c1">#fig.savefig(&#39;RANZCRDataset.png&#39;)</span>
 
 
 <div class="viewcode-block" id="ChestXrayDataset"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.ChestXrayDataset">[docs]</a><span class="k">class</span> <span class="nc">ChestXrayDataset</span><span class="p">(</span><span class="n">ImageFolder</span><span class="p">):</span>

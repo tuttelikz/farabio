@@ -178,8 +178,7 @@ class RANZCRDataset(Dataset):
             ax.set_title(self.file_list[idx][-1])
             ax.imshow(img)
 
-        fig.savefig('RANZCRDataset.png')
-
+        #fig.savefig('RANZCRDataset.png')
 
 
 class ChestXrayDataset(ImageFolder):
