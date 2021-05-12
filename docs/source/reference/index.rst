@@ -18,6 +18,7 @@ Reference
    :maxdepth: 1
    
    models.classification.class_trainer.rst
+   models.classification.transformer_trainer.rst
    models.segmentation.unet.unet_trainer.rst
    models.segmentation.attunet.attunet_trainer
    models.superres.srgan.srgan_trainer.rst
