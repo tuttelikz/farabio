@@ -1,7 +1,7 @@
 :py:mod:`~farabio.models.classification.transformer_trainer.TransformerTrainer` Module
 ==========================================================================================
 
-.. image:: ../imgs/vit.gif
+.. image:: ../imgs/vit.png
    :width: 600
 
 :py:class:`~.TransformerTrainer` class uses Basic Linformer architecture,
