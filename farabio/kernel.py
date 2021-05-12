@@ -2,6 +2,7 @@ import time
 from farabio.core.configs import default_cfgs
 from farabio.utils.helpers import EasyDict as edict
 from farabio.models.classification.class_trainer import ClassTrainer
+from farabio.models.classification.transformer_trainer import TransformerTrainer
 from farabio.models.segmentation.unet.unet_trainer import UnetTrainer
 from farabio.models.segmentation.attunet.attunet_trainer import AttunetTrainer
 from farabio.models.superres.srgan.srgan_trainer import SrganTrainer
@@ -16,6 +17,9 @@ models = {
          "densenet", "resnext", "mobilenet", "mobilenet2",
          "dpn92", "shufflenet2", "efficientnet", "regnet",
          "simpledla"): ClassTrainer,
+    },
+    "transformer": {
+        "linformer": TransformerTrainer
     },
     "segmentation": {
         "unet": UnetTrainer,
@@ -38,7 +42,8 @@ if __name__ == "__main__":
     itime = time.time()
 
     # Choose from list
-    model = ("classification", "resnet")
+    #model = ("classification", "resnet")
+    model = ("transformer", "linformer")
     #model = ("segmentation", "unet")
 
     if model[0] == "classification":
@@ -46,6 +51,10 @@ if __name__ == "__main__":
         config = edict(cfg)
         config.arch = model[-1]
         trnr = ClassTrainer(config)
+    elif model[0] == "transformer":
+        cfg = default_cfgs[model[0]]
+        config = edict(cfg)
+        trnr = TransformerTrainer(config)
     else:
         cfg = default_cfgs[model[-1]]
         config = edict(cfg)
@@ -53,6 +62,28 @@ if __name__ == "__main__":
 
     if config.mode == 'train':
         trnr.train()
+
+
+
+# if __name__ == "__main__":
+#     itime = time.time()
+
+#     # Choose from list
+#     model = ("classification", "resnet")
+#     #model = ("segmentation", "unet")
+
+#     if model[0] == "classification":
+#         cfg = default_cfgs[model[0]]
+#         config = edict(cfg)
+#         config.arch = model[-1]
+#         trnr = ClassTrainer(config)
+#     else:
+#         cfg = default_cfgs[model[-1]]
+#         config = edict(cfg)
+#         trnr = models[model[0]][model[-1]](config)
+
+#     if config.mode == 'train':
+#         trnr.train()
 
     # if config.mode == 'train':
     #     trnr.train()

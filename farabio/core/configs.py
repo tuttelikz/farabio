@@ -1,3 +1,29 @@
+def _cfg_transformer():
+    """Configurations for Classification models
+    """
+    return {
+        # Data
+        "batch_size": 64,
+        'dataset': 'RANZCRDataset',
+        'root': '/home/data/02_SSD4TB/suzy/datasets/public',
+        # Model
+        'title': 'BasicLinformer',
+        # Train
+        'start_epoch': 0,
+        'num_epochs': 5,
+        'learning_rate': 3e-5,
+        'gamma': 0.7,
+        # Test
+        # Log
+        # Compute
+        'device': "cuda",
+        'cuda': True,
+        # Misc
+        'seed': 42,
+        'mode': 'train'
+    }
+
+
 def _cfg_class():
     """Configurations for Classification models
     """
@@ -300,6 +326,7 @@ def _cfg_fasterrcnn():
 
 
 default_cfgs = {
+    'transformer': _cfg_transformer(),
     'classification': _cfg_class(),
     'unet': _cfg_unet(),
     'attunet': _cfg_attunet(),

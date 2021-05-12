@@ -1,149 +1,173 @@
-import glob
-from itertools import chain
 import os
 import random
-import zipfile
-
-# Our all season best friends:
-import matplotlib.pyplot as plt
+import time
 import numpy as np
-import pandas as pd
-from PIL import Image
-
-# PyTorch because survival:
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from torch.optim.lr_scheduler import StepLR
-from torch.utils.data import DataLoader, Dataset
-from torchvision import datasets, transforms
-
-# To keep time in check:
-from tqdm.notebook import tqdm
-
-# For Preprocessing of the Data:
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OrdinalEncoder
-
-# For grabbing our pretrained Model:
-from farabio.data.biodatasets import RANZCRDataset
+from torch.utils.data import Dataset, DataLoader
+import torch.backends.cudnn as cudnn
+import torchvision
+import torchvision.transforms as transforms
+from torchvision.datasets import ImageFolder
+from tqdm.std import tqdm
+from farabio.core.convnettrainer import ConvnetTrainer
 from farabio.models.classification.vit.linformer import Linformer
 from farabio.models.classification.vit.efficient import ViT
+from farabio.utils.losses import Losses
+from farabio.utils.loggers import Logger
+from farabio.data.biodatasets import RANZCRDataset
 
 
-# training parameters
-batch_size = 64
-epochs = 5
-lr = 3e-5
-gamma = 0.7
-seed = 42
-device = "cuda"
+class TransformerTrainer(ConvnetTrainer):
+    """Classification trainer class. Override with custom methods here.
 
-root = "/home/data/02_SSD4TB/suzy/datasets/public"
+    Parameters
+    -----------
+    ConvnetTrainer : BaseTrainer
+        Inherits ConvnetTrainer class
+    """
 
-# Defining a function to seed everything.
-def seed_everything(seed):
-    random.seed(seed)
-    os.environ["PYTHONSEED"] = str(seed)
-    np.random.seed(seed)
-    torch.cuda.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
-    torch.backends.cudnn.deterministic = True
+    def define_data_attr(self, *args):
+        self._root = "/home/data/02_SSD4TB/suzy/datasets/public"
+        self._batch_size = self.config.batch_size
+        self._dataset = self.config.dataset
 
-# Running the function:
-seed_everything(seed)
+    def define_train_attr(self):
+        self._lr = self.config.learning_rate
+        self._gamma = self.config.gamma
 
-train_dataset = RANZCRDataset(
-    root=root, train=True, transform=None, download=False)
-valid_dataset = RANZCRDataset(
-    root=root, train=False, transform=None, download=False)
+    def define_model_attr(self, *args):
+        self._title = self.config.title
 
-batch_size = 64
-train_loader = DataLoader(dataset=train_dataset,
-                          batch_size=batch_size, shuffle=True)
-valid_loader = DataLoader(dataset=valid_dataset,
-                          batch_size=batch_size, shuffle=True)
+    def define_compute_attr(self, *args):
+        self._cuda = self.config.cuda
+        self._device = "cuda"
 
-# defining model
-efficient_transformer = Linformer(
-    dim=128,
-    seq_len=49+1,  # 7x7 patches + 1 cls-token
-    depth=12,
-    heads=8,
-    k=64
-)
+    def define_misc_attr(self):
+        self._seed = 42
+        self.seed_everything()
 
-model = ViT(
-    dim=128,
-    image_size=224,
-    patch_size=32,
-    num_classes=11,
-    transformer=efficient_transformer,
-    channels=3,
-).to(device)
+    def seed_everything(self):
+        random.seed(self._seed)
+        os.environ["PYTHONSEED"] = str(self._seed)
+        np.random.seed(self._seed)
+        torch.cuda.manual_seed(self._seed)
+        torch.cuda.manual_seed_all(self._seed)
+        torch.backends.cudnn.deterministic = True
 
-# Defining some other presets:
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=lr)
-scheduler = StepLR(optimizer, step_size=1, gamma=gamma)
+    def get_trainloader(self):
+        if self._dataset == 'RANZCRDataset':
+            train_dataset = RANZCRDataset(
+                root=self._root, train=True, transform=None, download=False)
+            self.train_loader = DataLoader(dataset=train_dataset,
+                                           batch_size=self._batch_size, shuffle=True)
 
-# start traububg kiios
-for epoch in range(epochs):
-    epoch_loss = 0.0
-    epoch_accuracy = 0.0
-    i = 0
-    for data, label in tqdm(train_loader):
-        print(i)
-        i = i+1
-        data = data.to(device)
-        label = label.to(device)
+    def get_testloader(self):
+        if self._dataset == 'RANZCRDataset':
+            valid_dataset = RANZCRDataset(
+                root=self._root, train=False, transform=None, download=False)
+            self.valid_loader = DataLoader(dataset=valid_dataset,
+                                           batch_size=self._batch_size, shuffle=True)
 
-        output = model(data)
+    def build_model(self):
+        print(f"==> creating model {self._title}")
 
-        #label = torch.nn.functional.one_hot(label, num_classes=11)
-        label = label.type_as(output)
+        efficient_transformer = Linformer(
+            dim=128,
+            seq_len=49+1,  # 7x7 patches + 1 cls-token
+            depth=12,
+            heads=8,
+            k=64
+        )
 
-        #print(label.dtype)
-        #print(output.dtype)
-        label = label.type(torch.cuda.LongTensor)
-        #label = label.to(device)
+        self.model = ViT(
+            dim=128,
+            image_size=224,
+            patch_size=32,
+            num_classes=11,
+            transformer=efficient_transformer,
+            channels=3,
+        )
 
-        #print(label.device.index)
-        #print(output.device.index)
-        loss = criterion(output, label)
+        if self._cuda:
+            self.model.to(self._device)
 
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
+        self.criterion = nn.CrossEntropyLoss()
+        self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self._lr)
+        self.scheduler = torch.optim.lr_scheduler.StepLR(self.optimizer, step_size=1, gamma=self._gamma)
 
-        acc = (output.argmax(dim=1) == label).float().mean()
-        epoch_accuracy += acc / len(train_loader)
-        epoch_loss += loss / len(train_loader)
+    def on_train_epoch_start(self):
+        print(f'\nEpoch: {self._epoch}')
+        self.model.train()
+        self.epoch_loss = 0.0
+        self.epoch_accuracy = 0.0
+        self._i = 0
+        self.train_epoch_iter = tqdm(self.train_loader)
 
-    j = 0
-    with torch.no_grad():
-        epoch_val_accuracy = 0
-        epoch_val_loss = 0
-        for data, label in valid_loader:
-            print(j)
-            j = j+1
-            data = data.to(device)
-            label = label.to(device)
-            
-            val_output = model(data)
-            
-            #label = torch.cuda.LongTensor(label)
-            #label = label.type(torch.cuda.LongTensor)
-            label = label.type(torch.cuda.LongTensor)
-            #label = label.to(device)
+    def on_start_training_batch(self, args):
+        self._data = args[0]
+        self._label = args[-1]
 
-            val_loss = criterion(val_output, label)
+    def training_step(self):
+        #print(self._i)
+        self._i = self._i + 1
+        if self._cuda:
+            self._data = self._data.to(self._device)
+            self._label = self._label.to(self._device)
 
-            acc = (val_output.argmax(dim=1) == label).float().mean()
-            epoch_val_accuracy += acc / len(valid_loader)
-            epoch_val_loss += val_loss / len(valid_loader)
+        self._output = self.model(self._data)
+        self._label = self._label.type(torch.cuda.LongTensor)
 
-    print(
-        f"Epoch: {epoch+1} - loss: {epoch_loss:.4f} - acc : {epoch_accuracy:.4f} - val_loss : {epoch_val_loss:.4f} - val_acc: {epoch_val_accuracy: .4f}\n"
-    )
+        self.loss = self.criterion(self._output, self._label)
+
+        self.optimizer_zero_grad()
+        self.loss_backward()
+        self.optimizer_step()
+
+    def on_end_training_batch(self):
+        self.acc = (self._output.argmax(dim=1) == self._label).float().mean()
+        self.epoch_accuracy += self.acc / len(self.train_loader)
+        self.epoch_loss += self.loss / len(self.train_loader)
+
+    def optimizer_zero_grad(self):
+        self.optimizer.zero_grad()
+
+    def optimizer_step(self):
+        self.optimizer.step()
+
+    def loss_backward(self):
+        self.loss.backward()
+
+    def on_evaluate_epoch_start(self):
+        self.model.eval()
+        self._j = 0
+
+        self.epoch_val_accuracy = 0
+        self.epoch_val_loss = 0
+
+        self.valid_epoch_iter = enumerate(self.test_loader)
+
+    def on_evaluate_batch_start(self, args):
+        self._data = args[0]
+        self._label = args[-1]
+
+    def evaluate_batch(self, args):
+        self._j = self._j + 1
+        if self._cuda:
+            self._data = self._data.to(self._device)
+            self._label = self._label.to(self._device)  # async?
+
+        # compute output
+        self.val_output = self.model(self._data)
+        self.label = self.label.type(torch.cuda.LongTensor)
+        self.loss = self.criterion(self.val_output, self._label)
+
+    def on_evaluate_batch_end(self):
+        self.acc = (self.val_output.argmax(dim=1) == self.label).float().mean()
+        self.epoch_val_accuracy += self.acc / len(self.valid_loader)
+        self.epoch_val_loss += self.val_loss / len(self.valid_loader)
+
+    def on_epoch_end(self):
+        print(
+            f"Epoch: {self.epoch+1} - loss: {self.epoch_loss:.4f} - acc : {self.epoch_accuracy:.4f} - val_loss : {self.epoch_val_loss:.4f} - val_acc: {self.epoch_val_accuracy: .4f}\n"
+        )

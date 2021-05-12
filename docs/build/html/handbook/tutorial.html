@@ -197,6 +197,7 @@
 <span class="kn">from</span> <span class="nn">farabio.core.configs</span> <span class="kn">import</span> <span class="n">default_cfgs</span>
 <span class="kn">from</span> <span class="nn">farabio.utils.helpers</span> <span class="kn">import</span> <span class="n">EasyDict</span> <span class="k">as</span> <span class="n">edict</span>
 <span class="kn">from</span> <span class="nn">farabio.models.classification.class_trainer</span> <span class="kn">import</span> <span class="n">ClassTrainer</span>
+<span class="kn">from</span> <span class="nn">farabio.models.classification.transformer_trainer</span> <span class="kn">import</span> <span class="n">TransformerTrainer</span>
 <span class="kn">from</span> <span class="nn">farabio.models.segmentation.unet.unet_trainer</span> <span class="kn">import</span> <span class="n">UnetTrainer</span>
 <span class="kn">from</span> <span class="nn">farabio.models.segmentation.attunet.attunet_trainer</span> <span class="kn">import</span> <span class="n">AttunetTrainer</span>
 <span class="kn">from</span> <span class="nn">farabio.models.superres.srgan.srgan_trainer</span> <span class="kn">import</span> <span class="n">SrganTrainer</span>
@@ -211,6 +212,9 @@
          <span class="s2">&quot;densenet&quot;</span><span class="p">,</span> <span class="s2">&quot;resnext&quot;</span><span class="p">,</span> <span class="s2">&quot;mobilenet&quot;</span><span class="p">,</span> <span class="s2">&quot;mobilenet2&quot;</span><span class="p">,</span>
          <span class="s2">&quot;dpn92&quot;</span><span class="p">,</span> <span class="s2">&quot;shufflenet2&quot;</span><span class="p">,</span> <span class="s2">&quot;efficientnet&quot;</span><span class="p">,</span> <span class="s2">&quot;regnet&quot;</span><span class="p">,</span>
          <span class="s2">&quot;simpledla&quot;</span><span class="p">):</span> <span class="n">ClassTrainer</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;transformer&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;linformer&quot;</span><span class="p">:</span> <span class="n">TransformerTrainer</span>
     <span class="p">},</span>
     <span class="s2">&quot;segmentation&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">&quot;unet&quot;</span><span class="p">:</span> <span class="n">UnetTrainer</span><span class="p">,</span>
@@ -233,7 +237,8 @@
     <span class="n">itime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
     <span class="c1"># Choose from list</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;classification&quot;</span><span class="p">,</span> <span class="s2">&quot;resnet&quot;</span><span class="p">)</span>
+    <span class="c1">#model = (&quot;classification&quot;, &quot;resnet&quot;)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;transformer&quot;</span><span class="p">,</span> <span class="s2">&quot;linformer&quot;</span><span class="p">)</span>
     <span class="c1">#model = (&quot;segmentation&quot;, &quot;unet&quot;)</span>
 
     <span class="k">if</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;classification&quot;</span><span class="p">:</span>
@@ -241,6 +246,10 @@
         <span class="n">config</span> <span class="o">=</span> <span class="n">edict</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
         <span class="n">config</span><span class="o">.</span><span class="n">arch</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">trnr</span> <span class="o">=</span> <span class="n">ClassTrainer</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;transformer&quot;</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">default_cfgs</span><span class="p">[</span><span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">edict</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+        <span class="n">trnr</span> <span class="o">=</span> <span class="n">TransformerTrainer</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cfg</span> <span class="o">=</span> <span class="n">default_cfgs</span><span class="p">[</span><span class="n">model</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">edict</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
@@ -248,6 +257,28 @@
 
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
         <span class="n">trnr</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+
+
+<span class="c1"># if __name__ == &quot;__main__&quot;:</span>
+<span class="c1">#     itime = time.time()</span>
+
+<span class="c1">#     # Choose from list</span>
+<span class="c1">#     model = (&quot;classification&quot;, &quot;resnet&quot;)</span>
+<span class="c1">#     #model = (&quot;segmentation&quot;, &quot;unet&quot;)</span>
+
+<span class="c1">#     if model[0] == &quot;classification&quot;:</span>
+<span class="c1">#         cfg = default_cfgs[model[0]]</span>
+<span class="c1">#         config = edict(cfg)</span>
+<span class="c1">#         config.arch = model[-1]</span>
+<span class="c1">#         trnr = ClassTrainer(config)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         cfg = default_cfgs[model[-1]]</span>
+<span class="c1">#         config = edict(cfg)</span>
+<span class="c1">#         trnr = models[model[0]][model[-1]](config)</span>
+
+<span class="c1">#     if config.mode == &#39;train&#39;:</span>
+<span class="c1">#         trnr.train()</span>
 
     <span class="c1"># if config.mode == &#39;train&#39;:</span>
     <span class="c1">#     trnr.train()</span>
