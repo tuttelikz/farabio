@@ -16,8 +16,6 @@ class DiceLoss(nn.Module):
     
     It is a common metric for pixel segmentation that can also be modified to act as a loss function.
 
-    Notes
-    -------
     .. math::
 
         D S C=\frac{2|X \cap Y|}{|X|+|Y|}
@@ -54,8 +52,6 @@ class DiceBCELoss(nn.Module):
     The equation for multi-class BCE by itself will be familiar to anyone who has studied 
     logistic regression.
 
-    Notes
-    -------
     .. math::
 
         J(\mathbf{w})=\frac{1}{N} \sum_{n=1}^{N} H\left(p_{ n}, q_{n}\right)=-\frac{1}{N} \sum_{n=1}^{N}\left[y_{n} \log \hat{y}_{n}+\left(1-y_{n}\right) \log \left(1-\hat{y}_{n}\right)\right]
@@ -91,8 +87,6 @@ class IoULoss(nn.Module):
     as the ratio between the overlap of the positive instances between two sets, 
     and their mutual combined values.
 
-    Notes
-    -------
     .. math::
     
         J(A, B)=\frac{|A \cap B|}{|A \cup B|}=\frac{|A \cap B|}{|A|+|B|-|A \cap B|}
@@ -133,8 +127,6 @@ class FocalLoss(nn.Module):
     were relatively rare, from [1]_. In practice, the researchers used an alpha-modified 
     version of the function.
 
-    Notes
-    -------
     .. math::
 
         \mathrm{FL}\left(p_{t}\right)=-\alpha_{t}\left(1-p_{t}\right)^{\gamma} \log \left(p_{t}\right)
@@ -183,6 +175,8 @@ class TverskyLoss(nn.Module):
     where:
        - :math:`P` and :math:`G` are the predicted and ground truth binary labels.
        - :math:`\alpha` and :math:`\beta` control the magnitude of the penalties for FPs and FNs, respectively.
+    
+    Notes:
        - :math:`\alpha = \beta = 0.5` => dice coeff
        - :math:`\alpha = \beta = 1` => tanimoto coeff
        - :math:`\alpha + \beta = 1` => F beta coeff

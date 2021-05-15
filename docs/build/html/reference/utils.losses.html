@@ -54,9 +54,12 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> farabio
+            <a href="../index.html">
           
 
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -186,7 +189,6 @@
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.utils.losses.</span></code><code class="sig-name descname"><span class="pre">DiceLoss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/utils/losses.html#DiceLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.utils.losses.DiceLoss" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Dice coefficient, or Dice-Sørensen coefficient.</p>
 <p>It is a common metric for pixel segmentation that can also be modified to act as a loss function.</p>
-<p class="rubric">Notes</p>
 <div class="math notranslate nohighlight">
 \[D S C=\frac{2|X \cap Y|}{|X|+|Y|}\]</div>
 <p class="rubric">Examples</p>
@@ -233,7 +235,6 @@ that is generally the default for segmentation models. Combining the two methods
 allows for some diversity in the loss, while benefitting from the stability of BCE. 
 The equation for multi-class BCE by itself will be familiar to anyone who has studied 
 logistic regression.</p>
-<p class="rubric">Notes</p>
 <div class="math notranslate nohighlight">
 \[J(\mathbf{w})=\frac{1}{N} \sum_{n=1}^{N} H\left(p_{ n}, q_{n}\right)=-\frac{1}{N} \sum_{n=1}^{N}\left[y_{n} \log \hat{y}_{n}+\left(1-y_{n}\right) \log \left(1-\hat{y}_{n}\right)\right]\]</div>
 <p class="rubric">Examples</p>
@@ -278,7 +279,6 @@ registered hooks while the latter silently ignores them.</p>
 <p>It is similar to the Dice metric and is calculated 
 as the ratio between the overlap of the positive instances between two sets, 
 and their mutual combined values.</p>
-<p class="rubric">Notes</p>
 <div class="math notranslate nohighlight">
 \[J(A, B)=\frac{|A \cap B|}{|A \cup B|}=\frac{|A \cap B|}{|A|+|B|-|A \cap B|}\]</div>
 <p class="rubric">Examples</p>
@@ -324,7 +324,6 @@ registered hooks while the latter silently ignores them.</p>
 as a means of combatting extremely imbalanced datasets where positive cases 
 were relatively rare, from <a class="reference internal" href="#r1aebf42b3cc6-1" id="id1">[1]</a>. In practice, the researchers used an alpha-modified 
 version of the function.</p>
-<p class="rubric">Notes</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{FL}\left(p_{t}\right)=-\alpha_{t}\left(1-p_{t}\right)^{\gamma} \log \left(p_{t}\right)\]</div>
 <dl class="simple">
@@ -385,6 +384,9 @@ registered hooks while the latter silently ignores them.</p>
 <dt>where:</dt><dd><ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(G\)</span> are the predicted and ground truth binary labels.</p></li>
 <li><p><span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> control the magnitude of the penalties for FPs and FNs, respectively.</p></li>
+</ul>
+</dd>
+<dt>Notes:</dt><dd><ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\alpha = \beta = 0.5\)</span> =&gt; dice coeff</p></li>
 <li><p><span class="math notranslate nohighlight">\(\alpha = \beta = 1\)</span> =&gt; tanimoto coeff</p></li>
 <li><p><span class="math notranslate nohighlight">\(\alpha + \beta = 1\)</span> =&gt; F beta coeff</p></li>

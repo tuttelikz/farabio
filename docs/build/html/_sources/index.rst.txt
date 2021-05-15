@@ -4,12 +4,23 @@
    contain the root `toctree` directive.
 
 farabio
-=================================
++++++++++++++++++
 
-.. image:: ../../logo/Final_Cropped_3.png
+farabio is a minimal open-source Python package based on PyTorch for 
+out-of-the-box deep learning support in biomedical imaging.
+
+Features:
+
+* Flexible PyTorch trainers
+
+* Common DL models
+
+* Biomedical datasets
+
+* Loggers, visualization
 
 Overview
-=========
+----------------
 
 .. toctree::
    :maxdepth: 2
@@ -19,7 +30,7 @@ Overview
    reference/index.rst
 
 Indices and tables
-==================
+---------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
