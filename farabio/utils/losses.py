@@ -12,6 +12,22 @@ except ImportError: # py3k
 
 
 class DiceLoss(nn.Module):
+    r"""The Dice coefficient, or Dice-Sørensen coefficient.
+    
+    It is a common metric for pixel segmentation that can also be modified to act as a loss function.
+
+    Notes
+    -------
+    .. math::
+
+        D S C=\frac{2|X \cap Y|}{|X|+|Y|}
+
+    Examples
+    ----------
+    >>> dice_loss = DiceLoss()
+    >>> dice_loss(outputs, targets)
+    """
+
     def __init__(self, weight=None, size_average=True):
         super(DiceLoss, self).__init__()
 
@@ -30,6 +46,26 @@ class DiceLoss(nn.Module):
         return 1 - dice
 
 class DiceBCELoss(nn.Module):
+    r"""Dice combined with BCE
+    
+    This loss combines Dice loss with the standard binary cross-entropy (BCE) loss 
+    that is generally the default for segmentation models. Combining the two methods 
+    allows for some diversity in the loss, while benefitting from the stability of BCE. 
+    The equation for multi-class BCE by itself will be familiar to anyone who has studied 
+    logistic regression.
+
+    Notes
+    -------
+    .. math::
+
+        J(\mathbf{w})=\frac{1}{N} \sum_{n=1}^{N} H\left(p_{ n}, q_{n}\right)=-\frac{1}{N} \sum_{n=1}^{N}\left[y_{n} \log \hat{y}_{n}+\left(1-y_{n}\right) \log \left(1-\hat{y}_{n}\right)\right]
+
+    Examples
+    ----------
+    >>> dice_bce_loss = DiceBCELoss()
+    >>> dice_bce_loss(outputs, targets)
+    """
+
     def __init__(self, weight=None, size_average=True):
         super(DiceBCELoss, self).__init__()
 
@@ -49,6 +85,24 @@ class DiceBCELoss(nn.Module):
         return loss_final
 
 class IoULoss(nn.Module):
+    r"""The IoU metric, or Jaccard Index.
+    
+    It is similar to the Dice metric and is calculated 
+    as the ratio between the overlap of the positive instances between two sets, 
+    and their mutual combined values.
+
+    Notes
+    -------
+    .. math::
+    
+        J(A, B)=\frac{|A \cap B|}{|A \cup B|}=\frac{|A \cap B|}{|A|+|B|-|A \cap B|}
+
+    Examples
+    ----------
+    >>> iou_loss = IoULoss()
+    >>> iou_loss(outputs, targets)
+    """
+
     def __init__(self, weight=None, size_average=True):
         super(IoULoss, self).__init__()
 
@@ -72,6 +126,32 @@ class IoULoss(nn.Module):
         return 1 - IoU
 
 class FocalLoss(nn.Module):
+    r"""Focal Loss.
+    
+    It was introduced by Lin et al of Facebook AI Research in 2017 
+    as a means of combatting extremely imbalanced datasets where positive cases 
+    were relatively rare, from [1]_. In practice, the researchers used an alpha-modified 
+    version of the function.
+
+    Notes
+    -------
+    .. math::
+
+        \mathrm{FL}\left(p_{t}\right)=-\alpha_{t}\left(1-p_{t}\right)^{\gamma} \log \left(p_{t}\right)
+
+    where:
+       - :math:`p_t` is the model's estimated probability for each class.
+
+    Examples
+    ----------
+    >>> focal_loss = FocalLoss()
+    >>> focal_loss(outputs, targets)
+
+    References
+    ---------------
+    .. [1] https://arxiv.org/abs/1708.02002
+    """
+
     def __init__(self, weight=None, size_average=True):
         super(FocalLoss, self).__init__()
 
@@ -92,6 +172,31 @@ class FocalLoss(nn.Module):
         return focal_loss
 
 class TverskyLoss(nn.Module):
+    r"""Tversky loss from [1]_
+
+    Notes
+    -------
+    .. math::
+
+        \mathrm{S}(P, G, \alpha ; \beta)=\frac{|P G|}{|P G|+\alpha|P G|+\beta|G P|}
+
+    where:
+       - :math:`P` and :math:`G` are the predicted and ground truth binary labels.
+       - :math:`\alpha` and :math:`\beta` control the magnitude of the penalties for FPs and FNs, respectively.
+       - :math:`\alpha = \beta = 0.5` => dice coeff
+       - :math:`\alpha = \beta = 1` => tanimoto coeff
+       - :math:`\alpha + \beta = 1` => F beta coeff
+
+    Examples
+    ----------
+    >>> tversky_loss = TverskyLoss()
+    >>> tversky_loss(outputs, targets)
+
+    References
+    ---------------
+    .. [1] https://arxiv.org/abs/1706.05721
+    """
+
     def __init__(self, weight=None, size_average=True):
         super(TverskyLoss, self).__init__()
 
@@ -114,6 +219,21 @@ class TverskyLoss(nn.Module):
         return 1 - Tversky
 
 class FocalTverskyLoss(nn.Module):
+    r"""A variant on the Tversky loss.
+    
+    It also includes the gamma modifier from Focal Loss from [1]_.
+    
+    Examples
+    ----------
+    >>> focal_tversky_loss = FocalTverskyLoss()
+    >>> focal_tversky_loss(outputs, targets)
+
+    References
+    ---------------
+    .. [1] https://arxiv.org/abs/1810.07842
+    """
+
+
     def __init__(self, weight=None, size_average=True):
         super(FocalTverskyLoss, self).__init__()
 
@@ -275,6 +395,21 @@ def lovasz_softmax_flat(probas, labels, classes='present'):
     return mean(losses)
 
 class LovaszHingeLoss(nn.Module):
+    r"""The Lovász-Softmax loss.
+    
+    A tractable surrogate for the optimization 
+    of the intersection-over-union measure in neural networks from [1]_.
+
+    Examples
+    ---------------
+    >>> lovasz_hinge_loss = LovaszHingeLoss()
+    >>> lovasz_hinge_loss(outputs, targets)
+
+    References
+    ---------------
+    .. [1] https://arxiv.org/abs/1705.08790
+    """
+
     def __init__(self, weight=None, size_average=True):
         super(LovaszHingeLoss, self).__init__()
 

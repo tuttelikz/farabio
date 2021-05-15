@@ -43,11 +43,11 @@ release = '0.0.1'
 #graphviz_dot = shutil.which('dot')
 
 extensions = [
+    "numpydoc",
     "sphinx.ext.autodoc",
     "sphinx_rtd_theme",
     "sphinx.ext.viewcode",
     "sphinx.ext.coverage",
-    "numpydoc",
     "sphinx_git",
     'IPython.sphinxext.ipython_console_highlighting',
     'IPython.sphinxext.ipython_directive',

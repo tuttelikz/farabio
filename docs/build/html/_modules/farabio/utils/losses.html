@@ -167,6 +167,22 @@
 
 
 <div class="viewcode-block" id="DiceLoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.DiceLoss">[docs]</a><span class="k">class</span> <span class="nc">DiceLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;The Dice coefficient, or Dice-Sørensen coefficient.</span>
+<span class="sd">    </span>
+<span class="sd">    It is a common metric for pixel segmentation that can also be modified to act as a loss function.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. math::</span>
+
+<span class="sd">        D S C=\frac{2|X \cap Y|}{|X|+|Y|}</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; dice_loss = DiceLoss()</span>
+<span class="sd">    &gt;&gt;&gt; dice_loss(outputs, targets)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="DiceLoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.DiceLoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DiceLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
 
@@ -185,6 +201,26 @@
         <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">dice</span></div></div>
 
 <div class="viewcode-block" id="DiceBCELoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.DiceBCELoss">[docs]</a><span class="k">class</span> <span class="nc">DiceBCELoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Dice combined with BCE</span>
+<span class="sd">    </span>
+<span class="sd">    This loss combines Dice loss with the standard binary cross-entropy (BCE) loss </span>
+<span class="sd">    that is generally the default for segmentation models. Combining the two methods </span>
+<span class="sd">    allows for some diversity in the loss, while benefitting from the stability of BCE. </span>
+<span class="sd">    The equation for multi-class BCE by itself will be familiar to anyone who has studied </span>
+<span class="sd">    logistic regression.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. math::</span>
+
+<span class="sd">        J(\mathbf{w})=\frac{1}{N} \sum_{n=1}^{N} H\left(p_{ n}, q_{n}\right)=-\frac{1}{N} \sum_{n=1}^{N}\left[y_{n} \log \hat{y}_{n}+\left(1-y_{n}\right) \log \left(1-\hat{y}_{n}\right)\right]</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; dice_bce_loss = DiceBCELoss()</span>
+<span class="sd">    &gt;&gt;&gt; dice_bce_loss(outputs, targets)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="DiceBCELoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.DiceBCELoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DiceBCELoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
 
@@ -204,6 +240,24 @@
         <span class="k">return</span> <span class="n">loss_final</span></div></div>
 
 <div class="viewcode-block" id="IoULoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.IoULoss">[docs]</a><span class="k">class</span> <span class="nc">IoULoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;The IoU metric, or Jaccard Index.</span>
+<span class="sd">    </span>
+<span class="sd">    It is similar to the Dice metric and is calculated </span>
+<span class="sd">    as the ratio between the overlap of the positive instances between two sets, </span>
+<span class="sd">    and their mutual combined values.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. math::</span>
+<span class="sd">    </span>
+<span class="sd">        J(A, B)=\frac{|A \cap B|}{|A \cup B|}=\frac{|A \cap B|}{|A|+|B|-|A \cap B|}</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; iou_loss = IoULoss()</span>
+<span class="sd">    &gt;&gt;&gt; iou_loss(outputs, targets)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="IoULoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.IoULoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">IoULoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
 
@@ -227,6 +281,32 @@
         <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">IoU</span></div></div>
 
 <div class="viewcode-block" id="FocalLoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.FocalLoss">[docs]</a><span class="k">class</span> <span class="nc">FocalLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Focal Loss.</span>
+<span class="sd">    </span>
+<span class="sd">    It was introduced by Lin et al of Facebook AI Research in 2017 </span>
+<span class="sd">    as a means of combatting extremely imbalanced datasets where positive cases </span>
+<span class="sd">    were relatively rare, from [1]_. In practice, the researchers used an alpha-modified </span>
+<span class="sd">    version of the function.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathrm{FL}\left(p_{t}\right)=-\alpha_{t}\left(1-p_{t}\right)^{\gamma} \log \left(p_{t}\right)</span>
+
+<span class="sd">    where:</span>
+<span class="sd">       - :math:`p_t` is the model&#39;s estimated probability for each class.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; focal_loss = FocalLoss()</span>
+<span class="sd">    &gt;&gt;&gt; focal_loss(outputs, targets)</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ---------------</span>
+<span class="sd">    .. [1] https://arxiv.org/abs/1708.02002</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="FocalLoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.FocalLoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FocalLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
 
@@ -247,6 +327,31 @@
         <span class="k">return</span> <span class="n">focal_loss</span></div></div>
 
 <div class="viewcode-block" id="TverskyLoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.TverskyLoss">[docs]</a><span class="k">class</span> <span class="nc">TverskyLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Tversky loss from [1]_</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -------</span>
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathrm{S}(P, G, \alpha ; \beta)=\frac{|P G|}{|P G|+\alpha|P G|+\beta|G P|}</span>
+
+<span class="sd">    where:</span>
+<span class="sd">       - :math:`P` and :math:`G` are the predicted and ground truth binary labels.</span>
+<span class="sd">       - :math:`\alpha` and :math:`\beta` control the magnitude of the penalties for FPs and FNs, respectively.</span>
+<span class="sd">       - :math:`\alpha = \beta = 0.5` =&gt; dice coeff</span>
+<span class="sd">       - :math:`\alpha = \beta = 1` =&gt; tanimoto coeff</span>
+<span class="sd">       - :math:`\alpha + \beta = 1` =&gt; F beta coeff</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; tversky_loss = TverskyLoss()</span>
+<span class="sd">    &gt;&gt;&gt; tversky_loss(outputs, targets)</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ---------------</span>
+<span class="sd">    .. [1] https://arxiv.org/abs/1706.05721</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="TverskyLoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.TverskyLoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TverskyLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
 
@@ -269,6 +374,21 @@
         <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">Tversky</span></div></div>
 
 <div class="viewcode-block" id="FocalTverskyLoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.FocalTverskyLoss">[docs]</a><span class="k">class</span> <span class="nc">FocalTverskyLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;A variant on the Tversky loss.</span>
+<span class="sd">    </span>
+<span class="sd">    It also includes the gamma modifier from Focal Loss from [1]_.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
+<span class="sd">    &gt;&gt;&gt; focal_tversky_loss = FocalTverskyLoss()</span>
+<span class="sd">    &gt;&gt;&gt; focal_tversky_loss(outputs, targets)</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ---------------</span>
+<span class="sd">    .. [1] https://arxiv.org/abs/1810.07842</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
 <div class="viewcode-block" id="FocalTverskyLoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.FocalTverskyLoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FocalTverskyLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
 
@@ -430,6 +550,21 @@
     <span class="k">return</span> <span class="n">mean</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
 
 <div class="viewcode-block" id="LovaszHingeLoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.LovaszHingeLoss">[docs]</a><span class="k">class</span> <span class="nc">LovaszHingeLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;The Lovász-Softmax loss.</span>
+<span class="sd">    </span>
+<span class="sd">    A tractable surrogate for the optimization </span>
+<span class="sd">    of the intersection-over-union measure in neural networks from [1]_.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ---------------</span>
+<span class="sd">    &gt;&gt;&gt; lovasz_hinge_loss = LovaszHingeLoss()</span>
+<span class="sd">    &gt;&gt;&gt; lovasz_hinge_loss(outputs, targets)</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ---------------</span>
+<span class="sd">    .. [1] https://arxiv.org/abs/1705.08790</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="LovaszHingeLoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.LovaszHingeLoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LovaszHingeLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
 
