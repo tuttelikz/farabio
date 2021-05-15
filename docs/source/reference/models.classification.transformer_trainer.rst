@@ -1,4 +1,4 @@
-:py:mod:`~farabio.models.classification.transformer_trainer.TransformerTrainer` Module
+:py:mod:`~farabio.models.classification.transformer_trainer` Module
 ==========================================================================================
 
 .. image:: ../imgs/vit.png

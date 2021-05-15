@@ -87,6 +87,7 @@ def _cfg_unet():
         'semantic': False,
         'model_save_name': "unet.pt",
         'model_save_dir': '/home/data/02_SSD4TB/suzy/models/unet',
+        'criterion': 'Lovasz',
         # Train
         'learning_rate': 0.01,
         'start_epoch': 1,

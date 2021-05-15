@@ -43,8 +43,8 @@ if __name__ == "__main__":
 
     # Choose from list
     #model = ("classification", "resnet")
-    model = ("transformer", "linformer")
-    #model = ("segmentation", "unet")
+    #model = ("transformer", "linformer")
+    model = ("segmentation", "unet")
 
     if model[0] == "classification":
         cfg = default_cfgs[model[0]]

@@ -8,7 +8,7 @@ from albumentations.pytorch import ToTensor
 from farabio.core.convnettrainer import ConvnetTrainer
 from farabio.models.segmentation.unet.unet import Unet
 from farabio.utils.regul import EarlyStopping
-from farabio.utils.losses import Losses
+from farabio.utils.losses import FocalTverskyLoss, Losses, DiceBCELoss, DiceLoss, IoULoss, FocalLoss, LovaszHingeLoss, TverskyLoss, LovaszHingeLoss
 from farabio.utils.tensorboard import TensorBoard
 from farabio.utils.helpers import makedirs, parallel_state_dict
 import skimage
@@ -38,6 +38,7 @@ class UnetTrainer(ConvnetTrainer):
         self._semantic = self.config.semantic
         self._model_save_name = self.config.model_save_name
         self._model_save_dir = self.config.model_save_dir
+        self._criterion = self.config.criterion
 
     def define_train_attr(self, *args):
         self._epoch = self.config.start_epoch
@@ -82,7 +83,8 @@ class UnetTrainer(ConvnetTrainer):
         self._val_losses = []
 
     def get_trainloader(self):
-        train_dataset = DSB18Dataset(root=self._data_path, transform=None, download=False)
+        train_dataset = DSB18Dataset(
+            root=self._data_path, transform=None, download=False)
 
         split_ratio = 0.25
         train_size = int(
@@ -107,6 +109,18 @@ class UnetTrainer(ConvnetTrainer):
         if self._cuda:
             self.model.to(self._device)
 
+        _losses = {
+            "segmentation": {
+                "Dice": DiceLoss,
+                "DiceBCE": DiceBCELoss,
+                "IoU": IoULoss,
+                "Focal": FocalLoss,
+                "Tversky": TverskyLoss,
+                "FocalTversky": FocalTverskyLoss,
+                "Lovasz": LovaszHingeLoss
+            }
+        }
+        self.loss_type = _losses["segmentation"][self._criterion]()
         self.optimizer = self.optim(self.model.parameters(),
                                     lr=self.config.learning_rate)
 
@@ -114,6 +128,18 @@ class UnetTrainer(ConvnetTrainer):
         self.model = Unet(self._in_ch, self._out_ch)
         self.model = nn.DataParallel(self.model)
         self.model.to(self._device)
+        _losses = {
+            "segmentation": {
+                "Dice": DiceLoss,
+                "DiceBCE": DiceBCELoss,
+                "IoU": IoULoss,
+                "Focal": FocalLoss,
+                "Tversky": TverskyLoss,
+                "FocalTversky": FocalTverskyLoss,
+                "Lovasz": LovaszHingeLoss
+            }
+        }
+        self.loss_type = _losses["segmentation"][self._criterion]()
         self.optimizer = self.optim(list(self.model.parameters()),
                                     lr=self.config.learning_rate)
 
@@ -168,7 +194,10 @@ class UnetTrainer(ConvnetTrainer):
         if self._semantic:
             self.train_loss = Losses().extract_loss(self.outputs, self.masks)
         elif not self._semantic:
-            self.train_loss = Losses().calc_loss(self.outputs, self.masks)
+            self.train_loss = self.loss_type(self.outputs, self.masks)
+            # print(self.train_loss)
+            # print(type(self.train_loss))
+            #self.train_loss = Losses().calc_loss(self.outputs, self.masks)
 
         self.batch_tloss += self.train_loss.item()
 
@@ -213,7 +242,8 @@ class UnetTrainer(ConvnetTrainer):
             self.val_loss = Losses().extract_loss(outputs, masks, self._device)
         elif not self._semantic:
             masks = masks.to(device=self._device, dtype=torch.float32)
-            self.val_loss = Losses().calc_loss(outputs, masks)
+            self.val_loss = self.loss_type(outputs, masks)
+            #self.val_loss = Losses().calc_loss(outputs, masks)
 
     def on_evaluate_batch_end(self):
         self.batch_vloss += self.val_loss.item()
@@ -307,4 +337,3 @@ def format_image(img):
 def format_mask(mask):
     mask = np.squeeze(np.transpose(mask, (1, 2, 0)))
     return mask
-

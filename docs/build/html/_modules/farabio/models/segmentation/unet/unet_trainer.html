@@ -163,7 +163,7 @@
 <span class="kn">from</span> <span class="nn">farabio.core.convnettrainer</span> <span class="kn">import</span> <span class="n">ConvnetTrainer</span>
 <span class="kn">from</span> <span class="nn">farabio.models.segmentation.unet.unet</span> <span class="kn">import</span> <span class="n">Unet</span>
 <span class="kn">from</span> <span class="nn">farabio.utils.regul</span> <span class="kn">import</span> <span class="n">EarlyStopping</span>
-<span class="kn">from</span> <span class="nn">farabio.utils.losses</span> <span class="kn">import</span> <span class="n">Losses</span>
+<span class="kn">from</span> <span class="nn">farabio.utils.losses</span> <span class="kn">import</span> <span class="n">FocalTverskyLoss</span><span class="p">,</span> <span class="n">Losses</span><span class="p">,</span> <span class="n">DiceBCELoss</span><span class="p">,</span> <span class="n">DiceLoss</span><span class="p">,</span> <span class="n">IoULoss</span><span class="p">,</span> <span class="n">FocalLoss</span><span class="p">,</span> <span class="n">LovaszHingeLoss</span><span class="p">,</span> <span class="n">TverskyLoss</span><span class="p">,</span> <span class="n">LovaszHingeLoss</span>
 <span class="kn">from</span> <span class="nn">farabio.utils.tensorboard</span> <span class="kn">import</span> <span class="n">TensorBoard</span>
 <span class="kn">from</span> <span class="nn">farabio.utils.helpers</span> <span class="kn">import</span> <span class="n">makedirs</span><span class="p">,</span> <span class="n">parallel_state_dict</span>
 <span class="kn">import</span> <span class="nn">skimage</span>
@@ -192,7 +192,8 @@
 <div class="viewcode-block" id="UnetTrainer.define_model_attr"><a class="viewcode-back" href="../../../../../reference/models.segmentation.unet.unet_trainer.html#farabio.models.segmentation.unet.unet_trainer.UnetTrainer.define_model_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_model_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_semantic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">semantic</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_model_save_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_save_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_model_save_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_save_dir</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_save_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">model_save_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_criterion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">criterion</span></div>
 
 <div class="viewcode-block" id="UnetTrainer.define_train_attr"><a class="viewcode-back" href="../../../../../reference/models.segmentation.unet.unet_trainer.html#farabio.models.segmentation.unet.unet_trainer.UnetTrainer.define_train_attr">[docs]</a>    <span class="k">def</span> <span class="nf">define_train_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">start_epoch</span>
@@ -237,7 +238,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_val_losses</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 <div class="viewcode-block" id="UnetTrainer.get_trainloader"><a class="viewcode-back" href="../../../../../reference/models.segmentation.unet.unet_trainer.html#farabio.models.segmentation.unet.unet_trainer.UnetTrainer.get_trainloader">[docs]</a>    <span class="k">def</span> <span class="nf">get_trainloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">DSB18Dataset</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_path</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">DSB18Dataset</span><span class="p">(</span>
+            <span class="n">root</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_path</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="n">split_ratio</span> <span class="o">=</span> <span class="mf">0.25</span>
         <span class="n">train_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
@@ -262,6 +264,18 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cuda</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">)</span>
 
+        <span class="n">_losses</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;segmentation&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;Dice&quot;</span><span class="p">:</span> <span class="n">DiceLoss</span><span class="p">,</span>
+                <span class="s2">&quot;DiceBCE&quot;</span><span class="p">:</span> <span class="n">DiceBCELoss</span><span class="p">,</span>
+                <span class="s2">&quot;IoU&quot;</span><span class="p">:</span> <span class="n">IoULoss</span><span class="p">,</span>
+                <span class="s2">&quot;Focal&quot;</span><span class="p">:</span> <span class="n">FocalLoss</span><span class="p">,</span>
+                <span class="s2">&quot;Tversky&quot;</span><span class="p">:</span> <span class="n">TverskyLoss</span><span class="p">,</span>
+                <span class="s2">&quot;FocalTversky&quot;</span><span class="p">:</span> <span class="n">FocalTverskyLoss</span><span class="p">,</span>
+                <span class="s2">&quot;Lovasz&quot;</span><span class="p">:</span> <span class="n">LovaszHingeLoss</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_type</span> <span class="o">=</span> <span class="n">_losses</span><span class="p">[</span><span class="s2">&quot;segmentation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_criterion</span><span class="p">]()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>
                                     <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span></div>
 
@@ -269,6 +283,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Unet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_in_ch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_ch</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">DataParallel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">)</span>
+        <span class="n">_losses</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;segmentation&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;Dice&quot;</span><span class="p">:</span> <span class="n">DiceLoss</span><span class="p">,</span>
+                <span class="s2">&quot;DiceBCE&quot;</span><span class="p">:</span> <span class="n">DiceBCELoss</span><span class="p">,</span>
+                <span class="s2">&quot;IoU&quot;</span><span class="p">:</span> <span class="n">IoULoss</span><span class="p">,</span>
+                <span class="s2">&quot;Focal&quot;</span><span class="p">:</span> <span class="n">FocalLoss</span><span class="p">,</span>
+                <span class="s2">&quot;Tversky&quot;</span><span class="p">:</span> <span class="n">TverskyLoss</span><span class="p">,</span>
+                <span class="s2">&quot;FocalTversky&quot;</span><span class="p">:</span> <span class="n">FocalTverskyLoss</span><span class="p">,</span>
+                <span class="s2">&quot;Lovasz&quot;</span><span class="p">:</span> <span class="n">LovaszHingeLoss</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_type</span> <span class="o">=</span> <span class="n">_losses</span><span class="p">[</span><span class="s2">&quot;segmentation&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_criterion</span><span class="p">]()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optim</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()),</span>
                                     <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span></div>
 
@@ -323,7 +349,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_semantic</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">train_loss</span> <span class="o">=</span> <span class="n">Losses</span><span class="p">()</span><span class="o">.</span><span class="n">extract_loss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">masks</span><span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_semantic</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">train_loss</span> <span class="o">=</span> <span class="n">Losses</span><span class="p">()</span><span class="o">.</span><span class="n">calc_loss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">masks</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">masks</span><span class="p">)</span>
+            <span class="c1"># print(self.train_loss)</span>
+            <span class="c1"># print(type(self.train_loss))</span>
+            <span class="c1">#self.train_loss = Losses().calc_loss(self.outputs, self.masks)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_tloss</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
@@ -368,7 +397,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">val_loss</span> <span class="o">=</span> <span class="n">Losses</span><span class="p">()</span><span class="o">.</span><span class="n">extract_loss</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">masks</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_semantic</span><span class="p">:</span>
             <span class="n">masks</span> <span class="o">=</span> <span class="n">masks</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">val_loss</span> <span class="o">=</span> <span class="n">Losses</span><span class="p">()</span><span class="o">.</span><span class="n">calc_loss</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">masks</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">val_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_type</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">masks</span><span class="p">)</span></div>
+            <span class="c1">#self.val_loss = Losses().calc_loss(outputs, masks)</span>
 
 <div class="viewcode-block" id="UnetTrainer.on_evaluate_batch_end"><a class="viewcode-back" href="../../../../../reference/models.segmentation.unet.unet_trainer.html#farabio.models.segmentation.unet.unet_trainer.UnetTrainer.on_evaluate_batch_end">[docs]</a>    <span class="k">def</span> <span class="nf">on_evaluate_batch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_vloss</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span></div>
@@ -462,7 +492,6 @@
 <span class="k">def</span> <span class="nf">format_mask</span><span class="p">(</span><span class="n">mask</span><span class="p">):</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
     <span class="k">return</span> <span class="n">mask</span>
-
 </pre></div>
 
            </div>
