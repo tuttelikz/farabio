@@ -28,7 +28,7 @@ models = {
     "superres": {
         "srgan": SrganTrainer,
     },
-    "translation": {
+    "translation": {    
         "cyclegan": CycleganTrainer,
     },
     "detection": {
