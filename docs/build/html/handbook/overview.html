@@ -229,70 +229,96 @@ utils  [fillcolor=2, style=&quot;rounded&quot;]
 <div class="section" id="tree-structure">
 <h3>Tree structure<a class="headerlink" href="#tree-structure" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
-├── kernel.py
 ├── core
-│   ├── basetrainer.py
-│   ├── configs.py
-│   ├── convnettrainer.py
-│   └── gantrainer.py
+│   ├── basetrainer.py
+│   ├── configs.py
+│   ├── convnettrainer.py
+│   └── gantrainer.py
 ├── data
-│   ├── dataloader.py
-│   ├── datasets.py
-│   ├── dirops.py
-│   ├── imgops.py
-│   ├── tbldata.py
-│   └── transforms.py
+│   ├── biodatasets.py
+│   ├── datasets.py
+│   ├── dirops.py
+│   ├── imgops.py
+│   └── transforms.py
+├── kernel.py
 ├── models
-│   ├── blocks
-│   │   └── vgg.py
-│   ├── detection
-│   │   ├── faster_rcnn
-│   │   │   ├── creator_tool.py
-│   │   │   ├── dataset.py
-│   │   │   ├── faster_rcnn.py
-│   │   │   ├── faster_rcnn_trainer.py
-│   │   │   ├── faster_rcnn_vgg16.py
-│   │   │   └── region_proposal_network.py
-│   │   └── yolov3
-│   │       ├── config
-│   │       │   ├── coco.data
-│   │       │   ├── coco.names
-│   │       │   ├── create_custom_model.sh
-│   │       │   ├── custom.data
-│   │       │   ├── yolov3.cfg
-│   │       │   ├── yolov3-custom.cfg
-│   │       │   └── yolov3-tiny.cfg
-│   │       ├── darknet.py
-│   │       ├── parsers.py
-│   │       ├── yolo_trainer.py
-│   │       └── yolo_v3.py
-│   ├── segmentation
-│   │   ├── attunet
-│   │   │   ├── attunet.py
-│   │   │   └── attunet_trainer.py
-│   │   └── unet
-│   │       ├── unet.py
-│   │       └── unet_trainer.py
-│   ├── superres
-│   │   └── srgan
-│   │       ├── srgan.py
-│   │       └── srgan_trainer.py
-│   └── translation
-│       └── cyclegan
-│           ├── cyclegan.py
-│           └── cyclegan_trainer.py
+│   ├── blocks
+│   │   └── vgg.py
+│   ├── classification
+│   │   ├── class_trainer.py
+│   │   ├── conv
+│   │   │   ├── densenet.py
+│   │   │   ├── dla.py
+│   │   │   ├── dla_simple.py
+│   │   │   ├── dpn.py
+│   │   │   ├── efficientnet.py
+│   │   │   ├── googlenet.py
+│   │   │   ├── lenet.py
+│   │   │   ├── mobilenet.py
+│   │   │   ├── mobilenetv2.py
+│   │   │   ├── pnasnet.py
+│   │   │   ├── preact_resnet.py
+│   │   │   ├── regnet.py
+│   │   │   ├── resnet.py
+│   │   │   ├── resnext.py
+│   │   │   ├── senet.py
+│   │   │   ├── shufflenet.py
+│   │   │   ├── shufflenetv2.py
+│   │   │   └── vgg.py
+│   │   ├── transformer_trainer.py
+│   │   └── vit
+│   │       ├── efficient.py
+│   │       ├── linformer.py
+│   │       └── reversible.py
+│   ├── detection
+│   │   ├── faster_rcnn
+│   │   │   ├── creator_tool.py
+│   │   │   ├── dataset.py
+│   │   │   ├── faster_rcnn.py
+│   │   │   ├── faster_rcnn_trainer.py
+│   │   │   ├── faster_rcnn_vgg16.py
+│   │   │   └── region_proposal_network.py
+│   │   └── yolov3
+│   │       ├── config
+│   │       │   ├── coco.data
+│   │       │   ├── coco.names
+│   │       │   ├── create_custom_model.sh
+│   │       │   ├── custom.data
+│   │       │   ├── yolov3-custom.cfg
+│   │       │   ├── yolov3-tiny.cfg
+│   │       │   └── yolov3.cfg
+│   │       ├── darknet.py
+│   │       ├── parsers.py
+│   │       ├── yolo_trainer.py
+│   │       └── yolo_v3.py
+│   ├── segmentation
+│   │   ├── attunet
+│   │   │   ├── attunet.py
+│   │   │   └── attunet_trainer.py
+│   │   └── unet
+│   │       ├── unet.py
+│   │       └── unet_trainer.py
+│   ├── superres
+│   │   └── srgan
+│   │       ├── srgan.py
+│   │       └── srgan_trainer.py
+│   └── translation
+│       └── cyclegan
+│           ├── cyclegan.py
+│           └── cyclegan_trainer.py
 └── utils
-    ├── bboxtools.py
-    ├── collect_env.py
-    ├── exceptions.py
-    ├── helpers.py
-    ├── tensorboard.py
-    ├── losses.py
-    ├── meters.py
-    ├── metrics.py
-    ├── misc.py
-    ├── regul.py
-    └── visdom.py
+  ├── bboxtools.py
+  ├── collect_env.py
+  ├── exceptions.py
+  ├── helpers.py
+  ├── loggers.py
+  ├── losses.py
+  ├── meters.py
+  ├── metrics.py
+  ├── misc.py
+  ├── regul.py
+  ├── tensorboard.py
+  └── visdom.py
 </pre></div>
 </div>
 </div>
