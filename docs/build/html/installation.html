@@ -92,9 +92,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-install">How to install</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#clone-repository-from-git">1. Clone repository from Git</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#activate-conda-environment">2. Activate conda environment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#install-with-pip">3. Install with pip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#activate-conda-environment">1. Activate conda environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-prerequisites">2. Install prerequisites:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-farabio">3. Install farabio</a></li>
 </ul>
 </li>
 </ul>
@@ -211,25 +211,33 @@ visdom=0.1.8.9
 </details></div>
 <div class="section" id="how-to-install">
 <h2>How to install<a class="headerlink" href="#how-to-install" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="clone-repository-from-git">
-<h3>1. Clone repository from Git<a class="headerlink" href="#clone-repository-from-git" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone -b pytorch-pip https://github.com/TBL-UNIST/tbl-ai.git
-$ <span class="nb">cd</span> tbl-ai
-</pre></div>
-</div>
-</div>
 <div class="section" id="activate-conda-environment">
-<h3>2. Activate conda environment<a class="headerlink" href="#activate-conda-environment" title="Permalink to this headline">¶</a></h3>
+<h3>1. Activate conda environment<a class="headerlink" href="#activate-conda-environment" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ conda create -n coolenv <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8
 $ conda activate coolenv
 $ conda install <span class="nv">pytorch</span><span class="o">==</span><span class="m">1</span>.7.1 <span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.8.2 <span class="nv">torchaudio</span><span class="o">==</span><span class="m">0</span>.7.2 <span class="nv">cudatoolkit</span><span class="o">=</span><span class="m">11</span>.0 -c pytorch
 </pre></div>
 </div>
 </div>
-<div class="section" id="install-with-pip">
-<h3>3. Install with pip<a class="headerlink" href="#install-with-pip" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="install-prerequisites">
+<h3>2. Install prerequisites:<a class="headerlink" href="#install-prerequisites" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone -b https://github.com/tuttelikz/farabio.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> farabio
+$ pip install -r requirements.txt
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-farabio">
+<h3>3. Install farabio<a class="headerlink" href="#install-farabio" title="Permalink to this headline">¶</a></h3>
+<ol class="upperalpha simple">
+<li><p>With pip:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip install farabio
+</pre></div>
+</div>
+<ol class="upperalpha simple" start="2">
+<li><p>Setup from source:</p></li>
+</ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python -m pip install --upgrade pip setuptools wheel  <span class="c1"># ensure up-to-date</span>
-$ pip install -r <span class="o">[</span>from_local.txt<span class="p">|</span>from_pip.txt<span class="o">]</span>          <span class="c1"># install requirements from local or pypi</span>
 $ pip install <span class="o">[</span>-e<span class="o">]</span> .                                    <span class="c1"># flag for editable mode</span>
 </pre></div>
 </div>

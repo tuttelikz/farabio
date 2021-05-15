@@ -56,14 +56,7 @@ Prerequisites
 How to install
 -------------------------
 
-1. Clone repository from Git
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-.. code-block:: bash
-
-   $ git clone -b pytorch-pip https://github.com/TBL-UNIST/tbl-ai.git
-   $ cd tbl-ai
-
-2. Activate conda environment 
+1. Activate conda environment 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
 
@@ -71,10 +64,25 @@ How to install
    $ conda activate coolenv
    $ conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
 
-3. Install with pip
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+2. Install prerequisites:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
 
+   $ git clone -b https://github.com/tuttelikz/farabio.git && cd farabio
+   $ pip install -r requirements.txt
+
+3. Install farabio
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A. With pip:
+
+.. code-block:: bash
+
+   $ pip install farabio
+
+B. Setup from source:
+
+.. code-block:: bash
+   
    $ python -m pip install --upgrade pip setuptools wheel  # ensure up-to-date
-   $ pip install -r [from_local.txt|from_pip.txt]          # install requirements from local or pypi
    $ pip install [-e] .                                    # flag for editable mode 

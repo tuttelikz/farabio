@@ -14,7 +14,7 @@ Features:
 * Flexible PyTorch trainers
 
 * Common DL models
-
+   
 * Biomedical datasets
 
 * Loggers, visualization
