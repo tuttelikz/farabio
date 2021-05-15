@@ -1,5 +1,5 @@
 Reference
-=========
+===========
 
 
 :py:mod:`~farabio.core` Package
@@ -34,3 +34,10 @@ Reference
    data.imgops.rst
    data.dirops.rst
    data.biodatasets.rst
+
+:py:mod:`~farabio.utils` Package
+---------------------------------
+.. toctree::
+   :maxdepth: 1
+   
+   utils.losses.rst

@@ -97,7 +97,7 @@ class RANZCRDataset(Dataset):
                         os.path.join(root, tag))
 
         train_path = os.path.join(root, tag, "train")
-        test_path = os.path.join(root, tag, "test")
+        test_path = os  .path.join(root, tag, "test")
 
         # juggling
         data = pd.read_csv(os.path.join(root, tag, "train_annotations.csv"))

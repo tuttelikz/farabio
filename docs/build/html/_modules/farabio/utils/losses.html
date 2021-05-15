@@ -1,0 +1,996 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>farabio.utils.losses &mdash; farabio 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> farabio
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../handbook/index.html">Handbook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">farabio</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>farabio.utils.losses</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for farabio.utils.losses</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">from</span> <span class="nn">torchvision.models.vgg</span> <span class="kn">import</span> <span class="n">vgg16</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span>  <span class="n">ifilterfalse</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="c1"># py3k</span>
+    <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span>  <span class="n">filterfalse</span> <span class="k">as</span> <span class="n">ifilterfalse</span>
+
+
+<div class="viewcode-block" id="DiceLoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.DiceLoss">[docs]</a><span class="k">class</span> <span class="nc">DiceLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="viewcode-block" id="DiceLoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.DiceLoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DiceLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DiceLoss.forward"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.DiceLoss.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        
+        <span class="c1">#comment out if your model contains a sigmoid or equivalent activation layer</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>       
+        
+        <span class="c1">#flatten label and prediction tensors</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="n">intersection</span> <span class="o">=</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">*</span> <span class="n">targets</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>                            
+        <span class="n">dice</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">intersection</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> <span class="n">targets</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">)</span>  
+        
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">dice</span></div></div>
+
+<div class="viewcode-block" id="DiceBCELoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.DiceBCELoss">[docs]</a><span class="k">class</span> <span class="nc">DiceBCELoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="viewcode-block" id="DiceBCELoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.DiceBCELoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DiceBCELoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DiceBCELoss.forward"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.DiceBCELoss.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        
+        <span class="c1">#comment out if your model contains a sigmoid or equivalent activation layer</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>       
+        <span class="n">bce_weight</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="c1">#flatten label and prediction tensors</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="n">intersection</span> <span class="o">=</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">*</span> <span class="n">targets</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>                            
+        <span class="n">dice_loss</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">intersection</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> <span class="n">targets</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">)</span>  
+        <span class="n">BCE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">binary_cross_entropy</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+        <span class="n">loss_final</span> <span class="o">=</span> <span class="n">BCE</span> <span class="o">*</span> <span class="n">bce_weight</span> <span class="o">+</span> <span class="n">dice_loss</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">bce_weight</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">loss_final</span></div></div>
+
+<div class="viewcode-block" id="IoULoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.IoULoss">[docs]</a><span class="k">class</span> <span class="nc">IoULoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="viewcode-block" id="IoULoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.IoULoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">IoULoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="IoULoss.forward"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.IoULoss.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        
+        <span class="c1">#comment out if your model contains a sigmoid or equivalent activation layer</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>       
+        
+        <span class="c1">#flatten label and prediction tensors</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1">#intersection is equivalent to True Positive count</span>
+        <span class="c1">#union is the mutually inclusive area of all labels &amp; predictions </span>
+        <span class="n">intersection</span> <span class="o">=</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">*</span> <span class="n">targets</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">+</span> <span class="n">targets</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">union</span> <span class="o">=</span> <span class="n">total</span> <span class="o">-</span> <span class="n">intersection</span> 
+        
+        <span class="n">IoU</span> <span class="o">=</span> <span class="p">(</span><span class="n">intersection</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">union</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">)</span>
+                
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">IoU</span></div></div>
+
+<div class="viewcode-block" id="FocalLoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.FocalLoss">[docs]</a><span class="k">class</span> <span class="nc">FocalLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="viewcode-block" id="FocalLoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.FocalLoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FocalLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FocalLoss.forward"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.FocalLoss.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        
+        <span class="c1">#comment out if your model contains a sigmoid or equivalent activation layer</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>       
+        
+        <span class="c1">#flatten label and prediction tensors</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1">#first compute binary cross-entropy </span>
+        <span class="n">BCE</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">binary_cross_entropy</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+        <span class="n">BCE_EXP</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">BCE</span><span class="p">)</span>
+        <span class="n">focal_loss</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">BCE_EXP</span><span class="p">)</span><span class="o">**</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">BCE</span>
+                       
+        <span class="k">return</span> <span class="n">focal_loss</span></div></div>
+
+<div class="viewcode-block" id="TverskyLoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.TverskyLoss">[docs]</a><span class="k">class</span> <span class="nc">TverskyLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="viewcode-block" id="TverskyLoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.TverskyLoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TverskyLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TverskyLoss.forward"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.TverskyLoss.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        
+        <span class="c1">#comment out if your model contains a sigmoid or equivalent activation layer</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>       
+        
+        <span class="c1">#flatten label and prediction tensors</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1">#True Positives, False Positives &amp; False Negatives</span>
+        <span class="n">TP</span> <span class="o">=</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">*</span> <span class="n">targets</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>    
+        <span class="n">FP</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">targets</span><span class="p">)</span> <span class="o">*</span> <span class="n">inputs</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">FN</span> <span class="o">=</span> <span class="p">(</span><span class="n">targets</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">inputs</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+       
+        <span class="n">Tversky</span> <span class="o">=</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">alpha</span><span class="o">*</span><span class="n">FP</span> <span class="o">+</span> <span class="n">beta</span><span class="o">*</span><span class="n">FN</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">)</span>  
+        
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">Tversky</span></div></div>
+
+<div class="viewcode-block" id="FocalTverskyLoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.FocalTverskyLoss">[docs]</a><span class="k">class</span> <span class="nc">FocalTverskyLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="viewcode-block" id="FocalTverskyLoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.FocalTverskyLoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FocalTverskyLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FocalTverskyLoss.forward"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.FocalTverskyLoss.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        
+        <span class="c1">#comment out if your model contains a sigmoid or equivalent activation layer</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>       
+        
+        <span class="c1">#flatten label and prediction tensors</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="c1">#True Positives, False Positives &amp; False Negatives</span>
+        <span class="n">TP</span> <span class="o">=</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">*</span> <span class="n">targets</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>    
+        <span class="n">FP</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">targets</span><span class="p">)</span> <span class="o">*</span> <span class="n">inputs</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">FN</span> <span class="o">=</span> <span class="p">(</span><span class="n">targets</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">inputs</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        
+        <span class="n">Tversky</span> <span class="o">=</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">TP</span> <span class="o">+</span> <span class="n">alpha</span><span class="o">*</span><span class="n">FP</span> <span class="o">+</span> <span class="n">beta</span><span class="o">*</span><span class="n">FN</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">)</span>  
+        <span class="n">FocalTversky</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Tversky</span><span class="p">)</span><span class="o">**</span><span class="n">gamma</span>
+                       
+        <span class="k">return</span> <span class="n">FocalTversky</span></div></div>
+
+<span class="c1"># --------------------------- HELPER FUNCTIONS ---------------------------</span>
+<span class="k">def</span> <span class="nf">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">x</span>
+
+<span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">ignore_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">empty</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    nanmean compatible with generators.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ignore_nan</span><span class="p">:</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">ifilterfalse</span><span class="p">(</span><span class="n">isnan</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">empty</span> <span class="o">==</span> <span class="s1">&#39;raise&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Empty mean&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">empty</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">acc</span> <span class="o">+=</span> <span class="n">v</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">acc</span>
+
+<span class="c1">#PyTorch</span>
+<span class="k">def</span> <span class="nf">flatten_binary_scores</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Flattens predictions in the batch (binary case)</span>
+<span class="sd">    Remove labels equal to &#39;ignore&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ignore</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">scores</span><span class="p">,</span> <span class="n">labels</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels</span> <span class="o">!=</span> <span class="n">ignore</span><span class="p">)</span>
+    <span class="n">vscores</span> <span class="o">=</span> <span class="n">scores</span><span class="p">[</span><span class="n">valid</span><span class="p">]</span>
+    <span class="n">vlabels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">valid</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">vscores</span><span class="p">,</span> <span class="n">vlabels</span>
+
+<span class="k">def</span> <span class="nf">lovasz_grad</span><span class="p">(</span><span class="n">gt_sorted</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes gradient of the Lovasz extension w.r.t sorted errors</span>
+<span class="sd">    See Alg. 1 in paper</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gt_sorted</span><span class="p">)</span>
+    <span class="n">gts</span> <span class="o">=</span> <span class="n">gt_sorted</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">intersection</span> <span class="o">=</span> <span class="n">gts</span> <span class="o">-</span> <span class="n">gt_sorted</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">union</span> <span class="o">=</span> <span class="n">gts</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">gt_sorted</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">jaccard</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">intersection</span> <span class="o">/</span> <span class="n">union</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># cover 1-pixel case</span>
+        <span class="n">jaccard</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">jaccard</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">p</span><span class="p">]</span> <span class="o">-</span> <span class="n">jaccard</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">jaccard</span>
+
+<span class="k">def</span> <span class="nf">lovasz_hinge</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">per_image</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Binary Lovasz hinge loss</span>
+<span class="sd">      logits: [B, H, W] Variable, logits at each pixel (between -\infty and +\infty)</span>
+<span class="sd">      labels: [B, H, W] Tensor, binary ground truth masks (0 or 1)</span>
+<span class="sd">      per_image: compute the loss per image instead of per batch</span>
+<span class="sd">      ignore: void class id</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">per_image</span><span class="p">:</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">lovasz_hinge_flat</span><span class="p">(</span><span class="o">*</span><span class="n">flatten_binary_scores</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">lab</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">ignore</span><span class="p">))</span>
+                          <span class="k">for</span> <span class="n">log</span><span class="p">,</span> <span class="n">lab</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">lovasz_hinge_flat</span><span class="p">(</span><span class="o">*</span><span class="n">flatten_binary_scores</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">ignore</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">loss</span>
+
+<span class="k">def</span> <span class="nf">lovasz_hinge_flat</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Binary Lovasz hinge loss</span>
+<span class="sd">      logits: [P] Variable, logits at each prediction (between -\infty and +\infty)</span>
+<span class="sd">      labels: [P] Tensor, binary ground truth labels (0 or 1)</span>
+<span class="sd">      ignore: label to ignore</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># only void pixels, the gradients should be 0</span>
+        <span class="k">return</span> <span class="n">logits</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.</span>
+    <span class="n">signs</span> <span class="o">=</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">labels</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="o">-</span> <span class="mf">1.</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">logits</span> <span class="o">*</span> <span class="n">Variable</span><span class="p">(</span><span class="n">signs</span><span class="p">))</span>
+    <span class="n">errors_sorted</span><span class="p">,</span> <span class="n">perm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">descending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">perm</span> <span class="o">=</span> <span class="n">perm</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">gt_sorted</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">lovasz_grad</span><span class="p">(</span><span class="n">gt_sorted</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">errors_sorted</span><span class="p">),</span> <span class="n">Variable</span><span class="p">(</span><span class="n">grad</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">loss</span>
+
+<span class="c1">#=====</span>
+<span class="c1">#Multi-class Lovasz loss</span>
+<span class="c1">#=====</span>
+
+<span class="k">def</span> <span class="nf">lovasz_softmax</span><span class="p">(</span><span class="n">probas</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="s1">&#39;present&#39;</span><span class="p">,</span> <span class="n">per_image</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Multi-class Lovasz-Softmax loss</span>
+<span class="sd">      probas: [B, C, H, W] Variable, class probabilities at each prediction (between 0 and 1).</span>
+<span class="sd">              Interpreted as binary (sigmoid) output with outputs of size [B, H, W].</span>
+<span class="sd">      labels: [B, H, W] Tensor, ground truth labels (between 0 and C - 1)</span>
+<span class="sd">      classes: &#39;all&#39; for all, &#39;present&#39; for classes present in labels, or a list of classes to average.</span>
+<span class="sd">      per_image: compute the loss per image instead of per batch</span>
+<span class="sd">      ignore: void class labels</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">per_image</span><span class="p">:</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">lovasz_softmax_flat</span><span class="p">(</span><span class="o">*</span><span class="n">flatten_probas</span><span class="p">(</span><span class="n">prob</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">lab</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">ignore</span><span class="p">),</span> <span class="n">classes</span><span class="o">=</span><span class="n">classes</span><span class="p">)</span>
+                          <span class="k">for</span> <span class="n">prob</span><span class="p">,</span> <span class="n">lab</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">probas</span><span class="p">,</span> <span class="n">labels</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">lovasz_softmax_flat</span><span class="p">(</span><span class="o">*</span><span class="n">flatten_probas</span><span class="p">(</span><span class="n">probas</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">ignore</span><span class="p">),</span> <span class="n">classes</span><span class="o">=</span><span class="n">classes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss</span>
+
+
+<span class="k">def</span> <span class="nf">lovasz_softmax_flat</span><span class="p">(</span><span class="n">probas</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="s1">&#39;present&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Multi-class Lovasz-Softmax loss</span>
+<span class="sd">      probas: [P, C] Variable, class probabilities at each prediction (between 0 and 1)</span>
+<span class="sd">      labels: [P] Tensor, ground truth labels (between 0 and C - 1)</span>
+<span class="sd">      classes: &#39;all&#39; for all, &#39;present&#39; for classes present in labels, or a list of classes to average.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">probas</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># only void pixels, the gradients should be 0</span>
+        <span class="k">return</span> <span class="n">probas</span> <span class="o">*</span> <span class="mf">0.</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">probas</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">class_to_sum</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">C</span><span class="p">))</span> <span class="k">if</span> <span class="n">classes</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;present&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="n">classes</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">class_to_sum</span><span class="p">:</span>
+        <span class="n">fg</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="c1"># foreground for class c</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">classes</span> <span class="ow">is</span> <span class="s1">&#39;present&#39;</span> <span class="ow">and</span> <span class="n">fg</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">C</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">classes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Sigmoid output possible only with 1 class&#39;</span><span class="p">)</span>
+            <span class="n">class_pred</span> <span class="o">=</span> <span class="n">probas</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">class_pred</span> <span class="o">=</span> <span class="n">probas</span><span class="p">[:,</span> <span class="n">c</span><span class="p">]</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">fg</span><span class="p">)</span> <span class="o">-</span> <span class="n">class_pred</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+        <span class="n">errors_sorted</span><span class="p">,</span> <span class="n">perm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">descending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">perm</span> <span class="o">=</span> <span class="n">perm</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">fg_sorted</span> <span class="o">=</span> <span class="n">fg</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">errors_sorted</span><span class="p">,</span> <span class="n">Variable</span><span class="p">(</span><span class="n">lovasz_grad</span><span class="p">(</span><span class="n">fg_sorted</span><span class="p">))))</span>
+    <span class="k">return</span> <span class="n">mean</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LovaszHingeLoss"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.LovaszHingeLoss">[docs]</a><span class="k">class</span> <span class="nc">LovaszHingeLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="viewcode-block" id="LovaszHingeLoss.__init__"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.LovaszHingeLoss.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">size_average</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LovaszHingeLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="LovaszHingeLoss.forward"><a class="viewcode-back" href="../../../reference/utils.losses.html#farabio.utils.losses.LovaszHingeLoss.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>    
+        <span class="n">Lovasz</span> <span class="o">=</span> <span class="n">lovasz_hinge</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">per_image</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>                       
+        <span class="k">return</span> <span class="n">Lovasz</span></div></div>
+
+<span class="k">class</span> <span class="nc">Losses</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Losses class combines BCE and Dice loss</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    imgpath : str</span>
+<span class="sd">        image path of interest</span>
+<span class="sd">    fsize : str</span>
+<span class="sd">        file size in human readable format</span>
+<span class="sd">    img : numpy.array</span>
+<span class="sd">        image</span>
+<span class="sd">    h : int</span>
+<span class="sd">        height</span>
+<span class="sd">    w : int</span>
+<span class="sd">        width</span>
+<span class="sd">    ch : int</span>
+<span class="sd">        channels</span>
+<span class="sd">    pmax : int | float</span>
+<span class="sd">        max pixel value</span>
+<span class="sd">    pmin : int | float</span>
+<span class="sd">        min pixel value</span>
+<span class="sd">    img_r : numpy.array</span>
+<span class="sd">        red channel image</span>
+<span class="sd">    img_g : numpy.array</span>
+<span class="sd">        green channel image</span>
+<span class="sd">    img_b : numpy.array</span>
+<span class="sd">        blue channel image</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">    bce_loss(self, pred, target)</span>
+<span class="sd">        Returns binary cross-entropy loss</span>
+<span class="sd">    dice_loss(self, pred, target, smooth=1.)</span>
+<span class="sd">        Returns dice loss</span>
+<span class="sd">    slice_img(img, slices, orien)</span>
+<span class="sd">        Slices image into pieces</span>
+<span class="sd">    pad_img(self, droi, simg=None)</span>
+<span class="sd">        Pads image into predefined ROI size</span>
+<span class="sd">    approx_bcg(self, channel=&#39;blue&#39;)</span>
+<span class="sd">        Approximates background image</span>
+<span class="sd">    blend_img(self, ref_, overlap=0.2, ratio=0.5)</span>
+<span class="sd">        Blends two images taking the overage of overlap area</span>
+<span class="sd">    mask_img(self, bw)</span>
+<span class="sd">        Masks image</span>
+<span class="sd">    profile_img(self, pt1, pt2)</span>
+<span class="sd">        Plots image x/y profile between two coordinates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">bce_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns binary cross-entropy loss</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pred : torch.Tensor</span>
+<span class="sd">            predictions tensor array</span>
+<span class="sd">        target : torch.Tensor</span>
+<span class="sd">            target tensor array</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            binary cross-entropy loss</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bce</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">binary_cross_entropy_with_logits</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bce</span>
+
+    <span class="k">def</span> <span class="nf">dice_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mf">1.</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns dice loss</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pred : torch.Tensor</span>
+<span class="sd">            predictions tensor array</span>
+<span class="sd">        target : torch.Tensor</span>
+<span class="sd">            target tensor array</span>
+<span class="sd">        smooth : float, optional</span>
+<span class="sd">            smoothening coefficient, by default 1.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            dice loss</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+
+        <span class="n">intersection</span> <span class="o">=</span> <span class="p">(</span><span class="n">pred</span> <span class="o">*</span> <span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">intersection</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">)</span> <span class="o">/</span>
+                     <span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">target</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">smooth</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">calc_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">bce_weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates combined BCE and Dice losses</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pred : torch.Tensor</span>
+<span class="sd">            predictions tensor array</span>
+<span class="sd">        target : torch.Tensor</span>
+<span class="sd">            target tensor array</span>
+<span class="sd">        bce_weight : float, optional</span>
+<span class="sd">            weight to give for bce loss, by default 0.5</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            bce and dice loss combined</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bce</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bce_loss</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="n">dice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dice_loss</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">pred</span><span class="p">),</span> <span class="n">target</span><span class="p">)</span>
+
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">bce</span> <span class="o">*</span> <span class="n">bce_weight</span> <span class="o">+</span> <span class="n">dice</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">bce_weight</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="k">def</span> <span class="nf">cat_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pred : [type]</span>
+<span class="sd">            [description]</span>
+<span class="sd">        target : [type]</span>
+<span class="sd">            [description]</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        [type]</span>
+<span class="sd">            [description]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+        <span class="n">categ_loss</span> <span class="o">=</span> <span class="n">loss</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">categ_loss</span>
+
+    <span class="k">def</span> <span class="nf">extract_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cat_weight</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates combined categorical and Dice losses</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pred : torch.Tensor</span>
+<span class="sd">            predictions tensor array</span>
+<span class="sd">        target : torch.Tensor</span>
+<span class="sd">            target tensor array</span>
+<span class="sd">        bce_weight : float, optional</span>
+<span class="sd">            weight to give for bce loss, by default 0.5</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            bce and dice loss combined</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">categ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cat_loss</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+        <span class="c1"># coefficient of max label</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+        <span class="n">coef_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">2</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># empty tensor</span>
+        <span class="n">ttensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span>
+                              <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>  <span class="c1"># [4, 1, 512, 512]</span>
+        <span class="c1"># this was previously torch.device to set on same gpu</span>
+        <span class="c1">#ttensor = ttensor.to(device=device)</span>
+        <span class="k">if</span> <span class="n">device</span><span class="p">:</span>
+            <span class="n">ttensor</span> <span class="o">=</span> <span class="n">ttensor</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+
+        <span class="c1"># get the mask of max label</span>
+        <span class="k">for</span> <span class="n">ij</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coef_tensor</span><span class="p">)):</span>
+            <span class="n">ttensor</span><span class="p">[</span><span class="n">ij</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">pred</span><span class="p">[</span><span class="n">ij</span><span class="p">,</span> <span class="n">coef_tensor</span><span class="p">[</span><span class="n">ij</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+
+        <span class="c1"># dice</span>
+        <span class="n">dice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dice_loss</span><span class="p">(</span><span class="n">ttensor</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># combined loss</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">categ</span> <span class="o">*</span> <span class="n">cat_weight</span> <span class="o">+</span> <span class="n">dice</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cat_weight</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="k">def</span> <span class="nf">_smooth_l1_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">in_weight</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+        <span class="n">sigma2</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">in_weight</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">abs_diff</span> <span class="o">=</span> <span class="n">diff</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="p">(</span><span class="n">abs_diff</span><span class="o">.</span><span class="n">data</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="n">sigma2</span><span class="p">))</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">flag</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigma2</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">diff</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span>
+            <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">flag</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">abs_diff</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="n">sigma2</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">y</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_fast_rcnn_loc_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pred_loc</span><span class="p">,</span> <span class="n">gt_loc</span><span class="p">,</span> <span class="n">gt_label</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+        <span class="n">in_weight</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">gt_loc</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="c1"># Localization loss is calculated only for positive rois.</span>
+        <span class="c1"># NOTE:  unlike origin implementation,</span>
+        <span class="c1"># we don&#39;t need inside_weight and outside_weight, they can calculate by gt_label</span>
+        <span class="n">in_weight</span><span class="p">[(</span><span class="n">gt_label</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">in_weight</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">loc_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_smooth_l1_loss</span><span class="p">(</span><span class="n">pred_loc</span><span class="p">,</span> <span class="n">gt_loc</span><span class="p">,</span> <span class="n">in_weight</span><span class="o">.</span><span class="n">detach</span><span class="p">(),</span> <span class="n">sigma</span><span class="p">)</span>
+        <span class="c1"># Normalize by total number of negtive and positive rois.</span>
+        <span class="c1"># ignore gt_label==-1 for rpn_loss</span>
+        <span class="n">loc_loss</span> <span class="o">/=</span> <span class="p">((</span><span class="n">gt_label</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">loc_loss</span>
+
+
+<span class="k">class</span> <span class="nc">GeneratorLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generator loss from VGG16</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GeneratorLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="n">vgg</span> <span class="o">=</span> <span class="n">vgg16</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">loss_network</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">vgg</span><span class="o">.</span><span class="n">features</span><span class="p">)[:</span><span class="mi">31</span><span class="p">])</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">loss_network</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+            <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_network</span> <span class="o">=</span> <span class="n">loss_network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mse_loss</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tv_loss</span> <span class="o">=</span> <span class="n">TVLoss</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out_labels</span><span class="p">,</span> <span class="n">out_images</span><span class="p">,</span> <span class="n">target_images</span><span class="p">):</span>
+        <span class="c1"># Adversarial Loss</span>
+        <span class="n">adversarial_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">out_labels</span><span class="p">)</span>
+        <span class="c1"># Perception Loss</span>
+        <span class="n">perception_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loss_network</span><span class="p">(</span>
+            <span class="n">out_images</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_network</span><span class="p">(</span><span class="n">target_images</span><span class="p">))</span>
+        <span class="c1"># Image Loss</span>
+        <span class="n">image_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">out_images</span><span class="p">,</span> <span class="n">target_images</span><span class="p">)</span>
+        <span class="c1"># TV Loss</span>
+        <span class="n">tv_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tv_loss</span><span class="p">(</span><span class="n">out_images</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">image_loss</span> <span class="o">+</span> <span class="mf">0.001</span> <span class="o">*</span> <span class="n">adversarial_loss</span> <span class="o">+</span> <span class="mf">0.006</span> <span class="o">*</span> <span class="n">perception_loss</span> <span class="o">+</span> <span class="mf">2e-8</span> <span class="o">*</span> <span class="n">tv_loss</span>
+
+
+<span class="k">class</span> <span class="nc">TVLoss</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Tversky loss</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tv_loss_weight</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tv_loss_weight : int, optional</span>
+<span class="sd">            [description], by default 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TVLoss</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tv_loss_weight</span> <span class="o">=</span> <span class="n">tv_loss_weight</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : [type]</span>
+<span class="sd">            [description]</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        [type]</span>
+<span class="sd">            [description]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">h_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">w_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">count_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor_size</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span>
+        <span class="n">count_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor_size</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">:])</span>
+        <span class="n">h_tv</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">pow</span><span class="p">((</span><span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">h_x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]),</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">w_tv</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">pow</span><span class="p">((</span><span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:</span><span class="n">w_x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]),</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tv_loss_weight</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">h_tv</span> <span class="o">/</span> <span class="n">count_h</span> <span class="o">+</span> <span class="n">w_tv</span> <span class="o">/</span> <span class="n">count_w</span><span class="p">)</span> <span class="o">/</span> <span class="n">batch_size</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">tensor_size</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        t : [type]</span>
+<span class="sd">            [description]</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        [type]</span>
+<span class="sd">            [description]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">t</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">3</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">ap_per_class</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">conf</span><span class="p">,</span> <span class="n">pred_cls</span><span class="p">,</span> <span class="n">target_cls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Compute the average precision, given the recall and precision curves.</span>
+<span class="sd">    Source: https://github.com/rafaelpadilla/Object-Detection-Metrics.</span>
+<span class="sd">    # Arguments</span>
+<span class="sd">        tp:    True positives (list).</span>
+<span class="sd">        conf:  Objectness value from 0-1 (list).</span>
+<span class="sd">        pred_cls: Predicted object classes (list).</span>
+<span class="sd">        target_cls: True object classes (list).</span>
+<span class="sd">    # Returns</span>
+<span class="sd">        The average precision as computed in py-faster-rcnn.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Sort by objectness</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">conf</span><span class="p">)</span>
+    <span class="n">tp</span><span class="p">,</span> <span class="n">conf</span><span class="p">,</span> <span class="n">pred_cls</span> <span class="o">=</span> <span class="n">tp</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">conf</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">pred_cls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="c1"># Find unique classes</span>
+    <span class="n">unique_classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">target_cls</span><span class="p">)</span>
+
+    <span class="c1"># Create Precision-Recall curve and compute AP for each class</span>
+    <span class="n">ap</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">unique_classes</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Computing AP&quot;</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">pred_cls</span> <span class="o">==</span> <span class="n">c</span>
+        <span class="n">n_gt</span> <span class="o">=</span> <span class="p">(</span><span class="n">target_cls</span> <span class="o">==</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>  <span class="c1"># Number of ground truth objects</span>
+        <span class="n">n_p</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>  <span class="c1"># Number of predicted objects</span>
+
+        <span class="k">if</span> <span class="n">n_p</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">n_gt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">elif</span> <span class="n">n_p</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">n_gt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Accumulate FPs and TPs</span>
+            <span class="n">fpc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">tp</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+            <span class="n">tpc</span> <span class="o">=</span> <span class="p">(</span><span class="n">tp</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+
+            <span class="c1"># Recall</span>
+            <span class="n">recall_curve</span> <span class="o">=</span> <span class="n">tpc</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_gt</span> <span class="o">+</span> <span class="mf">1e-16</span><span class="p">)</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">recall_curve</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="c1"># Precision</span>
+            <span class="n">precision_curve</span> <span class="o">=</span> <span class="n">tpc</span> <span class="o">/</span> <span class="p">(</span><span class="n">tpc</span> <span class="o">+</span> <span class="n">fpc</span><span class="p">)</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">precision_curve</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="c1"># AP from recall-precision curve</span>
+            <span class="n">ap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compute_ap</span><span class="p">(</span><span class="n">recall_curve</span><span class="p">,</span> <span class="n">precision_curve</span><span class="p">))</span>
+
+    <span class="c1"># Compute F1 score (harmonic mean of precision and recall)</span>
+    <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ap</span><span class="p">)</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p</span> <span class="o">*</span> <span class="n">r</span> <span class="o">/</span> <span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="n">r</span> <span class="o">+</span> <span class="mf">1e-16</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ap</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">unique_classes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int32&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">compute_ap</span><span class="p">(</span><span class="n">recall</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Compute the average precision, given the recall and precision curves.</span>
+<span class="sd">    Code originally from https://github.com/rbgirshick/py-faster-rcnn.</span>
+<span class="sd">    # Arguments</span>
+<span class="sd">        recall:    The recall curve (list).</span>
+<span class="sd">        precision: The precision curve (list).</span>
+<span class="sd">    # Returns</span>
+<span class="sd">        The average precision as computed in py-faster-rcnn.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># correct AP calculation</span>
+    <span class="c1"># first append sentinel values at the end</span>
+    <span class="n">mrec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">recall</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]))</span>
+    <span class="n">mpre</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">precision</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]))</span>
+
+    <span class="c1"># compute the precision envelope</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mpre</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">mpre</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">mpre</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">mpre</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="c1"># to calculate area under PR curve, look for points</span>
+    <span class="c1"># where X axis (recall) changes value</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mrec</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <span class="n">mrec</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># and sum (\Delta recall) * prec</span>
+    <span class="n">ap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">mrec</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">mrec</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">mpre</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">ap</span>
+
+
+<span class="k">def</span> <span class="nf">get_batch_statistics</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Compute true positives, predicted scores and predicted labels per sample &quot;&quot;&quot;</span>
+    <span class="n">batch_metrics</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sample_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)):</span>
+
+        <span class="k">if</span> <span class="n">outputs</span><span class="p">[</span><span class="n">sample_i</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="n">sample_i</span><span class="p">]</span>
+        <span class="n">pred_boxes</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+        <span class="n">pred_scores</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span>
+        <span class="n">pred_labels</span> <span class="o">=</span> <span class="n">output</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">true_positives</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">pred_boxes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">annotations</span> <span class="o">=</span> <span class="n">targets</span><span class="p">[</span><span class="n">targets</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">sample_i</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">:]</span>
+        <span class="n">target_labels</span> <span class="o">=</span> <span class="n">annotations</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">annotations</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">annotations</span><span class="p">):</span>
+            <span class="n">detected_boxes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">target_boxes</span> <span class="o">=</span> <span class="n">annotations</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
+
+            <span class="k">for</span> <span class="n">pred_i</span><span class="p">,</span> <span class="p">(</span><span class="n">pred_box</span><span class="p">,</span> <span class="n">pred_label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">pred_boxes</span><span class="p">,</span> <span class="n">pred_labels</span><span class="p">)):</span>
+
+                <span class="c1"># If targets are found break</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">detected_boxes</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">annotations</span><span class="p">):</span>
+                    <span class="k">break</span>
+
+                <span class="c1"># Ignore if label is not one of the target labels</span>
+                <span class="k">if</span> <span class="n">pred_label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">target_labels</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">iou</span><span class="p">,</span> <span class="n">box_index</span> <span class="o">=</span> <span class="n">bbox_iou</span><span class="p">(</span>
+                    <span class="n">pred_box</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">target_boxes</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">iou</span> <span class="o">&gt;=</span> <span class="n">iou_threshold</span> <span class="ow">and</span> <span class="n">box_index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">detected_boxes</span><span class="p">:</span>
+                    <span class="n">true_positives</span><span class="p">[</span><span class="n">pred_i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="n">detected_boxes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">box_index</span><span class="p">]</span>
+        <span class="n">batch_metrics</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">true_positives</span><span class="p">,</span> <span class="n">pred_scores</span><span class="p">,</span> <span class="n">pred_labels</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">batch_metrics</span>
+
+
+<span class="k">def</span> <span class="nf">bbox_wh_iou</span><span class="p">(</span><span class="n">wh1</span><span class="p">,</span> <span class="n">wh2</span><span class="p">):</span>
+    <span class="n">wh2</span> <span class="o">=</span> <span class="n">wh2</span><span class="o">.</span><span class="n">t</span><span class="p">()</span>
+    <span class="n">w1</span><span class="p">,</span> <span class="n">h1</span> <span class="o">=</span> <span class="n">wh1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wh1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">w2</span><span class="p">,</span> <span class="n">h2</span> <span class="o">=</span> <span class="n">wh2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wh2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">inter_area</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">h1</span><span class="p">,</span> <span class="n">h2</span><span class="p">)</span>
+    <span class="n">union_area</span> <span class="o">=</span> <span class="p">(</span><span class="n">w1</span> <span class="o">*</span> <span class="n">h1</span> <span class="o">+</span> <span class="mf">1e-16</span><span class="p">)</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">h2</span> <span class="o">-</span> <span class="n">inter_area</span>
+    <span class="k">return</span> <span class="n">inter_area</span> <span class="o">/</span> <span class="n">union_area</span>
+
+
+<span class="k">def</span> <span class="nf">bbox_iou</span><span class="p">(</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">,</span> <span class="n">x1y1x2y2</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the IoU of two bounding boxes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">x1y1x2y2</span><span class="p">:</span>
+        <span class="c1"># Transform from center and width to exact coordinates</span>
+        <span class="n">b1_x1</span><span class="p">,</span> <span class="n">b1_x2</span> <span class="o">=</span> <span class="n">box1</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">box1</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">box1</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">box1</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">b1_y1</span><span class="p">,</span> <span class="n">b1_y2</span> <span class="o">=</span> <span class="n">box1</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">box1</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">box1</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">box1</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">b2_x1</span><span class="p">,</span> <span class="n">b2_x2</span> <span class="o">=</span> <span class="n">box2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">box2</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">box2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">box2</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">b2_y1</span><span class="p">,</span> <span class="n">b2_y2</span> <span class="o">=</span> <span class="n">box2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">box2</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">box2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">box2</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Get the coordinates of bounding boxes</span>
+        <span class="n">b1_x1</span><span class="p">,</span> <span class="n">b1_y1</span><span class="p">,</span> <span class="n">b1_x2</span><span class="p">,</span> <span class="n">b1_y2</span> <span class="o">=</span> <span class="n">box1</span><span class="p">[:,</span>
+                                          <span class="mi">0</span><span class="p">],</span> <span class="n">box1</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">box1</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">box1</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="n">b2_x1</span><span class="p">,</span> <span class="n">b2_y1</span><span class="p">,</span> <span class="n">b2_x2</span><span class="p">,</span> <span class="n">b2_y2</span> <span class="o">=</span> <span class="n">box2</span><span class="p">[:,</span>
+                                          <span class="mi">0</span><span class="p">],</span> <span class="n">box2</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">box2</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">box2</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+
+    <span class="c1"># get the corrdinates of the intersection rectangle</span>
+    <span class="n">inter_rect_x1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">b1_x1</span><span class="p">,</span> <span class="n">b2_x1</span><span class="p">)</span>
+    <span class="n">inter_rect_y1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">b1_y1</span><span class="p">,</span> <span class="n">b2_y1</span><span class="p">)</span>
+    <span class="n">inter_rect_x2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">b1_x2</span><span class="p">,</span> <span class="n">b2_x2</span><span class="p">)</span>
+    <span class="n">inter_rect_y2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">b1_y2</span><span class="p">,</span> <span class="n">b2_y2</span><span class="p">)</span>
+    <span class="c1"># Intersection area</span>
+    <span class="n">inter_area</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">inter_rect_x2</span> <span class="o">-</span> <span class="n">inter_rect_x1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span>
+        <span class="n">inter_rect_y2</span> <span class="o">-</span> <span class="n">inter_rect_y1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="c1"># Union Area</span>
+    <span class="n">b1_area</span> <span class="o">=</span> <span class="p">(</span><span class="n">b1_x2</span> <span class="o">-</span> <span class="n">b1_x1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">b1_y2</span> <span class="o">-</span> <span class="n">b1_y1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">b2_area</span> <span class="o">=</span> <span class="p">(</span><span class="n">b2_x2</span> <span class="o">-</span> <span class="n">b2_x1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">b2_y2</span> <span class="o">-</span> <span class="n">b2_y1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">iou</span> <span class="o">=</span> <span class="n">inter_area</span> <span class="o">/</span> <span class="p">(</span><span class="n">b1_area</span> <span class="o">+</span> <span class="n">b2_area</span> <span class="o">-</span> <span class="n">inter_area</span> <span class="o">+</span> <span class="mf">1e-16</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">iou</span>
+
+
+<span class="k">def</span> <span class="nf">non_max_suppression</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">conf_thres</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">nms_thres</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Removes detections with lower object confidence score than &#39;conf_thres&#39; and performs</span>
+<span class="sd">    Non-Maximum Suppression to further filter detections.</span>
+<span class="sd">    Returns detections with shape:</span>
+<span class="sd">        (x1, y1, x2, y2, object_conf, class_score, class_pred)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># From (center x, center y, width, height) to (x1, y1, x2, y2)</span>
+    <span class="n">prediction</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">xywh2xyxy</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prediction</span><span class="p">))]</span>
+    <span class="k">for</span> <span class="n">image_i</span><span class="p">,</span> <span class="n">image_pred</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">prediction</span><span class="p">):</span>
+        <span class="c1"># Filter out confidence scores below threshold</span>
+        <span class="n">image_pred</span> <span class="o">=</span> <span class="n">image_pred</span><span class="p">[</span><span class="n">image_pred</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">conf_thres</span><span class="p">]</span>
+        <span class="c1"># If none are remaining =&gt; process next image</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">image_pred</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="c1"># Object confidence times class confidence</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">image_pred</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">image_pred</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">:]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Sort by it</span>
+        <span class="n">image_pred</span> <span class="o">=</span> <span class="n">image_pred</span><span class="p">[(</span><span class="o">-</span><span class="n">score</span><span class="p">)</span><span class="o">.</span><span class="n">argsort</span><span class="p">()]</span>
+        <span class="n">class_confs</span><span class="p">,</span> <span class="n">class_preds</span> <span class="o">=</span> <span class="n">image_pred</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">:]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">detections</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">image_pred</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="n">class_confs</span><span class="o">.</span><span class="n">float</span><span class="p">(),</span> <span class="n">class_preds</span><span class="o">.</span><span class="n">float</span><span class="p">()),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Perform non-maximum suppression</span>
+        <span class="n">keep_boxes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="n">detections</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+            <span class="n">large_overlap</span> <span class="o">=</span> <span class="n">bbox_iou</span><span class="p">(</span><span class="n">detections</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">),</span> <span class="n">detections</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">nms_thres</span>
+            <span class="n">label_match</span> <span class="o">=</span> <span class="n">detections</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">detections</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="c1"># Indices of boxes with lower confidence scores, large IOUs and matching labels</span>
+            <span class="n">invalid</span> <span class="o">=</span> <span class="n">large_overlap</span> <span class="o">&amp;</span> <span class="n">label_match</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">detections</span><span class="p">[</span><span class="n">invalid</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+            <span class="c1"># Merge overlapping bboxes by order of confidence</span>
+            <span class="n">detections</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">weights</span> <span class="o">*</span> <span class="n">detections</span><span class="p">[</span><span class="n">invalid</span><span class="p">,</span> <span class="p">:</span><span class="mi">4</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="n">keep_boxes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">detections</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="n">detections</span> <span class="o">=</span> <span class="n">detections</span><span class="p">[</span><span class="o">~</span><span class="n">invalid</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">keep_boxes</span><span class="p">:</span>
+            <span class="n">output</span><span class="p">[</span><span class="n">image_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">keep_boxes</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output</span>
+
+
+<span class="k">def</span> <span class="nf">xywh2xyxy</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : [type]</span>
+<span class="sd">        [description]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    [type]</span>
+<span class="sd">        [description]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">y</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">y</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, MIT License.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
