@@ -33,6 +33,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -180,6 +181,10 @@
 <p><code class="xref py py-mod docutils literal notranslate"><span class="pre">losses</span></code> module classes to load common loss functions.</p>
 <div class="section" id="diceloss">
 <h2><a class="reference internal" href="#farabio.utils.losses.DiceLoss" title="farabio.utils.losses.DiceLoss"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiceLoss</span></code></a><a class="headerlink" href="#diceloss" title="Permalink to this headline">¶</a></h2>
+<p>The Dice coefficient, or Dice-Sørensen coefficient, is a common metric for
+pixel segmentation that can also be modified to act as a loss function:</p>
+<div class="math notranslate nohighlight">
+\[D S C=\frac{2|X \cap Y|}{|X|+|Y|}\]</div>
 <dl class="py class">
 <dt id="farabio.utils.losses.DiceLoss">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.utils.losses.</span></code><code class="sig-name descname"><span class="pre">DiceLoss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/utils/losses.html#DiceLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.utils.losses.DiceLoss" title="Permalink to this definition">¶</a></dt>
@@ -213,6 +218,13 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 <div class="section" id="dicebceloss">
 <h2><a class="reference internal" href="#farabio.utils.losses.DiceBCELoss" title="farabio.utils.losses.DiceBCELoss"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiceBCELoss</span></code></a><a class="headerlink" href="#dicebceloss" title="Permalink to this headline">¶</a></h2>
+<p>This loss combines Dice loss with the standard binary cross-entropy (BCE) loss
+that is generally the default for segmentation models. Combining the two methods
+allows for some diversity in the loss, while benefitting from the stability of BCE.
+The equation for multi-class BCE by itself will be familiar to anyone who has studied
+logistic regression:</p>
+<div class="math notranslate nohighlight">
+\[J(\mathbf{w})=\frac{1}{N} \sum_{n=1}^{N} H\left(p_{n}, q_{n}\right)=-\frac{1}{N} \sum_{n=1}^{N}\left[y_{n} \log \hat{y}_{n}+\left(1-y_{n}\right) \log \left(1-\hat{y}_{n}\right)\right]\]</div>
 <dl class="py class">
 <dt id="farabio.utils.losses.DiceBCELoss">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.utils.losses.</span></code><code class="sig-name descname"><span class="pre">DiceBCELoss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/utils/losses.html#DiceBCELoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.utils.losses.DiceBCELoss" title="Permalink to this definition">¶</a></dt>
@@ -246,6 +258,11 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 <div class="section" id="iouloss">
 <h2><a class="reference internal" href="#farabio.utils.losses.IoULoss" title="farabio.utils.losses.IoULoss"><code class="xref py py-class docutils literal notranslate"><span class="pre">IoULoss</span></code></a><a class="headerlink" href="#iouloss" title="Permalink to this headline">¶</a></h2>
+<p>The IoU metric, or Jaccard Index, is similar to the Dice metric and is calculated
+as the ratio between the overlap of the positive instances between two sets,
+and their mutual combined values.</p>
+<div class="math notranslate nohighlight">
+\[J(A, B)=\frac{|A \cap B|}{|A \cup B|}=\frac{|A \cap B|}{|A|+|B|-|A \cap B|}\]</div>
 <dl class="py class">
 <dt id="farabio.utils.losses.IoULoss">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.utils.losses.</span></code><code class="sig-name descname"><span class="pre">IoULoss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/utils/losses.html#IoULoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.utils.losses.IoULoss" title="Permalink to this definition">¶</a></dt>
@@ -279,6 +296,12 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 <div class="section" id="focalloss">
 <h2><a class="reference internal" href="#farabio.utils.losses.FocalLoss" title="farabio.utils.losses.FocalLoss"><code class="xref py py-class docutils literal notranslate"><span class="pre">FocalLoss</span></code></a><a class="headerlink" href="#focalloss" title="Permalink to this headline">¶</a></h2>
+<p>Focal Loss was introduced by Lin et al of Facebook AI Research in 2017
+as a means of combatting extremely imbalanced datasets where positive cases
+were relatively rare. Their paper “Focal Loss for Dense Object Detection”
+is retrievable here: <a class="reference external" href="https://arxiv.org/abs/1708.02002">https://arxiv.org/abs/1708.02002</a>. In practice,
+the researchers used an alpha-modified version of the function so I have included
+it in this implementation.</p>
 <dl class="py class">
 <dt id="farabio.utils.losses.FocalLoss">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.utils.losses.</span></code><code class="sig-name descname"><span class="pre">FocalLoss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/utils/losses.html#FocalLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.utils.losses.FocalLoss" title="Permalink to this definition">¶</a></dt>
@@ -312,6 +335,7 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 <div class="section" id="tverskyloss">
 <h2><a class="reference internal" href="#farabio.utils.losses.TverskyLoss" title="farabio.utils.losses.TverskyLoss"><code class="xref py py-class docutils literal notranslate"><span class="pre">TverskyLoss</span></code></a><a class="headerlink" href="#tverskyloss" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://arxiv.org/abs/1706.05721">https://arxiv.org/abs/1706.05721</a></p>
 <dl class="py class">
 <dt id="farabio.utils.losses.TverskyLoss">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.utils.losses.</span></code><code class="sig-name descname"><span class="pre">TverskyLoss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/utils/losses.html#TverskyLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.utils.losses.TverskyLoss" title="Permalink to this definition">¶</a></dt>
@@ -345,6 +369,7 @@ registered hooks while the latter silently ignores them.</p>
 </div>
 <div class="section" id="focaltverskyloss">
 <h2><a class="reference internal" href="#farabio.utils.losses.FocalTverskyLoss" title="farabio.utils.losses.FocalTverskyLoss"><code class="xref py py-class docutils literal notranslate"><span class="pre">FocalTverskyLoss</span></code></a><a class="headerlink" href="#focaltverskyloss" title="Permalink to this headline">¶</a></h2>
+<p>A variant on the Tversky loss that also includes the gamma modifier from Focal Loss.</p>
 <dl class="py class">
 <dt id="farabio.utils.losses.FocalTverskyLoss">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.utils.losses.</span></code><code class="sig-name descname"><span class="pre">FocalTverskyLoss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/utils/losses.html#FocalTverskyLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.utils.losses.FocalTverskyLoss" title="Permalink to this definition">¶</a></dt>
