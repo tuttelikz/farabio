@@ -260,39 +260,14 @@
 
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;train&#39;</span><span class="p">:</span>
         <span class="n">trnr</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-
-
-
-<span class="c1"># if __name__ == &quot;__main__&quot;:</span>
-<span class="c1">#     itime = time.time()</span>
-
-<span class="c1">#     # Choose from list</span>
-<span class="c1">#     model = (&quot;classification&quot;, &quot;resnet&quot;)</span>
-<span class="c1">#     #model = (&quot;segmentation&quot;, &quot;unet&quot;)</span>
-
-<span class="c1">#     if model[0] == &quot;classification&quot;:</span>
-<span class="c1">#         cfg = default_cfgs[model[0]]</span>
-<span class="c1">#         config = edict(cfg)</span>
-<span class="c1">#         config.arch = model[-1]</span>
-<span class="c1">#         trnr = ClassTrainer(config)</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         cfg = default_cfgs[model[-1]]</span>
-<span class="c1">#         config = edict(cfg)</span>
-<span class="c1">#         trnr = models[model[0]][model[-1]](config)</span>
-
-<span class="c1">#     if config.mode == &#39;train&#39;:</span>
-<span class="c1">#         trnr.train()</span>
-
-    <span class="c1"># if config.mode == &#39;train&#39;:</span>
-    <span class="c1">#     trnr.train()</span>
-    <span class="c1"># elif config.mode == &#39;test&#39;:</span>
-    <span class="c1">#     trnr.test()</span>
+    <span class="k">elif</span> <span class="n">config</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;test&#39;</span><span class="p">:</span>
+        <span class="n">trnr</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
     <span class="c1"># elif config.mode == &#39;detect&#39;:</span>
     <span class="c1">#     assert model == &quot;yolov3&quot;, &quot;detect mode works only for yolo!&quot;</span>
     <span class="c1">#     trnr.detect_perform()</span>
 
-    <span class="c1"># etime = time.time() - itime</span>
-    <span class="c1"># print(f&#39;Complete in {etime // 60}m {etime % 60: .2f}s&#39;)</span>
+    <span class="n">etime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">itime</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Complete in </span><span class="si">{</span><span class="n">etime</span> <span class="o">//</span> <span class="mi">60</span><span class="si">}</span><span class="s1">m </span><span class="si">{</span><span class="n">etime</span> <span class="o">%</span> <span class="mi">60</span><span class="si">:</span><span class="s1"> .2f</span><span class="si">}</span><span class="s1">s&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

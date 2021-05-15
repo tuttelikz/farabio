@@ -62,36 +62,11 @@ if __name__ == "__main__":
 
     if config.mode == 'train':
         trnr.train()
-
-
-
-# if __name__ == "__main__":
-#     itime = time.time()
-
-#     # Choose from list
-#     model = ("classification", "resnet")
-#     #model = ("segmentation", "unet")
-
-#     if model[0] == "classification":
-#         cfg = default_cfgs[model[0]]
-#         config = edict(cfg)
-#         config.arch = model[-1]
-#         trnr = ClassTrainer(config)
-#     else:
-#         cfg = default_cfgs[model[-1]]
-#         config = edict(cfg)
-#         trnr = models[model[0]][model[-1]](config)
-
-#     if config.mode == 'train':
-#         trnr.train()
-
-    # if config.mode == 'train':
-    #     trnr.train()
-    # elif config.mode == 'test':
-    #     trnr.test()
+    elif config.mode == 'test':
+        trnr.test()
     # elif config.mode == 'detect':
     #     assert model == "yolov3", "detect mode works only for yolo!"
     #     trnr.detect_perform()
 
-    # etime = time.time() - itime
-    # print(f'Complete in {etime // 60}m {etime % 60: .2f}s')
+    etime = time.time() - itime
+    print(f'Complete in {etime // 60}m {etime % 60: .2f}s')
