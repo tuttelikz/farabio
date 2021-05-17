@@ -7,7 +7,9 @@ farabio
 +++++++++++++++++
 
 farabio is a minimal open-source Python package based on PyTorch for 
-out-of-the-box deep learning support in biomedical imaging.
+out-of-the-box deep learning support in biomedical imaging. Apart, 
+the strong focus of the package is to address **why** questions 
+for each or most of the supported functionalities.
 
 Features:
 

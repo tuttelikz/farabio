@@ -5,8 +5,7 @@
 [![GitHub](https://img.shields.io/github/license/tuttelikz/farabio)](https://opensource.org/licenses/MIT) [![Documentation Status](https://readthedocs.org/projects/farabio/badge/?version=latest)](https://farabio.readthedocs.io/en/latest)
 [![PyPI version](https://img.shields.io/pypi/v/farabio)](https://badge.fury.io/py/farabio)
 
-**farabio** is a minimal [open-source](LICENSE) Python package based on [PyTorch](https://pytorch.org/) for out-of-the-box deep learning support in biomedical imaging. 
-
+**farabio** is a minimal [open-source](LICENSE) Python package based on [PyTorch](https://pytorch.org/) for out-of-the-box deep learning support in biomedical imaging.
 ## Features
 
 - Image (pre)processing
