@@ -120,19 +120,37 @@ class IoULoss(nn.Module):
         return 1 - IoU
 
 class FocalLoss(nn.Module):
-    r"""Focal Loss.
+    r"""Focal Loss from [RetinaNet]_
     
-    It was introduced by Lin et al of Facebook AI Research in 2017 
-    as a means of combatting extremely imbalanced datasets where positive cases 
-    were relatively rare, from [1]_. In practice, the researchers used an alpha-modified 
-    version of the function.
-
+    Definition
+    -------------
     .. math::
 
         \mathrm{FL}\left(p_{t}\right)=-\alpha_{t}\left(1-p_{t}\right)^{\gamma} \log \left(p_{t}\right)
 
-    where:
-       - :math:`p_t` is the model's estimated probability for each class.
+    where:  
+    - :math:`p_t` is the model's estimated probability for each class.
+
+    Why
+    --------------
+    It was introduced by Facebook AI Research in 2017 
+    to combat extremely imbalanced datasets where positive cases were relatively rare.
+
+    How it works
+    --------------
+    Figure excerpt from [@amaarora]_:
+
+    .. image:: ../imgs/focal_loss.png
+        :width: 600
+
+    With the help of hyperparameters, :math:`\alpha` and :math:`\gamma`.
+
+    The focusing parameter γ(gamma) smoothly adjusts the rate at which easy examples are down-weighted. When :math:`\gamma = 0`, 
+    focal loss is equivalent to categorical cross-entropy, and as :math:`\gamma` is increased, the effect of the modulating factor 
+    is likewise increased (:math:`\gamma = 2` works best in experiments).
+
+    And, :math:`\alpha` is a weighting factor. If the :math:`\alpha = 1`, then class 1 and class 0 (in binary case)
+    have same weights, so alpha balances the importance of positive/negative examples in this way.
 
     Examples
     ----------
@@ -141,7 +159,8 @@ class FocalLoss(nn.Module):
 
     References
     ---------------
-    .. [1] https://arxiv.org/abs/1708.02002
+    .. [RetinaNet] https://arxiv.org/abs/1708.02002
+    .. [@amaarora] https://amaarora.github.io/2020/06/29/FocalLoss.html
     """
 
     def __init__(self, weight=None, size_average=True):
