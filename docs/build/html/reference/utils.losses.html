@@ -334,21 +334,24 @@ own it, and what it is too.</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{FL}\left(p_{t}\right)=-\alpha_{t}\left(1-p_{t}\right)^{\gamma} \log \left(p_{t}\right)\]</div>
 <p>where:
-- <span class="math notranslate nohighlight">\(p_t\)</span> is the model’s estimated probability for each class.</p>
+<span class="math notranslate nohighlight">\(p_t\)</span> is the model’s estimated probability for each class.</p>
 <p>It was introduced by Facebook AI Research in 2017 
 to combat extremely imbalanced datasets where positive cases were relatively rare.</p>
-<p>Figure excerpt from [&#64;amaarora]_:</p>
-<a class="reference internal image-reference" href="../_images/focal_loss.png"><img alt="../_images/focal_loss.png" src="../_images/focal_loss.png" style="width: 600px;" /></a>
+<p>Figure excerpt from <a class="reference internal" href="#r1aebf42b3cc6-amaarora" id="id2">[amaarora]</a>:</p>
+<a class="reference internal image-reference" href="../_images/focal_loss.png"><img alt="../_images/focal_loss.png" src="../_images/focal_loss.png" style="width: 400px;" /></a>
 <p>With the help of hyperparameters, <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
-<p>The focusing parameter γ(gamma) smoothly adjusts the rate at which easy examples are down-weighted. When <span class="math notranslate nohighlight">\(\gamma = 0\)</span>, 
+<p>The focusing parameter <span class="math notranslate nohighlight">\(\gamma\)</span> smoothly adjusts the rate at which easy examples are down-weighted. When <span class="math notranslate nohighlight">\(\gamma = 0\)</span>, 
 focal loss is equivalent to categorical cross-entropy, and as <span class="math notranslate nohighlight">\(\gamma\)</span> is increased, the effect of the modulating factor 
 is likewise increased (<span class="math notranslate nohighlight">\(\gamma = 2\)</span> works best in experiments).</p>
 <p>And, <span class="math notranslate nohighlight">\(\alpha\)</span> is a weighting factor. If the <span class="math notranslate nohighlight">\(\alpha = 1\)</span>, then class 1 and class 0 (in binary case)
-have same weights, so alpha balances the importance of positive/negative examples in this way.</p>
+have same weights, so <span class="math notranslate nohighlight">\(\alpha\)</span> balances the importance of positive/negative examples in this way.</p>
 <p class="rubric">References</p>
 <dl class="citation">
 <dt class="label" id="r1aebf42b3cc6-retinanet"><span class="brackets"><a class="fn-backref" href="#id1">RetinaNet</a></span></dt>
 <dd><p><a class="reference external" href="https://arxiv.org/abs/1708.02002">https://arxiv.org/abs/1708.02002</a></p>
+</dd>
+<dt class="label" id="r1aebf42b3cc6-amaarora"><span class="brackets"><a class="fn-backref" href="#id2">amaarora</a></span></dt>
+<dd><p><a class="reference external" href="https://amaarora.github.io/2020/06/29/FocalLoss.html">https://amaarora.github.io/2020/06/29/FocalLoss.html</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -389,7 +392,7 @@ registered hooks while the latter silently ignores them.</p>
 <dl class="py class">
 <dt id="farabio.utils.losses.TverskyLoss">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.utils.losses.</span></code><code class="sig-name descname"><span class="pre">TverskyLoss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/utils/losses.html#TverskyLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.utils.losses.TverskyLoss" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tversky loss from <a class="reference internal" href="#r196c63f2adb3-1" id="id3">[1]</a></p>
+<dd><p>Tversky loss from <a class="reference internal" href="#r196c63f2adb3-1" id="id5">[1]</a></p>
 <p class="rubric">Notes</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{S}(P, G, \alpha ; \beta)=\frac{|P G|}{|P G|+\alpha|P G|+\beta|G P|}\]</div>
@@ -408,7 +411,7 @@ registered hooks while the latter silently ignores them.</p>
 </dl>
 <p class="rubric">References</p>
 <dl class="citation">
-<dt class="label" id="r196c63f2adb3-1"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
+<dt class="label" id="r196c63f2adb3-1"><span class="brackets"><a class="fn-backref" href="#id5">1</a></span></dt>
 <dd><p><a class="reference external" href="https://arxiv.org/abs/1706.05721">https://arxiv.org/abs/1706.05721</a></p>
 </dd>
 </dl>
@@ -451,10 +454,10 @@ registered hooks while the latter silently ignores them.</p>
 <dt id="farabio.utils.losses.FocalTverskyLoss">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.utils.losses.</span></code><code class="sig-name descname"><span class="pre">FocalTverskyLoss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/utils/losses.html#FocalTverskyLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.utils.losses.FocalTverskyLoss" title="Permalink to this definition">¶</a></dt>
 <dd><p>A variant on the Tversky loss.</p>
-<p>It also includes the gamma modifier from Focal Loss from <a class="reference internal" href="#rb283df060d19-1" id="id5">[1]</a>.</p>
+<p>It also includes the gamma modifier from Focal Loss from <a class="reference internal" href="#rb283df060d19-1" id="id7">[1]</a>.</p>
 <p class="rubric">References</p>
 <dl class="citation">
-<dt class="label" id="rb283df060d19-1"><span class="brackets"><a class="fn-backref" href="#id5">1</a></span></dt>
+<dt class="label" id="rb283df060d19-1"><span class="brackets"><a class="fn-backref" href="#id7">1</a></span></dt>
 <dd><p><a class="reference external" href="https://arxiv.org/abs/1810.07842">https://arxiv.org/abs/1810.07842</a></p>
 </dd>
 </dl>
@@ -498,10 +501,10 @@ registered hooks while the latter silently ignores them.</p>
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">farabio.utils.losses.</span></code><code class="sig-name descname"><span class="pre">LovaszHingeLoss</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/utils/losses.html#LovaszHingeLoss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.utils.losses.LovaszHingeLoss" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Lovász-Softmax loss.</p>
 <p>A tractable surrogate for the optimization 
-of the intersection-over-union measure in neural networks from <a class="reference internal" href="#rcb7b20913fde-1" id="id7">[1]</a>.</p>
+of the intersection-over-union measure in neural networks from <a class="reference internal" href="#rcb7b20913fde-1" id="id9">[1]</a>.</p>
 <p class="rubric">References</p>
 <dl class="citation">
-<dt class="label" id="rcb7b20913fde-1"><span class="brackets"><a class="fn-backref" href="#id7">1</a></span></dt>
+<dt class="label" id="rcb7b20913fde-1"><span class="brackets"><a class="fn-backref" href="#id9">1</a></span></dt>
 <dd><p><a class="reference external" href="https://arxiv.org/abs/1705.08790">https://arxiv.org/abs/1705.08790</a></p>
 </dd>
 </dl>

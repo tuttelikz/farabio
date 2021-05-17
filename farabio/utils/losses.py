@@ -129,24 +129,24 @@ class FocalLoss(nn.Module):
         \mathrm{FL}\left(p_{t}\right)=-\alpha_{t}\left(1-p_{t}\right)^{\gamma} \log \left(p_{t}\right)
 
     where:
-    - :math:`p_t` is the model's estimated probability for each class.
+    :math:`p_t` is the model's estimated probability for each class.
 
     It was introduced by Facebook AI Research in 2017 
     to combat extremely imbalanced datasets where positive cases were relatively rare.
 
-    Figure excerpt from [@amaarora]_:
+    Figure excerpt from [amaarora]_:
 
     .. image:: ../imgs/focal_loss.png
-        :width: 600
+        :width: 400
 
     With the help of hyperparameters, :math:`\alpha` and :math:`\gamma`.
 
-    The focusing parameter γ(gamma) smoothly adjusts the rate at which easy examples are down-weighted. When :math:`\gamma = 0`, 
+    The focusing parameter :math:`\gamma` smoothly adjusts the rate at which easy examples are down-weighted. When :math:`\gamma = 0`, 
     focal loss is equivalent to categorical cross-entropy, and as :math:`\gamma` is increased, the effect of the modulating factor 
     is likewise increased (:math:`\gamma = 2` works best in experiments).
 
     And, :math:`\alpha` is a weighting factor. If the :math:`\alpha = 1`, then class 1 and class 0 (in binary case)
-    have same weights, so alpha balances the importance of positive/negative examples in this way.
+    have same weights, so :math:`\alpha` balances the importance of positive/negative examples in this way.
 
     Examples
     ----------
@@ -155,8 +155,8 @@ class FocalLoss(nn.Module):
 
     References
     ---------------
-    .. [RetinaNet] https://arxiv.org/abs/1708.02002
-    .. [@amaarora] https://amaarora.github.io/2020/06/29/FocalLoss.html
+    .. [RetinaNet] https://arxiv.org/abs/1708.02002  
+    .. [amaarora] https://amaarora.github.io/2020/06/29/FocalLoss.html
     """
 
     def __init__(self, weight=None, size_average=True):
