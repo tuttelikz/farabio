@@ -121,23 +121,19 @@ class IoULoss(nn.Module):
 
 class FocalLoss(nn.Module):
     r"""Focal Loss from [RetinaNet]_
-    
-    Definition
-    -------------
+
+    Notes
+    -------
     .. math::
 
         \mathrm{FL}\left(p_{t}\right)=-\alpha_{t}\left(1-p_{t}\right)^{\gamma} \log \left(p_{t}\right)
 
-    where:  
+    where:
     - :math:`p_t` is the model's estimated probability for each class.
 
-    Why
-    --------------
     It was introduced by Facebook AI Research in 2017 
     to combat extremely imbalanced datasets where positive cases were relatively rare.
 
-    How it works
-    --------------
     Figure excerpt from [@amaarora]_:
 
     .. image:: ../imgs/focal_loss.png
