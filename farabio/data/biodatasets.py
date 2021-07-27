@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 import albumentations as A
-from albumentations.pytorch import ToTensor
+from albumentations.pytorch import ToTensorV2
 import matplotlib.pyplot as plt
 from skimage import io, transform
 from sklearn.model_selection import train_test_split
@@ -81,14 +81,13 @@ def extract_zip(fzip, fnew=None):
 
 
 class ChestXrayDataset(ImageFolder):
-    r"""Chest X-ray dataset class
+    r"""PyTorch friendly ChestXrayDataset class
 
-    Kaggle Chest X-Ray Images competition dataset to detect pneumonia from [1]_.
+    Dataset loaded using Kaggle API. Raw dataset is obtained from [1]_.
 
     Examples
     ----------
-    >>> train_dataset = ChestXrayDataset(root=".", transform=None, download=True)
-    >>> train_dataset.visualize_dataset()
+    >>> valid_dataset = ChestXrayDataset(root=_path, download=True, mode="val", show=True)
 
     .. image:: ../imgs/ChestXrayDataset.png
         :width: 300
@@ -98,48 +97,36 @@ class ChestXrayDataset(ImageFolder):
     .. [1] https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia
     """
 
-    def __init__(self, root: str, mode: str = "train", shape: int = 256, transform=None, target_transform=None, download: bool = True):
+    def __init__(self, root: str = ".", download: bool = False, mode: str = "train", shape: int = 256, transform: transforms = None, target_transform: transforms = None, show: int = 5):
         tag = "chest-xray-pneumonia"
+
+        modes = ["train", "val", "test"]
+        assert mode in modes, "Available options for mode: train, val, test"
+
+        self.target_transform = target_transform
 
         if download:
             download_datasets(tag, path=root)
             extract_zip(os.path.join(root, tag+".zip"),
                         os.path.join(root, tag))
 
-        self.target_transform = target_transform
         if transform is None:
-            self.transform = self.get_train_transform(shape)
+            self.transform = self.default_transform(mode)
 
-        if mode == "train":
-            if download:
-                train_path = os.path.join(
-                    root, tag, "chest_xray", "train")
-            else:
-                train_path = os.path.join(
-                    root, "chest-xray", "train")
+        if download:
+            dataset_path = os.path.join(root, tag, "chest_xray", mode)
+        else:
+            dataset_path = os.path.join(root, mode)
 
-            super(ChestXrayDataset, self).__init__(
-                root=train_path, transform=self.transform)
-        elif mode == "val":
-            if download:
-                val_path = os.path.join(
-                    root, tag, "chest_xray", "val")
-            else:
-                val_path = os.path.join(
-                    root, "chest-xray", "val")
+        super(ChestXrayDataset, self).__init__(
+                root=dataset_path, transform=self.transform)
 
-            super(ChestXrayDataset, self).__init__(
-                root=val_path, transform=self.transform)
-        elif mode == "test":
-            if download:
-                test_path = os.path.join(
-                    root, tag, "chest_xray", "test")
-            else:
-                test_path = os.path.join(
-                    root, "chest-xray", "test")
-
-            super(ChestXrayDataset, self).__init__(
-                root=test_path, transform=self.transform)
+        if show:
+            loader = DataLoader(self, batch_size=show, shuffle=True)
+            inputs, classes = next(iter(loader))
+            class_names = self.classes
+            out = torchvision.utils.make_grid(inputs)
+            self.imshow(out, title=[class_names[x] for x in classes])
 
     def __getitem__(self, index):
         path, target = self.samples[index]
@@ -148,17 +135,33 @@ class ChestXrayDataset(ImageFolder):
             sample = self.transform(sample)
         if self.target_transform is not None:
             target = self.target_transform(target)
+
         return sample, target
 
-    def get_train_transform(self, img_shape):
-        """Albumentations transform
-        """
-        return transforms.Compose([
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-        ])
+    def default_transform(self, mode="train"):
+        if mode == "train": 
+            transform = transforms.Compose([
+                transforms.Resize((256, 256)),
+                transforms.RandomHorizontalFlip(),
+                transforms.RandomRotation((-20, +20)),
+                transforms.CenterCrop(224),
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    [0.485, 0.456, 0.406],
+                    [0.229, 0.224, 0.225])
+            ])
+
+        elif mode == 'val' or mode == 'test':
+            transform = transforms.Compose([
+                transforms.Resize((256, 256)),
+                transforms.CenterCrop(224),
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    [0.485, 0.456, 0.406],
+                    [0.229, 0.224, 0.225])
+            ])
+
+        return transform
 
     @staticmethod
     def imshow(inp, title=None):
@@ -174,20 +177,6 @@ class ChestXrayDataset(ImageFolder):
         plt.pause(0.001)
         return fig
 
-    def visualize_dataset(self):
-        """
-        Function to visualize images and masks
-        """
-        train_dataset = ChestXrayDataset(
-            "/home/data/02_SSD4TB/suzy/datasets/public/", download=False)
-        train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True)
-        inputs, classes = next(iter(train_loader))
-        class_names = train_dataset.classes
-
-        #inputs, classes = next(iter(train_loader))
-        out = torchvision.utils.make_grid(inputs)
-        self.imshow(out, title=[class_names[x] for x in classes])
-
 
 class DSB18Dataset(Dataset):
     r"""Nuclei segmentation dataset class
@@ -198,7 +187,7 @@ class DSB18Dataset(Dataset):
     ----------
     >>> train_dataset = DSB18Dataset(root=".", transform=None, download=False)
     >>> train_dataset.visualize_dataset(5)
-    
+
     .. image:: ../imgs/DSB18Dataset.png
         :width: 300
 
@@ -309,6 +298,7 @@ class DSB18Dataset(Dataset):
         return plt
 
 # train_dataset = DSB18Dataset(root="/home/data/02_SSD4TB/suzy/datasets/public/", transform=None, download=False)
+
 
 class HistocancerDataset(Dataset):
     r"""Histopathologic Cancer Dataset class
@@ -498,17 +488,18 @@ class RANZCRDataset(Dataset):
             transforms.ToTensor(),
             transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
         ])
-    
+
     def visualize_dataset(self, n_images=5):
         random_idx = np.random.randint(1, len(self.file_list), size=16)
-        fig, axes = plt.subplots(5,5, figsize=(13,13))
+        fig, axes = plt.subplots(5, 5, figsize=(13, 13))
 
         for idx, ax in enumerate(axes.ravel()):
             img = Image.open(self.file_list[idx][0])
             ax.set_title(self.file_list[idx][-1])
             ax.imshow(img)
 
-        #fig.savefig('RANZCRDataset.png')
+        # fig.savefig('RANZCRDataset.png')
+
 
 class RetinopathyDataset(Dataset):
     r"""Retinopathy Dataset class
