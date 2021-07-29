@@ -6,10 +6,7 @@ import pandas as pd
 from PIL import Image
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
-<<<<<<< HEAD
 from typing import Optional, Callable
-=======
->>>>>>> main
 import matplotlib.pyplot as plt
 from skimage import io, transform
 from sklearn.model_selection import train_test_split
@@ -20,6 +17,7 @@ import torchvision
 import torchvision.transforms.functional as F
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
+from torchvision.utils import draw_segmentation_masks
 from zipfile import ZipFile
 
 
@@ -89,11 +87,7 @@ def extract_zip(fzip, fnew=None):
 class ChestXrayDataset(ImageFolder):
     r"""PyTorch friendly ChestXrayDataset class
 
-<<<<<<< HEAD
     Dataset is loaded using Kaggle API.
-=======
-    Dataset is loaded using Kaggle API. 
->>>>>>> main
     For further information on raw dataset and pneumonia detection, please refer to [1]_.
 
     Examples
@@ -108,21 +102,13 @@ class ChestXrayDataset(ImageFolder):
     .. [1] https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia
     """
 
-<<<<<<< HEAD
     def __init__(self, root: str = ".", download: bool = False, mode: str = "train", shape: int = 256, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, show: bool = True):
-=======
-    def __init__(self, root: str = ".", download: bool = False, mode: str = "train", shape: int = 256, transform: transforms = None, target_transform: transforms = None, show: int = 5):
->>>>>>> main
         tag = "chest-xray-pneumonia"
 
         modes = ["train", "val", "test"]
         assert mode in modes, "Available options for mode: train, val, test"
 
-<<<<<<< HEAD
         self.shape = shape
-=======
-        self.target_transform = target_transform
->>>>>>> main
 
         if download:
             download_datasets(tag, path=root)
@@ -131,34 +117,22 @@ class ChestXrayDataset(ImageFolder):
 
         if transform is None:
             self.transform = self.default_transform(mode)
-<<<<<<< HEAD
         else:
             self.transform = transform
 
         if target_transform is not None:
             self.target_transform = target_transform            
 
-=======
-
->>>>>>> main
         if download:
             dataset_path = os.path.join(root, tag, "chest_xray", mode)
         else:
             dataset_path = os.path.join(root, mode)
-<<<<<<< HEAD
 
         super(ChestXrayDataset, self).__init__(
             root=dataset_path, transform=self.transform)
 
         if show:
             self.visualize_batch()
-=======
-
-        super(ChestXrayDataset, self).__init__(
-                root=dataset_path, transform=self.transform)
-
-        self.visualize_dataset(show)
->>>>>>> main
 
     def __getitem__(self, index):
         path, target = self.samples[index]
@@ -168,7 +142,6 @@ class ChestXrayDataset(ImageFolder):
             sample = self.transform(sample)
         if self.target_transform is not None:
             target = self.target_transform(target)
-<<<<<<< HEAD
 
         return sample, target, fname
 
@@ -217,56 +190,6 @@ class ChestXrayDataset(ImageFolder):
             axs[0, i].text(0, -0.2, str(int(labels[i])) + ": " +
                                         self.classes[labels[i]], transform=axs[0, i].transAxes)
             axs[0, i].set_title("..."+fnames[i][-11:-5])
-=======
-
-        return sample, target
-
-    def default_transform(self, mode="train"):
-        if mode == "train": 
-            transform = transforms.Compose([
-                transforms.Resize((256, 256)),
-                transforms.RandomHorizontalFlip(),
-                transforms.RandomRotation((-20, +20)),
-                transforms.CenterCrop(224),
-                transforms.ToTensor(),
-                transforms.Normalize(
-                    [0.485, 0.456, 0.406],
-                    [0.229, 0.224, 0.225])
-            ])
-
-        elif mode == 'val' or mode == 'test':
-            transform = transforms.Compose([
-                transforms.Resize((256, 256)),
-                transforms.CenterCrop(224),
-                transforms.ToTensor(),
-                transforms.Normalize(
-                    [0.485, 0.456, 0.406],
-                    [0.229, 0.224, 0.225])
-            ])
-
-        return transform
-
-    @staticmethod
-    def imshow(inp, title=None):
-        inp = inp.numpy().transpose((1, 2, 0))
-        mean = np.array([0.485, 0.456, 0.406])
-        std = np.array([0.229, 0.224, 0.225])
-        inp = std * inp + mean
-        inp = np.clip(inp, 0, 1)
-        fig = plt.gcf()
-        plt.imshow(inp)
-        if title is not None:
-            plt.title(title)
-        plt.pause(0.001)
-        return fig
-
-    def visualize_dataset(self, show):
-        loader = DataLoader(self, batch_size=show, shuffle=True)
-        inputs, classes = next(iter(loader))
-        class_names = self.classes
-        out = torchvision.utils.make_grid(inputs)
-        self.imshow(out, title=[class_names[x] for x in classes])
->>>>>>> main
 
 
 class DSB18Dataset(Dataset):
@@ -287,13 +210,8 @@ class DSB18Dataset(Dataset):
     .. [1] https://www.kaggle.com/c/data-science-bowl-2018/overview
     """
 
-<<<<<<< HEAD
     def __init__(self, root: str = ".", download: bool = False, mode: str = "train", shape: int = 512, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, show: bool = True):
 
-=======
-    def __init__(self, root: str = ".", download: bool = False, mode: str = "train", shape: int = 512, transform: transform = None, target_transform: transforms = None, show: bool = True):
-    
->>>>>>> main
         tag = "data-science-bowl-2018"
         modes = ["train", "val"]
         assert mode in modes, "Available options for mode: train, val"
@@ -301,7 +219,8 @@ class DSB18Dataset(Dataset):
         path = os.path.join(root, tag, "stage1_train")
         if download:
             download_datasets(tag, path=root)
-            extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
+            extract_zip(os.path.join(root, tag+".zip"),
+                        os.path.join(root, tag))
             extract_zip(os.path.join(root, tag, "stage1_train.zip"), path)
         else:
             path = os.path.join(root, "stage1_train")
@@ -309,30 +228,17 @@ class DSB18Dataset(Dataset):
         self.path = path
         self.folders = os.listdir(self.path)
         self.shape = shape
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> main
         if transform is None:
             self.transform = self.default_transform()
         else:
             self.transform = transform
-<<<<<<< HEAD
 
         if target_transform is None:
             self.target_transform = self.default_target_transform()
         else:
             self.target_transform = target_transform
 
-=======
-        
-        if target_transform is None:
-            self.target_transform = self.default_target_transform()
-        else:
-            self.target_transform = target_transform()
-        
->>>>>>> main
         if show:
             self.visualize_batch()
 
@@ -342,31 +248,18 @@ class DSB18Dataset(Dataset):
     def __getitem__(self, idx):
         image_folder = os.path.join(self.path, self.folders[idx], 'images/')
         mask_folder = os.path.join(self.path, self.folders[idx], 'masks/')
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> main
         fname = os.listdir(image_folder)[0]
         image_path = os.path.join(image_folder, fname)
 
         img = Image.open(image_path).convert('RGB')
         mask = self.get_mask(mask_folder)
-<<<<<<< HEAD
 
         img = self.transform(img)
         mask = self.target_transform(mask)
 
         return img, mask, fname
 
-=======
-        
-        img = self.transform(img)
-        mask = self.target_transform(mask)
-        
-        return img, mask, fname
-    
->>>>>>> main
     def get_mask(self, mask_folder):
         mask = np.zeros((self.shape, self.shape, 1), dtype=bool)
         for mask_ in os.listdir(mask_folder):
@@ -376,27 +269,13 @@ class DSB18Dataset(Dataset):
             mask = np.maximum(mask, mask_)
 
         return mask
-    
+
     def default_transform(self):
         transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.Resize((self.shape, self.shape))
         ])
 
-<<<<<<< HEAD
-    def default_transform(self):
-        transform = transforms.Compose([
-=======
-        return transform
-    
-    def default_target_transform(self):
-        target_transform = transforms.Compose([
->>>>>>> main
-            transforms.ToTensor(),
-            transforms.Resize((self.shape, self.shape))
-        ])
-
-<<<<<<< HEAD
         return transform
 
     def default_target_transform(self):
@@ -407,33 +286,21 @@ class DSB18Dataset(Dataset):
 
         return target_transform
 
-=======
-        return target_transform
-    
->>>>>>> main
     def visualize_batch(self):
         loader = DataLoader(self, shuffle=True, batch_size=4)
         imgs, masks, fnames = next(iter(loader))
 
-        batch_inputs = convert_image_dtype(imgs, dtype=torch.uint8)
-        batch_outputs = convert_image_dtype(masks, dtype=torch.bool)
+        batch_inputs = F.convert_image_dtype(imgs, dtype=torch.uint8)
+        batch_outputs = F.convert_image_dtype(masks, dtype=torch.bool)
 
         cells_with_masks = [
-<<<<<<< HEAD
             draw_segmentation_masks(
                 img, masks=mask, alpha=0.6, colors=(102, 255, 178))
             for img, mask in zip(batch_inputs, batch_outputs)
         ]
 
         self.show(cells_with_masks, fnames)
-=======
-            draw_segmentation_masks(img, masks=mask, alpha=0.6, colors = (102,255,178))
-            for img, mask in zip(batch_inputs, batch_outputs)
-        ]
->>>>>>> main
 
-        self.show(cells_with_masks, fnames)
-    
     @staticmethod
     def show(imgs, fnames):
         if not isinstance(imgs, list):
@@ -444,11 +311,7 @@ class DSB18Dataset(Dataset):
             img = F.to_pil_image(img)
             axs[0, i].imshow(np.asarray(img))
             axs[0, i].set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
-<<<<<<< HEAD
             axs[0, i].set_title("..."+fnames[i][-10:-4])
-=======
-            axs[0,i].set_title("..."+fnames[i][-10:-4])
->>>>>>> main
 
 
 class HistocancerDataset(Dataset):
@@ -469,7 +332,7 @@ class HistocancerDataset(Dataset):
      .. [1] <https://www.kaggle.com/c/histopathologic-cancer-detection/data>`_
      """
 
-    def __init__(self, root: str = ".", mode: str = "train", transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = True, show: bool = True):
+    def __init__(self, root: str = ".", mode: str = "train", transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False, show: bool = True):
         tag = "histopathologic-cancer-detection"
 
         modes = ["train", "val", "test"]
