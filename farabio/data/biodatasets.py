@@ -9,13 +9,15 @@ from albumentations.pytorch import ToTensorV2
 import matplotlib.pyplot as plt
 from skimage import io, transform
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OrdinalEncoder
 import torch
 from torch.utils.data import Dataset, DataLoader
 import torchvision
+import torchvision.transforms.functional as F
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from zipfile import ZipFile
-from sklearn.preprocessing import OrdinalEncoder
+
 
 kaggle_biodatasets = [
     "aptos2019-blindness-detection",
@@ -83,7 +85,7 @@ def extract_zip(fzip, fnew=None):
 class ChestXrayDataset(ImageFolder):
     r"""PyTorch friendly ChestXrayDataset class
 
-    Dataset is loaded using Kaggle API. 
+    Dataset is loaded using Kaggle API.
     For further information on raw dataset and pneumonia detection, please refer to [1]_.
 
     Examples
@@ -120,7 +122,7 @@ class ChestXrayDataset(ImageFolder):
             dataset_path = os.path.join(root, mode)
 
         super(ChestXrayDataset, self).__init__(
-                root=dataset_path, transform=self.transform)
+            root=dataset_path, transform=self.transform)
 
         self.visualize_dataset(show)
 
@@ -135,7 +137,7 @@ class ChestXrayDataset(ImageFolder):
         return sample, target
 
     def default_transform(self, mode="train"):
-        if mode == "train": 
+        if mode == "train":
             transform = transforms.Compose([
                 transforms.Resize((256, 256)),
                 transforms.RandomHorizontalFlip(),
@@ -200,7 +202,7 @@ class DSB18Dataset(Dataset):
     """
 
     def __init__(self, root: str = ".", download: bool = False, mode: str = "train", shape: int = 512, transform: transform = None, target_transform: transforms = None, show: bool = True):
-    
+
         tag = "data-science-bowl-2018"
         modes = ["train", "val"]
         assert mode in modes, "Available options for mode: train, val"
@@ -208,7 +210,8 @@ class DSB18Dataset(Dataset):
         path = os.path.join(root, tag, "stage1_train")
         if download:
             download_datasets(tag, path=root)
-            extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
+            extract_zip(os.path.join(root, tag+".zip"),
+                        os.path.join(root, tag))
             extract_zip(os.path.join(root, tag, "stage1_train.zip"), path)
         else:
             path = os.path.join(root, "stage1_train")
@@ -216,17 +219,17 @@ class DSB18Dataset(Dataset):
         self.path = path
         self.folders = os.listdir(self.path)
         self.shape = shape
-        
+
         if transform is None:
             self.transform = self.default_transform()
         else:
             self.transform = transform
-        
+
         if target_transform is None:
             self.target_transform = self.default_target_transform()
         else:
             self.target_transform = target_transform()
-        
+
         if show:
             self.visualize_batch()
 
@@ -236,18 +239,18 @@ class DSB18Dataset(Dataset):
     def __getitem__(self, idx):
         image_folder = os.path.join(self.path, self.folders[idx], 'images/')
         mask_folder = os.path.join(self.path, self.folders[idx], 'masks/')
-        
+
         fname = os.listdir(image_folder)[0]
         image_path = os.path.join(image_folder, fname)
 
         img = Image.open(image_path).convert('RGB')
         mask = self.get_mask(mask_folder)
-        
+
         img = self.transform(img)
         mask = self.target_transform(mask)
-        
+
         return img, mask, fname
-    
+
     def get_mask(self, mask_folder):
         mask = np.zeros((self.shape, self.shape, 1), dtype=bool)
         for mask_ in os.listdir(mask_folder):
@@ -257,7 +260,7 @@ class DSB18Dataset(Dataset):
             mask = np.maximum(mask, mask_)
 
         return mask
-    
+
     def default_transform(self):
         transform = transforms.Compose([
             transforms.ToTensor(),
@@ -265,7 +268,7 @@ class DSB18Dataset(Dataset):
         ])
 
         return transform
-    
+
     def default_target_transform(self):
         target_transform = transforms.Compose([
             transforms.ToTensor(),
@@ -273,7 +276,7 @@ class DSB18Dataset(Dataset):
         ])
 
         return target_transform
-    
+
     def visualize_batch(self):
         loader = DataLoader(self, shuffle=True, batch_size=4)
         imgs, masks, fnames = next(iter(loader))
@@ -282,12 +285,13 @@ class DSB18Dataset(Dataset):
         batch_outputs = convert_image_dtype(masks, dtype=torch.bool)
 
         cells_with_masks = [
-            draw_segmentation_masks(img, masks=mask, alpha=0.6, colors = (102,255,178))
+            draw_segmentation_masks(
+                img, masks=mask, alpha=0.6, colors=(102, 255, 178))
             for img, mask in zip(batch_inputs, batch_outputs)
         ]
 
         self.show(cells_with_masks, fnames)
-    
+
     @staticmethod
     def show(imgs, fnames):
         if not isinstance(imgs, list):
@@ -298,97 +302,119 @@ class DSB18Dataset(Dataset):
             img = F.to_pil_image(img)
             axs[0, i].imshow(np.asarray(img))
             axs[0, i].set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
-            axs[0,i].set_title("..."+fnames[i][-10:-4])
+            axs[0, i].set_title("..."+fnames[i][-10:-4])
 
 
 class HistocancerDataset(Dataset):
-    r"""Histopathologic Cancer Dataset class
+    r"""PyTorch friendly HistocancerDataset class
 
-    Kaggle Histopathologic Cancer Detection dataset from [1]_
+     Dataset is loaded using Kaggle API.
+     For further information on raw dataset and tumor classification, please refer to [1]_.
 
-    Examples
-    ----------
-    >>> train_dataset = HistocancerDataset(root=".", download=True, train=True)
-    >>> train_dataset.visualize_dataset()
+     Examples
+     ----------
+     >>> train_dataset = HistocancerDataset(root=".", download=False, mode="train")
+     >>> train_dataset.visualize_dataset()
+     .. image:: ../imgs/HistocancerDataset.png
+         :width: 600
+     References
+     ---------------
+     .. [1] <https://www.kaggle.com/c/histopathologic-cancer-detection/data>`_
+     """
 
-    .. image:: ../imgs/HistocancerDataset.png
-        :width: 600
-
-    References
-    ---------------
-    .. [1] <https://www.kaggle.com/c/histopathologic-cancer-detection/data>`_
-    """
-
-    def __init__(self, root: str, train: bool = True, transform=None, download: bool = True):
+    def __init__(self, root: str = ".", mode: str = "train", transform: transforms = None, target_transform: transforms = None, download: bool = True, show: bool = True):
         tag = "histopathologic-cancer-detection"
+
+        modes = ["train", "val", "test"]
+        assert mode in modes, "Available options for mode: train, val, test"
 
         if download:
             download_datasets(tag, path=root)
             extract_zip(os.path.join(root, tag+".zip"),
                         os.path.join(root, tag))
+            self.path = os.path.join(root, tag)
+        else:
+            self.path = os.path.join(root)
 
-        if train:
-            self.csv_path = os.path.join(root, tag, "train_labels.csv")
-            self.img_path = os.path.join(root, tag, "train")
+        if mode == "train":
+            self.csv_path = os.path.join(self.path, "train_labels.csv")
+            self.img_path = os.path.join(self.path, "train")
             self.labels = pd.read_csv(self.csv_path)
             train_data, val_data = train_test_split(
                 self.labels, stratify=self.labels.label, test_size=0.1)
         else:
-            self.img_path = os.path.join(root, tag, "test")
+            self.img_path = os.path.join(self.path, "test")
 
         self.df = train_data.values
 
         if transform is None:
-            self.transform = self.get_train_transform
+            self.transform = self.default_transform(mode)
         else:
             self.transform = transform
+
+        if show:
+            self.visualize_batch()
 
     def __len__(self):
         return len(self.df)
 
     def __getitem__(self, index):
         img_name, label = self.df[index]
-        img_path = os.path.join(self.data_dir, img_name+'.tif')
-        image = cv2.imread(img_path)
+        img_path = os.path.join(self.img_path, img_name+'.tif')
+
+        image = Image.open(img_path).convert("RGB")
         if self.transform is not None:
             image = self.transform(image)
-        return image, label
+        return image, label, img_name
+
+    def default_transform(self, mode):
+        if mode == "train":
+            transform = transforms.Compose([
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    [0.485, 0.456, 0.406],
+                    [0.229, 0.224, 0.225])
+            ])
+
+        elif mode == "val" or mode == "test":
+            transform = transforms.Compose([
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    [0.485, 0.456, 0.406],
+                    [0.229, 0.224, 0.225])
+            ])
+
+        return transform
+
+    def visualize_batch(self):
+        loader = DataLoader(self, batch_size=4, shuffle=True)
+        imgs, labels, fnames = next(iter(loader))
+
+        list_imgs = [imgs[i] for i in range(len(imgs))]
+        self.show(list_imgs, fnames, labels)
 
     @staticmethod
-    def get_train_transform(self):
-        """Default transform for training data
-        """
-        return transforms.Compose([transforms.ToPILImage(),
-                                   transforms.Pad(64, padding_mode='reflect'),
-                                   transforms.RandomHorizontalFlip(),
-                                   transforms.RandomVerticalFlip(),
-                                   transforms.RandomRotation(20),
-                                   transforms.ToTensor(),
-                                   transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
+    def show(imgs, fnames, labels):
+        if not isinstance(imgs, list):
+            imgs = [imgs]
+        fix, axs = plt.subplots(ncols=len(imgs), squeeze=False)
+        for i, img in enumerate(imgs):
+            img = img.numpy().transpose((1, 2, 0))
+            mean = np.array([0.485, 0.456, 0.406])
+            std = np.array([0.229, 0.224, 0.225])
+            inp = std * img + mean
+            inp = np.clip(inp, 0, 1)
 
-    @staticmethod
-    def get_valid_transform(self):
-        """Default transform for validation data
-        """
-        return transforms.Compose([transforms.ToPILImage(),
-                                   transforms.Pad(64, padding_mode='reflect'),
-                                   transforms.ToTensor(),
-                                   transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
-
-    def visualize_dataset(self, n_images=10):
-        fig = plt.figure(figsize=(12, 4))
-
-        train_imgs = os.listdir(self.img_path)
-        for idx, img in enumerate(np.random.choice(train_imgs, n_images)):
-            ax = fig.add_subplot(2, n_images//2, idx+1, xticks=[], yticks=[])
-            im = Image.open(os.path.join(self.img_path, img))
-            plt.imshow(im)
-            lab = self.labels.loc[self.labels['id'] ==
-                                  img.split('.')[0], 'label'].values[0]
-            if lab == 1:
-                ax.set_title(f'{lab} = tumor')
+            axs[0, i].imshow(np.asarray(inp))
+            axs[0, i].set(xticklabels=[], yticklabels=[],
+                            xticks=[], yticks=[])
+            if labels[i] == 0:
+                lab = "non-tumor"
             else:
-                ax.set_title(f'{lab} = non-tumor')
+                lab = "tumor"
+            axs[0, i].text(0, -0.2, str(int(labels[i])) + ": " +
+                            lab, fontsize=12, transform=axs[0, i].transAxes)
+            axs[0, i].set_title("..."+fnames[i][-6:])
 
 
 class RANZCRDataset(Dataset):
@@ -413,7 +439,7 @@ class RANZCRDataset(Dataset):
         tag = "ranzcr-clip-catheter-line-classification"
 
         if download:
-            #download_datasets(tag, path=root)
+               #download_datasets(tag, path=root)
             extract_zip(os.path.join(root, tag+".zip"),
                         os.path.join(root, tag))
 
