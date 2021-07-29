@@ -83,7 +83,8 @@ def extract_zip(fzip, fnew=None):
 class ChestXrayDataset(ImageFolder):
     r"""PyTorch friendly ChestXrayDataset class
 
-    Dataset loaded using Kaggle API. Raw dataset is obtained from [1]_.
+    Dataset is loaded using Kaggle API. 
+    For further information on raw dataset and pneumonia detection, please refer to [1]_.
 
     Examples
     ----------
@@ -121,12 +122,7 @@ class ChestXrayDataset(ImageFolder):
         super(ChestXrayDataset, self).__init__(
                 root=dataset_path, transform=self.transform)
 
-        if show:
-            loader = DataLoader(self, batch_size=show, shuffle=True)
-            inputs, classes = next(iter(loader))
-            class_names = self.classes
-            out = torchvision.utils.make_grid(inputs)
-            self.imshow(out, title=[class_names[x] for x in classes])
+        self.visualize_dataset(show)
 
     def __getitem__(self, index):
         path, target = self.samples[index]
@@ -177,16 +173,23 @@ class ChestXrayDataset(ImageFolder):
         plt.pause(0.001)
         return fig
 
+    def visualize_dataset(self, show):
+        loader = DataLoader(self, batch_size=show, shuffle=True)
+        inputs, classes = next(iter(loader))
+        class_names = self.classes
+        out = torchvision.utils.make_grid(inputs)
+        self.imshow(out, title=[class_names[x] for x in classes])
+
 
 class DSB18Dataset(Dataset):
-    r"""Nuclei segmentation dataset class
+    r"""PyTorch friendly DSB18Dataset class
 
-    Kaggle 2018 Data Science Bowl competition dataset for segmented nuclei images from [1]_.
+    Dataset is loaded using Kaggle API.
+    For further information on raw dataset and nuclei segmentation, please refer to [1]_.
 
     Examples
     ----------
-    >>> train_dataset = DSB18Dataset(root=".", transform=None, download=False)
-    >>> train_dataset.visualize_dataset(5)
+    >>> train_dataset = DSB18Dataset(_path, transform=None, download=False, show=True)
 
     .. image:: ../imgs/DSB18Dataset.png
         :width: 300
@@ -196,24 +199,36 @@ class DSB18Dataset(Dataset):
     .. [1] https://www.kaggle.com/c/data-science-bowl-2018/overview
     """
 
-    def __init__(self, root: str, train: bool = True, shape: int = 512, transform=None, download: bool = True):
+    def __init__(self, root: str = ".", download: bool = False, mode: str = "train", shape: int = 512, transform: transform = None, target_transform: transforms = None, show: bool = True):
+    
         tag = "data-science-bowl-2018"
+        modes = ["train", "val"]
+        assert mode in modes, "Available options for mode: train, val"
 
         path = os.path.join(root, tag, "stage1_train")
         if download:
             download_datasets(tag, path=root)
-            extract_zip(os.path.join(root, tag+".zip"),
-                        os.path.join(root, tag))
+            extract_zip(os.path.join(root, tag+".zip"), os.path.join(root, tag))
             extract_zip(os.path.join(root, tag, "stage1_train.zip"), path)
+        else:
+            path = os.path.join(root, "stage1_train")
 
-        if train:
-            self.path = path
-
-        if transform is None:
-            self.transforms = self.get_train_transform(shape)
-
+        self.path = path
         self.folders = os.listdir(self.path)
         self.shape = shape
+        
+        if transform is None:
+            self.transform = self.default_transform()
+        else:
+            self.transform = transform
+        
+        if target_transform is None:
+            self.target_transform = self.default_target_transform()
+        else:
+            self.target_transform = target_transform()
+        
+        if show:
+            self.visualize_batch()
 
     def __len__(self):
         return len(self.folders)
@@ -221,83 +236,69 @@ class DSB18Dataset(Dataset):
     def __getitem__(self, idx):
         image_folder = os.path.join(self.path, self.folders[idx], 'images/')
         mask_folder = os.path.join(self.path, self.folders[idx], 'masks/')
+        
         fname = os.listdir(image_folder)[0]
         image_path = os.path.join(image_folder, fname)
 
-        img = io.imread(image_path)[:, :, :3].astype('float32')
-        img = transform.resize(img, (self.shape, self.shape))
-
-        mask = self.get_mask(mask_folder, self.shape,
-                             self.shape).astype('float32')
-
-        augmented = self.transforms(image=img, mask=mask)
-        img = augmented['image']
-        mask = augmented['mask']
-
-        mask = mask[0].permute(2, 0, 1)
-        return (img, mask, fname)
-
-    def get_mask(self, mask_folder, IMG_HEIGHT, IMG_WIDTH):
-        mask = np.zeros((IMG_HEIGHT, IMG_WIDTH, 1), dtype=np.bool)
+        img = Image.open(image_path).convert('RGB')
+        mask = self.get_mask(mask_folder)
+        
+        img = self.transform(img)
+        mask = self.target_transform(mask)
+        
+        return img, mask, fname
+    
+    def get_mask(self, mask_folder):
+        mask = np.zeros((self.shape, self.shape, 1), dtype=bool)
         for mask_ in os.listdir(mask_folder):
             mask_ = io.imread(os.path.join(mask_folder, mask_))
-            mask_ = transform.resize(mask_, (IMG_HEIGHT, IMG_WIDTH))
+            mask_ = transform.resize(mask_, (self.shape, self.shape))
             mask_ = np.expand_dims(mask_, axis=-1)
             mask = np.maximum(mask, mask_)
 
         return mask
+    
+    def default_transform(self):
+        transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Resize((self.shape, self.shape))
+        ])
 
-    def get_train_transform(self, img_shape):
-        """Albumentations transform
-        """
-        return A.Compose(
-            [
-                A.Resize(img_shape, img_shape),
-                A.Normalize(mean=(0.485, 0.456, 0.406),
-                            std=(0.229, 0.224, 0.225)),
-                A.HorizontalFlip(p=0.25),
-                A.VerticalFlip(p=0.25),
-                ToTensor()
-            ])
+        return transform
+    
+    def default_target_transform(self):
+        target_transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Resize((self.shape, self.shape))
+        ])
 
+        return target_transform
+    
+    def visualize_batch(self):
+        loader = DataLoader(self, shuffle=True, batch_size=4)
+        imgs, masks, fnames = next(iter(loader))
+
+        batch_inputs = convert_image_dtype(imgs, dtype=torch.uint8)
+        batch_outputs = convert_image_dtype(masks, dtype=torch.bool)
+
+        cells_with_masks = [
+            draw_segmentation_masks(img, masks=mask, alpha=0.6, colors = (102,255,178))
+            for img, mask in zip(batch_inputs, batch_outputs)
+        ]
+
+        self.show(cells_with_masks, fnames)
+    
     @staticmethod
-    def format_image(img):
-        img = np.array(np.transpose(img, (1, 2, 0)))
-        mean = np.array((0.485, 0.456, 0.406))
-        std = np.array((0.229, 0.224, 0.225))
-        img = std * img + mean
-        img = img*255
-        img = img.astype(np.uint8)
-        return img
-
-    @staticmethod
-    def format_mask(mask):
-        mask = np.squeeze(np.transpose(mask, (1, 2, 0)))
-        return mask
-
-    def visualize_dataset(self, n_images, predict=None):
-        """
-        Function to visualize images and masks
-        """
-        images = random.sample(range(0, 670), n_images)
-        figure, ax = plt.subplots(nrows=len(images), ncols=2, figsize=(5, 8))
-        print(images)
-        for i in range(0, len(images)):
-            img_no = images[i]
-            image, mask, fname = self.__getitem__(img_no)
-            image = self.format_image(image)
-            mask = self.format_mask(mask)
-            ax[i, 0].imshow(image)
-            ax[i, 1].imshow(mask, interpolation="nearest", cmap="gray")
-            ax[i, 0].set_title("Ground Truth Image")
-            ax[i, 1].set_title("Mask")
-            ax[i, 0].set_axis_off()
-            ax[i, 1].set_axis_off()
-            plt.tight_layout()
-
-        return plt
-
-# train_dataset = DSB18Dataset(root="/home/data/02_SSD4TB/suzy/datasets/public/", transform=None, download=False)
+    def show(imgs, fnames):
+        if not isinstance(imgs, list):
+            imgs = [imgs]
+        fix, axs = plt.subplots(ncols=len(imgs), squeeze=False)
+        for i, img in enumerate(imgs):
+            img = img.detach()
+            img = F.to_pil_image(img)
+            axs[0, i].imshow(np.asarray(img))
+            axs[0, i].set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
+            axs[0,i].set_title("..."+fnames[i][-10:-4])
 
 
 class HistocancerDataset(Dataset):
