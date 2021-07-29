@@ -314,9 +314,10 @@ class HistocancerDataset(Dataset):
      Examples
      ----------
      >>> train_dataset = HistocancerDataset(root=".", download=False, mode="train")
-     >>> train_dataset.visualize_dataset()
+
      .. image:: ../imgs/HistocancerDataset.png
          :width: 600
+
      References
      ---------------
      .. [1] <https://www.kaggle.com/c/histopathologic-cancer-detection/data>`_
