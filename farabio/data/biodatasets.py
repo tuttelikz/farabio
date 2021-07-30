@@ -143,7 +143,6 @@ class ChestXrayDataset(ImageFolder):
         if self.target_transform is not None:
             target = self.target_transform(target)
 
-        if self.
         return img, target, fname
 
     def default_transform(self, mode="train"):
