@@ -663,7 +663,7 @@ class RetinopathyDataset(Dataset):
 
     Examples
     ----------
-    >>> train_dataset = RetinopathyDataset(_path_retina, mode="train", show=True)
+    >>> train_dataset = RetinopathyDataset(".", mode="train", show=True)
 
     .. image:: ../imgs/RetinopathyDataset.png
         :width: 300
@@ -684,12 +684,29 @@ class RetinopathyDataset(Dataset):
             path = os.path.join(root, tag)
         else:
             path = root
-
-        if mode == "train":
+        
+        self.mode = mode
+        
+        if mode != "test":
             self.csv_path = os.path.join(path, "train.csv")
             self.img_path = os.path.join(path, "train_images")
-
-        self.data = pd.read_csv(self.csv_path)
+            data = pd.read_csv(self.csv_path)
+            
+            train_idx, val_idx = train_test_split(range(len(data)), test_size=0.1,)
+            
+            train_data = data.iloc[train_idx]
+            val_data = data.iloc[val_idx]
+                    
+            if self.mode == "train":
+                self.data = train_data
+                self.data.reset_index(drop=True, inplace=True)
+            else:
+                self.data = val_data
+                self.data.reset_index(drop=True, inplace=True)
+        else:
+            self.img_path = os.path.join(path, "test_images")
+            self.data = os.listdir(self.img_path)
+        
         self.shape = shape
 
         if transform is None:
@@ -707,15 +724,23 @@ class RetinopathyDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, idx):
-        fname = self.data.loc[idx, 'id_code']
-        img_name = os.path.join(
-            self.img_path, fname + '.png')
+        if self.mode != "test":
+            fname = self.data.loc[idx, 'id_code'] + ".png"
+        else:
+            fname = self.data[idx]
+
+        img_name = os.path.join(self.img_path, fname)
+        
         img = Image.open(img_name).convert("RGB")
         img = self.transform(img)
 
-        label = torch.tensor(self.data.loc[idx, 'diagnosis'])
-
-        return img, label, fname
+        if self.mode != "test":
+            label = torch.tensor(self.data.loc[idx, 'diagnosis'])
+            sample = (img, label, fname)
+        else:
+            sample = (img, fname)
+        
+        return sample
 
     def default_transform(self):
         transform = transforms.Compose([
@@ -728,12 +753,17 @@ class RetinopathyDataset(Dataset):
 
     def visualize_batch(self):
         loader = DataLoader(self, batch_size=4, shuffle=True)
-        imgs, labels, fnames = next(iter(loader))
-        list_imgs = [imgs[i] for i in range(len(imgs))]
-        self.show(list_imgs, labels, fnames)
+        
+        if self.mode != "test":
+            imgs, labels, fnames = next(iter(loader))
+        else:
+            imgs, fnames = next(iter(loader))
+            labels = None
 
-    @staticmethod
-    def show(imgs, labels, fnames):
+        list_imgs = [imgs[i] for i in range(len(imgs))]
+        self.show(list_imgs, fnames, labels)
+
+    def show(self, imgs, fnames, labels=None):
         if not isinstance(imgs, list):
             imgs = [imgs]
         fix, axs = plt.subplots(ncols=len(imgs), squeeze=False)
@@ -747,6 +777,8 @@ class RetinopathyDataset(Dataset):
             axs[0, i].imshow(np.asarray(inp))
             axs[0, i].set(xticklabels=[], yticklabels=[],
                           xticks=[], yticks=[])
-            axs[0, i].set_title("..."+fnames[i][-6:])
-            axs[0, i].text(0, -0.2, "Severity: " +
-                           str(int(labels[i])), transform=axs[0, i].transAxes)
+            axs[0, i].set_title("..."+fnames[i][-10:-4])
+            
+            if self.mode != "test":
+                axs[0, i].text(0, -0.2, "Severity: " +
+                               str(int(labels[i])), transform=axs[0, i].transAxes)
