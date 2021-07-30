@@ -428,15 +428,15 @@ class HistocancerDataset(Dataset):
 
 
 class RANZCRDataset(Dataset):
-    r"""RANZCR 2021 dataset class
-
-    Catheters presence and position detection from RANZCR CLiP - Catheter and Line Position Challenge from [1]_
-
+    r"""PyTorch friendly RANZCRDataset class
+    
+    Dataset is loaded using Kaggle API.
+    For further information on raw dataset and catheters presence, please refer to [1]_.
+        
     Examples
     ----------
-    >>> train_dataset = RANZCRDataset(".", train=True, transform=None, download=True)
-    >>> train_dataset.visualize_dataset()
-
+    >>> train_dataset = RANZCRDataset(_path_ranzcr, show=True, shape=512)
+    
     .. image:: ../imgs/RANZCRDataset.png
         :width: 600
 
@@ -445,97 +445,128 @@ class RANZCRDataset(Dataset):
     .. [1] https://www.kaggle.com/c/ranzcr-clip-catheter-line-classification/data
     """
 
-    def __init__(self, root: str, train: bool = True, transform=None, download: bool = False):
+    def __init__(self, root: str = ".", mode: str = "train", shape: int = 256, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False, show: bool = True):
         tag = "ranzcr-clip-catheter-line-classification"
-
+        
+        modes = ["train", "val", "test"]
+        assert mode in modes, "Available options for mode: train, val, test"
+        
         if download:
-            #download_datasets(tag, path=root)
             extract_zip(os.path.join(root, tag+".zip"),
                         os.path.join(root, tag))
 
-        train_path = os.path.join(root, tag, "train")
-        test_path = os  .path.join(root, tag, "test")
-
-        # juggling
-        data = pd.read_csv(os.path.join(root, tag, "train_annotations.csv"))
-        data = data.drop(["data"], axis=1)
-
-        # Converting the columns into integers.
-        data_org = data['label']
-        ord_enc = OrdinalEncoder()
-        data[['label']] = ord_enc.fit_transform(data[['label']])
-
-        # Converting the Labels from floats to integers.
-        data.label = data.label.astype("int")
-
-        # Grabbing the labels as a list.
-        label = data["label"]
-        label = label.to_list()
-
-        seed = 42
-        train_list = []
-
-        for i in data.index:
-
-            # Grabbing the file name.
-            a = data["StudyInstanceUID"].loc[i]
-
-            # Attaching the file's path to it.
-            b = train_path + "/" + a + ".jpg"
-
-            # Puttting it in a tupple along with it's label.
-            train_list.append((b, data['label'].loc[i]))
-
-        train_list, valid_list = train_test_split(train_list,
-                                                  test_size=0.2,
-                                                  random_state=seed)
-
-        if transform is None:
-            self.transforms = self.get_transform()
-
-        if train:
-            self.file_list = train_list
+            train_path = os.path.join(root, tag, "train")
+            test_path = os.path.join(root, tag, "test")
+            csv_path = os.path.join(root, tag, "train_annotations.csv")
         else:
-            self.file_list = valid_list
+            train_path = os.path.join(root, "train")
+            test_path = os.path.join(root, "test")
+            csv_path = os.path.join(root, "train_annotations.csv")
+
+        self.data = pd.read_csv(csv_path)
+        self.labels, self.encoded_labels = self.get_labels()
+        self.train_list, self.valid_list = self.get_train_valid(train_path)
+        self.shape = shape
+        
+        if transform is None:
+            self.transform = self.default_transform()
+        else:
+            self.transform = transform
+        
+        if target_transform is not None:
+            self.target_transform = target_transform
+        
+        if mode == "train":
+            self.file_list = self.train_list
+        else:
+            self.file_list = self.valid_list
+        
+        if show:
+            self.visualize_batch()
 
     def __len__(self):
         self.filelength = len(self.file_list)
         return self.filelength
 
     def __getitem__(self, idx):
-
-        # Note that file list consists of tuples.
-        # The first item in tuple is the image.
         img_path = self.file_list[idx][0]
+        fname = img_path.split("/")[-1]
+        
         img = Image.open(img_path).convert("RGB")
-        img_transformed = self.transforms(img)
+        img = self.transform(img)
 
-        # The second item in the tuple is the label.
         label = self.file_list[idx][1]
 
-        return img_transformed, label
+        return img, label, fname
 
-    def get_transform(self):
-        """Default transform
-        """
-        return transforms.Compose([
-            transforms.Resize((224, 224)),
-            transforms.RandomResizedCrop(224),
+    def default_transform(self):
+        transform = transforms.Compose([
+            transforms.Resize((self.shape, self.shape)),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
         ])
+        
+        return transform
+    
+    def visualize_batch(self):
+        loader = DataLoader(self, batch_size=4, shuffle=True)
+        imgs, labels, fnames = next(iter(loader))
 
-    def visualize_dataset(self, n_images=5):
-        random_idx = np.random.randint(1, len(self.file_list), size=16)
-        fig, axes = plt.subplots(5, 5, figsize=(13, 13))
+        list_imgs = [imgs[i] for i in range(len(imgs))]
+        self.show(list_imgs, labels, fnames)
+        
+    def show(self, imgs, labels, fnames):
+        if not isinstance(imgs, list):
+            imgs = [imgs]
+        fix, axs = plt.subplots(ncols=len(imgs), squeeze=False)
+        for i, img in enumerate(imgs):
+            img = img.numpy().transpose((1, 2, 0))
+            mean = np.array([0.485, 0.456, 0.406])
+            std = np.array([0.229, 0.224, 0.225])
+            inp = std * img + mean
+            inp = np.clip(inp, 0, 1)
+            lab = self.unique_labels[labels[i]]
+            
+            axs[0, i].imshow(np.asarray(inp))
+            axs[0, i].set(xticklabels=[], yticklabels=[],
+                          xticks=[], yticks=[])
+            axs[0, i].set_title("..."+fnames[i][-11:-4])
+            axs[0, i].text(0, -0.2, str(int(labels[i])) + ": " + lab, transform=axs[0, i].transAxes)
+        
+    def get_labels(self):
+        self.data = self.data.drop(["data"], axis=1)
 
-        for idx, ax in enumerate(axes.ravel()):
-            img = Image.open(self.file_list[idx][0])
-            ax.set_title(self.file_list[idx][-1])
-            ax.imshow(img)
+        data_org = self.data['label']
+        labels = data_org.to_list()
+        
+        used = set()
+        self.unique_labels = [x for x in labels if x not in used and (used.add(x) or True)]
+        
+        ord_enc = OrdinalEncoder()
+        self.data[['label']] = ord_enc.fit_transform(self.data[['label']])
 
-        # fig.savefig('RANZCRDataset.png')
+        self.data.label = self.data.label.astype("int")
+
+        label = self.data["label"]
+        label = label.to_list()
+        
+        encoded_labels = label
+        return labels, encoded_labels
+        
+    def get_train_valid(self, train_path):
+        seed = 42
+        train_list = []
+
+        for i in self.data.index:
+            a = self.data["StudyInstanceUID"].loc[i]
+            b = train_path + "/" + a + ".jpg"
+            train_list.append((b, self.data['label'].loc[i]))
+        
+        train_list, valid_list = train_test_split(train_list,
+                                                  test_size=0.2,
+                                                  random_state=seed)
+        return train_list, valid_list
 
 
 class RetinopathyDataset(Dataset):
