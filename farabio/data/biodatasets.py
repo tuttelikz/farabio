@@ -109,7 +109,7 @@ class ChestXrayDataset(ImageFolder):
         assert mode in modes, "Available options for mode: train, val, test"
 
         self.shape = shape
-
+        self.mode = mode
         if download:
             download_datasets(tag, path=root)
             extract_zip(os.path.join(root, tag+".zip"),
@@ -137,13 +137,14 @@ class ChestXrayDataset(ImageFolder):
     def __getitem__(self, index):
         path, target = self.samples[index]
         fname = path.split("/")[-1]
-        sample = self.loader(path)
+        img = self.loader(path)
         if self.transform is not None:
-            sample = self.transform(sample)
+            img = self.transform(img)
         if self.target_transform is not None:
             target = self.target_transform(target)
 
-        return sample, target, fname
+        if self.
+        return img, target, fname
 
     def default_transform(self, mode="train"):
         if mode == "train":
@@ -189,7 +190,7 @@ class ChestXrayDataset(ImageFolder):
             axs[0, i].set(xticks=[], yticks=[])
             axs[0, i].text(0, -0.2, str(int(labels[i])) + ": " +
                            self.classes[labels[i]], transform=axs[0, i].transAxes)
-            axs[0, i].set_title("..."+fnames[i][-11:-5])
+            axs[0, i].set_title("..."+fnames[i][-12:-5])
 
 
 class DSB18Dataset(Dataset):
@@ -213,21 +214,43 @@ class DSB18Dataset(Dataset):
     def __init__(self, root: str = ".", download: bool = False, mode: str = "train", shape: int = 512, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, show: bool = True):
 
         tag = "data-science-bowl-2018"
-        modes = ["train", "val"]
+        modes = ["train", "val", "test"]
         assert mode in modes, "Available options for mode: train, val"
-
-        path = os.path.join(root, tag, "stage1_train")
+        
+        if mode == "train" or mode == "val":
+            stage = "stage1_train"
+        else:
+            stage = "stage1_test"
+        
+        self.mode = mode
+        path = os.path.join(root, tag, stage)
+        
         if download:
             download_datasets(tag, path=root)
             extract_zip(os.path.join(root, tag+".zip"),
                         os.path.join(root, tag))
-            extract_zip(os.path.join(root, tag, "stage1_train.zip"), path)
+            extract_zip(os.path.join(root, tag, stage + ".zip"), path)
         else:
-            path = os.path.join(root, "stage1_train")
+            path = os.path.join(root, stage)
 
         self.path = path
-        self.folders = os.listdir(self.path)
         self.shape = shape
+        
+        if self.mode != "test":
+            seed = 42
+            train_list = os.listdir(self.path)
+            train_list, valid_list = train_test_split(
+                train_list,
+                test_size=0.2,
+                random_state=seed
+            )
+
+            if self.mode == "train":
+                self.folders = train_list
+            elif self.mode == "val":
+                self.folders = valid_list
+        else:
+            self.folders = os.listdir(self.path)
 
         if transform is None:
             self.transform = self.default_transform()
@@ -246,19 +269,22 @@ class DSB18Dataset(Dataset):
         return len(self.folders)
 
     def __getitem__(self, idx):
+        
         image_folder = os.path.join(self.path, self.folders[idx], 'images/')
-        mask_folder = os.path.join(self.path, self.folders[idx], 'masks/')
-
         fname = os.listdir(image_folder)[0]
         image_path = os.path.join(image_folder, fname)
-
         img = Image.open(image_path).convert('RGB')
-        mask = self.get_mask(mask_folder)
-
         img = self.transform(img)
-        mask = self.target_transform(mask)
-
-        return img, mask, fname
+        
+        if self.mode != "test":
+            mask_folder = os.path.join(self.path, self.folders[idx], 'masks/')        
+            mask = self.get_mask(mask_folder)
+            mask = self.target_transform(mask)
+            sample = (img, mask, fname)
+        else:
+            sample = (img, fname)
+        
+        return sample
 
     def get_mask(self, mask_folder):
         mask = np.zeros((self.shape, self.shape, 1), dtype=bool)
@@ -288,18 +314,25 @@ class DSB18Dataset(Dataset):
 
     def visualize_batch(self):
         loader = DataLoader(self, shuffle=True, batch_size=4)
-        imgs, masks, fnames = next(iter(loader))
+        
+        if self.mode != "test":
+            imgs, masks, fnames = next(iter(loader))
+        else:
+            imgs, fnames = next(iter(loader))
 
         batch_inputs = F.convert_image_dtype(imgs, dtype=torch.uint8)
-        batch_outputs = F.convert_image_dtype(masks, dtype=torch.bool)
-
-        cells_with_masks = [
-            draw_segmentation_masks(
-                img, masks=mask, alpha=0.6, colors=(102, 255, 178))
-            for img, mask in zip(batch_inputs, batch_outputs)
-        ]
-
-        self.show(cells_with_masks, fnames)
+        
+        if self.mode != "test":
+            batch_outputs = F.convert_image_dtype(masks, dtype=torch.bool)
+            list_imgs = [
+                draw_segmentation_masks(
+                    img, masks=mask, alpha=0.6, colors=(102, 255, 178))
+                for img, mask in zip(batch_inputs, batch_outputs)
+            ]
+        else:
+            list_imgs = [imgs[i] for i in range(len(imgs))]
+            
+        self.show(list_imgs, fnames)
 
     @staticmethod
     def show(imgs, fnames):
