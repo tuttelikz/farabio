@@ -121,7 +121,7 @@ class ChestXrayDataset(ImageFolder):
             self.transform = transform
 
         if target_transform is not None:
-            self.target_transform = target_transform            
+            self.target_transform = target_transform
 
         if download:
             dataset_path = os.path.join(root, tag, "chest_xray", mode)
@@ -170,7 +170,7 @@ class ChestXrayDataset(ImageFolder):
         loader = DataLoader(self, batch_size=4, shuffle=True)
         inputs, labels, fnames = next(iter(loader))
         list_imgs = [inputs[i] for i in range(len(inputs))]
-        
+
         self.show(list_imgs, labels, fnames)
 
     def show(self, imgs, labels, fnames):
@@ -178,7 +178,7 @@ class ChestXrayDataset(ImageFolder):
             imgs = [imgs]
         fix, axs = plt.subplots(ncols=len(imgs), squeeze=False)
         for i, img in enumerate(imgs):
-            
+
             img = img.numpy().transpose((1, 2, 0))
             mean = np.array([0.485, 0.456, 0.406])
             std = np.array([0.229, 0.224, 0.225])
@@ -188,7 +188,7 @@ class ChestXrayDataset(ImageFolder):
             axs[0, i].imshow(np.asarray(inp))
             axs[0, i].set(xticks=[], yticks=[])
             axs[0, i].text(0, -0.2, str(int(labels[i])) + ": " +
-                                        self.classes[labels[i]], transform=axs[0, i].transAxes)
+                           self.classes[labels[i]], transform=axs[0, i].transAxes)
             axs[0, i].set_title("..."+fnames[i][-11:-5])
 
 
@@ -429,14 +429,14 @@ class HistocancerDataset(Dataset):
 
 class RANZCRDataset(Dataset):
     r"""PyTorch friendly RANZCRDataset class
-    
+
     Dataset is loaded using Kaggle API.
     For further information on raw dataset and catheters presence, please refer to [1]_.
-        
+
     Examples
     ----------
     >>> train_dataset = RANZCRDataset(_path_ranzcr, show=True, shape=512)
-    
+
     .. image:: ../imgs/RANZCRDataset.png
         :width: 600
 
@@ -447,10 +447,10 @@ class RANZCRDataset(Dataset):
 
     def __init__(self, root: str = ".", mode: str = "train", shape: int = 256, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False, show: bool = True):
         tag = "ranzcr-clip-catheter-line-classification"
-        
+
         modes = ["train", "val", "test"]
         assert mode in modes, "Available options for mode: train, val, test"
-        
+
         if download:
             extract_zip(os.path.join(root, tag+".zip"),
                         os.path.join(root, tag))
@@ -467,20 +467,20 @@ class RANZCRDataset(Dataset):
         self.labels, self.encoded_labels = self.get_labels()
         self.train_list, self.valid_list = self.get_train_valid(train_path)
         self.shape = shape
-        
+
         if transform is None:
             self.transform = self.default_transform()
         else:
             self.transform = transform
-        
+
         if target_transform is not None:
             self.target_transform = target_transform
-        
+
         if mode == "train":
             self.file_list = self.train_list
         else:
             self.file_list = self.valid_list
-        
+
         if show:
             self.visualize_batch()
 
@@ -491,7 +491,7 @@ class RANZCRDataset(Dataset):
     def __getitem__(self, idx):
         img_path = self.file_list[idx][0]
         fname = img_path.split("/")[-1]
-        
+
         img = Image.open(img_path).convert("RGB")
         img = self.transform(img)
 
@@ -506,16 +506,16 @@ class RANZCRDataset(Dataset):
             transforms.ToTensor(),
             transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
         ])
-        
+
         return transform
-    
+
     def visualize_batch(self):
         loader = DataLoader(self, batch_size=4, shuffle=True)
         imgs, labels, fnames = next(iter(loader))
 
         list_imgs = [imgs[i] for i in range(len(imgs))]
         self.show(list_imgs, labels, fnames)
-        
+
     def show(self, imgs, labels, fnames):
         if not isinstance(imgs, list):
             imgs = [imgs]
@@ -527,22 +527,24 @@ class RANZCRDataset(Dataset):
             inp = std * img + mean
             inp = np.clip(inp, 0, 1)
             lab = self.unique_labels[labels[i]]
-            
+
             axs[0, i].imshow(np.asarray(inp))
             axs[0, i].set(xticklabels=[], yticklabels=[],
                           xticks=[], yticks=[])
             axs[0, i].set_title("..."+fnames[i][-11:-4])
-            axs[0, i].text(0, -0.2, str(int(labels[i])) + ": " + lab, transform=axs[0, i].transAxes)
-        
+            axs[0, i].text(0, -0.2, str(int(labels[i])) +
+                           ": " + lab, transform=axs[0, i].transAxes)
+
     def get_labels(self):
         self.data = self.data.drop(["data"], axis=1)
 
         data_org = self.data['label']
         labels = data_org.to_list()
-        
+
         used = set()
-        self.unique_labels = [x for x in labels if x not in used and (used.add(x) or True)]
-        
+        self.unique_labels = [
+            x for x in labels if x not in used and (used.add(x) or True)]
+
         ord_enc = OrdinalEncoder()
         self.data[['label']] = ord_enc.fit_transform(self.data[['label']])
 
@@ -550,10 +552,10 @@ class RANZCRDataset(Dataset):
 
         label = self.data["label"]
         label = label.to_list()
-        
+
         encoded_labels = label
         return labels, encoded_labels
-        
+
     def get_train_valid(self, train_path):
         seed = 42
         train_list = []
@@ -562,7 +564,7 @@ class RANZCRDataset(Dataset):
             a = self.data["StudyInstanceUID"].loc[i]
             b = train_path + "/" + a + ".jpg"
             train_list.append((b, self.data['label'].loc[i]))
-        
+
         train_list, valid_list = train_test_split(train_list,
                                                   test_size=0.2,
                                                   random_state=seed)
@@ -570,14 +572,14 @@ class RANZCRDataset(Dataset):
 
 
 class RetinopathyDataset(Dataset):
-    r"""Retinopathy Dataset class
+    r"""PyTorch friendly RetinopathyDataset class
 
-    Retina images taken using fundus photography from Kaggle APTOS 2019 Blindness Detection competition, [1]_.
+    Dataset is loaded using Kaggle API.
+    For further information on raw dataset and blindness detection, please refer to [1]_.
 
     Examples
     ----------
-    >>> train_dataset = RetinopathyDataset(root=".", transform=None, download=True)
-    >>> train_dataset.visualize_dataset(9)
+    >>> train_dataset = RetinopathyDataset(_path_retina, mode="train", show=True)
 
     .. image:: ../imgs/RetinopathyDataset.png
         :width: 300
@@ -587,50 +589,80 @@ class RetinopathyDataset(Dataset):
     .. [1] <https://www.kaggle.com/c/aptos2019-blindness-detection/data>`_
     """
 
-    def __init__(self, root: str, train: bool = True, download: bool = True, transform=None):
+    def __init__(self, root: str = ".", mode: str = "train", shape: int = 256, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False, show: bool = True):
         tag = "aptos2019-blindness-detection"
 
         if download:
             download_datasets(tag, path=root)
+
             extract_zip(os.path.join(root, tag+".zip"),
                         os.path.join(root, tag))
+            path = os.path.join(root, tag)
+        else:
+            path = root
 
-        if train:
-            self.csv_path = os.path.join(root, tag, "train.csv")
-            self.img_path = os.path.join(root, tag, "train_images")
+        if mode == "train":
+            self.csv_path = os.path.join(path, "train.csv")
+            self.img_path = os.path.join(path, "train_images")
 
         self.data = pd.read_csv(self.csv_path)
+        self.shape = shape
 
         if transform is None:
-            self.transform = transforms.ToTensor()
+            self.transform = self.default_transform()
+        else:
+            self.transform = transform
+
+        if target_transform is not None:
+            self.target_transform = target_transform
+
+        if show:
+            self.visualize_batch()
 
     def __len__(self):
         return len(self.data)
 
     def __getitem__(self, idx):
+        fname = self.data.loc[idx, 'id_code']
         img_name = os.path.join(
-            self.img_path, self.data.loc[idx, 'id_code'] + '.png')
-        image = Image.open(img_name)
-        image = image.resize((256, 256), resample=Image.BILINEAR)
+            self.img_path, fname + '.png')
+        img = Image.open(img_name).convert("RGB")
+        img = self.transform(img)
+
         label = torch.tensor(self.data.loc[idx, 'diagnosis'])
 
-        return {
-            'image': self.transform(image),
-            'labels': label
-        }
+        return img, label, fname
 
-    def visualize_dataset(self, n_images=9):
-        """
-        Function to visualize blindness images
-        """
-        train_csv = self.data
-        fig = plt.figure(figsize=(30, 30))
-        train_imgs = os.listdir(self.img_path)
+    def default_transform(self):
+        transform = transforms.Compose([
+            transforms.Resize((self.shape, self.shape)),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+        ])
+        return transform
 
-        for idx, img in enumerate(np.random.choice(train_imgs, n_images)):
-            ax = fig.add_subplot(3, n_images//3, idx+1, xticks=[], yticks=[])
-            im = Image.open(os.path.join(self.img_path, img))
-            plt.imshow(im)
-            lab = train_csv.loc[train_csv['id_code'] ==
-                                img.split('.')[0], 'diagnosis'].values[0]
-            ax.set_title('Severity: %s' % lab, fontsize=40)
+    def visualize_batch(self):
+        loader = DataLoader(self, batch_size=4, shuffle=True)
+        imgs, labels, fnames = next(iter(loader))
+        list_imgs = [imgs[i] for i in range(len(imgs))]
+        self.show(list_imgs, labels, fnames)
+
+    @staticmethod
+    def show(imgs, labels, fnames):
+        if not isinstance(imgs, list):
+            imgs = [imgs]
+        fix, axs = plt.subplots(ncols=len(imgs), squeeze=False)
+        for i, img in enumerate(imgs):
+            img = img.numpy().transpose((1, 2, 0))
+            mean = np.array([0.485, 0.456, 0.406])
+            std = np.array([0.229, 0.224, 0.225])
+            inp = std * img + mean
+            inp = np.clip(inp, 0, 1)
+
+            axs[0, i].imshow(np.asarray(inp))
+            axs[0, i].set(xticklabels=[], yticklabels=[],
+                          xticks=[], yticks=[])
+            axs[0, i].set_title("..."+fnames[i][-6:])
+            axs[0, i].text(0, -0.2, "Severity: " +
+                           str(int(labels[i])), transform=axs[0, i].transAxes)
