@@ -515,17 +515,19 @@ class RANZCRDataset(Dataset):
         modes = ["train", "val", "test"]
         assert mode in modes, "Available options for mode: train, val, test"
 
+        self.mode = mode
+
         if download:
+            download_datasets(tag, path=root)
             extract_zip(os.path.join(root, tag+".zip"),
                         os.path.join(root, tag))
-
-            train_path = os.path.join(root, tag, "train")
-            test_path = os.path.join(root, tag, "test")
-            csv_path = os.path.join(root, tag, "train_annotations.csv")
+            path = os.path.join(root,tag)
         else:
-            train_path = os.path.join(root, "train")
-            test_path = os.path.join(root, "test")
-            csv_path = os.path.join(root, "train_annotations.csv")
+            path = root
+
+        train_path = os.path.join(path, "train")
+        test_path = os.path.join(path, "test")
+        csv_path = os.path.join(path, "train_annotations.csv")
 
         self.data = pd.read_csv(csv_path)
         self.labels, self.encoded_labels = self.get_labels()
@@ -540,10 +542,13 @@ class RANZCRDataset(Dataset):
         if target_transform is not None:
             self.target_transform = target_transform
 
-        if mode == "train":
-            self.file_list = self.train_list
+        if self.mode != "test":
+            if self.mode == "train":
+                self.file_list = self.train_list
+            else:
+                self.file_list = self.valid_list
         else:
-            self.file_list = self.valid_list
+            self.file_list = glob.glob(test_path+"/*")
 
         if show:
             self.visualize_batch()
@@ -553,15 +558,23 @@ class RANZCRDataset(Dataset):
         return self.filelength
 
     def __getitem__(self, idx):
-        img_path = self.file_list[idx][0]
-        fname = img_path.split("/")[-1]
+        if self.mode != "test":
+            img_path = self.file_list[idx][0]
+            fname = img_path.split("/")[-1]
+        else:
+            img_path = self.file_list[idx]
+            fname = img_path.split("/")[-1]
 
         img = Image.open(img_path).convert("RGB")
         img = self.transform(img)
 
-        label = self.file_list[idx][1]
+        if self.mode != "test":
+            label = self.file_list[idx][1]
+            sample = (img, label, fname)
+        else:
+            sample = (img, fname)
 
-        return img, label, fname
+        return sample
 
     def default_transform(self):
         transform = transforms.Compose([
@@ -575,12 +588,17 @@ class RANZCRDataset(Dataset):
 
     def visualize_batch(self):
         loader = DataLoader(self, batch_size=4, shuffle=True)
-        imgs, labels, fnames = next(iter(loader))
+        
+        if self.mode != "test":
+            imgs, labels, fnames = next(iter(loader))
+        else:
+            imgs, fnames = next(iter(loader))
+            labels = None
 
         list_imgs = [imgs[i] for i in range(len(imgs))]
-        self.show(list_imgs, labels, fnames)
+        self.show(list_imgs, fnames, labels)
 
-    def show(self, imgs, labels, fnames):
+    def show(self, imgs, fnames, labels=None):
         if not isinstance(imgs, list):
             imgs = [imgs]
         fix, axs = plt.subplots(ncols=len(imgs), squeeze=False)
@@ -590,13 +608,15 @@ class RANZCRDataset(Dataset):
             std = np.array([0.229, 0.224, 0.225])
             inp = std * img + mean
             inp = np.clip(inp, 0, 1)
-            lab = self.unique_labels[labels[i]]
-
+            
             axs[0, i].imshow(np.asarray(inp))
             axs[0, i].set(xticklabels=[], yticklabels=[],
                           xticks=[], yticks=[])
             axs[0, i].set_title("..."+fnames[i][-11:-4])
-            axs[0, i].text(0, -0.2, str(int(labels[i])) +
+
+            if self.mode != "test":
+                lab = self.unique_labels[labels[i]]
+                axs[0, i].text(0, -0.2, str(int(labels[i])) +
                            ": " + lab, transform=axs[0, i].transAxes)
 
     def get_labels(self):
