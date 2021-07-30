@@ -369,6 +369,8 @@ class HistocancerDataset(Dataset):
 
         modes = ["train", "val", "test"]
         assert mode in modes, "Available options for mode: train, val, test"
+        
+        self.mode = mode
 
         if download:
             download_datasets(tag, path=root)
@@ -378,36 +380,58 @@ class HistocancerDataset(Dataset):
         else:
             self.path = os.path.join(root)
 
-        if mode == "train":
+        if self.mode != "test":
             self.csv_path = os.path.join(self.path, "train_labels.csv")
             self.img_path = os.path.join(self.path, "train")
             self.labels = pd.read_csv(self.csv_path)
             train_data, val_data = train_test_split(
                 self.labels, stratify=self.labels.label, test_size=0.1)
+            
+            if self.mode == "train":
+                data = train_data
+            elif self.mode == "val":
+                data = val_data
+            
+            self.data = data.values
         else:
             self.img_path = os.path.join(self.path, "test")
-
-        self.df = train_data.values
+            self.data = os.listdir(self.img_path)
 
         if transform is None:
             self.transform = self.default_transform(mode)
         else:
             self.transform = transform
+        
+        self.target_transform = target_transform
 
         if show:
             self.visualize_batch()
 
     def __len__(self):
-        return len(self.df)
+        return len(self.data)
 
     def __getitem__(self, index):
-        img_name, label = self.df[index]
-        img_path = os.path.join(self.img_path, img_name+'.tif')
+        
+        if self.mode != "test":        
+            fname, label = self.data[index]
+            img_path = os.path.join(self.img_path, fname+'.tif')
+        else:
+            fname = self.data[index]
+            img_path = os.path.join(self.img_path, fname)
 
-        image = Image.open(img_path).convert("RGB")
+        img = Image.open(img_path).convert("RGB")
+        
         if self.transform is not None:
-            image = self.transform(image)
-        return image, label, img_name
+            img = self.transform(img)
+        if self.target_transform is not None:
+            label = self.transform(label)
+            
+        if self.mode != "test":
+            sample = (img, label, fname)
+        else:
+            sample = (img, fname)
+
+        return sample
 
     def default_transform(self, mode):
         if mode == "train":
@@ -430,13 +454,17 @@ class HistocancerDataset(Dataset):
 
     def visualize_batch(self):
         loader = DataLoader(self, batch_size=4, shuffle=True)
-        imgs, labels, fnames = next(iter(loader))
+
+        if self.mode != "test":
+            imgs, labels, fnames = next(iter(loader))
+        else:
+            imgs, fnames = next(iter(loader))
+            labels = None
 
         list_imgs = [imgs[i] for i in range(len(imgs))]
         self.show(list_imgs, fnames, labels)
 
-    @staticmethod
-    def show(imgs, fnames, labels):
+    def show(self, imgs, fnames, labels=None):
         if not isinstance(imgs, list):
             imgs = [imgs]
         fix, axs = plt.subplots(ncols=len(imgs), squeeze=False)
@@ -450,13 +478,17 @@ class HistocancerDataset(Dataset):
             axs[0, i].imshow(np.asarray(inp))
             axs[0, i].set(xticklabels=[], yticklabels=[],
                           xticks=[], yticks=[])
-            if labels[i] == 0:
-                lab = "non-tumor"
+
+            if self.mode != "test":
+                if labels[i] == 0:
+                    lab = "non-tumor"
+                else:
+                    lab = "tumor"
+                axs[0, i].set_title("..."+fnames[i][-6:])
+                axs[0, i].text(0, -0.2, str(int(labels[i])) + ": " +
+                               lab, transform=axs[0, i].transAxes)
             else:
-                lab = "tumor"
-            axs[0, i].text(0, -0.2, str(int(labels[i])) + ": " +
-                           lab, fontsize=12, transform=axs[0, i].transAxes)
-            axs[0, i].set_title("..."+fnames[i][-6:])
+                axs[0, i].set_title("..."+fnames[i][-11:-4])
 
 
 class RANZCRDataset(Dataset):
