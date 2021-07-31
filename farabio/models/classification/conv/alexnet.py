@@ -1,11 +1,13 @@
 """AlexNet
 
 Adapted from https://github.com/pytorch/vision/blob/master/torchvision/models/alexnet.py
+Paper: https://papers.nips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf
 
 Copyright 2021 | farabio
 """
 import torch
 import torch.nn as nn
+from farabio.utils.helpers import get_num_parameters
 
 __all__ = ['AlexNet', 'alexnet']
 
@@ -64,6 +66,16 @@ class AlexNet(nn.Module):
             self.relu
         )
     
-def alexnet(n_classes):
-    model = AlexNet(n_classes)
+def alexnet(**kwargs) -> AlexNet:
+    model = AlexNet(**kwargs)
     return model
+
+def test():
+    x = torch.randn(1,3,224,224)
+    model = alexnet(n_classes=3)
+    y = model(x)
+    
+    print("Trainable parameters: ", get_num_parameters(model))
+    print("in shape: ", x.shape, ", out shape: ", y.shape)
+    
+# test()
