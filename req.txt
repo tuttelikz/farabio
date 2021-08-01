@@ -4,3 +4,4 @@ albumentations==1.0.3
 scikit-learn==0.24.2
 kaggle==1.5.12
 jupyterlab
+seaborn

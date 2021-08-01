@@ -278,3 +278,11 @@ class EasyDict(dict):
     def pop(self, k, d=None):
         delattr(self, k)
         return super(EasyDict, self).pop(k, d)
+
+def get_num_parameters(model, only_trainable=False):
+    if only_trainable:
+        num_model_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    else:
+        num_model_params = sum(p.numel() for p in model.parameters())
+    
+    return num_model_params
