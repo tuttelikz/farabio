@@ -24,7 +24,7 @@ cfgs = {
 
 
 class VGG(nn.Module):
-    def __init__(self, convnet: nn.Module, n_classes: int = 1000) -> None:
+    def __init__(self, convnet: nn.Module, n_classes: int = 1000, init_weights: bool = True) -> None:
         super(VGG, self).__init__()
         self.conv = convnet
         self.avgpool = nn.AdaptiveAvgPool2d((7, 7))
@@ -37,6 +37,9 @@ class VGG(nn.Module):
 
         self.fc = nn.Sequential(l1, l2)
         self.final = nn.Linear(4096, n_classes)
+        
+        if init_weights:
+            self._initialize_weights()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.conv(x)
@@ -53,6 +56,19 @@ class VGG(nn.Module):
             self.relu,
             self.dropout
         )
+    
+    def _initialize_weights(self) -> None:
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)
 
 
 def make_layers(cfg: List[Union[str, int]], batch_norm: bool = False) -> nn.Sequential:
@@ -125,7 +141,7 @@ def test(convnet="vgg11"):
         "vgg16": vgg16(),
         "vgg16_bn": vgg16_bn(),
         "vgg19": vgg19(),
-        "vgg19_bn": vgg19_bn(n_classes=3)
+        "vgg19_bn": vgg19_bn()
     }
 
     model = tests[convnet]
@@ -134,4 +150,4 @@ def test(convnet="vgg11"):
     print("Trainable parameters: ", get_num_parameters(model))
     print("in shape: ", x.shape, ", out shape: ", y.shape)
 
-#test("vgg19", n_classes = 3)
+#test("vgg11")
