@@ -1,7 +1,7 @@
 """VGG
 
-Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/vgg.py
 Paper: https://arxiv.org/pdf/1409.1556.pdf
+Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/vgg.py
 
 Copyright 2021 | farabio
 """
@@ -37,7 +37,7 @@ class VGG(nn.Module):
 
         self.fc = nn.Sequential(l1, l2)
         self.final = nn.Linear(4096, n_classes)
-        
+
         if init_weights:
             self._initialize_weights()
 
@@ -56,11 +56,12 @@ class VGG(nn.Module):
             self.relu,
             self.dropout
         )
-    
+
     def _initialize_weights(self) -> None:
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(
+                    m.weight, mode='fan_out', nonlinearity='relu')
                 if m.bias is not None:
                     nn.init.constant_(m.bias, 0)
             elif isinstance(m, nn.BatchNorm2d):
@@ -150,4 +151,4 @@ def test(convnet="vgg11"):
     print("Trainable parameters: ", get_num_parameters(model))
     print("in shape: ", x.shape, ", out shape: ", y.shape)
 
-#test("vgg11")
+# test("vgg11")

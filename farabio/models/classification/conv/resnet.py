@@ -1,7 +1,7 @@
 """ResNet
 
-Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py
 Paper: https://arxiv.org/pdf/1512.03385.pdf
+Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py
 
 Copyright 2021 | farabio
 """
@@ -159,14 +159,15 @@ class ResNet(nn.Module):
         self.layer2 = self._make_layer(block, 128, layers[1], stride=2)
         self.layer3 = self._make_layer(block, 256, layers[2], stride=2)
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
-        
+
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(
+                    m.weight, mode='fan_out', nonlinearity='relu')
             elif isinstance(m, nn.BatchNorm2d):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
-        
+
     def _make_layer(
         self,
         block: Type[Union[BasicBlock, Bottleneck]],
