@@ -1,6 +1,6 @@
 """AlexNet
 
-Adapted from https://github.com/pytorch/vision/blob/master/torchvision/models/alexnet.py
+Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/alexnet.py
 Paper: https://papers.nips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf
 
 Copyright 2021 | farabio

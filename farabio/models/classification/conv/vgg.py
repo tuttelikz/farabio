@@ -1,6 +1,6 @@
 """VGG
 
-Adapted from https://github.com/pytorch/vision/blob/master/torchvision/models/vgg.py
+Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/vgg.py
 Paper: https://arxiv.org/pdf/1409.1556.pdf
 
 Copyright 2021 | farabio
