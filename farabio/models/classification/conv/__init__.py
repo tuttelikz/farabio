@@ -17,3 +17,4 @@ from .regnet import *
 from .dla_simple import *
 from .dla import *
 from .alexnet import *
+from .squeezenet import *
