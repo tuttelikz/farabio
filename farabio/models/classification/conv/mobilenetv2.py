@@ -9,6 +9,7 @@ import torch
 from torch import nn
 from torch import Tensor
 from typing import Any, Optional, List
+from farabio.utils.helpers import get_num_parameters
 
 __all__ = ['MobileNetV2', 'mobilenet_v2']
 
@@ -165,3 +166,6 @@ def test():
 
     print("Trainable parameters: ", get_num_parameters(model))
     print("in shape: ", x.shape, ", out shape: ", y.shape)
+
+
+# test()

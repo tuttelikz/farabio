@@ -154,3 +154,6 @@ def test():
 
     print("Trainable parameters: ", get_num_parameters(model))
     print("in shape: ", x.shape, ", out shape: ", y.shape)
+
+
+# test()

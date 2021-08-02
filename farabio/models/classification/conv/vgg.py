@@ -151,4 +151,5 @@ def test(convnet="vgg11"):
     print("Trainable parameters: ", get_num_parameters(model))
     print("in shape: ", x.shape, ", out shape: ", y.shape)
 
+
 # test("vgg11")

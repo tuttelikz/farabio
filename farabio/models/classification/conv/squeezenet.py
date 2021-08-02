@@ -43,7 +43,10 @@ class Fire(nn.Module):
 
 
 class SqueezeNet(nn.Module):
-    def __init__(self, n_classes=1000):
+    def __init__(
+        self, n_classes=1000,
+        init_weights: bool = True
+    ) -> None:
         super(SqueezeNet, self).__init__()
 
         self.n_classes = n_classes
@@ -63,28 +66,32 @@ class SqueezeNet(nn.Module):
             Fire(512, 64, 256, 256)
         )
 
-        conv = nn.Conv2d(512, self.n_classes, kernel_size=1)
+        self.conv = nn.Conv2d(512, self.n_classes, kernel_size=1)
 
         self.classifier = nn.Sequential(
             nn.Dropout(p=0.5),
-            conv,
+            self.conv,
             nn.ReLU(inplace=True),
             nn.AdaptiveAvgPool2d((1, 1))
         )
 
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                if m is conv:
-                    nn.init.normal_(m.weight, mean=0.0, std=0.01)
-                else:
-                    nn.init.kaiming_uniform_(m.weight)
-                if m.bias is not None:
-                    nn.init.constant_(m.bias, 0)
+        if init_weights:
+            self._initialize_weights()
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.features(x)
         x = self.classifier(x)
         return torch.flatten(x, 1)
+
+    def _initialize_weights(self) -> None:
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                if m is self.conv:
+                    nn.init.normal_(m.weight, mean=0.0, std=0.01)
+                else:
+                    nn.init.kaiming_uniform_(m.weight)
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
 
 
 def squeezenet(**kwargs: Any) -> SqueezeNet:
@@ -100,3 +107,6 @@ def test():
 
     print("Trainable parameters: ", get_num_parameters(model))
     print("in shape: ", x.shape, ", out shape: ", y.shape)
+
+
+# test()
