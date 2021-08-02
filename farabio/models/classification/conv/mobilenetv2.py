@@ -1,86 +1,167 @@
-'''MobileNetV2 in PyTorch.
+"""VGG
 
-See the paper "Inverted Residuals and Linear Bottlenecks:
-Mobile Networks for Classification, Detection and Segmentation" for more details.
-'''
+Paper: https://arxiv.org/pdf/1801.04381.pdf
+Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/mobilenetv2.py
+
+Copyright 2021 | farabio
+"""
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
+from torch import nn
+from torch import Tensor
+from typing import Any, Optional, List
+
+__all__ = ['MobileNetV2', 'mobilenet_v2']
 
 
-class Block(nn.Module):
-    '''expand + depthwise + pointwise'''
-    def __init__(self, in_planes, out_planes, expansion, stride):
-        super(Block, self).__init__()
+def _make_divisible(v: float, divisor: int, min_value: Optional[int] = None) -> int:
+    if min_value is None:
+        min_value = divisor
+    new_v = max(min_value, int(v + divisor / 2) // divisor * divisor)
+    if new_v < 0.9 * v:
+        new_v += divisor
+    return new_v
+
+
+class ConvBNReLU(nn.Sequential):
+    def __init__(
+        self,
+        in_planes: int,
+        out_planes: int,
+        kernel_size: int = 3,
+        stride: int = 1,
+        groups: int = 1,
+        dilation: int = 1,
+    ) -> None:
+        padding = (kernel_size - 1) // 2 * dilation
+        norm_layer = nn.BatchNorm2d
+        activation_layer = nn.ReLU6
+        super().__init__(
+            nn.Conv2d(in_planes, out_planes, kernel_size, stride, padding, dilation=dilation, groups=groups,
+                      bias=False),
+            norm_layer(out_planes),
+            activation_layer(inplace=True)
+        )
+        self.out_channels = out_planes
+
+
+class InvertedResidual(nn.Module):
+    def __init__(
+        self,
+        inp: int,
+        oup: int,
+        stride: int,
+        expand_ratio: int,
+    ) -> None:
+        super(InvertedResidual, self).__init__()
         self.stride = stride
 
-        planes = expansion * in_planes
-        self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=1, stride=1, padding=0, bias=False)
-        self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride, padding=1, groups=planes, bias=False)
-        self.bn2 = nn.BatchNorm2d(planes)
-        self.conv3 = nn.Conv2d(planes, out_planes, kernel_size=1, stride=1, padding=0, bias=False)
-        self.bn3 = nn.BatchNorm2d(out_planes)
+        norm_layer = nn.BatchNorm2d
 
-        self.shortcut = nn.Sequential()
-        if stride == 1 and in_planes != out_planes:
-            self.shortcut = nn.Sequential(
-                nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=1, padding=0, bias=False),
-                nn.BatchNorm2d(out_planes),
-            )
+        hidden_dim = int(round(inp * expand_ratio))
+        self.use_res_connect = self.stride == 1 and inp == oup
 
-    def forward(self, x):
-        out = F.relu(self.bn1(self.conv1(x)))
-        out = F.relu(self.bn2(self.conv2(out)))
-        out = self.bn3(self.conv3(out))
-        out = out + self.shortcut(x) if self.stride==1 else out
-        return out
+        layers: List[nn.Module] = []
+        if expand_ratio != 1:
+            layers.append(ConvBNReLU(inp, hidden_dim, kernel_size=1))
+        layers.extend([
+            ConvBNReLU(hidden_dim, hidden_dim,
+                       stride=stride, groups=hidden_dim),
+            nn.Conv2d(hidden_dim, oup, 1, 1, 0, bias=False),
+            norm_layer(oup),
+        ])
+        self.conv = nn.Sequential(*layers)
+        self.out_channels = oup
+
+    def forward(self, x: Tensor) -> Tensor:
+        if self.use_res_connect:
+            return x + self.conv(x)
+        else:
+            return self.conv(x)
 
 
 class MobileNetV2(nn.Module):
-    # (expansion, out_planes, num_blocks, stride)
-    cfg = [(1,  16, 1, 1),
-           (6,  24, 2, 1),  # NOTE: change stride 2 -> 1 for CIFAR10
-           (6,  32, 3, 2),
-           (6,  64, 4, 2),
-           (6,  96, 3, 1),
-           (6, 160, 3, 2),
-           (6, 320, 1, 1)]
-
-    def __init__(self, num_classes=10):
+    def __init__(
+        self,
+        n_classes: int = 1000,
+        width_mult: float = 1.0,
+        round_nearest: int = 8,
+        init_weights: bool = True
+    ) -> None:
         super(MobileNetV2, self).__init__()
-        # NOTE: change conv1 stride 2 -> 1 for CIFAR10
-        self.conv1 = nn.Conv2d(3, 32, kernel_size=3, stride=1, padding=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(32)
-        self.layers = self._make_layers(in_planes=32)
-        self.conv2 = nn.Conv2d(320, 1280, kernel_size=1, stride=1, padding=0, bias=False)
-        self.bn2 = nn.BatchNorm2d(1280)
-        self.linear = nn.Linear(1280, num_classes)
 
-    def _make_layers(self, in_planes):
-        layers = []
-        for expansion, out_planes, num_blocks, stride in self.cfg:
-            strides = [stride] + [1]*(num_blocks-1)
-            for stride in strides:
-                layers.append(Block(in_planes, out_planes, expansion, stride))
-                in_planes = out_planes
-        return nn.Sequential(*layers)
+        block = InvertedResidual
 
-    def forward(self, x):
-        out = F.relu(self.bn1(self.conv1(x)))
-        out = self.layers(out)
-        out = F.relu(self.bn2(self.conv2(out)))
-        # NOTE: change pooling kernel_size 7 -> 4 for CIFAR10
-        out = F.avg_pool2d(out, 4)
-        out = out.view(out.size(0), -1)
-        out = self.linear(out)
-        return out
+        input_channel = 32
+        last_channel = 1280
+
+        inverted_residual_setting = [
+            # t, c, n, s
+            [1, 16, 1, 1],
+            [6, 24, 2, 2],
+            [6, 32, 3, 2],
+            [6, 64, 4, 2],
+            [6, 96, 3, 1],
+            [6, 160, 3, 2],
+            [6, 320, 1, 1],
+        ]
+
+        input_channel = _make_divisible(
+            input_channel * width_mult, round_nearest)
+        self.last_channel = _make_divisible(
+            last_channel * max(1.0, width_mult), round_nearest)
+        features: List[nn.Module] = [ConvBNReLU(3, input_channel, stride=2)]
+
+        for t, c, n, s in inverted_residual_setting:
+            output_channel = _make_divisible(c * width_mult, round_nearest)
+            for i in range(n):
+                stride = s if i == 0 else 1
+                features.append(
+                    block(input_channel, output_channel, stride, expand_ratio=t))
+                input_channel = output_channel
+
+        features.append(ConvBNReLU(
+            input_channel, self.last_channel, kernel_size=1))
+        self.features = nn.Sequential(*features)
+
+        self.classifier = nn.Sequential(
+            nn.Dropout(0.2),
+            nn.Linear(self.last_channel, n_classes),
+        )
+
+        if init_weights:
+            self._initialize_weights()
+
+    def forward(self, x: Tensor) -> Tensor:
+        x = self.features(x)
+        x = nn.functional.adaptive_avg_pool2d(x, (1, 1))
+        x = torch.flatten(x, 1)
+        x = self.classifier(x)
+        return x
+
+    def _initialize_weights(self) -> None:
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out')
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
+            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                nn.init.ones_(m.weight)
+                nn.init.zeros_(m.bias)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.zeros_(m.bias)
+
+
+def mobilenet_v2(**kwargs: Any) -> MobileNetV2:
+    model = MobileNetV2(**kwargs)
+    return model
 
 
 def test():
-    net = MobileNetV2()
-    x = torch.randn(2,3,32,32)
-    y = net(x)
-    print(y.size())
+    x = torch.randn(1, 3, 224, 224)
 
-# test()
+    model = mobilenet_v2()
+    y = model(x)
+
+    print("Trainable parameters: ", get_num_parameters(model))
+    print("in shape: ", x.shape, ", out shape: ", y.shape)
