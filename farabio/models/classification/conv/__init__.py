@@ -5,6 +5,7 @@ from .resnet import *
 from .squeezenet import *
 from .shufflenetv2 import *
 from .mobilenetv2 import *
+from .mobilenetv3 import *
 from .dpn import *
 from .lenet import *
 from .senet import *
