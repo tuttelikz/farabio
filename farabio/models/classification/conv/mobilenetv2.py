@@ -8,22 +8,13 @@ Copyright 2021 | farabio
 import torch
 from torch import nn
 from torch import Tensor
-from typing import Any, Optional, List
-from farabio.utils.helpers import get_num_parameters
+from typing import Any, List, Optional, Callable
+from farabio.utils.helpers import get_num_parameters, _make_divisible
 
 __all__ = ['MobileNetV2', 'mobilenet_v2']
 
 
-def _make_divisible(v: float, divisor: int, min_value: Optional[int] = None) -> int:
-    if min_value is None:
-        min_value = divisor
-    new_v = max(min_value, int(v + divisor / 2) // divisor * divisor)
-    if new_v < 0.9 * v:
-        new_v += divisor
-    return new_v
-
-
-class ConvBNReLU(nn.Sequential):
+class ConvBNActivation(nn.Sequential):
     def __init__(
         self,
         in_planes: int,
@@ -31,11 +22,16 @@ class ConvBNReLU(nn.Sequential):
         kernel_size: int = 3,
         stride: int = 1,
         groups: int = 1,
+        norm_layer: Optional[Callable[..., nn.Module]] = None,
+        activation_layer: Optional[Callable[..., nn.Module]] = None,
         dilation: int = 1,
     ) -> None:
         padding = (kernel_size - 1) // 2 * dilation
-        norm_layer = nn.BatchNorm2d
-        activation_layer = nn.ReLU6
+        if norm_layer is None:
+            norm_layer = nn.BatchNorm2d
+        if activation_layer is None:
+            activation_layer = nn.ReLU6
+
         super().__init__(
             nn.Conv2d(in_planes, out_planes, kernel_size, stride, padding, dilation=dilation, groups=groups,
                       bias=False),
@@ -63,10 +59,10 @@ class InvertedResidual(nn.Module):
 
         layers: List[nn.Module] = []
         if expand_ratio != 1:
-            layers.append(ConvBNReLU(inp, hidden_dim, kernel_size=1))
+            layers.append(ConvBNActivation(inp, hidden_dim, kernel_size=1))
         layers.extend([
-            ConvBNReLU(hidden_dim, hidden_dim,
-                       stride=stride, groups=hidden_dim),
+            ConvBNActivation(hidden_dim, hidden_dim,
+                             stride=stride, groups=hidden_dim),
             nn.Conv2d(hidden_dim, oup, 1, 1, 0, bias=False),
             norm_layer(oup),
         ])
@@ -110,7 +106,8 @@ class MobileNetV2(nn.Module):
             input_channel * width_mult, round_nearest)
         self.last_channel = _make_divisible(
             last_channel * max(1.0, width_mult), round_nearest)
-        features: List[nn.Module] = [ConvBNReLU(3, input_channel, stride=2)]
+        features: List[nn.Module] = [
+            ConvBNActivation(3, input_channel, stride=2)]
 
         for t, c, n, s in inverted_residual_setting:
             output_channel = _make_divisible(c * width_mult, round_nearest)
@@ -120,7 +117,7 @@ class MobileNetV2(nn.Module):
                     block(input_channel, output_channel, stride, expand_ratio=t))
                 input_channel = output_channel
 
-        features.append(ConvBNReLU(
+        features.append(ConvBNActivation(
             input_channel, self.last_channel, kernel_size=1))
         self.features = nn.Sequential(*features)
 
