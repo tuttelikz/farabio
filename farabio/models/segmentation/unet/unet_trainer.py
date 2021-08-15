@@ -1,22 +1,22 @@
 import os
 import numpy as np
-import torch
-import torch.nn as nn
-from torch.utils.data import Dataset, DataLoader, random_split
 import albumentations as A
-from albumentations.pytorch import ToTensor
+from albumentations.pytorch import ToTensorV2
 from farabio.core.convnettrainer import ConvnetTrainer
+from farabio.data.biodatasets import DSB18Dataset
 from farabio.models.segmentation.unet.unet import Unet
 from farabio.utils.regul import EarlyStopping
 from farabio.utils.losses import FocalTverskyLoss, Losses, DiceBCELoss, DiceLoss, IoULoss, FocalLoss, LovaszHingeLoss, TverskyLoss, LovaszHingeLoss
 from farabio.utils.tensorboard import TensorBoard
 from farabio.utils.helpers import makedirs, parallel_state_dict
+import torch
+import torch.nn as nn
+from torch.utils.data import Dataset, DataLoader, random_split
+from torchvision.datasets import ImageFolder
+from torchsummary import summary
 import skimage
 from skimage import io, transform, img_as_ubyte
 from skimage.io import imsave
-from torchsummary import summary
-from torchvision.datasets import ImageFolder
-from farabio.data.biodatasets import DSB18Dataset
 
 
 class UnetTrainer(ConvnetTrainer):
