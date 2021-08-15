@@ -13,6 +13,9 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
 
   
@@ -30,6 +33,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -39,7 +43,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Handbook" href="handbook/index.html" />
+    <link rel="next" title="Reference" href="reference/index.html" />
     <link rel="prev" title="farabio" href="index.html" /> 
 </head>
 
@@ -90,17 +94,16 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-install">How to install</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#activate-conda-environment">1. Activate conda environment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#install-prerequisites">2. Install prerequisites:</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#install-farabio">3. Install farabio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-farabio">2. Install farabio</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="handbook/index.html">Handbook</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="handbook/index.html">Handbook</a></li>
 </ul>
 
             
@@ -170,64 +173,17 @@
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="prerequisites">
-<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>python=3.8
-numpy=1.19
-scikit_image=0.18
-Pillow=8.1
-torch=1.7
-torchvision=0.8
-matplotlib=3.3
-</pre></div>
-</div>
-<details>
-<summary><a>list all prerequisites</a></summary><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>albumentations=0.5.2
-autopep8=1.5.5
-fire=0.4.0
-imageio=2.9.0
-ipdb=0.13.6
-matplotlib=3.3.4
-numpy=1.19.4
-opencv_python=4.5.1.48
-pandas=1.2.2
-Pillow=8.1.1
-recommonmark=0.7.1
-scikit_image=0.18.1
-scipy=1.6.1
-seaborn=0.11.1
-sphinx-git=11.0.0
-tabulate=0.8.9
-tensorboardX=2.1
-tensorflow=2.4.1
-terminaltables=3.1.0
-torch=1.7
-torchvision=0.8
-torchsummary=1.5.1
-tqdm=4.58.0
-visdom=0.1.8.9
-</pre></div>
-</div>
-</details></div>
 <div class="section" id="how-to-install">
 <h2>How to install<a class="headerlink" href="#how-to-install" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="activate-conda-environment">
 <h3>1. Activate conda environment<a class="headerlink" href="#activate-conda-environment" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ conda create -n coolenv <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8
 $ conda activate coolenv
-$ conda install <span class="nv">pytorch</span><span class="o">==</span><span class="m">1</span>.7.1 <span class="nv">torchvision</span><span class="o">==</span><span class="m">0</span>.8.2 <span class="nv">torchaudio</span><span class="o">==</span><span class="m">0</span>.7.2 <span class="nv">cudatoolkit</span><span class="o">=</span><span class="m">11</span>.0 -c pytorch
-</pre></div>
-</div>
-</div>
-<div class="section" id="install-prerequisites">
-<h3>2. Install prerequisites:<a class="headerlink" href="#install-prerequisites" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git clone -b https://github.com/tuttelikz/farabio.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> farabio
-$ pip install -r requirements.txt
 </pre></div>
 </div>
 </div>
 <div class="section" id="install-farabio">
-<h3>3. Install farabio<a class="headerlink" href="#install-farabio" title="Permalink to this headline">¶</a></h3>
+<h3>2. Install farabio<a class="headerlink" href="#install-farabio" title="Permalink to this headline">¶</a></h3>
 <ol class="upperalpha simple">
 <li><p>With pip:</p></li>
 </ol>
@@ -238,9 +194,24 @@ $ pip install -r requirements.txt
 <li><p>Setup from source:</p></li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python -m pip install --upgrade pip setuptools wheel  <span class="c1"># ensure up-to-date</span>
-$ pip install <span class="o">[</span>-e<span class="o">]</span> .                                    <span class="c1"># flag for editable mode</span>
+$ pip install <span class="o">[</span>-e<span class="o">]</span> . -f https://download.pytorch.org/whl/torch_stable.html  <span class="c1"># flag for editable mode</span>
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>docutils==0.17.1,
+jupyterlab==3.1.6,
+matplotlib==3.4.3,
+numpy==1.21.1,
+pandas==1.3.1,
+scikit-image==0.18.2,
+scikit-learn==0.24.2,
+torch==1.9.0+cu111,
+torchvision==0.10.0+cu111,
+torchaudio==0.9.0
+</pre></div>
 </div>
 </div>
 </div>
@@ -251,7 +222,7 @@ $ pip install <span class="o">[</span>-e<span class="o">]</span> .              
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="handbook/index.html" class="btn btn-neutral float-right" title="Handbook" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="reference/index.html" class="btn btn-neutral float-right" title="Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="index.html" class="btn btn-neutral float-left" title="farabio" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

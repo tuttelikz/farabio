@@ -28,7 +28,7 @@ $ conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=
 
 ```bash
 $ git clone https://github.com/tuttelikz/farabio.git && cd farabio
-$ pip install -r requirements.txt
+$ pip install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
 ### 3. Install **farabio**:
@@ -40,7 +40,7 @@ $ pip install farabio
 
 **B. Setup from source**:
 ```bash
-$ pip install [-e] .      # flag for editable mode
+$ pip install [-e] . -f https://download.pytorch.org/whl/torch_stable.html    # flag for editable mode
 ```
 
 ## Updates
