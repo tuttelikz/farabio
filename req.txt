@@ -5,3 +5,6 @@ scikit-learn==0.24.2
 kaggle==1.5.12
 jupyterlab
 seaborn
+torchsummary==1.5.1
+einops==0.3.0
+tensorflow==2.6.0
