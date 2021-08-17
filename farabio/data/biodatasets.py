@@ -1,11 +1,10 @@
 import os
-import random
+import unittest
 import subprocess
 import numpy as np
 import pandas as pd
+from zipfile import ZipFile
 from PIL import Image
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
 from typing import Optional, Callable
 import matplotlib.pyplot as plt
 from skimage import io, transform
@@ -13,12 +12,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
 import torch
 from torch.utils.data import Dataset, DataLoader
-import torchvision
 import torchvision.transforms.functional as F
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from torchvision.utils import draw_segmentation_masks
-from zipfile import ZipFile
 
 
 kaggle_biodatasets = [
@@ -215,15 +212,15 @@ class DSB18Dataset(Dataset):
         tag = "data-science-bowl-2018"
         modes = ["train", "val", "test"]
         assert mode in modes, "Available options for mode: train, val"
-        
+
         if mode == "train" or mode == "val":
             stage = "stage1_train"
         else:
             stage = "stage1_test"
-        
+
         self.mode = mode
         path = os.path.join(root, tag, stage)
-        
+
         if download:
             download_datasets(tag, path=root)
             extract_zip(os.path.join(root, tag+".zip"),
@@ -234,7 +231,7 @@ class DSB18Dataset(Dataset):
 
         self.path = path
         self.shape = shape
-        
+
         if self.mode != "test":
             seed = 42
             train_list = os.listdir(self.path)
@@ -268,21 +265,21 @@ class DSB18Dataset(Dataset):
         return len(self.folders)
 
     def __getitem__(self, idx):
-        
+
         image_folder = os.path.join(self.path, self.folders[idx], 'images/')
         fname = os.listdir(image_folder)[0]
         image_path = os.path.join(image_folder, fname)
         img = Image.open(image_path).convert('RGB')
         img = self.transform(img)
-        
+
         if self.mode != "test":
-            mask_folder = os.path.join(self.path, self.folders[idx], 'masks/')        
+            mask_folder = os.path.join(self.path, self.folders[idx], 'masks/')
             mask = self.get_mask(mask_folder)
             mask = self.target_transform(mask)
             sample = (img, mask, fname)
         else:
             sample = (img, fname)
-        
+
         return sample
 
     def get_mask(self, mask_folder):
@@ -313,14 +310,14 @@ class DSB18Dataset(Dataset):
 
     def visualize_batch(self):
         loader = DataLoader(self, shuffle=True, batch_size=4)
-        
+
         if self.mode != "test":
             imgs, masks, fnames = next(iter(loader))
         else:
             imgs, fnames = next(iter(loader))
 
         batch_inputs = F.convert_image_dtype(imgs, dtype=torch.uint8)
-        
+
         if self.mode != "test":
             batch_outputs = F.convert_image_dtype(masks, dtype=torch.bool)
             list_imgs = [
@@ -330,7 +327,7 @@ class DSB18Dataset(Dataset):
             ]
         else:
             list_imgs = [imgs[i] for i in range(len(imgs))]
-            
+
         self.show(list_imgs, fnames)
 
     @staticmethod
@@ -369,7 +366,7 @@ class HistocancerDataset(Dataset):
 
         modes = ["train", "val", "test"]
         assert mode in modes, "Available options for mode: train, val, test"
-        
+
         self.mode = mode
 
         if download:
@@ -386,12 +383,12 @@ class HistocancerDataset(Dataset):
             self.labels = pd.read_csv(self.csv_path)
             train_data, val_data = train_test_split(
                 self.labels, stratify=self.labels.label, test_size=0.1)
-            
+
             if self.mode == "train":
                 data = train_data
             elif self.mode == "val":
                 data = val_data
-            
+
             self.data = data.values
         else:
             self.img_path = os.path.join(self.path, "test")
@@ -401,7 +398,7 @@ class HistocancerDataset(Dataset):
             self.transform = self.default_transform(mode)
         else:
             self.transform = transform
-        
+
         self.target_transform = target_transform
 
         if show:
@@ -411,8 +408,8 @@ class HistocancerDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, index):
-        
-        if self.mode != "test":        
+
+        if self.mode != "test":
             fname, label = self.data[index]
             img_path = os.path.join(self.img_path, fname+'.tif')
         else:
@@ -420,12 +417,12 @@ class HistocancerDataset(Dataset):
             img_path = os.path.join(self.img_path, fname)
 
         img = Image.open(img_path).convert("RGB")
-        
+
         if self.transform is not None:
             img = self.transform(img)
         if self.target_transform is not None:
             label = self.transform(label)
-            
+
         if self.mode != "test":
             sample = (img, label, fname)
         else:
@@ -521,7 +518,7 @@ class RANZCRDataset(Dataset):
             download_datasets(tag, path=root)
             extract_zip(os.path.join(root, tag+".zip"),
                         os.path.join(root, tag))
-            path = os.path.join(root,tag)
+            path = os.path.join(root, tag)
         else:
             path = root
 
@@ -588,7 +585,7 @@ class RANZCRDataset(Dataset):
 
     def visualize_batch(self):
         loader = DataLoader(self, batch_size=4, shuffle=True)
-        
+
         if self.mode != "test":
             imgs, labels, fnames = next(iter(loader))
         else:
@@ -608,7 +605,7 @@ class RANZCRDataset(Dataset):
             std = np.array([0.229, 0.224, 0.225])
             inp = std * img + mean
             inp = np.clip(inp, 0, 1)
-            
+
             axs[0, i].imshow(np.asarray(inp))
             axs[0, i].set(xticklabels=[], yticklabels=[],
                           xticks=[], yticks=[])
@@ -617,7 +614,7 @@ class RANZCRDataset(Dataset):
             if self.mode != "test":
                 lab = self.unique_labels[labels[i]]
                 axs[0, i].text(0, -0.2, str(int(labels[i])) +
-                           ": " + lab, transform=axs[0, i].transAxes)
+                               ": " + lab, transform=axs[0, i].transAxes)
 
     def get_labels(self):
         self.data = self.data.drop(["data"], axis=1)
@@ -684,19 +681,20 @@ class RetinopathyDataset(Dataset):
             path = os.path.join(root, tag)
         else:
             path = root
-        
+
         self.mode = mode
-        
+
         if mode != "test":
             self.csv_path = os.path.join(path, "train.csv")
             self.img_path = os.path.join(path, "train_images")
             data = pd.read_csv(self.csv_path)
-            
-            train_idx, val_idx = train_test_split(range(len(data)), test_size=0.1,)
-            
+
+            train_idx, val_idx = train_test_split(
+                range(len(data)), test_size=0.1,)
+
             train_data = data.iloc[train_idx]
             val_data = data.iloc[val_idx]
-                    
+
             if self.mode == "train":
                 self.data = train_data
                 self.data.reset_index(drop=True, inplace=True)
@@ -706,7 +704,7 @@ class RetinopathyDataset(Dataset):
         else:
             self.img_path = os.path.join(path, "test_images")
             self.data = os.listdir(self.img_path)
-        
+
         self.shape = shape
 
         if transform is None:
@@ -730,7 +728,7 @@ class RetinopathyDataset(Dataset):
             fname = self.data[idx]
 
         img_name = os.path.join(self.img_path, fname)
-        
+
         img = Image.open(img_name).convert("RGB")
         img = self.transform(img)
 
@@ -739,7 +737,7 @@ class RetinopathyDataset(Dataset):
             sample = (img, label, fname)
         else:
             sample = (img, fname)
-        
+
         return sample
 
     def default_transform(self):
@@ -753,7 +751,7 @@ class RetinopathyDataset(Dataset):
 
     def visualize_batch(self):
         loader = DataLoader(self, batch_size=4, shuffle=True)
-        
+
         if self.mode != "test":
             imgs, labels, fnames = next(iter(loader))
         else:
@@ -778,7 +776,42 @@ class RetinopathyDataset(Dataset):
             axs[0, i].set(xticklabels=[], yticklabels=[],
                           xticks=[], yticks=[])
             axs[0, i].set_title("..."+fnames[i][-10:-4])
-            
+
             if self.mode != "test":
                 axs[0, i].text(0, -0.2, "Severity: " +
                                str(int(labels[i])), transform=axs[0, i].transAxes)
+
+
+class TestBiodatasets(unittest.TestCase):
+    def testChestXrayDataset(self):
+        _path = "/home/data/02_SSD4TB/suzy/datasets/public/chest-xray"
+        valid_dataset = ChestXrayDataset(
+            root=_path, download=False, mode="val", show=False)
+        print(valid_dataset)
+
+    def testDSB18Dataset(self):
+        _path = "/home/data/02_SSD4TB/suzy/datasets/public/data-science-bowl-2018"
+        train_dataset = DSB18Dataset(
+            root=_path, transform=None, mode="train", download=False, show=False)
+        print(train_dataset)
+
+    def testHistocancerDataset(self):
+        _path = "/home/data/02_SSD4TB/suzy/datasets/public/histopathologic-cancer-detection"
+        train_dataset = HistocancerDataset(
+            root=_path, download=False, mode="train", show=False)
+        print(train_dataset)
+
+    def testRANZCRDataset(self):
+        _path = "/home/data/02_SSD4TB/suzy/datasets/public/ranzcr-clip-catheter-line-classification"
+        train_dataset = RANZCRDataset(
+            root=_path, show=False, shape=512, mode="train", download=False)
+        print(train_dataset)
+
+    def testRetinopathyDataset(self):
+        _path = "/home/data/02_SSD4TB/suzy/datasets/public/aptos2019-blindness-detection"
+        train_dataset = RetinopathyDataset(
+            root=_path, mode="train", show=False, download=False)
+        print(train_dataset)
+
+
+# unittest.main()

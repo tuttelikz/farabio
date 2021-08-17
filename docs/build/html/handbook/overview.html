@@ -13,6 +13,9 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
   <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
 
   
@@ -30,6 +33,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -90,14 +94,13 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Handbook</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Overview</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#purpose">Purpose</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#what-can-i-do-with-this-package">What can I do with this package?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#package-organization">Package organization</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#diagram">Diagram</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#tree-structure">Tree structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#inheritance-of-trainers">Inheritance of trainers</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-contribute">How to contribute?</a><ul>
@@ -114,7 +117,6 @@
 <li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 </ul>
 
             
@@ -226,116 +228,6 @@ models  [fillcolor=2, style=&quot;rounded&quot;]
 utils  [fillcolor=2, style=&quot;rounded&quot;]
 }" class="graphviz" /></div>
 </div>
-<div class="section" id="tree-structure">
-<h3>Tree structure<a class="headerlink" href="#tree-structure" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
-├── core
-│   ├── basetrainer.py
-│   ├── configs.py
-│   ├── convnettrainer.py
-│   └── gantrainer.py
-├── data
-│   ├── biodatasets.py
-│   ├── datasets.py
-│   ├── dirops.py
-│   ├── imgops.py
-│   └── transforms.py
-├── kernel.py
-├── models
-│   ├── blocks
-│   │   └── vgg.py
-│   ├── classification
-│   │   ├── class_trainer.py
-│   │   ├── conv
-│   │   │   ├── densenet.py
-│   │   │   ├── dla.py
-│   │   │   ├── dla_simple.py
-│   │   │   ├── dpn.py
-│   │   │   ├── efficientnet.py
-│   │   │   ├── googlenet.py
-│   │   │   ├── lenet.py
-│   │   │   ├── mobilenet.py
-│   │   │   ├── mobilenetv2.py
-│   │   │   ├── pnasnet.py
-│   │   │   ├── preact_resnet.py
-│   │   │   ├── regnet.py
-│   │   │   ├── resnet.py
-│   │   │   ├── resnext.py
-│   │   │   ├── senet.py
-│   │   │   ├── shufflenet.py
-│   │   │   ├── shufflenetv2.py
-│   │   │   └── vgg.py
-│   │   ├── transformer_trainer.py
-│   │   └── vit
-│   │       ├── efficient.py
-│   │       ├── linformer.py
-│   │       └── reversible.py
-│   ├── detection
-│   │   ├── faster_rcnn
-│   │   │   ├── creator_tool.py
-│   │   │   ├── dataset.py
-│   │   │   ├── faster_rcnn.py
-│   │   │   ├── faster_rcnn_trainer.py
-│   │   │   ├── faster_rcnn_vgg16.py
-│   │   │   └── region_proposal_network.py
-│   │   └── yolov3
-│   │       ├── config
-│   │       │   ├── coco.data
-│   │       │   ├── coco.names
-│   │       │   ├── create_custom_model.sh
-│   │       │   ├── custom.data
-│   │       │   ├── yolov3-custom.cfg
-│   │       │   ├── yolov3-tiny.cfg
-│   │       │   └── yolov3.cfg
-│   │       ├── darknet.py
-│   │       ├── parsers.py
-│   │       ├── yolo_trainer.py
-│   │       └── yolo_v3.py
-│   ├── segmentation
-│   │   ├── attunet
-│   │   │   ├── attunet.py
-│   │   │   └── attunet_trainer.py
-│   │   └── unet
-│   │       ├── unet.py
-│   │       └── unet_trainer.py
-│   ├── superres
-│   │   └── srgan
-│   │       ├── srgan.py
-│   │       └── srgan_trainer.py
-│   └── translation
-│       └── cyclegan
-│           ├── cyclegan.py
-│           └── cyclegan_trainer.py
-└── utils
-  ├── bboxtools.py
-  ├── collect_env.py
-  ├── exceptions.py
-  ├── helpers.py
-  ├── loggers.py
-  ├── losses.py
-  ├── meters.py
-  ├── metrics.py
-  ├── misc.py
-  ├── regul.py
-  ├── tensorboard.py
-  └── visdom.py
-</pre></div>
-</div>
-</div>
-<div class="section" id="inheritance-of-trainers">
-<h3>Inheritance of trainers<a class="headerlink" href="#inheritance-of-trainers" title="Permalink to this headline">¶</a></h3>
-<div class="graphviz"><img src="../_images/inheritance-911f39814576f00ab5b887aa316c5b72e56afe0b.png" alt="Inheritance diagram of farabio.models.segmentation.unet.unet_trainer.UnetTrainer, farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer, farabio.models.superres.srgan.srgan_trainer.SrganTrainer, farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer, farabio.models.detection.yolov3.yolo_trainer.YoloTrainer, farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer" usemap="#inheritance3c1cb5eb72" class="inheritance graphviz" /></div>
-<map id="inheritance3c1cb5eb72" name="inheritance3c1cb5eb72">
-<area shape="rect" id="node1" href="../reference/models.segmentation.attunet.attunet_trainer.html#farabio.models.segmentation.attunet.attunet_trainer.AttunetTrainer" target="_top" title="Attention U&#45;Net trainer class. Override with custom methods here." alt="" coords="334,5,449,31"/>
-<area shape="rect" id="node2" href="../reference/core.convnettrainer.html#farabio.core.convnettrainer.ConvnetTrainer" target="_top" title="ConvnetTrainer is main trainer class for every ConvNet related" alt="" coords="152,104,272,129"/>
-<area shape="rect" id="node6" href="../reference/models.detection.faster_rcnn.faster_rcnn_trainer.html#farabio.models.detection.faster_rcnn.faster_rcnn_trainer.FasterRCNNTrainer" target="_top" title="FasterRCNNTrainer trainer class. Override with custom methods here." alt="" coords="320,55,463,80"/>
-<area shape="rect" id="node8" href="../reference/models.segmentation.unet.unet_trainer.html#farabio.models.segmentation.unet.unet_trainer.UnetTrainer" target="_top" title="U&#45;Net trainer class. Override with custom methods here." alt="" coords="343,104,440,129"/>
-<area shape="rect" id="node9" href="../reference/models.detection.yolov3.yolo_trainer.html#farabio.models.detection.yolov3.yolo_trainer.YoloTrainer" target="_top" title="YoloTrainer trainer class. Override with custom methods here." alt="" coords="345,153,437,179"/>
-<area shape="rect" id="node3" href="../reference/core.basetrainer.html#farabio.core.basetrainer.BaseTrainer" target="_top" title="This is the base core module for all types of trainers. &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;It inherits Python&#39;s Abstract Base Class (ABC)." alt="" coords="5,153,104,179"/>
-<area shape="rect" id="node5" href="../reference/core.gantrainer.html#farabio.core.gantrainer.GanTrainer" target="_top" title="GanTrainer" alt="" coords="166,203,258,228"/>
-<area shape="rect" id="node4" href="../reference/models.translation.cyclegan.cyclegan_trainer.html#farabio.models.translation.cyclegan.cyclegan_trainer.CycleganTrainer" target="_top" title="CycleganTrainer trainer class. Override with custom methods here." alt="" coords="328,203,455,228"/>
-<area shape="rect" id="node7" href="../reference/models.superres.srgan.srgan_trainer.html#farabio.models.superres.srgan.srgan_trainer.SrganTrainer" target="_top" title="SrganTrainer trainer class. Override with custom methods here." alt="" coords="340,252,443,277"/>
-</map></div>
 </div>
 <div class="section" id="how-to-contribute">
 <h2>How to contribute?<a class="headerlink" href="#how-to-contribute" title="Permalink to this headline">¶</a></h2>

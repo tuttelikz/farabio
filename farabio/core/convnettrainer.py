@@ -2,6 +2,8 @@ import torch
 import sys
 from farabio.core.basetrainer import BaseTrainer
 
+__all__ = ['ConvnetTrainer']
+
 
 class ConvnetTrainer(BaseTrainer):
     """ConvnetTrainer is main trainer class for every ConvNet related
@@ -38,14 +40,14 @@ class ConvnetTrainer(BaseTrainer):
         self._start_epoch = 1
         self._has_eval = True
         self._eval_interval = 1
-        self.train_loader = None
-        self.valid_loader = None
-        self.test_loader = None
-        self.model = None
+        self._train_loader = None
+        self._valid_loader = None
+        self._test_loader = None
+        self._model = None
         self._model_path = None
-        self.train_epoch_iter = None
-        self.valid_epoch_iter = None
-        self.test_loop_iter = None
+        self._train_epoch_iter = None
+        self._valid_epoch_iter = None
+        self._test_loop_iter = None
         self._use_tqdm = False
         self._data_parallel = None
         self._next_loop = False
@@ -146,7 +148,7 @@ class ConvnetTrainer(BaseTrainer):
         """
         self.on_train_epoch_start()
 
-        for train_epoch_var in self.train_epoch_iter:
+        for train_epoch_var in self._train_epoch_iter:
             self.train_batch(train_epoch_var)
 
         self.on_train_epoch_end()
@@ -169,7 +171,7 @@ class ConvnetTrainer(BaseTrainer):
     def on_train_start(self):
         """Hook: On start of training loop
         """
-        self.batch_training_loss = 0
+        self._batch_training_loss = 0
 
     def start_logger(self, *args):
         """Hook: Starts logger
@@ -179,8 +181,8 @@ class ConvnetTrainer(BaseTrainer):
     def on_train_epoch_start(self):
         """Hook: On epoch start
         """
-        self.batch_training_loss = 0
-        self.model.train()
+        self._batch_training_loss = 0
+        self._model.train()
 
     def on_start_training_batch(self, *args):
         """Hook: On training batch start
@@ -245,7 +247,7 @@ class ConvnetTrainer(BaseTrainer):
         with torch.no_grad():
             self.on_evaluate_epoch_start()
 
-            for valid_epoch_var in self.valid_epoch_iter:
+            for valid_epoch_var in self._valid_epoch_iter:
                 self.on_evaluate_batch_start(valid_epoch_var)
                 if self._next_loop:
                     self._next_loop = False
@@ -303,7 +305,7 @@ class ConvnetTrainer(BaseTrainer):
     def test_loop(self):
         """Hook: test loop
         """
-        for test_loop_var in self.test_loop_iter:
+        for test_loop_var in self._test_loop_iter:
             self.on_start_test_batch()
             self.test_step(test_loop_var)
             self.on_end_test_batch()

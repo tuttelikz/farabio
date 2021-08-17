@@ -13,11 +13,11 @@ for each or most of the supported functionalities.
 
 Features:
 
-* Flexible PyTorch trainers
+* Biomedical datasets
 
 * Common DL models
-   
-* Biomedical datasets
+
+* Flexible PyTorch trainers
 
 * Loggers, visualization
 
@@ -28,8 +28,8 @@ Overview
    :maxdepth: 2
 
    installation.rst
-   handbook/index.rst
    reference/index.rst
+   handbook/index.rst
 
 Indices and tables
 ---------------------
