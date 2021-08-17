@@ -10,6 +10,7 @@ setuptools.setup(
     author="San Askaruly",
     author_email="s.askaruly@gmail.com",
     description="farabio - Deep learning for biomedical imaging",
+    license='Apache license',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/tuttelikz/farabio",
@@ -37,7 +38,6 @@ setuptools.setup(
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.8',

@@ -1,6 +1,6 @@
-# farabio - Deep learning toolkit for biomedical imaging
+# Farabio - Deep learning toolkit for biomedical imaging
 
-![logo](logo/Final_Cropped_3.png)
+![logo](logo/logo.png)
 
 [![GitHub](https://img.shields.io/github/license/tuttelikz/farabio)](https://opensource.org/licenses/MIT) [![Documentation Status](https://readthedocs.org/projects/farabio/badge/?version=latest)](https://farabio.readthedocs.io/en/latest)
 [![PyPI version](https://img.shields.io/pypi/v/farabio)](https://badge.fury.io/py/farabio)
@@ -36,7 +36,7 @@ $ pip install [-e] . -f https://download.pytorch.org/whl/torch_stable.html    # 
 
 ## Updates
 
-[21-04-02] Release of [`farabio==0.0.2`](https://pypi.org/project/farabio/)  
+[21-08-17] Release of [`farabio==0.0.2`](https://pypi.org/project/farabio/)  
 [21-04-02] Release of [`farabio==0.0.1`](https://pypi.org/project/farabio/)  
 [21-03-27] This work is selected for poster on [PyTorch Ecosystem Day](https://pytorch.org/ecosystem/pted/2021) to be held on April 21, 2021.
 
