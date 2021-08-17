@@ -16,14 +16,17 @@
 
 ## What's New
 
-### August 17, 2021
+### August 18, 2021
 Release of [`farabio==0.0.2`](https://pypi.org/project/farabio/)
+
+### April 21, 2021
+This work is presented at PyTorch Ecosystem day. Poster is [here](https://pytorch.org/ecosystem/pted/2021).
 
 ### April 2, 2021
 Release of [`farabio==0.0.1`](https://pypi.org/project/farabio/)  
 
 ### March 3, 2021
-This work is presented on PyTorch Ecosystem Day (21/04/21). Poster is [here](https://pytorch.org/ecosystem/pted/2021).
+This work is selected for PyTorch Ecosystem Day.
 
 ## Introduction
 
@@ -80,10 +83,9 @@ $ pip install . -f https://download.pytorch.org/whl/torch_stable.html
 If you like this repository, please click on Star.
 
 ## Licenses
-This work is licensed Apache 2.0.
+This work is licensed [Apache 2.0](https://github.com/tuttelikz/farabio/blob/main/LICENSE).
 
 ## Links
-
 - API documentations: https://farabio.readthedocs.io
 - Code: https://github.com/tuttelikz/farabio
 - Issue tracker: https://github.com/tuttelikz/farabio/issues
