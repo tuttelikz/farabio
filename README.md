@@ -17,13 +17,13 @@
 ## What's New
 
 ### August 18, 2021
-Release of [`farabio==0.0.2`](https://pypi.org/project/farabio/)
+Release of [`farabio==0.0.2`](https://pypi.org/project/farabio/0.0.2/)
 
 ### April 21, 2021
 This work is presented at PyTorch Ecosystem day. Poster is [here](https://pytorch.org/ecosystem/pted/2021).
 
 ### April 2, 2021
-Release of [`farabio==0.0.1`](https://pypi.org/project/farabio/)  
+Release of [`farabio==0.0.1`](https://pypi.org/project/farabio/0.0.1/)  
 
 ### March 3, 2021
 This work is selected for PyTorch Ecosystem Day.
