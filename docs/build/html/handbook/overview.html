@@ -43,7 +43,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Tutorial" href="tutorial.html" />
+    <link rel="next" title="Machine learning for Biomedical Engineers" href="concepts.html" />
     <link rel="prev" title="Handbook" href="index.html" /> 
 </head>
 
@@ -93,26 +93,16 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Handbook</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Overview</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#purpose">Purpose</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#what-can-i-do-with-this-package">What can I do with this package?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#package-organization">Package organization</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#diagram">Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#package-structure">Package structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-contribute">How to contribute?</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-contribute">How to contribute?</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#how-to-report-an-issue">How to report an issue</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#clean-code-caveat">Clean code Caveat</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="concepts.html">Concepts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="downloads.html">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html">Machine learning for Biomedical Engineers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l2"><a class="reference internal" href="faq.html">FAQ</a></li>
 </ul>
@@ -188,30 +178,25 @@
             
   <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
-<p>Deep learning has transformed the way biomedical engineers approach complex problems. Especially, whose work is associated with day-to-day medical/optical imaging equipment are able to integrate deep learning techniques rapidly. There are several biomedical applications we in our lab are interested to pursue in research, for instance, classfication for screening, segmentation for accurate border/region detection, super-resolution for quality enhancement and generative models, eg. digital histopathology.</p>
-<p>The pipeline of integrating deep learning for our applications is as follows:</p>
-<div class="line-block">
-<div class="line">1. Prepare data <span class="raw-html">&rarr;</span> 2. Customize model <span class="raw-html">&rarr;</span> 3. Train/test <span class="raw-html">&rarr;</span> 4. Analyze/Visualize</div>
-</div>
-<div class="section" id="purpose">
-<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Prototyping: code reuse</p></li>
-<li><p>Educational: tutorials</p></li>
-</ul>
-</div>
+<p>Deep learning has transformed many aspects of industrial pipelines recently.
+Scientists involved in biomedical imaging research are also benefiting from
+the power of AI to tackle complex challenges. Although academic community
+has widely accepted image processing tools, such as scikit-image, ImageJ,
+there is still a need for a tool which integrates deep learning
+into biomedical image analysis. We propose a minimal,
+but convenient Python package based on PyTorch with biomedical datasets, common deep learning models,
+and extended by flexible trainers.</p>
 <div class="section" id="what-can-i-do-with-this-package">
 <h2>What can I do with this package?<a class="headerlink" href="#what-can-i-do-with-this-package" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Image data (pre)processing</p></li>
-<li><p>Train/customize deep learning models</p></li>
-<li><p>Visualize/monitor results</p></li>
+<li><p>Load public biomedical datasets</p></li>
+<li><p>Load common deep learning models</p></li>
+<li><p>Do basic image preprocessing and transformations</p></li>
+<li><p>Customize training loops to your own needs</p></li>
 </ul>
 </div>
-<div class="section" id="package-organization">
-<h2>Package organization<a class="headerlink" href="#package-organization" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="diagram">
-<h3>Diagram<a class="headerlink" href="#diagram" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="package-structure">
+<h2>Package structure<a class="headerlink" href="#package-structure" title="Permalink to this headline">¶</a></h2>
 <div class="graphviz"><img src="../_images/graphviz-f7c2a07e0fc535fd8860802ccb7b007d6d668470.png" alt="graph farabioOverview {
 
 node [shape=box, colorscheme=set32 , style=rounded];
@@ -228,28 +213,10 @@ models  [fillcolor=2, style=&quot;rounded&quot;]
 utils  [fillcolor=2, style=&quot;rounded&quot;]
 }" class="graphviz" /></div>
 </div>
-</div>
 <div class="section" id="how-to-contribute">
 <h2>How to contribute?<a class="headerlink" href="#how-to-contribute" title="Permalink to this headline">¶</a></h2>
 <p>You can contribute to this package by reporting issues and/or by sending pull request.</p>
-<div class="section" id="how-to-report-an-issue">
-<h3>How to report an issue<a class="headerlink" href="#how-to-report-an-issue" title="Permalink to this headline">¶</a></h3>
 <p>If you find a bug, please report it by opening an <a class="reference external" href="https://github.com/TBL-UNIST/tbl-ai/issues/new">issue on Git</a>.</p>
-</div>
-<div class="section" id="clean-code-caveat">
-<h3>Clean code Caveat<a class="headerlink" href="#clean-code-caveat" title="Permalink to this headline">¶</a></h3>
-<blockquote>
-<div><ul class="simple">
-<li><p><strong>Modules</strong> should have short, <em>all-lowercase names. Underscores can be used</em> in the module name if it improves readability.</p></li>
-<li><p><strong>Class names</strong> should normally use the <em>CapWords</em> convention.</p></li>
-<li><p><strong>Function names</strong> should be <em>lowercase, with words separated by &gt; underscores as necessary to improve readability.</em></p></li>
-<li><p><strong>Variable names</strong> follow the <em>same convention as function names</em>.</p></li>
-<li><p>If a <strong>function argument</strong>’s name clashes with a reserved keyword, it is generally better to append a single trailing underscore rather than use an abbreviation or spelling corruption. Thus <em>class_</em> is better than clss. (Perhaps better is to avoid such clashes by using a synonym.)</p></li>
-<li><p><strong>Constants</strong> are usually defined on a module level and written in all <em>capital letters with underscores separating words.</em></p></li>
-</ul>
-<p class="attribution">—from <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/#package-and-module-names">PEP 8</a>.</p>
-</div></blockquote>
-</div>
 </div>
 </div>
 
@@ -259,7 +226,7 @@ utils  [fillcolor=2, style=&quot;rounded&quot;]
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="tutorial.html" class="btn btn-neutral float-right" title="Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="concepts.html" class="btn btn-neutral float-right" title="Machine learning for Biomedical Engineers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="index.html" class="btn btn-neutral float-left" title="Handbook" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

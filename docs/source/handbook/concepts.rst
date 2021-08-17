@@ -1,5 +1,5 @@
-Concepts
-==========
+Machine learning for Biomedical Engineers
+============================================
 
 .. contents:: Table of Contents
     :local:
