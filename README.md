@@ -36,7 +36,7 @@ $ pip install [-e] . -f https://download.pytorch.org/whl/torch_stable.html    # 
 
 [21-08-17] Release of [`farabio==0.0.2`](https://pypi.org/project/farabio/)  
 [21-04-02] Release of [`farabio==0.0.1`](https://pypi.org/project/farabio/)  
-[21-03-27] The poster for this work is presented on [PyTorch Ecosystem Day](https://pytorch.org/ecosystem/pted/2021) held on April 21, 2021.
+[21-03-27] This work is presented on PyTorch Ecosystem Day (21/04/21). Poster is [here](https://pytorch.org/ecosystem/pted/2021)
 
 
 ## Links
