@@ -9,7 +9,8 @@
 - [Features](#features)
 - [Biodatasets](#biodatasets)
 - [Models](#models)
-- [Getting Started (Installation)](#getting-started)
+- [Getting Started (Installation)](#getting-started-installation)
+- [Credits](#credits)
 - [Licenses](#licenses)
 - [Links](#links)
 
@@ -22,23 +23,28 @@ Release of [`farabio==0.0.2`](https://pypi.org/project/farabio/)
 Release of [`farabio==0.0.1`](https://pypi.org/project/farabio/)  
 
 ### March 3, 2021
-[21-03-27] This work is presented on PyTorch Ecosystem Day (21/04/21). Poster is [here](https://pytorch.org/ecosystem/pted/2021)
+This work is presented on PyTorch Ecosystem Day (21/04/21). Poster is [here](https://pytorch.org/ecosystem/pted/2021).
 
 ## Introduction
 
-**farabio** is a minimal [PyTorch](https://pytorch.org/) toolkit for out-of-the-box deep learning in biomedical imaging.
+**farabio** is a minimal PyTorch toolkit for out-of-the-box deep learning support in biomedical imaging. For further information, see [*Wikis*](https://github.com/tuttelikz/farabio/wiki) and [*Docs*](https://farabio.readthedocs.io).
 
 ## Features
 - Biomedical datasets
 - Common DL models
-- Flexible trainers (*in progress)
+- Flexible trainers (**in progress*)
 
 ## Biodatasets
-* Chest X-Ray Images (Pneumonia) - https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia
-* 2018 Data Science Bowl - https://www.kaggle.com/c/data-science-bowl-2018/overview
-* Histopathologic Cancer Detection - https://www.kaggle.com/c/histopathologic-cancer-detection/overview
-* RANZCR CLiP - Catheter and Line Position Challenge - https://www.kaggle.com/c/ranzcr-clip-catheter-line-classification/overview
-* APTOS 2019 Blindness Detection - https://www.kaggle.com/c/aptos2019-blindness-detection/overview
+* Chest X-Ray Images (Pneumonia):  
+https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia
+* 2018 Data Science Bowl:  
+https://www.kaggle.com/c/data-science-bowl-2018/overview
+* Histopathologic Cancer Detection:  
+https://www.kaggle.com/c/histopathologic-cancer-detection/overview
+* RANZCR CLiP - Catheter and Line Position Challenge:  
+https://www.kaggle.com/c/ranzcr-clip-catheter-line-classification/overview
+* APTOS 2019 Blindness Detection:  
+https://www.kaggle.com/c/aptos2019-blindness-detection/overview
 
 ## Models
 * AlexNet - https://papers.nips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf
@@ -66,12 +72,15 @@ $ pip install farabio -f https://download.pytorch.org/whl/torch_stable.html
 
 **B. Setup from source**:
 ```bash
-# [-e] is flag for editable mode
-$ pip install [-e] . -f https://download.pytorch.org/whl/torch_stable.html
+$ git clone https://github.com/tuttelikz/farabio.git && cd farabio
+$ pip install . -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
-## Licenses
+## Credits
+If you like this repository, please click on Star.
 
+## Licenses
+This work is licensed Apache 2.0.
 
 ## Links
 
