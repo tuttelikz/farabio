@@ -1,11 +1,9 @@
-# Farabio - Deep learning toolkit for biomedical imaging
-
 ![logo](logo/logo.png)
 
-[![GitHub](https://img.shields.io/github/license/tuttelikz/farabio)](https://opensource.org/licenses/MIT) [![Documentation Status](https://readthedocs.org/projects/farabio/badge/?version=latest)](https://farabio.readthedocs.io/en/latest)
+[![GitHub](https://img.shields.io/github/license/tuttelikz/farabio)](https://opensource.org/licenses/Apache-2.0) [![Documentation Status](https://readthedocs.org/projects/farabio/badge/?version=latest)](https://farabio.readthedocs.io/en/latest)
 [![PyPI version](https://img.shields.io/pypi/v/farabio)](https://badge.fury.io/py/farabio)
 
-**farabio** is a minimal [open-source](LICENSE) Python package based on [PyTorch](https://pytorch.org/) for out-of-the-box deep learning support in biomedical imaging.
+**farabio** is a minimal [PyTorch](https://pytorch.org/) toolkit for out-of-the-box deep learning support in biomedical imaging.
 
 ## Features
 
@@ -38,7 +36,7 @@ $ pip install [-e] . -f https://download.pytorch.org/whl/torch_stable.html    # 
 
 [21-08-17] Release of [`farabio==0.0.2`](https://pypi.org/project/farabio/)  
 [21-04-02] Release of [`farabio==0.0.1`](https://pypi.org/project/farabio/)  
-[21-03-27] This work is selected for poster on [PyTorch Ecosystem Day](https://pytorch.org/ecosystem/pted/2021) to be held on April 21, 2021.
+[21-03-27] The poster for this work is presented on [PyTorch Ecosystem Day](https://pytorch.org/ecosystem/pted/2021) held on April 21, 2021.
 
 
 ## Links
