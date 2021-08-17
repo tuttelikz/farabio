@@ -7,4 +7,3 @@ Reference
    :maxdepth: 1
    
    data.biodatasets.rst
-   models.rst

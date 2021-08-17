@@ -17,6 +17,9 @@ from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from torchvision.utils import draw_segmentation_masks
 
+__all__ = ['ChestXrayDataset', 'DSB18Dataset', 'HistocancerDataset', 
+'RANZCRDataset', 'RetinopathyDataset']
+
 
 kaggle_biodatasets = [
     "aptos2019-blindness-detection",
