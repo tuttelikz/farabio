@@ -32,7 +32,8 @@ setuptools.setup(
         'sphinx-git==11.0.0',
         'torch==1.9.0+cu111',
         'torchvision==0.10.0+cu111',
-        'torchaudio==0.9.0'
+        'torchaudio==0.9.0',
+        'tqdm==4.62.1'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

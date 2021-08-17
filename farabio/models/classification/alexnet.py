@@ -41,8 +41,6 @@ class AlexNet(nn.Module):
         x = self.fc(x)
         x = self.final(x)
 
-        print(x.shape)
-
         return x
 
     def _conv_bn(self, conv):

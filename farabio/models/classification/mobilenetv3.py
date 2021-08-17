@@ -104,7 +104,7 @@ class MobileNetV3(nn.Module):
             self,
             inverted_residual_setting: List[InvertedResidualConfig],
             last_channel: int,
-            num_classes: int = 1000,
+            n_classes: int = 1000,
             block: Optional[Callable[..., nn.Module]] = None,
             norm_layer: Optional[Callable[..., nn.Module]] = None,
             **kwargs: Any
@@ -148,7 +148,7 @@ class MobileNetV3(nn.Module):
             nn.Linear(lastconv_output_channels, last_channel),
             nn.Hardswish(inplace=True),
             nn.Dropout(p=0.2, inplace=True),
-            nn.Linear(last_channel, num_classes),
+            nn.Linear(last_channel, n_classes),
         )
 
         for m in self.modules():
