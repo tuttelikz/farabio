@@ -7,24 +7,29 @@ in a PyTorch friendly manner.
 :py:class:`~.ChestXrayDataset` class
 ------------------------------------------------------------------------------
 .. autoclass:: farabio.data.biodatasets.ChestXrayDataset
-   :members:
+   :members: visualize_batch
+   :exclude-members: __init__
 
 :py:class:`~.DSB18Dataset` class
 ------------------------------------------------------------------------------
 .. autoclass:: farabio.data.biodatasets.DSB18Dataset
-   :members:
+   :members: visualize_batch
+   :exclude-members: __init__
 
 :py:class:`~.HistocancerDataset` class
 ------------------------------------------------------------------------------
 .. autoclass:: farabio.data.biodatasets.HistocancerDataset
-   :members:
+   :members: visualize_batch
+   :exclude-members: __init__
 
 :py:class:`~.RANZCRDataset` class
 ------------------------------------------------------------------------------
 .. autoclass:: farabio.data.biodatasets.RANZCRDataset
-   :members:
+   :members: visualize_batch
+   :exclude-members: __init__
 
 :py:class:`~.RetinopathyDataset` class
 ------------------------------------------------------------------------------
 .. autoclass:: farabio.data.biodatasets.RetinopathyDataset
-   :members:
+   :members: visualize_batch
+   :exclude-members: __init__

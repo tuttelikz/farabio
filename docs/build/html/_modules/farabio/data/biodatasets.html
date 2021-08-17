@@ -91,7 +91,7 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../handbook/index.html">Handbook</a></li>
 </ul>
@@ -179,6 +179,9 @@
 <span class="kn">from</span> <span class="nn">torchvision.datasets</span> <span class="kn">import</span> <span class="n">ImageFolder</span>
 <span class="kn">from</span> <span class="nn">torchvision.utils</span> <span class="kn">import</span> <span class="n">draw_segmentation_masks</span>
 
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ChestXrayDataset&#39;</span><span class="p">,</span> <span class="s1">&#39;DSB18Dataset&#39;</span><span class="p">,</span> <span class="s1">&#39;HistocancerDataset&#39;</span><span class="p">,</span> 
+<span class="s1">&#39;RANZCRDataset&#39;</span><span class="p">,</span> <span class="s1">&#39;RetinopathyDataset&#39;</span><span class="p">]</span>
+
 
 <span class="n">kaggle_biodatasets</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;aptos2019-blindness-detection&quot;</span><span class="p">,</span>
@@ -254,14 +257,14 @@
 <span class="sd">    &gt;&gt;&gt; valid_dataset = ChestXrayDataset(root=_path, download=True, mode=&quot;val&quot;, show=True)</span>
 
 <span class="sd">    .. image:: ../imgs/ChestXrayDataset.png</span>
-<span class="sd">        :width: 300</span>
+<span class="sd">        :width: 600</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ---------------</span>
 <span class="sd">    .. [1] https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ChestXrayDataset.__init__"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.ChestXrayDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;chest-xray-pneumonia&quot;</span>
 
         <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">]</span>
@@ -291,7 +294,7 @@
             <span class="n">root</span><span class="o">=</span><span class="n">dataset_path</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">visualize_batch</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualize_batch</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="n">path</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
@@ -304,7 +307,7 @@
 
         <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">fname</span>
 
-<div class="viewcode-block" id="ChestXrayDataset.default_transform"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.ChestXrayDataset.default_transform">[docs]</a>    <span class="k">def</span> <span class="nf">default_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">default_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;train&quot;</span><span class="p">:</span>
             <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
                 <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)),</span>
@@ -323,7 +326,7 @@
                     <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
             <span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">transform</span></div>
+        <span class="k">return</span> <span class="n">transform</span>
 
 <div class="viewcode-block" id="ChestXrayDataset.visualize_batch"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.ChestXrayDataset.visualize_batch">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -332,7 +335,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">list_imgs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">fnames</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ChestXrayDataset.show"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.ChestXrayDataset.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">fnames</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">fnames</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">imgs</span><span class="p">]</span>
         <span class="n">fix</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">),</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -348,7 +351,7 @@
             <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
             <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span>
                            <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span> <span class="n">transform</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
-            <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="o">+</span><span class="n">fnames</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">12</span><span class="p">:</span><span class="o">-</span><span class="mi">5</span><span class="p">])</span></div></div>
+            <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="o">+</span><span class="n">fnames</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">12</span><span class="p">:</span><span class="o">-</span><span class="mi">5</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="DSB18Dataset"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.DSB18Dataset">[docs]</a><span class="k">class</span> <span class="nc">DSB18Dataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
@@ -362,14 +365,14 @@
 <span class="sd">    &gt;&gt;&gt; train_dataset = DSB18Dataset(_path, transform=None, download=False, show=True)</span>
 
 <span class="sd">    .. image:: ../imgs/DSB18Dataset.png</span>
-<span class="sd">        :width: 300</span>
+<span class="sd">        :width: 600</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ---------------</span>
 <span class="sd">    .. [1] https://www.kaggle.com/c/data-science-bowl-2018/overview</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="DSB18Dataset.__init__"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.DSB18Dataset.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span> <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span> <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 
         <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;data-science-bowl-2018&quot;</span>
         <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">]</span>
@@ -421,7 +424,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">target_transform</span> <span class="o">=</span> <span class="n">target_transform</span>
 
         <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">visualize_batch</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualize_batch</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">folders</span><span class="p">)</span>
@@ -444,7 +447,7 @@
 
         <span class="k">return</span> <span class="n">sample</span>
 
-<div class="viewcode-block" id="DSB18Dataset.get_mask"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.DSB18Dataset.get_mask">[docs]</a>    <span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask_folder</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask_folder</span><span class="p">):</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">mask_</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">mask_folder</span><span class="p">):</span>
             <span class="n">mask_</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mask_folder</span><span class="p">,</span> <span class="n">mask_</span><span class="p">))</span>
@@ -452,23 +455,23 @@
             <span class="n">mask_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">mask_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">mask_</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">mask</span></div>
+        <span class="k">return</span> <span class="n">mask</span>
 
-<div class="viewcode-block" id="DSB18Dataset.default_transform"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.DSB18Dataset.default_transform">[docs]</a>    <span class="k">def</span> <span class="nf">default_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">default_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
             <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
             <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
         <span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">transform</span></div>
+        <span class="k">return</span> <span class="n">transform</span>
 
-<div class="viewcode-block" id="DSB18Dataset.default_target_transform"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.DSB18Dataset.default_target_transform">[docs]</a>    <span class="k">def</span> <span class="nf">default_target_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">default_target_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">target_transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
             <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
             <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
         <span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">target_transform</span></div>
+        <span class="k">return</span> <span class="n">target_transform</span>
 
 <div class="viewcode-block" id="DSB18Dataset.visualize_batch"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.DSB18Dataset.visualize_batch">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -492,8 +495,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">list_imgs</span><span class="p">,</span> <span class="n">fnames</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DSB18Dataset.show"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.DSB18Dataset.show">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">fnames</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">fnames</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">imgs</span><span class="p">]</span>
         <span class="n">fix</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">),</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -502,7 +504,7 @@
             <span class="n">img</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">to_pil_image</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
             <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img</span><span class="p">))</span>
             <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xticklabels</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticklabels</span><span class="o">=</span><span class="p">[],</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>
-            <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="o">+</span><span class="n">fnames</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span></div></div>
+            <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="o">+</span><span class="n">fnames</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">10</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="HistocancerDataset"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.HistocancerDataset">[docs]</a><span class="k">class</span> <span class="nc">HistocancerDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
@@ -523,7 +525,7 @@
 <span class="sd">     .. [1] &lt;https://www.kaggle.com/c/histopathologic-cancer-detection/data&gt;`_</span>
 <span class="sd">     &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="HistocancerDataset.__init__"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.HistocancerDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;histopathologic-cancer-detection&quot;</span>
 
         <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">]</span>
@@ -564,7 +566,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">target_transform</span> <span class="o">=</span> <span class="n">target_transform</span>
 
         <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">visualize_batch</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualize_batch</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -592,7 +594,7 @@
 
         <span class="k">return</span> <span class="n">sample</span>
 
-<div class="viewcode-block" id="HistocancerDataset.default_transform"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.HistocancerDataset.default_transform">[docs]</a>    <span class="k">def</span> <span class="nf">default_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">default_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;train&quot;</span><span class="p">:</span>
             <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
                 <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
@@ -609,7 +611,7 @@
                     <span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
             <span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">transform</span></div>
+        <span class="k">return</span> <span class="n">transform</span>
 
 <div class="viewcode-block" id="HistocancerDataset.visualize_batch"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.HistocancerDataset.visualize_batch">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -623,7 +625,7 @@
         <span class="n">list_imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">imgs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">))]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">list_imgs</span><span class="p">,</span> <span class="n">fnames</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="HistocancerDataset.show"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.HistocancerDataset.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">fnames</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">fnames</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">imgs</span><span class="p">]</span>
         <span class="n">fix</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">),</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -647,7 +649,7 @@
                 <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span>
                                <span class="n">lab</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="o">+</span><span class="n">fnames</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">11</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span></div></div>
+                <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="o">+</span><span class="n">fnames</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">11</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="RANZCRDataset"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RANZCRDataset">[docs]</a><span class="k">class</span> <span class="nc">RANZCRDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
@@ -668,7 +670,7 @@
 <span class="sd">    .. [1] https://www.kaggle.com/c/ranzcr-clip-catheter-line-classification/data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RANZCRDataset.__init__"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RANZCRDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;ranzcr-clip-catheter-line-classification&quot;</span>
 
         <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">]</span>
@@ -710,7 +712,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">file_list</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">test_path</span><span class="o">+</span><span class="s2">&quot;/*&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">visualize_batch</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualize_batch</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filelength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_list</span><span class="p">)</span>
@@ -735,7 +737,7 @@
 
         <span class="k">return</span> <span class="n">sample</span>
 
-<div class="viewcode-block" id="RANZCRDataset.default_transform"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RANZCRDataset.default_transform">[docs]</a>    <span class="k">def</span> <span class="nf">default_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">default_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
             <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)),</span>
             <span class="n">transforms</span><span class="o">.</span><span class="n">RandomHorizontalFlip</span><span class="p">(),</span>
@@ -743,7 +745,7 @@
             <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">))</span>
         <span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">transform</span></div>
+        <span class="k">return</span> <span class="n">transform</span>
 
 <div class="viewcode-block" id="RANZCRDataset.visualize_batch"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RANZCRDataset.visualize_batch">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -757,7 +759,7 @@
         <span class="n">list_imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">imgs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">))]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">list_imgs</span><span class="p">,</span> <span class="n">fnames</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="RANZCRDataset.show"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RANZCRDataset.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">fnames</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">fnames</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">imgs</span><span class="p">]</span>
         <span class="n">fix</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">),</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -776,9 +778,9 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="s2">&quot;test&quot;</span><span class="p">:</span>
                 <span class="n">lab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_labels</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
                 <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="o">+</span>
-                               <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="n">lab</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span></div>
+                               <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="n">lab</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
 
-<div class="viewcode-block" id="RANZCRDataset.get_labels"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RANZCRDataset.get_labels">[docs]</a>    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="n">data_org</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
@@ -797,9 +799,9 @@
         <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
 
         <span class="n">encoded_labels</span> <span class="o">=</span> <span class="n">label</span>
-        <span class="k">return</span> <span class="n">labels</span><span class="p">,</span> <span class="n">encoded_labels</span></div>
+        <span class="k">return</span> <span class="n">labels</span><span class="p">,</span> <span class="n">encoded_labels</span>
 
-<div class="viewcode-block" id="RANZCRDataset.get_train_valid"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RANZCRDataset.get_train_valid">[docs]</a>    <span class="k">def</span> <span class="nf">get_train_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_train_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_path</span><span class="p">):</span>
         <span class="n">seed</span> <span class="o">=</span> <span class="mi">42</span>
         <span class="n">train_list</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -811,7 +813,7 @@
         <span class="n">train_list</span><span class="p">,</span> <span class="n">valid_list</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">train_list</span><span class="p">,</span>
                                                   <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
                                                   <span class="n">random_state</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">train_list</span><span class="p">,</span> <span class="n">valid_list</span></div></div>
+        <span class="k">return</span> <span class="n">train_list</span><span class="p">,</span> <span class="n">valid_list</span></div>
 
 
 <div class="viewcode-block" id="RetinopathyDataset"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RetinopathyDataset">[docs]</a><span class="k">class</span> <span class="nc">RetinopathyDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
@@ -825,14 +827,14 @@
 <span class="sd">    &gt;&gt;&gt; train_dataset = RetinopathyDataset(&quot;.&quot;, mode=&quot;train&quot;, show=True)</span>
 
 <span class="sd">    .. image:: ../imgs/RetinopathyDataset.png</span>
-<span class="sd">        :width: 300</span>
+<span class="sd">        :width: 600</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ---------------</span>
 <span class="sd">    .. [1] &lt;https://www.kaggle.com/c/aptos2019-blindness-detection/data&gt;`_</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RetinopathyDataset.__init__"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RetinopathyDataset.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">target_transform</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">tag</span> <span class="o">=</span> <span class="s2">&quot;aptos2019-blindness-detection&quot;</span>
 
         <span class="k">if</span> <span class="n">download</span><span class="p">:</span>
@@ -878,7 +880,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">target_transform</span> <span class="o">=</span> <span class="n">target_transform</span>
 
         <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">visualize_batch</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualize_batch</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -902,14 +904,14 @@
 
         <span class="k">return</span> <span class="n">sample</span>
 
-<div class="viewcode-block" id="RetinopathyDataset.default_transform"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RetinopathyDataset.default_transform">[docs]</a>    <span class="k">def</span> <span class="nf">default_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">default_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
             <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)),</span>
             <span class="n">transforms</span><span class="o">.</span><span class="n">RandomHorizontalFlip</span><span class="p">(),</span>
             <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
             <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">))</span>
         <span class="p">])</span>
-        <span class="k">return</span> <span class="n">transform</span></div>
+        <span class="k">return</span> <span class="n">transform</span>
 
 <div class="viewcode-block" id="RetinopathyDataset.visualize_batch"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RetinopathyDataset.visualize_batch">[docs]</a>    <span class="k">def</span> <span class="nf">visualize_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -923,7 +925,7 @@
         <span class="n">list_imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">imgs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">))]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">list_imgs</span><span class="p">,</span> <span class="n">fnames</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="RetinopathyDataset.show"><a class="viewcode-back" href="../../../reference/data.biodatasets.html#farabio.data.biodatasets.RetinopathyDataset.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">fnames</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">fnames</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">imgs</span><span class="p">]</span>
         <span class="n">fix</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">),</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -941,7 +943,7 @@
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="s2">&quot;test&quot;</span><span class="p">:</span>
                 <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;Severity: &quot;</span> <span class="o">+</span>
-                               <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])),</span> <span class="n">transform</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span></div></div>
+                               <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])),</span> <span class="n">transform</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span></div>
 
 
 <span class="k">class</span> <span class="nc">TestBiodatasets</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
