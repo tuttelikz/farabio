@@ -3,7 +3,7 @@
 [![GitHub](https://img.shields.io/github/license/tuttelikz/farabio)](https://opensource.org/licenses/Apache-2.0) [![Documentation Status](https://readthedocs.org/projects/farabio/badge/?version=latest)](https://farabio.readthedocs.io/en/latest)
 [![PyPI version](https://img.shields.io/pypi/v/farabio)](https://badge.fury.io/py/farabio)
 
-**farabio** is a minimal [PyTorch](https://pytorch.org/) toolkit for out-of-the-box deep learning support in biomedical imaging.
+**farabio** is a minimal [PyTorch](https://pytorch.org/) toolkit for out-of-the-box deep learning in biomedical imaging.
 
 ## Features
 
