@@ -95,7 +95,7 @@ class ChestXrayDataset(ImageFolder):
     >>> valid_dataset = ChestXrayDataset(root=_path, download=True, mode="val", show=True)
 
     .. image:: ../imgs/ChestXrayDataset.png
-        :width: 300
+        :width: 600
 
     References
     ---------------
@@ -203,7 +203,7 @@ class DSB18Dataset(Dataset):
     >>> train_dataset = DSB18Dataset(_path, transform=None, download=False, show=True)
 
     .. image:: ../imgs/DSB18Dataset.png
-        :width: 300
+        :width: 600
 
     References
     ---------------
@@ -333,8 +333,7 @@ class DSB18Dataset(Dataset):
 
         self.show(list_imgs, fnames)
 
-    @staticmethod
-    def show(imgs, fnames):
+    def show(self, imgs, fnames):
         if not isinstance(imgs, list):
             imgs = [imgs]
         fix, axs = plt.subplots(ncols=len(imgs), squeeze=False)
@@ -666,7 +665,7 @@ class RetinopathyDataset(Dataset):
     >>> train_dataset = RetinopathyDataset(".", mode="train", show=True)
 
     .. image:: ../imgs/RetinopathyDataset.png
-        :width: 300
+        :width: 600
 
     References
     ---------------

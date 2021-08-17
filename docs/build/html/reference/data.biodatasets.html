@@ -200,20 +200,10 @@ For further information on raw dataset and pneumonia detection, please refer to 
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">valid_dataset</span> <span class="o">=</span> <span class="n">ChestXrayDataset</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="n">_path</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/ChestXrayDataset.png"><img alt="../_images/ChestXrayDataset.png" src="../_images/ChestXrayDataset.png" style="width: 300px;" /></a>
-<dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.ChestXrayDataset.default_transform">
-<span class="sig-name descname"><span class="pre">default_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'train'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#ChestXrayDataset.default_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.ChestXrayDataset.default_transform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<a class="reference internal image-reference" href="../_images/ChestXrayDataset.png"><img alt="../_images/ChestXrayDataset.png" src="../_images/ChestXrayDataset.png" style="width: 600px;" /></a>
 <dl class="py method">
 <dt class="sig sig-object py" id="farabio.data.biodatasets.ChestXrayDataset.visualize_batch">
 <span class="sig-name descname"><span class="pre">visualize_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#ChestXrayDataset.visualize_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.ChestXrayDataset.visualize_batch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.ChestXrayDataset.show">
-<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imgs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fnames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#ChestXrayDataset.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.ChestXrayDataset.show" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -237,30 +227,10 @@ For further information on raw dataset and nuclei segmentation, please refer to 
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">DSB18Dataset</span><span class="p">(</span><span class="n">_path</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/DSB18Dataset.png"><img alt="../_images/DSB18Dataset.png" src="../_images/DSB18Dataset.png" style="width: 300px;" /></a>
-<dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.DSB18Dataset.get_mask">
-<span class="sig-name descname"><span class="pre">get_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#DSB18Dataset.get_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.DSB18Dataset.get_mask" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.DSB18Dataset.default_transform">
-<span class="sig-name descname"><span class="pre">default_transform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#DSB18Dataset.default_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.DSB18Dataset.default_transform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.DSB18Dataset.default_target_transform">
-<span class="sig-name descname"><span class="pre">default_target_transform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#DSB18Dataset.default_target_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.DSB18Dataset.default_target_transform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<a class="reference internal image-reference" href="../_images/DSB18Dataset.png"><img alt="../_images/DSB18Dataset.png" src="../_images/DSB18Dataset.png" style="width: 600px;" /></a>
 <dl class="py method">
 <dt class="sig sig-object py" id="farabio.data.biodatasets.DSB18Dataset.visualize_batch">
 <span class="sig-name descname"><span class="pre">visualize_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#DSB18Dataset.visualize_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.DSB18Dataset.visualize_batch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.DSB18Dataset.show">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imgs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fnames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#DSB18Dataset.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.DSB18Dataset.show" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -286,18 +256,8 @@ For further information on raw dataset and tumor classification, please refer to
 </div>
 <a class="reference internal image-reference" href="../_images/HistocancerDataset.png"><img alt="../_images/HistocancerDataset.png" src="../_images/HistocancerDataset.png" style="width: 600px;" /></a>
 <dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.HistocancerDataset.default_transform">
-<span class="sig-name descname"><span class="pre">default_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#HistocancerDataset.default_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.HistocancerDataset.default_transform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="farabio.data.biodatasets.HistocancerDataset.visualize_batch">
 <span class="sig-name descname"><span class="pre">visualize_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#HistocancerDataset.visualize_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.HistocancerDataset.visualize_batch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.HistocancerDataset.show">
-<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imgs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#HistocancerDataset.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.HistocancerDataset.show" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -323,28 +283,8 @@ For further information on raw dataset and catheters presence, please refer to <
 </div>
 <a class="reference internal image-reference" href="../_images/RANZCRDataset.png"><img alt="../_images/RANZCRDataset.png" src="../_images/RANZCRDataset.png" style="width: 600px;" /></a>
 <dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.RANZCRDataset.default_transform">
-<span class="sig-name descname"><span class="pre">default_transform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#RANZCRDataset.default_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.RANZCRDataset.default_transform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="farabio.data.biodatasets.RANZCRDataset.visualize_batch">
 <span class="sig-name descname"><span class="pre">visualize_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#RANZCRDataset.visualize_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.RANZCRDataset.visualize_batch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.RANZCRDataset.show">
-<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imgs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#RANZCRDataset.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.RANZCRDataset.show" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.RANZCRDataset.get_labels">
-<span class="sig-name descname"><span class="pre">get_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#RANZCRDataset.get_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.RANZCRDataset.get_labels" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.RANZCRDataset.get_train_valid">
-<span class="sig-name descname"><span class="pre">get_train_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#RANZCRDataset.get_train_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.RANZCRDataset.get_train_valid" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -368,20 +308,10 @@ For further information on raw dataset and blindness detection, please refer to 
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">RetinopathyDataset</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/RetinopathyDataset.png"><img alt="../_images/RetinopathyDataset.png" src="../_images/RetinopathyDataset.png" style="width: 300px;" /></a>
-<dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.RetinopathyDataset.default_transform">
-<span class="sig-name descname"><span class="pre">default_transform</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#RetinopathyDataset.default_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.RetinopathyDataset.default_transform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<a class="reference internal image-reference" href="../_images/RetinopathyDataset.png"><img alt="../_images/RetinopathyDataset.png" src="../_images/RetinopathyDataset.png" style="width: 600px;" /></a>
 <dl class="py method">
 <dt class="sig sig-object py" id="farabio.data.biodatasets.RetinopathyDataset.visualize_batch">
 <span class="sig-name descname"><span class="pre">visualize_batch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#RetinopathyDataset.visualize_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.RetinopathyDataset.visualize_batch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="farabio.data.biodatasets.RetinopathyDataset.show">
-<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imgs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/farabio/data/biodatasets.html#RetinopathyDataset.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#farabio.data.biodatasets.RetinopathyDataset.show" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
