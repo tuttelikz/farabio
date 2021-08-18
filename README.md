@@ -81,7 +81,7 @@ $ pip install . -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
 ## Tutorials
-1: Training aclassifier for `ChestXrayDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-classifier.ipynb)
+1: Training a classifier for `ChestXrayDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-classifier.ipynb)
 
 ## Credits
 If you like this repository, please click on Star.
