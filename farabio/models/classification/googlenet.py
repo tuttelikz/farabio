@@ -1,6 +1,8 @@
 """GoogLeNet
+
 Paper: https://arxiv.org/pdf/1409.4842.pdf
 Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/googlenet.py
+
 Copyright 2021 | farabio
 """
 import torch

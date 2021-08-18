@@ -1,6 +1,8 @@
 """MobileNetV2
+
 Paper: https://arxiv.org/pdf/1801.04381.pdf
 Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/mobilenetv2.py
+
 Copyright 2021 | farabio
 """
 import torch

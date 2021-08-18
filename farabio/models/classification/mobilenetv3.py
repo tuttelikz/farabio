@@ -1,10 +1,10 @@
-# """MobileNetV3
+"""MobileNetV3
 
-# Paper: https://arxiv.org/pdf/1905.02244.pdf
-# Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/mobilenetv3.py
+Paper: https://arxiv.org/pdf/1905.02244.pdf
+Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/mobilenetv3.py
 
-# Copyright 2021 | farabio
-# """
+Copyright 2021 | farabio
+"""
 from functools import partial
 from typing import Any, Callable, Dict, List, Optional, Sequence
 import torch
