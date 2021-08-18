@@ -10,6 +10,7 @@
 - [Biodatasets](#biodatasets)
 - [Models](#models)
 - [Getting Started (Installation)](#getting-started-installation)
+- [Tutorials](#tutorials)
 - [Credits](#credits)
 - [Licenses](#licenses)
 - [Links](#links)
@@ -78,6 +79,9 @@ $ pip install farabio -f https://download.pytorch.org/whl/torch_stable.html
 $ git clone https://github.com/tuttelikz/farabio.git && cd farabio
 $ pip install . -f https://download.pytorch.org/whl/torch_stable.html
 ```
+
+## Tutorials
+1: Training aclassifier for `ChestXrayDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-classifier.ipynb)
 
 ## Credits
 If you like this repository, please click on Star.
