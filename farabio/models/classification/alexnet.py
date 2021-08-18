@@ -1,6 +1,8 @@
 """AlexNet
+
 Paper: https://papers.nips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf
 Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/alexnet.py
+
 Copyright 2021 | farabio
 """
 import torch

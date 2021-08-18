@@ -1,6 +1,8 @@
 """ResNet
+
 Paper: https://arxiv.org/pdf/1512.03385.pdf
 Adapted from: https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py
+
 Copyright 2021 | farabio
 """
 import torch
