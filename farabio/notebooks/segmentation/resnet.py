@@ -1,7 +1,9 @@
+import torch.nn as nn
 from farabio.models.classification.resnet import ResNet, BasicBlock, Bottleneck
+from base import BackboneExtension
 
 
-class ResNetBackbone(ResNet):
+class ResNetBackbone(ResNet, BackboneExtension):
     def __init__(self, out_channels, depth=5, **kwargs):
         super().__init__(**kwargs)
         self._in_channels = 3
@@ -10,8 +12,18 @@ class ResNetBackbone(ResNet):
         
         del self.fc
         del self.avgpool
-        
+    
     def get_stages(self):
+        return [
+            nn.Identity(),
+            nn.Sequential(self.conv1, self.bn1, self.relu),
+            nn.Sequential(self.maxpool, self.layer1),
+            self.layer2,
+            self.layer3,
+            self.layer4,
+        ]
+
+    def forward(self, x):
         stages = self.get_stages()
         
         features = []

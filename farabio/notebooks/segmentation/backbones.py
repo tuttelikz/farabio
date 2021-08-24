@@ -1,8 +1,15 @@
-from .resnet import resnet_backbones
+import sys
+sys.path.append('.')
+from resnet import resnet_backbones
+from mobilenet import mobilenet_backbones
+from vgg import vgg_backbones
 
 
 backbones = {}
 backbones.update(resnet_backbones)
+backbones.update(mobilenet_backbones)
+backbones.update(vgg_backbones)
+
 
 def get_backbone(name, in_channels=3, depth=5, output_stride=32, **kwargs):
     try:
@@ -14,9 +21,8 @@ def get_backbone(name, in_channels=3, depth=5, output_stride=32, **kwargs):
     params.update(depth=depth)
     backbone = Backbone(**params)
     
-    # set_in_channels
+    backbone.set_in_channels(in_channels)
     if output_stride != 32:
         backbone.make_dilated(output_stride)
     
     return backbone
-    

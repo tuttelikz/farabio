@@ -4,9 +4,12 @@ Base class for segmentation models
 
 Copyright 2021 | farabio
 """
+import sys
+sys.path.append('.')
 import torch.nn as nn
+from base import Activation
 
-__all__ = ['SegModel']
+__all__ = ['SegModel', 'SegmentationHead']
 
 
 def init_decoder(block):
@@ -55,3 +58,12 @@ class SegModel(nn.Module):
             x = self.forward(x)
         
         return x
+
+
+class SegmentationHead(nn.Sequential):
+
+    def __init__(self, in_channels, out_channels, kernel_size=3, activation=None, upsampling=1):
+        conv2d = nn.Conv2d(in_channels, out_channels, kernel_size=kernel_size, padding=kernel_size // 2)
+        upsampling = nn.UpsamplingBilinear2d(scale_factor=upsampling) if upsampling > 1 else nn.Identity()
+        activation = Activation(activation)
+        super().__init__(conv2d, upsampling, activation)
