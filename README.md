@@ -62,25 +62,25 @@ https://www.kaggle.com/c/aptos2019-blindness-detection/overview
 * VGG - https://arxiv.org/pdf/1409.1556.pdf
 
 ### Segmentation:
-* FPN - http://presentations.cocodataset.org/COCO17-Stuff-FAIR.pdf
+* DeepLabV3 - https://arxiv.org/pdf/1706.05587
+* U-Net - https://arxiv.org/pdf/1505.04597
 * LinkNet - https://arxiv.org/pdf/1707.03718
 * PSPNet - https://arxiv.org/pdf/1612.01105
-* U-Net - https://arxiv.org/pdf/1505.04597
-* DeepLabV3 - https://arxiv.org/pdf/1706.05587
+* FPN - http://presentations.cocodataset.org/COCO17-Stuff-FAIR.pdf
 
 ## Getting started (Installation)
 
-### 1. Activate [`conda`](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands) environment:
+#### 1. Activate [`conda`](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands) environment:
 ```bash
 conda create -n myenv python=3.8
 conda activate myenv
 ```
-### 2. Install [`PyTorch`](https://pytorch.org/):
+#### 2. Install [`PyTorch`](https://pytorch.org/):
 ```bash
 pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
-### 3. Install [`farabio`](https://github.com/tuttelikz/farabio):
+#### 3. Install [`farabio`](https://github.com/tuttelikz/farabio):
 **A. With pip**:
 ```bash
 pip install farabio
