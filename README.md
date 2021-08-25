@@ -11,6 +11,7 @@
 - [Models](#models)
 - [Getting Started (Installation)](#getting-started-installation)
 - [Tutorials](#tutorials)
+- [Acknowledgements](#acknowledgements)
 - [Credits](#credits)
 - [Licenses](#licenses)
 - [Links](#links)
@@ -93,10 +94,14 @@ pip install .
 ```
 
 ## Tutorials
-1: Training a classifier for `ChestXrayDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-classifier.ipynb)
+**Tutorial 1:** Training a classifier for `ChestXrayDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-classifier.ipynb)  
+**Tutorial 2:** Training a segmentation model for `DSB18Dataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-segmentation.ipynb)
+
+## Acknowledgements
+This work is based upon efforts of open-source PyTorch Community. I have tried to acknowledge related works (github links, arxiv papers) inside the source material, eg. README, documentation, and code docstrings. Please contact if I missed anything.
 
 ## Credits
-If you like this repository, please click on Star.
+If you like this repository, please click on Star.  
 
 ## Licenses
 This work is licensed [Apache 2.0](https://github.com/tuttelikz/farabio/blob/main/LICENSE).
