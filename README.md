@@ -14,7 +14,7 @@
 - [Links](#links)
 - [Credits](#credits)
 - [Licenses](#licenses)
-- [Acknowledgements](#acknowledgements)
+- [Acknowledgements](#acknowledgements-)
 
 ## What's New 
 
