@@ -4,19 +4,19 @@
 [![PyPI version](https://img.shields.io/pypi/v/farabio)](https://badge.fury.io/py/farabio)
 
 # 🤖 farabio ❤️
-- [What's New](#whats-new-)
-- [Introduction](#introduction-)
+- [What's New](#-whats-new)
+- [Introduction](#-introduction)
 - [Features](#-features)
-- [Biodatasets](#biodatasets-)
-- [Models](#models-)
-- [Getting Started (Installation)](#getting-started-installation-)
-- [Tutorials](#tutorials-)
-- [Links](#links-)
-- [Credits](#credits-)
-- [Licenses](#licenses-)
-- [Acknowledgements](#acknowledgements-)
+- [Biodatasets](#-biodatasets)
+- [Models](#-models)
+- [Getting Started (Installation)](#-getting-started-installation)
+- [Tutorials](#-tutorials)
+- [Links](#-links)
+- [Credits](#-credits)
+- [Licenses](#-licenses)
+- [Acknowledgements](#-acknowledgements)
 
-## What's New 🎉
+## 🎉 What's New
 
 ### August 26, 2021
 Publishing `farabio==0.0.3` (*latest version*):  
@@ -36,7 +36,7 @@ Publishing `farabio==0.0.1`:
 ### March 3, 2021
 This work is selected for PyTorch Ecosystem Day.
 
-## Introduction 💡
+## 💡 Introduction
 
 **farabio** is a minimal PyTorch toolkit for out-of-the-box deep learning support in biomedical imaging. For further information, see [*Wikis*](https://github.com/tuttelikz/farabio/wiki) and [*Docs*](https://farabio.readthedocs.io).
 
@@ -45,7 +45,7 @@ This work is selected for PyTorch Ecosystem Day.
 - Common DL models
 - Flexible trainers (**in progress*)
 
-## Biodatasets 🧮
+## 🧮 Biodatasets
 * Chest X-Ray Images (Pneumonia):  
 https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia
 * 2018 Data Science Bowl:  
@@ -57,7 +57,7 @@ https://www.kaggle.com/c/ranzcr-clip-catheter-line-classification/overview
 * APTOS 2019 Blindness Detection:  
 https://www.kaggle.com/c/aptos2019-blindness-detection/overview
 
-## Models 🚢
+## 🚢 Models
 ### Classification:
 * AlexNet - https://papers.nips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf
 * GoogLeNet - https://arxiv.org/pdf/1409.4842.pdf
@@ -75,7 +75,7 @@ https://www.kaggle.com/c/aptos2019-blindness-detection/overview
 * PSPNet - https://arxiv.org/pdf/1612.01105
 * FPN - http://presentations.cocodataset.org/COCO17-Stuff-FAIR.pdf
 
-## Getting started (Installation) 🚀
+## 🚀 Getting started (Installation)
 
 #### 1. Activate [`conda`](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands) environment:
 ```bash
@@ -99,22 +99,22 @@ git clone https://github.com/tuttelikz/farabio.git && cd farabio
 pip install .
 ```
 
-## Tutorials 🤿
+## 🤿 Tutorials
 **Tutorial 1:** Training a classifier for `ChestXrayDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-classifier.ipynb)  
 **Tutorial 2:** Training a segmentation model for `DSB18Dataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-segmentation.ipynb)
 
-## Links 🔎
+## 🔎 Links
 - API documentations: https://farabio.readthedocs.io
 - Code: https://github.com/tuttelikz/farabio
 - Issue tracker: https://github.com/tuttelikz/farabio/issues
 - PyPI package: https://pypi.org/project/farabio/
 - Wiki: https://github.com/tuttelikz/farabio/wiki
 
-## Credits ⭐
+## ⭐ Credits
 If you like this repository, please click on Star.
 
-## Licenses 📃
+## 📃 Licenses
 This work is licensed [Apache 2.0](https://github.com/tuttelikz/farabio/blob/main/LICENSE).
 
-## Acknowledgements 🤩
+## 🤩 Acknowledgements
 This work is based upon efforts of open-source PyTorch Community. I have tried to acknowledge related works (github links, arxiv papers) inside the source material, eg. README, documentation, and code docstrings. Please contact if I missed anything.
