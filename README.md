@@ -51,6 +51,7 @@ https://www.kaggle.com/c/ranzcr-clip-catheter-line-classification/overview
 https://www.kaggle.com/c/aptos2019-blindness-detection/overview
 
 ## Models
+### Classification:
 * AlexNet - https://papers.nips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf
 * GoogLeNet - https://arxiv.org/pdf/1409.4842.pdf
 * MobileNetV2 - https://arxiv.org/pdf/1801.04381.pdf
@@ -60,24 +61,35 @@ https://www.kaggle.com/c/aptos2019-blindness-detection/overview
 * SqueezeNet - https://arxiv.org/pdf/1602.07360.pdf
 * VGG - https://arxiv.org/pdf/1409.1556.pdf
 
+### Segmentation:
+* FPN - http://presentations.cocodataset.org/COCO17-Stuff-FAIR.pdf
+* LinkNet - https://arxiv.org/pdf/1707.03718
+* PSPNet - https://arxiv.org/pdf/1612.01105
+* U-Net - https://arxiv.org/pdf/1505.04597
+* DeepLabV3 - https://arxiv.org/pdf/1706.05587
+
 ## Getting started (Installation)
 
-### 1. Activate conda environment:
+### 1. Activate [`conda`](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands) environment:
 ```bash
-$ conda create -n myenv python=3.8
-$ conda activate myenv
+conda create -n myenv python=3.8
+conda activate myenv
+```
+### 2. Install [`PyTorch`](https://pytorch.org/):
+```bash
+pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
-### 2. Install **farabio**:
+### 3. Install [`farabio`](https://github.com/tuttelikz/farabio):
 **A. With pip**:
 ```bash
-$ pip install farabio -f https://download.pytorch.org/whl/torch_stable.html
+pip install farabio
 ```
 
 **B. Setup from source**:
 ```bash
-$ git clone https://github.com/tuttelikz/farabio.git && cd farabio
-$ pip install . -f https://download.pytorch.org/whl/torch_stable.html
+git clone https://github.com/tuttelikz/farabio.git && cd farabio
+pip install .
 ```
 
 ## Tutorials
