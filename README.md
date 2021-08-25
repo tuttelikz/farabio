@@ -98,7 +98,7 @@ pip install .
 **Tutorial 2:** Training a segmentation model for `DSB18Dataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-segmentation.ipynb)
 
 ## Acknowledgements
-This work is based and inspired by open-source PyTorch Community. I have tried to acknowledge related works (github links, arxiv papers) inside the source material, eg. README, documentation, and code docstrings. Please contact if I missed anything.
+This work is based upon efforts of open-source PyTorch Community. I have tried to acknowledge related works (github links, arxiv papers) inside the source material, eg. README, documentation, and code docstrings. Please contact if I missed anything.
 
 ## Credits
 If you like this repository, please click on Star.  
