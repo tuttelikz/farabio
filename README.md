@@ -18,6 +18,9 @@
 
 ## What's New
 
+### August 26, 2021
+Release of [`farabio==0.0.3`](https://pypi.org/project/farabio/0.0.3/)
+
 ### August 18, 2021
 Release of [`farabio==0.0.2`](https://pypi.org/project/farabio/0.0.2/)
 
