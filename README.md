@@ -11,6 +11,7 @@
 - [Models](#models)
 - [Getting Started (Installation)](#getting-started-installation)
 - [Tutorials](#tutorials)
+- [Acknowledgements](#acknowledgements)
 - [Credits](#credits)
 - [Licenses](#licenses)
 - [Links](#links)
