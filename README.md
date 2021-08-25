@@ -6,7 +6,7 @@
 # 🤖 farabio ❤️
 - [What's New](#whats-new-)
 - [Introduction](#introduction-)
-- [Features](#features-)
+- [Features](#-features)
 - [Biodatasets](#biodatasets-)
 - [Models](#models-)
 - [Getting Started (Installation)](#getting-started-installation-)
@@ -40,7 +40,7 @@ This work is selected for PyTorch Ecosystem Day.
 
 **farabio** is a minimal PyTorch toolkit for out-of-the-box deep learning support in biomedical imaging. For further information, see [*Wikis*](https://github.com/tuttelikz/farabio/wiki) and [*Docs*](https://farabio.readthedocs.io).
 
-## Features 🔥
+## 🔥 Features
 - Biomedical datasets
 - Common DL models
 - Flexible trainers (**in progress*)
