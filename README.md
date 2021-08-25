@@ -1,9 +1,9 @@
 ![logo](logo/logo.png)
 
-[![GitHub](https://img.shields.io/github/license/tuttelikz/farabio)](https://opensource.org/licenses/Apache-2.0) [![Documentation Status](https://readthedocs.org/projects/farabio/badge/?version=latest)](https://farabio.readthedocs.io/en/latest)
-[![PyPI version](https://img.shields.io/pypi/v/farabio)](https://badge.fury.io/py/farabio)
-
 # 🤖 farabio ❤️
+[![PyPI version](https://img.shields.io/pypi/v/farabio)](https://badge.fury.io/py/farabio) ![PyPI - Downloads](https://img.shields.io/pypi/dm/farabio) [![Documentation Status](https://readthedocs.org/projects/farabio/badge/?version=latest)](https://farabio.readthedocs.io/en/latest) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/tuttelikz/farabio) 
+[![GitHub](https://img.shields.io/github/license/tuttelikz/farabio)](https://opensource.org/licenses/Apache-2.0)
+
 - [What's New](#-whats-new)
 - [Introduction](#-introduction)
 - [Features](#-features)
