@@ -1,8 +1,7 @@
 import torch
 import torch.nn as nn
-from utils import patch_first_conv, replace_strides_with_dilation
 
-__all__ = ['Conv2dReLU', 'SCSEModule', 'ArgMax', 'Activation', 'Attention', 'Flatten', 'BackboneExtension']
+__all__ = ['Conv2dReLU', 'SCSEModule', 'ArgMax', 'Activation', 'Attention', 'Flatten']
 
 
 class Conv2dReLU(nn.Sequential):
@@ -81,7 +80,7 @@ class Activation(nn.Module):
             self.activation = name(**params)
         else:
             raise ValueError('Not implemented: got {}'.format(name))
-            
+
     def forward(self, x):
         return self.activation(x)
     
@@ -104,41 +103,3 @@ class Attention(nn.Module):
 class Flatten(nn.Module):
     def forward(self, x):
         return x.view(x.shape[0], -1)
-    
-
-class BackboneExtension:
-    @property
-    def out_channels(self):
-        return self._out_channels[: self._depth + 1]
-    
-    def set_in_channels(self, in_channels):
-        if in_channels == 3:
-            return
-        
-        self._in_channels = in_channels
-        if self._out_channels[0] == 3:
-            self._out_channels = tuple([in_channels] + list(self._out_channels)[1:])
-        
-        patch_first_conv(model=self, new_in_channels=in_channels)
-    
-    def get_stages(self):
-        raise NotImplementedError
-    
-    def make_dilated(self, output_stride):
-        if output_stride == 16:
-            stage_list = [5,]
-            dilation_list = [2,]
-        
-        elif output_stride == 8:
-            stage_list = [4, 5]
-            dilation_list = [2, 4]
-        
-        else:
-            raise ValueError("Output stride should be 16 or 8, got {}.".format(output_stride))
-            
-        stages = self.get_stages()
-        for stage_idx, dilation_rate in zip(stage_list, dilation_list):
-            replace_strides_with_dilation(
-                module = stages[stage_idx],
-                dilation_rate = dilation_rate
-            )

@@ -1,6 +1,8 @@
 import torch.nn as nn
 from farabio.models.classification import MobileNetV2
-from base import BackboneExtension
+from farabio.models.segmentation.backbones import BackboneExtension
+
+__all__ = ['MobileNetV2Backbone', 'mobilenet_backbones']
 
 
 class MobileNetV2Backbone(MobileNetV2, BackboneExtension):

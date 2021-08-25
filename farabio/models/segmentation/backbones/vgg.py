@@ -1,6 +1,8 @@
 import torch.nn as nn
 from farabio.models.classification.vgg import VGG, make_layers, cfgs
-from base import BackboneExtension
+from farabio.models.segmentation.backbones import BackboneExtension
+
+__all__ = ['VGGBackbone', 'vgg_backbones']
 
 
 class VGGBackbone(VGG, BackboneExtension):

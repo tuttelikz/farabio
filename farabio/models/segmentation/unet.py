@@ -1,15 +1,24 @@
-import sys
-sys.path.append('.')
-from segmodel import SegModel, SegmentationHead
-from backbones import get_backbone
-from typing import List, Optional, Union
-#from unet_decoder import UnetDecoder
+"""U-Net
+
+Paper: https://arxiv.org/pdf/1505.04597
+Adapted from: https://github.com/qubvel/segmentation_models.pytorch/blob/master/segmentation_models_pytorch/unet/model.py
+
+Copyright 2021 | farabio
+"""
+from typing import List, Optional, Union, Any
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from base import *
+from farabio.models.segmentation.base import SegModel, SegmentationHead
+from farabio.models.segmentation.backbones._backbones import get_backbone
+from farabio.models.segmentation.blocks import Conv2dReLU, Attention
+from farabio.utils.helpers import get_num_parameters
 
-__all__ = ['Unet']
+__all__ = [
+    'Unet', 'unet_vgg11', 'unet_vgg11_bn', 'unet_vgg13', 'unet_vgg13_bn',
+    'unet_vgg16', 'unet_vgg16_bn', 'unet_vgg19', 'unet_vgg19_bn', 'unet_mobilenetv2',
+    'unet_resnet18', 'unet_resnet34', 'unet_resnet50', 'unet_resnet101', 'unet_resnet152'
+]
 
 
 class Unet(SegModel):
@@ -33,7 +42,7 @@ class Unet(SegModel):
         )
         
         self.decoder = UnetDecoder(
-            encoder_channels = self.encoder.out_channels, #_out_channels
+            encoder_channels = self.encoder.out_channels,
             decoder_channels = decoder_channels,
             n_blocks = encoder_depth,
             use_bn = decoder_use_bn,
@@ -47,9 +56,7 @@ class Unet(SegModel):
             activation=activation,
             kernel_size=3
         )
-        
-        
-        #########
+
         self.class_head = None
         self.name = "unet-{}".format(encoder_name)
         self.init()
@@ -166,3 +173,105 @@ class UnetDecoder(nn.Module):
             x = decoder_block(x, skip)
         
         return x
+
+
+def _unet(
+    backbone: str = "resnet18",
+    in_channels = 3,
+    out_channels = 1,
+    **kwargs: Any
+) -> Unet:
+    model = Unet(
+        encoder_name=backbone,
+        in_channels=in_channels,
+        out_channels=out_channels
+    )
+    return model
+
+
+def unet_vgg11(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="vgg11", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_vgg11_bn(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="vgg11_bn", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_vgg13(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="vgg13", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_vgg13_bn(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="vgg13_bn", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_vgg16(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="vgg16", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_vgg16_bn(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="vgg16_bn", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_vgg19(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="vgg19", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_vgg19_bn(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="vgg19_bn", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_mobilenetv2(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="mobilenet_v2", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_resnet18(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="resnet18", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_resnet34(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="resnet34", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_resnet50(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="resnet50", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_resnet101(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="resnet101", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def unet_resnet152(in_channels=3, out_channels=1, **kwargs: Any) -> Unet:
+    return _unet(backbone="resnet152", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def test():
+    x = torch.randn(4, 3, 256, 256)
+
+    tests = {
+        "unet_vgg11": unet_vgg11(),
+        "unet_vgg11_bn": unet_vgg11_bn(),
+        "unet_vgg13": unet_vgg13(),
+        "unet_vgg13_bn": unet_vgg13_bn(),
+        "unet_vgg16": unet_vgg16(),
+        "unet_vgg16_bn": unet_vgg16_bn(),
+        "unet_vgg19": unet_vgg19(),
+        "unet_vgg19_bn": unet_vgg19_bn(),
+        "unet_mobilenetv2": unet_mobilenetv2(),
+        "unet_resnet18": unet_resnet18(),
+        "unet_resnet34": unet_resnet34(),
+        "unet_resnet50": unet_resnet50(),
+        "unet_resnet101": unet_resnet101(),
+        "unet_resnet152": unet_resnet152(),
+    }
+    
+    for key, value in tests.items():
+        model = tests[key]
+        y = model(x)
+
+        print("Model name: ", model.name)
+        print("Trainable parameters: ", get_num_parameters(model))
+        print("in shape: ", x.shape, ", out shape: ", y.shape)
+
+
+# test()

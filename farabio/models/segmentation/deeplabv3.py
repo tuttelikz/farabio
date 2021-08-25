@@ -1,13 +1,22 @@
-import sys
-sys.path.append('.')
-from typing import Optional
-from segmodel import SegModel, SegmentationHead
-from backbones import get_backbone
+"""DeepLabV3
+
+Paper: https://arxiv.org/pdf/1706.05587
+Adapted from: https://github.com/qubvel/segmentation_models.pytorch/blob/master/segmentation_models_pytorch/deeplabv3/model.py
+
+Copyright 2021 | farabio
+"""
+from typing import Optional, Any
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from farabio.models.segmentation.base import SegModel, SegmentationHead
+from farabio.models.segmentation.backbones._backbones import get_backbone
+from farabio.utils.helpers import get_num_parameters
 
-__all__ = ['DeepLabV3']
+__all__ = [
+    'DeepLabV3', 'deeplabv3_mobilenetv2', 'deeplabv3_resnet18', 'deeplabv3_resnet34', 
+    'deeplabv3_resnet50', 'deeplabv3_resnet101', 'deeplabv3_resnet152'
+]
 
 
 class DeepLabV3(SegModel):
@@ -29,9 +38,9 @@ class DeepLabV3(SegModel):
             encoder_name,
             in_channels = in_channels,
             depth = encoder_depth,
-            output_stride = 8
+            output_stride=8
         )
-        
+
         self.decoder = DeepLabV3Decoder(
             in_channels = self.encoder.out_channels[-1],
             out_channels = decoder_channels
@@ -178,4 +187,65 @@ class SeparableConv2d(nn.Sequential):
         )
         
         super().__init__(depthwise_conv, pointwise_conv)
+
+
+def _deeplabv3(
+    backbone: str = "resnet18",
+    in_channels = 3,
+    out_channels = 1,
+    **kwargs: Any
+) -> DeepLabV3:
+    model = DeepLabV3(
+        encoder_name=backbone,
+        in_channels=in_channels,
+        out_channels=out_channels
+    )
+    return model
+
+
+def deeplabv3_mobilenetv2(in_channels=3, out_channels=1, **kwargs: Any) -> DeepLabV3:
+    return _deeplabv3(backbone="mobilenet_v2", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def deeplabv3_resnet18(in_channels=3, out_channels=1, **kwargs: Any) -> DeepLabV3:
+    return _deeplabv3(backbone="resnet18", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def deeplabv3_resnet34(in_channels=3, out_channels=1, **kwargs: Any) -> DeepLabV3:
+    return _deeplabv3(backbone="resnet34", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def deeplabv3_resnet50(in_channels=3, out_channels=1, **kwargs: Any) -> DeepLabV3:
+    return _deeplabv3(backbone="resnet50", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def deeplabv3_resnet101(in_channels=3, out_channels=1, **kwargs: Any) -> DeepLabV3:
+    return _deeplabv3(backbone="resnet101", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def deeplabv3_resnet152(in_channels=3, out_channels=1, **kwargs: Any) -> DeepLabV3:
+    return _deeplabv3(backbone="resnet152", in_channels=in_channels, out_channels=out_channels, **kwargs)
+
+
+def test():
+    x = torch.randn(4, 3, 256, 256)
+
+    tests = {
+        "deeplabv3_mobilenetv2": deeplabv3_mobilenetv2(),
+        "deeplabv3_resnet18": deeplabv3_resnet18(),
+        "deeplabv3_resnet34": deeplabv3_resnet34(),
+        "deeplabv3_resnet50": deeplabv3_resnet50(),
+        "deeplabv3_resnet101": deeplabv3_resnet101(),
+        "deeplabv3_resnet152": deeplabv3_resnet152(),
+    }
     
+    for key, value in tests.items():
+        model = tests[key]
+        y = model(x)
+
+        print("Model name: ", model.name)
+        print("Trainable parameters: ", get_num_parameters(model))
+        print("in shape: ", x.shape, ", out shape: ", y.shape)
+
+
+# test()

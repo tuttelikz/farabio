@@ -1,6 +1,8 @@
 import torch.nn as nn
 from farabio.models.classification.resnet import ResNet, BasicBlock, Bottleneck
-from base import BackboneExtension
+from farabio.models.segmentation.backbones import BackboneExtension
+
+__all__ = ['ResNetBackbone', 'resnet_backbones']
 
 
 class ResNetBackbone(ResNet, BackboneExtension):
