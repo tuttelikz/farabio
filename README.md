@@ -11,12 +11,15 @@
 - [Models](#models)
 - [Getting Started (Installation)](#getting-started-installation)
 - [Tutorials](#tutorials)
-- [Acknowledgements](#acknowledgements)
+- [Links](#links)
 - [Credits](#credits)
 - [Licenses](#licenses)
-- [Links](#links)
+- [Acknowledgements](#acknowledgements)
 
 ## What's New
+
+### August 26, 2021
+Release of [`farabio==0.0.3`](https://pypi.org/project/farabio/0.0.3/)
 
 ### August 18, 2021
 Release of [`farabio==0.0.2`](https://pypi.org/project/farabio/0.0.2/)
@@ -97,18 +100,18 @@ pip install .
 **Tutorial 1:** Training a classifier for `ChestXrayDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-classifier.ipynb)  
 **Tutorial 2:** Training a segmentation model for `DSB18Dataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-segmentation.ipynb)
 
-## Acknowledgements
-This work is based upon efforts of open-source PyTorch Community. I have tried to acknowledge related works (github links, arxiv papers) inside the source material, eg. README, documentation, and code docstrings. Please contact if I missed anything.
-
-## Credits
-If you like this repository, please click on Star.  
-
-## Licenses
-This work is licensed [Apache 2.0](https://github.com/tuttelikz/farabio/blob/main/LICENSE).
-
 ## Links
 - API documentations: https://farabio.readthedocs.io
 - Code: https://github.com/tuttelikz/farabio
 - Issue tracker: https://github.com/tuttelikz/farabio/issues
 - PyPI package: https://pypi.org/project/farabio/
 - Wiki: https://github.com/tuttelikz/farabio/wiki
+
+## Credits
+If you like this repository, please click on Star.
+
+## Licenses
+This work is licensed [Apache 2.0](https://github.com/tuttelikz/farabio/blob/main/LICENSE).
+
+## Acknowledgements
+This work is based upon efforts of open-source PyTorch Community. I have tried to acknowledge related works (github links, arxiv papers) inside the source material, eg. README, documentation, and code docstrings. Please contact if I missed anything.
