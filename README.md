@@ -77,7 +77,7 @@ https://www.kaggle.com/c/aptos2019-blindness-detection/overview
 
 ## 🚀 Getting started (Installation)
 
-#### 1. Activate [`conda`](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands) environment:
+#### 1. Create and activate [`conda`](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands) environment:
 ```bash
 conda create -n myenv python=3.8
 conda activate myenv
