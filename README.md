@@ -45,7 +45,7 @@ This work is selected for PyTorch Ecosystem Day.
 - Common DL models
 - Flexible trainers (**in progress*)
 
-## 🧮 Biodatasets
+## 📚 Biodatasets
 * Chest X-Ray Images (Pneumonia):  
 https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia
 * 2018 Data Science Bowl:  
