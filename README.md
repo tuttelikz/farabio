@@ -16,7 +16,7 @@
 - [Licenses](#licenses)
 - [Acknowledgements](#acknowledgements)
 
-## What's New
+## What's New 
 
 ### August 26, 2021
 Publishing `farabio==0.0.3` (*latest version*):  
@@ -116,5 +116,5 @@ If you like this repository, please click on Star.
 ## Licenses
 This work is licensed [Apache 2.0](https://github.com/tuttelikz/farabio/blob/main/LICENSE).
 
-## Acknowledgements
+## Acknowledgements 🤩
 This work is based upon efforts of open-source PyTorch Community. I have tried to acknowledge related works (github links, arxiv papers) inside the source material, eg. README, documentation, and code docstrings. Please contact if I missed anything.
