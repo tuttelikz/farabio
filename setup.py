@@ -19,6 +19,7 @@ setuptools.setup(
     },
     packages=setuptools.find_packages(),
     install_requires=[
+        'albumentations==1.0.3',
         'docutils==0.16',
         'jupyterlab==3.1.6',
         'matplotlib==3.4.3',
