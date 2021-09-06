@@ -105,7 +105,7 @@ if not os.path.exists("model"):
 #from engine import evaluate
 criterion = DiceLoss()
 accuracy_metric = IoU()
-num_epochs = 1
+num_epochs = 100
 valid_loss_min = np.Inf
 
 checkpoint_path = 'model/chkpoint_'
