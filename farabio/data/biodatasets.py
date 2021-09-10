@@ -7,6 +7,7 @@ from zipfile import ZipFile
 from PIL import Image
 from typing import Optional, Callable
 import matplotlib.pyplot as plt
+import pydicom
 from skimage import io, transform
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
@@ -18,7 +19,7 @@ from torchvision.datasets import ImageFolder
 from torchvision.utils import draw_segmentation_masks
 
 __all__ = ['ChestXrayDataset', 'DSB18Dataset', 'HistocancerDataset', 
-'RANZCRDataset', 'RetinopathyDataset']
+'RANZCRDataset', 'RetinopathyDataset', 'VinBigDataset']
 
 
 kaggle_biodatasets = [
@@ -28,7 +29,8 @@ kaggle_biodatasets = [
     "histopathologic-cancer-detection",
     "intel-mobileodt-cervical-cancer-screening",
     "ranzcr-clip-catheter-line-classification",
-    "skin-cancer-mnist"
+    "skin-cancer-mnist",
+    "vinbigdata-chest-xray-abnormalities-detection"
 ]
 
 
@@ -49,7 +51,8 @@ def download_datasets(tag, path="."):
                 "histopathologic-cancer-detection",
                 "intel-mobileodt-cervical-cancer-screening",
                 "ranzcr-clip-catheter-line-classification",
-                "skin-cancer-mnist"
+                "skin-cancer-mnist",
+                "vinbigdata-chest-xray-abnormalities-detection"
             ]
     path : str, optional
         path where to save dataset, by default "."
@@ -816,4 +819,222 @@ class TestBiodatasets(unittest.TestCase):
         print(train_dataset)
 
 
+class VinBigDataset(Dataset):
+    r"""PyTorch friendly VinBigDataset class
+
+    Dataset is loaded using Kaggle API.
+    For further information on raw dataset and nuclei segmentation, please refer to [1]_.
+
+    Examples
+    ----------
+    >>> train_dataset = VinBigDataset(_path, transform=None, download=False, show=True)
+
+    .. image:: ../imgs/DSB18Dataset.png
+        :width: 600
+
+    References
+    ---------------
+    .. [1] https://www.kaggle.com/c/vinbigdata-chest-xray-abnormalities-detection
+    """
+    def __init__(self, root: str = ".", download: bool = False, mode: str = "train", shape: int = 512, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, show: bool = True):
+        tag = "vinbigdata-chest-xray-abnormalities-detection"
+
+        modes = ["train", "val", "test"]
+        assert mode in modes, "Available options for mode: train, val, test"
+
+        self.shape = shape
+        self.mode = mode
+
+        if download:
+            download_datasets(tag, path=root)
+            extract_zip(os.path.join(root, tag+".zip"),
+                        os.path.join(root, tag))
+            DIR_INPUT = os.path.join(root, tag)
+        else:
+            DIR_INPUT = root
+
+        DIR_TRAIN = f'{DIR_INPUT}/train'
+        DIR_TEST = f'{DIR_INPUT}/test'
+
+        train_df = pd.read_csv(f'{DIR_INPUT}/train.csv')
+        (train_df, valid_df) = self._split(train_df)
+        (train_df, valid_df) = self._preprocess(train_df, valid_df)
+
+        if self.mode == "train":
+            self.image_ids = train_df["image_id"].unique()
+            self.df = train_df
+            self.image_dir = DIR_TRAIN
+        elif self.mode == "val":
+            self.image_ids = valid_df["image_id"].unique()
+            self.df = train_df
+            self.image_dir = DIR_TRAIN
+        else:
+            print("Test case not handled")
+        
+        self.transforms = transform
+
+    def __getitem__(self, index):
+        if self.mode == "train":
+            image_id = self.image_ids[index]
+            records = self.df[(self.df['image_id'] == image_id)]
+            records = records.reset_index(drop=True)
+
+            dicom = pydicom.dcmread(f"{self.image_dir}/{image_id}.dicom")
+
+            image = dicom.pixel_array
+
+            if "PhotometricInterpretation" in dicom:
+                if dicom.PhotometricInterpretation == "MONOCHROME1":
+                    image = np.amax(image) - image
+
+            intercept = dicom.RescaleIntercept if "RescaleIntercept" in dicom else 0.0
+            slope = dicom.RescaleSlope if "RescaleSlope" in dicom else 1.0
+
+            if slope != 1:
+                image = slope * image.astype(np.float64)
+                image = image.astype(np.int16)
+
+            image += np.int16(intercept)        
+
+            image = np.stack([image, image, image])
+            image = image.astype('float32')
+            image = image - image.min()
+            image = image / image.max()
+            image = image * 255.0
+            image = image.transpose(1,2,0)
+
+            if records.loc[0, "class_id"] == 0:
+                records = records.loc[[0], :]
+
+            boxes = records[['x_min', 'y_min', 'x_max', 'y_max']].values
+            area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+            area = torch.as_tensor(area, dtype=torch.float32)
+            labels = torch.tensor(records["class_id"].values, dtype=torch.int64)
+
+            # suppose all instances are not crowd
+            iscrowd = torch.zeros((records.shape[0],), dtype=torch.int64)
+
+            target = {}
+            target['boxes'] = boxes
+            target['labels'] = labels
+            target['image_id'] = torch.tensor([index])
+            target['area'] = area
+            target['iscrowd'] = iscrowd
+
+            if self.transforms:
+                sample = {
+                    'image': image,
+                    'bboxes': target['boxes'],
+                    'labels': labels
+                }
+                sample = self.transforms(**sample)
+                image = sample['image']
+
+                target['boxes'] = torch.tensor(sample['bboxes'])
+
+            if target["boxes"].shape[0] == 0:
+                # Albumentation cuts the target (class 14, 1x1px in the corner)
+                target["boxes"] = torch.from_numpy(np.array([[0.0, 0.0, 1.0, 1.0]]))
+                target["area"] = torch.tensor([1.0], dtype=torch.float32)
+                target["labels"] = torch.tensor([0], dtype=torch.int64)
+
+            return image, target, image_id
+        else:
+            image_id = self.image_ids[index]
+            records = self.df[(self.df['image_id'] == image_id)]
+            records = records.reset_index(drop=True)
+
+            dicom = pydicom.dcmread(f"{self.image_dir}/{image_id}.dicom")
+
+            image = dicom.pixel_array
+
+            intercept = dicom.RescaleIntercept if "RescaleIntercept" in dicom else 0.0
+            slope = dicom.RescaleSlope if "RescaleSlope" in dicom else 1.0
+
+            if slope != 1:
+                image = slope * image.astype(np.float64)
+                image = image.astype(np.int16)
+
+            image += np.int16(intercept)        
+
+            image = np.stack([image, image, image])
+            image = image.astype('float32')
+            image = image - image.min()
+            image = image / image.max()
+            image = image * 255.0
+            image = image.transpose(1,2,0)
+
+            if self.transforms:
+                sample = {
+                    'image': image,
+                }
+                sample = self.transforms(**sample)
+                image = sample['image']
+
+            return image, image_id
+
+    def __len__(self):
+        return self.image_ids.shape[0]
+    
+    def _split(self, train_df):
+        train_df.fillna(0, inplace=True)
+        train_df.loc[train_df["class_id"] == 14, ['x_max', 'y_max']] = 1.0
+
+        # FasterRCNN handles class_id==0 as the background.
+        train_df["class_id"] = train_df["class_id"] + 1
+        train_df.loc[train_df["class_id"] == 15, ["class_id"]] = 0
+
+        image_ids = train_df['image_id'].unique()
+        valid_ids = image_ids[-10000:]
+        train_ids = image_ids[:-10000]
+
+        valid_df = train_df[train_df['image_id'].isin(valid_ids)]
+        train_df = train_df[train_df['image_id'].isin(train_ids)]
+
+        train_df["class_id"] = train_df["class_id"].apply(lambda x: x+1)
+        valid_df["class_id"] = valid_df["class_id"].apply(lambda x: x+1)
+        
+        return (train_df, valid_df)
+
+    def _preprocess(self, train_df, valid_df):
+        train_df['area'] = (train_df['x_max'] - train_df['x_min']) * (train_df['y_max'] - train_df['y_min'])
+        valid_df['area'] = (valid_df['x_max'] - valid_df['x_min']) * (valid_df['y_max'] - valid_df['y_min'])
+        train_df = train_df[train_df['area'] > 1]
+        valid_df = valid_df[valid_df['area'] > 1]
+
+        train_df = train_df[(train_df['class_id'] > 1) & (train_df['class_id'] < 15)]
+        valid_df = valid_df[(valid_df['class_id'] > 1) & (valid_df['class_id'] < 15)]
+
+        train_df = train_df.drop(['area'], axis = 1)
+
+        return (train_df, valid_df)
+
+    def _label_to_name(id):
+        id = int(id)
+        id = id-1
+
+        id_class = {
+            0: "Aortic enlargement",
+            1: "Atelectasis",
+            2: "Calcification",
+            3: "Cardiomegaly",
+            4: "Consolidation",
+            5: "ILD",
+            6: "Infiltration",
+            7: "Lung Opacity",
+            8: "Nodule/Mass",
+            9: "Other lesion",
+            10: "Pleural effusion",
+            11: "Pleural thickening",
+            12: "Pneumothorax",
+            13: "Pulmonary fibrosis"
+        }
+
+        for key in id_class:
+            if id == key:
+                return id_class[id]
+            else:
+                return str(id)
+
+    
 # unittest.main()
