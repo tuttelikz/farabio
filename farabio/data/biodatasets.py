@@ -7,18 +7,23 @@ from zipfile import ZipFile
 from PIL import Image
 from typing import Optional, Callable
 import matplotlib.pyplot as plt
+import pydicom
 from skimage import io, transform
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
+import seaborn as sns
 import torch
 from torch.utils.data import Dataset, DataLoader
 import torchvision.transforms.functional as F
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
-from torchvision.utils import draw_segmentation_masks
+from torchvision.utils import draw_segmentation_masks, draw_bounding_boxes
+import albumentations as A
+from albumentations.pytorch.transforms import ToTensorV2
+
 
 __all__ = ['ChestXrayDataset', 'DSB18Dataset', 'HistocancerDataset', 
-'RANZCRDataset', 'RetinopathyDataset']
+'RANZCRDataset', 'RetinopathyDataset', 'VinBigDataset']
 
 
 kaggle_biodatasets = [
@@ -28,7 +33,8 @@ kaggle_biodatasets = [
     "histopathologic-cancer-detection",
     "intel-mobileodt-cervical-cancer-screening",
     "ranzcr-clip-catheter-line-classification",
-    "skin-cancer-mnist"
+    "skin-cancer-mnist",
+    "vinbigdata-chest-xray-abnormalities-detection"
 ]
 
 
@@ -49,7 +55,8 @@ def download_datasets(tag, path="."):
                 "histopathologic-cancer-detection",
                 "intel-mobileodt-cervical-cancer-screening",
                 "ranzcr-clip-catheter-line-classification",
-                "skin-cancer-mnist"
+                "skin-cancer-mnist",
+                "vinbigdata-chest-xray-abnormalities-detection"
             ]
     path : str, optional
         path where to save dataset, by default "."
@@ -784,36 +791,324 @@ class RetinopathyDataset(Dataset):
                                str(int(labels[i])), transform=axs[0, i].transAxes)
 
 
+class VinBigDataset(Dataset):
+    r"""PyTorch friendly VinBigDataset class
+
+    Dataset is loaded using Kaggle API.
+    For further information on raw dataset and nuclei segmentation, please refer to [1]_.
+
+    Examples
+    ----------
+    >>> train_dataset = VinBigDataset(_path, transform=None, download=False, mode="train", show=True)
+
+    .. image:: ../imgs/DSB18Dataset.png
+        :width: 600
+
+    References
+    ---------------
+    .. [1] https://www.kaggle.com/c/vinbigdata-chest-xray-abnormalities-detection
+    """
+    def __init__(self, root: str = ".", download: bool = False, mode: str = "train", shape: int = 512, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, show: bool = True):
+        tag = "vinbigdata-chest-xray-abnormalities-detection"
+
+        modes = ["train", "val", "test"]
+        assert mode in modes, "Available options for mode: train, val, test"
+
+        self.shape = shape
+        self.mode = mode
+
+        if download:
+            download_datasets(tag, path=root)
+            extract_zip(os.path.join(root, tag+".zip"),
+                        os.path.join(root, tag))
+            DIR_INPUT = os.path.join(root, tag)
+        else:
+            DIR_INPUT = root
+
+        DIR_TRAIN = f'{DIR_INPUT}/train'
+        DIR_TEST = f'{DIR_INPUT}/test'
+
+        train_df = pd.read_csv(f'{DIR_INPUT}/train.csv')
+        (train_df, valid_df) = self._split(train_df)
+        (train_df, valid_df) = self._preprocess(train_df, valid_df)
+
+        self._init_labels()
+
+        if self.mode == "train":
+            self.image_ids = train_df["image_id"].unique()
+            self.df = train_df
+            self.image_dir = DIR_TRAIN
+        elif self.mode == "val":
+            self.image_ids = valid_df["image_id"].unique()
+            self.df = valid_df
+            self.image_dir = DIR_TRAIN
+        else:
+            print("Test case not handled")
+
+        if transform is None:
+            self.transforms = self.default_transform(mode)
+        else:
+            self.transforms = transform
+
+        if show:
+            self.visualize_batch()
+
+    def __getitem__(self, index):
+        image_id = self.image_ids[index]
+        records = self.df[(self.df['image_id'] == image_id)]
+        records = records.reset_index(drop=True)
+        dicom = pydicom.dcmread(f"{self.image_dir}/{image_id}.dicom")
+        image = dicom.pixel_array
+        
+        #### this part was only in train
+        if "PhotometricInterpretation" in dicom:
+            if dicom.PhotometricInterpretation == "MONOCHROME1":
+                image = np.amax(image) - image
+
+        intercept = dicom.RescaleIntercept if "RescaleIntercept" in dicom else 0.0
+        slope = dicom.RescaleSlope if "RescaleSlope" in dicom else 1.0
+
+        if slope != 1:
+            image = slope * image.astype(np.float64)
+            image = image.astype(np.int16)
+
+        image += np.int16(intercept)        
+        image = np.stack([image, image, image])
+        image = image.astype('float32')
+        image = image - image.min()
+        image = image / image.max()
+        image = image * 255.0
+        image = image.transpose(1,2,0)
+
+        if self.mode == "train" or self.mode == "val":
+            if records.loc[0, "class_id"] == 0:
+                records = records.loc[[0], :]
+
+            boxes = records[['x_min', 'y_min', 'x_max', 'y_max']].values
+            area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
+            area = torch.as_tensor(area, dtype=torch.float32)
+            labels = torch.tensor(records["class_id"].values, dtype=torch.int64)
+
+            # suppose all instances are not crowd
+            iscrowd = torch.zeros((records.shape[0],), dtype=torch.int64)
+
+            target = {}
+            target['boxes'] = boxes
+            target['labels'] = labels
+            target['image_id'] = torch.tensor([index])
+            target['area'] = area
+            target['iscrowd'] = iscrowd
+
+            if self.transforms:
+                sample = {
+                    'image': image,
+                    'bboxes': target['boxes'],
+                    'labels': labels
+                }
+                sample = self.transforms(**sample)
+                image = sample['image']
+
+                target['boxes'] = torch.tensor(sample['bboxes'])
+
+            if target["boxes"].shape[0] == 0:
+                # Albumentation cuts the target (class 14, 1x1px in the corner)
+                target["boxes"] = torch.from_numpy(np.array([[0.0, 0.0, 1.0, 1.0]]))
+                target["area"] = torch.tensor([1.0], dtype=torch.float32)
+                target["labels"] = torch.tensor([0], dtype=torch.int64)
+
+            return image, target, image_id
+        else:
+            if self.transforms:
+                sample = {
+                    'image': image,
+                }
+                sample = self.transforms(**sample)
+                image = sample['image']
+
+            return image, image_id
+
+    def __len__(self):
+        return self.image_ids.shape[0]
+    
+    def default_transform(self, mode="train"):
+            if mode == "train":
+                transform = A.Compose([
+                    A.Flip(0.5),
+                    A.ShiftScaleRotate(scale_limit=0.1, rotate_limit=45, p=0.25),
+                    A.LongestMaxSize(max_size=800, p=1.0),
+                    A.Normalize(mean=(0, 0, 0), std=(1, 1, 1), max_pixel_value=255.0, p=1.0),
+                    ToTensorV2(p=1.0)
+                ], bbox_params={'format': 'pascal_voc', 'label_fields': ['labels']})
+            elif mode == 'val':
+                transform = A.Compose([
+                    A.Normalize(mean=(0, 0, 0), std=(1, 1, 1), max_pixel_value=255.0, p=1.0),
+                    ToTensorV2(p=1.0)
+                ], bbox_params={'format': 'pascal_voc', 'label_fields': ['labels']})
+            else:
+                transform = A.Compose([
+                    A.Normalize(mean=(0, 0, 0), std=(1, 1, 1), max_pixel_value=255.0, p=1.0),
+                    ToTensorV2(p=1.0)
+                ])
+
+            return transform
+
+    def _split(self, train_df):
+        train_df.fillna(0, inplace=True)
+        train_df.loc[train_df["class_id"] == 14, ['x_max', 'y_max']] = 1.0
+
+        # FasterRCNN handles class_id==0 as the background.
+        train_df["class_id"] = train_df["class_id"] + 1
+        train_df.loc[train_df["class_id"] == 15, ["class_id"]] = 0
+
+        image_ids = train_df['image_id'].unique()
+        valid_ids = image_ids[-10000:]
+        train_ids = image_ids[:-10000]
+
+        valid_df = train_df[train_df['image_id'].isin(valid_ids)]
+        train_df = train_df[train_df['image_id'].isin(train_ids)]
+
+        train_df["class_id"] = train_df["class_id"].apply(lambda x: x+1)
+        valid_df["class_id"] = valid_df["class_id"].apply(lambda x: x+1)
+        
+        return (train_df, valid_df)
+
+    def _preprocess(self, train_df, valid_df):
+        train_df['area'] = (train_df['x_max'] - train_df['x_min']) * (train_df['y_max'] - train_df['y_min'])
+        valid_df['area'] = (valid_df['x_max'] - valid_df['x_min']) * (valid_df['y_max'] - valid_df['y_min'])
+        train_df = train_df[train_df['area'] > 1]
+        valid_df = valid_df[valid_df['area'] > 1]
+
+        train_df = train_df[(train_df['class_id'] > 1) & (train_df['class_id'] < 15)]
+        valid_df = valid_df[(valid_df['class_id'] > 1) & (valid_df['class_id'] < 15)]
+
+        train_df = train_df.drop(['area'], axis = 1)
+
+        return (train_df, valid_df)
+
+    def _init_labels(self):
+        self.id_class = {
+            0: "Aortic enlargement",
+            1: "Atelectasis",
+            2: "Calcification",
+            3: "Cardiomegaly",
+            4: "Consolidation",
+            5: "ILD",
+            6: "Infiltration",
+            7: "Lung Opacity",
+            8: "Nodule/Mass",
+            9: "Other lesion",
+            10: "Pleural effusion",
+            11: "Pleural thickening",
+            12: "Pneumothorax",
+            13: "Pulmonary fibrosis"
+        }
+
+        self.id_clr = {}
+
+        for j, _clr in enumerate(sns.color_palette(n_colors=len(self.id_class.keys()))):
+            self.id_clr[j] = tuple(np.uint8(255*np.array(_clr)))
+
+    def _label_to_name(self, id):
+        id = int(id)
+        id = id-1
+
+        if id in self.id_class:
+            return self.id_class[id]
+        else:
+            return str(id)
+
+    def _collate_fn(self, batch):
+        return tuple(zip(*batch))
+
+    def visualize_batch(self):
+        if self.mode == "train":
+            loader = DataLoader(
+                self,
+                batch_size=4,
+                shuffle=True,
+                num_workers=4,
+                collate_fn=self._collate_fn
+            )
+        else:
+            loader = DataLoader(
+                self,
+                batch_size=4,
+                shuffle=True,
+                num_workers=4,
+                collate_fn=self._collate_fn
+            )
+
+        images, targets, image_ids = next(iter(loader))
+
+        bbx_ = []
+
+        for i, img in enumerate(images):
+            img_int = img * 255
+            img_int = img_int.type(torch.uint8)
+
+            bboxes_int = targets[i]['boxes'].type(torch.uint8)
+
+            bbclrs = []
+            bbclss = []
+
+            for jj, label in enumerate(targets[i]['labels']):
+                bbclrs.append(self.id_clr[int(label)])
+                bbclss.append(self._label_to_name(int(label)))
+
+            bbx_.append(draw_bounding_boxes(img_int, boxes=bboxes_int, colors=bbclrs, font_size = 20, labels=bbclss))
+
+        self._show(bbx_)        
+
+    def _show(self, imgs):
+        plt.rcParams["savefig.bbox"] = 'tight'
+
+        if not isinstance(imgs, list):
+            imgs = [imgs]
+
+        fix, axs = plt.subplots(ncols=len(imgs), squeeze=False, figsize=(50, 50))
+
+        for i, img in enumerate(imgs):
+            img = img.detach()
+            img = F.to_pil_image(img)
+            axs[0, i].imshow(np.asarray(img))
+            axs[0, i].set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
+
+
 class TestBiodatasets(unittest.TestCase):
     def testChestXrayDataset(self):
-        _path = "/home/data/02_SSD4TB/suzy/datasets/public/chest-xray"
+        _path = "/home/data/07_SSD4TB/public-datasets/chest-xray"
         valid_dataset = ChestXrayDataset(
             root=_path, download=False, mode="val", show=False)
         print(valid_dataset)
 
     def testDSB18Dataset(self):
-        _path = "/home/data/02_SSD4TB/suzy/datasets/public/data-science-bowl-2018"
+        _path = "/home/data/07_SSD4TB/public-datasets/data-science-bowl-2018"
         train_dataset = DSB18Dataset(
             root=_path, transform=None, mode="train", download=False, show=False)
         print(train_dataset)
 
     def testHistocancerDataset(self):
-        _path = "/home/data/02_SSD4TB/suzy/datasets/public/histopathologic-cancer-detection"
+        _path = "/home/data/07_SSD4TB/public-datasets/histopathologic-cancer-detection"
         train_dataset = HistocancerDataset(
             root=_path, download=False, mode="train", show=False)
         print(train_dataset)
 
     def testRANZCRDataset(self):
-        _path = "/home/data/02_SSD4TB/suzy/datasets/public/ranzcr-clip-catheter-line-classification"
+        _path = "/home/data/07_SSD4TB/public-datasets/ranzcr-clip-catheter-line-classification"
         train_dataset = RANZCRDataset(
             root=_path, show=False, shape=512, mode="train", download=False)
         print(train_dataset)
 
     def testRetinopathyDataset(self):
-        _path = "/home/data/02_SSD4TB/suzy/datasets/public/aptos2019-blindness-detection"
+        _path = "/home/data/07_SSD4TB/public-datasets/aptos2019-blindness-detection"
         train_dataset = RetinopathyDataset(
             root=_path, mode="train", show=False, download=False)
         print(train_dataset)
 
+    def testVinBigDataset(self):
+        _path = "/home/data/07_SSD4TB/public-datasets/vinbigdata-chest-xray-abnormalities-detection"
+        train_dataset = VinBigDataset(
+            root=_path, mode="train", show=False, download=False)
+        print(train_dataset)
 
 # unittest.main()
