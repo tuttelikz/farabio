@@ -11,12 +11,16 @@ import pydicom
 from skimage import io, transform
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
+import seaborn as sns
 import torch
 from torch.utils.data import Dataset, DataLoader
 import torchvision.transforms.functional as F
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
-from torchvision.utils import draw_segmentation_masks
+from torchvision.utils import draw_segmentation_masks, draw_bounding_boxes
+import albumentations as A
+from albumentations.pytorch.transforms import ToTensorV2
+
 
 __all__ = ['ChestXrayDataset', 'DSB18Dataset', 'HistocancerDataset', 
 'RANZCRDataset', 'RetinopathyDataset', 'VinBigDataset']
@@ -787,38 +791,6 @@ class RetinopathyDataset(Dataset):
                                str(int(labels[i])), transform=axs[0, i].transAxes)
 
 
-class TestBiodatasets(unittest.TestCase):
-    def testChestXrayDataset(self):
-        _path = "/home/data/02_SSD4TB/suzy/datasets/public/chest-xray"
-        valid_dataset = ChestXrayDataset(
-            root=_path, download=False, mode="val", show=False)
-        print(valid_dataset)
-
-    def testDSB18Dataset(self):
-        _path = "/home/data/02_SSD4TB/suzy/datasets/public/data-science-bowl-2018"
-        train_dataset = DSB18Dataset(
-            root=_path, transform=None, mode="train", download=False, show=False)
-        print(train_dataset)
-
-    def testHistocancerDataset(self):
-        _path = "/home/data/02_SSD4TB/suzy/datasets/public/histopathologic-cancer-detection"
-        train_dataset = HistocancerDataset(
-            root=_path, download=False, mode="train", show=False)
-        print(train_dataset)
-
-    def testRANZCRDataset(self):
-        _path = "/home/data/02_SSD4TB/suzy/datasets/public/ranzcr-clip-catheter-line-classification"
-        train_dataset = RANZCRDataset(
-            root=_path, show=False, shape=512, mode="train", download=False)
-        print(train_dataset)
-
-    def testRetinopathyDataset(self):
-        _path = "/home/data/02_SSD4TB/suzy/datasets/public/aptos2019-blindness-detection"
-        train_dataset = RetinopathyDataset(
-            root=_path, mode="train", show=False, download=False)
-        print(train_dataset)
-
-
 class VinBigDataset(Dataset):
     r"""PyTorch friendly VinBigDataset class
 
@@ -827,7 +799,7 @@ class VinBigDataset(Dataset):
 
     Examples
     ----------
-    >>> train_dataset = VinBigDataset(_path, transform=None, download=False, show=True)
+    >>> train_dataset = VinBigDataset(_path, transform=None, download=False, mode="train", show=True)
 
     .. image:: ../imgs/DSB18Dataset.png
         :width: 600
@@ -860,49 +832,55 @@ class VinBigDataset(Dataset):
         (train_df, valid_df) = self._split(train_df)
         (train_df, valid_df) = self._preprocess(train_df, valid_df)
 
+        self._init_labels()
+
         if self.mode == "train":
             self.image_ids = train_df["image_id"].unique()
             self.df = train_df
             self.image_dir = DIR_TRAIN
         elif self.mode == "val":
             self.image_ids = valid_df["image_id"].unique()
-            self.df = train_df
+            self.df = valid_df
             self.image_dir = DIR_TRAIN
         else:
             print("Test case not handled")
-        
-        self.transforms = transform
+
+        if transform is None:
+            self.transforms = self.default_transform(mode)
+        else:
+            self.transforms = transform
+
+        if show:
+            self.visualize_batch()
 
     def __getitem__(self, index):
-        if self.mode == "train":
-            image_id = self.image_ids[index]
-            records = self.df[(self.df['image_id'] == image_id)]
-            records = records.reset_index(drop=True)
+        image_id = self.image_ids[index]
+        records = self.df[(self.df['image_id'] == image_id)]
+        records = records.reset_index(drop=True)
+        dicom = pydicom.dcmread(f"{self.image_dir}/{image_id}.dicom")
+        image = dicom.pixel_array
+        
+        #### this part was only in train
+        if "PhotometricInterpretation" in dicom:
+            if dicom.PhotometricInterpretation == "MONOCHROME1":
+                image = np.amax(image) - image
 
-            dicom = pydicom.dcmread(f"{self.image_dir}/{image_id}.dicom")
+        intercept = dicom.RescaleIntercept if "RescaleIntercept" in dicom else 0.0
+        slope = dicom.RescaleSlope if "RescaleSlope" in dicom else 1.0
 
-            image = dicom.pixel_array
+        if slope != 1:
+            image = slope * image.astype(np.float64)
+            image = image.astype(np.int16)
 
-            if "PhotometricInterpretation" in dicom:
-                if dicom.PhotometricInterpretation == "MONOCHROME1":
-                    image = np.amax(image) - image
+        image += np.int16(intercept)        
+        image = np.stack([image, image, image])
+        image = image.astype('float32')
+        image = image - image.min()
+        image = image / image.max()
+        image = image * 255.0
+        image = image.transpose(1,2,0)
 
-            intercept = dicom.RescaleIntercept if "RescaleIntercept" in dicom else 0.0
-            slope = dicom.RescaleSlope if "RescaleSlope" in dicom else 1.0
-
-            if slope != 1:
-                image = slope * image.astype(np.float64)
-                image = image.astype(np.int16)
-
-            image += np.int16(intercept)        
-
-            image = np.stack([image, image, image])
-            image = image.astype('float32')
-            image = image - image.min()
-            image = image / image.max()
-            image = image * 255.0
-            image = image.transpose(1,2,0)
-
+        if self.mode == "train" or self.mode == "val":
             if records.loc[0, "class_id"] == 0:
                 records = records.loc[[0], :]
 
@@ -940,30 +918,6 @@ class VinBigDataset(Dataset):
 
             return image, target, image_id
         else:
-            image_id = self.image_ids[index]
-            records = self.df[(self.df['image_id'] == image_id)]
-            records = records.reset_index(drop=True)
-
-            dicom = pydicom.dcmread(f"{self.image_dir}/{image_id}.dicom")
-
-            image = dicom.pixel_array
-
-            intercept = dicom.RescaleIntercept if "RescaleIntercept" in dicom else 0.0
-            slope = dicom.RescaleSlope if "RescaleSlope" in dicom else 1.0
-
-            if slope != 1:
-                image = slope * image.astype(np.float64)
-                image = image.astype(np.int16)
-
-            image += np.int16(intercept)        
-
-            image = np.stack([image, image, image])
-            image = image.astype('float32')
-            image = image - image.min()
-            image = image / image.max()
-            image = image * 255.0
-            image = image.transpose(1,2,0)
-
             if self.transforms:
                 sample = {
                     'image': image,
@@ -976,6 +930,28 @@ class VinBigDataset(Dataset):
     def __len__(self):
         return self.image_ids.shape[0]
     
+    def default_transform(self, mode="train"):
+            if mode == "train":
+                transform = A.Compose([
+                    A.Flip(0.5),
+                    A.ShiftScaleRotate(scale_limit=0.1, rotate_limit=45, p=0.25),
+                    A.LongestMaxSize(max_size=800, p=1.0),
+                    A.Normalize(mean=(0, 0, 0), std=(1, 1, 1), max_pixel_value=255.0, p=1.0),
+                    ToTensorV2(p=1.0)
+                ], bbox_params={'format': 'pascal_voc', 'label_fields': ['labels']})
+            elif mode == 'val':
+                transform = A.Compose([
+                    A.Normalize(mean=(0, 0, 0), std=(1, 1, 1), max_pixel_value=255.0, p=1.0),
+                    ToTensorV2(p=1.0)
+                ], bbox_params={'format': 'pascal_voc', 'label_fields': ['labels']})
+            else:
+                transform = A.Compose([
+                    A.Normalize(mean=(0, 0, 0), std=(1, 1, 1), max_pixel_value=255.0, p=1.0),
+                    ToTensorV2(p=1.0)
+                ])
+
+            return transform
+
     def _split(self, train_df):
         train_df.fillna(0, inplace=True)
         train_df.loc[train_df["class_id"] == 14, ['x_max', 'y_max']] = 1.0
@@ -1009,11 +985,8 @@ class VinBigDataset(Dataset):
 
         return (train_df, valid_df)
 
-    def _label_to_name(id):
-        id = int(id)
-        id = id-1
-
-        id_class = {
+    def _init_labels(self):
+        self.id_class = {
             0: "Aortic enlargement",
             1: "Atelectasis",
             2: "Calcification",
@@ -1030,11 +1003,112 @@ class VinBigDataset(Dataset):
             13: "Pulmonary fibrosis"
         }
 
-        for key in id_class:
-            if id == key:
-                return id_class[id]
-            else:
-                return str(id)
+        self.id_clr = {}
 
-    
+        for j, _clr in enumerate(sns.color_palette(n_colors=len(self.id_class.keys()))):
+            self.id_clr[j] = tuple(np.uint8(255*np.array(_clr)))
+
+    def _label_to_name(self, id):
+        id = int(id)
+        id = id-1
+
+        if id in self.id_class:
+            return self.id_class[id]
+        else:
+            return str(id)
+
+    def _collate_fn(self, batch):
+        return tuple(zip(*batch))
+
+    def visualize_batch(self):
+        if self.mode == "train":
+            loader = DataLoader(
+                self,
+                batch_size=4,
+                shuffle=True,
+                num_workers=4,
+                collate_fn=self._collate_fn
+            )
+        else:
+            loader = DataLoader(
+                self,
+                batch_size=4,
+                shuffle=True,
+                num_workers=4,
+                collate_fn=self._collate_fn
+            )
+
+        images, targets, image_ids = next(iter(loader))
+
+        bbx_ = []
+
+        for i, img in enumerate(images):
+            img_int = img * 255
+            img_int = img_int.type(torch.uint8)
+
+            bboxes_int = targets[i]['boxes'].type(torch.uint8)
+
+            bbclrs = []
+            bbclss = []
+
+            for jj, label in enumerate(targets[i]['labels']):
+                bbclrs.append(self.id_clr[int(label)])
+                bbclss.append(self._label_to_name(int(label)))
+
+            bbx_.append(draw_bounding_boxes(img_int, boxes=bboxes_int, colors=bbclrs, font_size = 20, labels=bbclss))
+
+        self._show(bbx_)        
+
+    def _show(self, imgs):
+        plt.rcParams["savefig.bbox"] = 'tight'
+
+        if not isinstance(imgs, list):
+            imgs = [imgs]
+
+        fix, axs = plt.subplots(ncols=len(imgs), squeeze=False, figsize=(50, 50))
+
+        for i, img in enumerate(imgs):
+            img = img.detach()
+            img = F.to_pil_image(img)
+            axs[0, i].imshow(np.asarray(img))
+            axs[0, i].set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
+
+
+class TestBiodatasets(unittest.TestCase):
+    def testChestXrayDataset(self):
+        _path = "/home/data/07_SSD4TB/public-datasets/chest-xray"
+        valid_dataset = ChestXrayDataset(
+            root=_path, download=False, mode="val", show=False)
+        print(valid_dataset)
+
+    def testDSB18Dataset(self):
+        _path = "/home/data/07_SSD4TB/public-datasets/data-science-bowl-2018"
+        train_dataset = DSB18Dataset(
+            root=_path, transform=None, mode="train", download=False, show=False)
+        print(train_dataset)
+
+    def testHistocancerDataset(self):
+        _path = "/home/data/07_SSD4TB/public-datasets/histopathologic-cancer-detection"
+        train_dataset = HistocancerDataset(
+            root=_path, download=False, mode="train", show=False)
+        print(train_dataset)
+
+    def testRANZCRDataset(self):
+        _path = "/home/data/07_SSD4TB/public-datasets/ranzcr-clip-catheter-line-classification"
+        train_dataset = RANZCRDataset(
+            root=_path, show=False, shape=512, mode="train", download=False)
+        print(train_dataset)
+
+    def testRetinopathyDataset(self):
+        _path = "/home/data/07_SSD4TB/public-datasets/aptos2019-blindness-detection"
+        train_dataset = RetinopathyDataset(
+            root=_path, mode="train", show=False, download=False)
+        print(train_dataset)
+
+    def testVinBigDataset(self):
+        _path = "/home/data/07_SSD4TB/public-datasets/vinbigdata-chest-xray-abnormalities-detection"
+        train_dataset = VinBigDataset(
+            root=_path, mode="train", show=False, download=False)
+        print(train_dataset)
+
 # unittest.main()
