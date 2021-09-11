@@ -102,6 +102,7 @@ pip install .
 ## 🤿 Tutorials
 **Tutorial 1:** Training a classifier for `ChestXrayDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-classifier.ipynb)  
 **Tutorial 2:** Training a segmentation model for `DSB18Dataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-segmentation.ipynb)
+**Tutorial 3:** Tutorial 3: Training a Faster-RCNN detection model for `VinBigDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-detection.ipynb)
 
 ## 🔎 Links
 - API documentations: https://farabio.readthedocs.io
