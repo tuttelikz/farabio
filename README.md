@@ -112,8 +112,28 @@ pip install .
 - Wiki: https://github.com/tuttelikz/farabio/wiki
 
 ## ⭐ Credits
-If you like this repository, please click on Star.
+If you like this repository, please click on Star.  
 
+How to cite | [doi](https://zenodo.org/record/5746474#.YaclirqRX-g):
+```text
+@software{sanzhar_askaruly_2021_5746474,
+  author       = {Sanzhar Askaruly and
+                  Nurbolat Aimakov and
+                  Alisher Iskakov and
+                  Hyewon Cho and
+                  Yujin Ahn and
+                  Myeong Hoon Choi and
+                  Hyunmo Yang and
+                  Woonggyu Jung},
+  title        = {Farabio: Deep learning for biomedical imaging},
+  month        = dec,
+  year         = 2021,
+  publisher    = {Zenodo},
+  version      = {v0.0.3-doi},
+  doi          = {10.5281/zenodo.5746474},
+  url          = {https://doi.org/10.5281/zenodo.5746474}
+}
+```
 ## 📃 Licenses
 This work is licensed [Apache 2.0](https://github.com/tuttelikz/farabio/blob/main/LICENSE).
 
