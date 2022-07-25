@@ -14,6 +14,12 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import torch.nn.functional as F
 
+# 1. model components
+# https://github.com/pytorch/vision/blob/main/torchvision/models/vgg.py
+
+# 2. biodataset class
+
+# 3. tutorial
 
 class MosmedDataset(Dataset):
     def __init__(self, download: bool = False, save_path: str = ".", train: bool = True):
