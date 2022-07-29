@@ -1134,6 +1134,23 @@ class TestBiodatasets(unittest.TestCase):
 
 
 class MosmedDataset(Dataset):
+    r"""PyTorch friendly MosmedDataset class
+
+    Dataset is loaded using Kaggle API.
+    For further information on raw dataset and CT scan classification, please refer to [1]_.
+
+    Examples
+    ----------
+    >>> train_dataset = MosmedDataset(download=False,  train=True)
+    >>> valid_dataset = MosmedDataset(download=False,  train=False)
+
+    .. image:: ../imgs/mosmed.jpg
+        :width: 600
+
+    References
+    ---------------
+    .. [1] https://www.kaggle.com/datasets/andrewmvd/mosmed-covid19-ct-scans
+    """
     def __init__(self, download: bool = False, save_path: str = ".", train: bool = True):
         if download:
             ct_link = {
