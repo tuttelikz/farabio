@@ -13,17 +13,24 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
 import seaborn as sns
 import torch
+import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
-import torchvision.transforms.functional as F
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from torchvision.utils import draw_segmentation_masks, draw_bounding_boxes
 import albumentations as A
 from albumentations.pytorch.transforms import ToTensorV2
+import requests
+import io
+import wget
+import nibabel as nib
+from scipy import ndimage
+import matplotlib.pyplot as plt
+import torch.nn.functional as F
 
 
-__all__ = ['ChestXrayDataset', 'DSB18Dataset', 'HistocancerDataset', 
-'RANZCRDataset', 'RetinopathyDataset', 'VinBigDataset']
+__all__ = ['ChestXrayDataset', 'DSB18Dataset', 'HistocancerDataset',
+           'RANZCRDataset', 'RetinopathyDataset', 'VinBigDataset']
 
 
 kaggle_biodatasets = [
@@ -808,6 +815,7 @@ class VinBigDataset(Dataset):
     ---------------
     .. [1] https://www.kaggle.com/c/vinbigdata-chest-xray-abnormalities-detection
     """
+
     def __init__(self, root: str = ".", download: bool = False, mode: str = "train", shape: int = 512, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, show: bool = True):
         tag = "vinbigdata-chest-xray-abnormalities-detection"
 
@@ -860,8 +868,8 @@ class VinBigDataset(Dataset):
         records = records.reset_index(drop=True)
         dicom = pydicom.dcmread(f"{self.image_dir}/{image_id}.dicom")
         image = dicom.pixel_array
-        
-        #### this part was only in train
+
+        # this part was only in train
         if "PhotometricInterpretation" in dicom:
             if dicom.PhotometricInterpretation == "MONOCHROME1":
                 image = np.amax(image) - image
@@ -873,13 +881,13 @@ class VinBigDataset(Dataset):
             image = slope * image.astype(np.float64)
             image = image.astype(np.int16)
 
-        image += np.int16(intercept)        
+        image += np.int16(intercept)
         image = np.stack([image, image, image])
         image = image.astype('float32')
         image = image - image.min()
         image = image / image.max()
         image = image * 255.0
-        image = image.transpose(1,2,0)
+        image = image.transpose(1, 2, 0)
 
         if self.mode == "train" or self.mode == "val":
             if records.loc[0, "class_id"] == 0:
@@ -888,7 +896,8 @@ class VinBigDataset(Dataset):
             boxes = records[['x_min', 'y_min', 'x_max', 'y_max']].values
             area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
             area = torch.as_tensor(area, dtype=torch.float32)
-            labels = torch.tensor(records["class_id"].values, dtype=torch.int64)
+            labels = torch.tensor(
+                records["class_id"].values, dtype=torch.int64)
 
             # suppose all instances are not crowd
             iscrowd = torch.zeros((records.shape[0],), dtype=torch.int64)
@@ -909,11 +918,13 @@ class VinBigDataset(Dataset):
                 sample = self.transforms(**sample)
                 image = sample['image']
 
-                target['boxes'] = torch.tensor(sample['bboxes']).type(torch.float32)
+                target['boxes'] = torch.tensor(
+                    sample['bboxes']).type(torch.float32)
 
             if target["boxes"].shape[0] == 0:
                 # Albumentation cuts the target (class 14, 1x1px in the corner)
-                target["boxes"] = torch.from_numpy(np.array([[0.0, 0.0, 1.0, 1.0]])).type(torch.float32)
+                target["boxes"] = torch.from_numpy(
+                    np.array([[0.0, 0.0, 1.0, 1.0]])).type(torch.float32)
                 target["area"] = torch.tensor([1.0], dtype=torch.float32)
                 target["labels"] = torch.tensor([0], dtype=torch.int64)
 
@@ -930,28 +941,31 @@ class VinBigDataset(Dataset):
 
     def __len__(self):
         return self.image_ids.shape[0]
-    
-    def default_transform(self, mode="train"):
-            if mode == "train":
-                transform = A.Compose([
-                    A.Flip(0.5),
-                    A.ShiftScaleRotate(scale_limit=0.1, rotate_limit=45, p=0.25),
-                    A.LongestMaxSize(max_size=800, p=1.0),
-                    A.Normalize(mean=(0, 0, 0), std=(1, 1, 1), max_pixel_value=255.0, p=1.0),
-                    ToTensorV2(p=1.0)
-                ], bbox_params={'format': 'pascal_voc', 'label_fields': ['labels']})
-            elif mode == 'val':
-                transform = A.Compose([
-                    A.Normalize(mean=(0, 0, 0), std=(1, 1, 1), max_pixel_value=255.0, p=1.0),
-                    ToTensorV2(p=1.0)
-                ], bbox_params={'format': 'pascal_voc', 'label_fields': ['labels']})
-            else:
-                transform = A.Compose([
-                    A.Normalize(mean=(0, 0, 0), std=(1, 1, 1), max_pixel_value=255.0, p=1.0),
-                    ToTensorV2(p=1.0)
-                ])
 
-            return transform
+    def default_transform(self, mode="train"):
+        if mode == "train":
+            transform = A.Compose([
+                A.Flip(0.5),
+                A.ShiftScaleRotate(scale_limit=0.1, rotate_limit=45, p=0.25),
+                A.LongestMaxSize(max_size=800, p=1.0),
+                A.Normalize(mean=(0, 0, 0), std=(1, 1, 1),
+                            max_pixel_value=255.0, p=1.0),
+                ToTensorV2(p=1.0)
+            ], bbox_params={'format': 'pascal_voc', 'label_fields': ['labels']})
+        elif mode == 'val':
+            transform = A.Compose([
+                A.Normalize(mean=(0, 0, 0), std=(1, 1, 1),
+                            max_pixel_value=255.0, p=1.0),
+                ToTensorV2(p=1.0)
+            ], bbox_params={'format': 'pascal_voc', 'label_fields': ['labels']})
+        else:
+            transform = A.Compose([
+                A.Normalize(mean=(0, 0, 0), std=(1, 1, 1),
+                            max_pixel_value=255.0, p=1.0),
+                ToTensorV2(p=1.0)
+            ])
+
+        return transform
 
     def _split(self, train_df):
         train_df.fillna(0, inplace=True)
@@ -970,19 +984,23 @@ class VinBigDataset(Dataset):
 
         train_df["class_id"] = train_df["class_id"].apply(lambda x: x+1)
         valid_df["class_id"] = valid_df["class_id"].apply(lambda x: x+1)
-        
+
         return (train_df, valid_df)
 
     def _preprocess(self, train_df, valid_df):
-        train_df['area'] = (train_df['x_max'] - train_df['x_min']) * (train_df['y_max'] - train_df['y_min'])
-        valid_df['area'] = (valid_df['x_max'] - valid_df['x_min']) * (valid_df['y_max'] - valid_df['y_min'])
+        train_df['area'] = (train_df['x_max'] - train_df['x_min']) * \
+            (train_df['y_max'] - train_df['y_min'])
+        valid_df['area'] = (valid_df['x_max'] - valid_df['x_min']) * \
+            (valid_df['y_max'] - valid_df['y_min'])
         train_df = train_df[train_df['area'] > 1]
         valid_df = valid_df[valid_df['area'] > 1]
 
-        train_df = train_df[(train_df['class_id'] > 1) & (train_df['class_id'] < 15)]
-        valid_df = valid_df[(valid_df['class_id'] > 1) & (valid_df['class_id'] < 15)]
+        train_df = train_df[(train_df['class_id'] > 1) &
+                            (train_df['class_id'] < 15)]
+        valid_df = valid_df[(valid_df['class_id'] > 1) &
+                            (valid_df['class_id'] < 15)]
 
-        train_df = train_df.drop(['area'], axis = 1)
+        train_df = train_df.drop(['area'], axis=1)
 
         return (train_df, valid_df)
 
@@ -1056,9 +1074,10 @@ class VinBigDataset(Dataset):
                 bbclrs.append(self.id_clr[int(label)])
                 bbclss.append(self._label_to_name(int(label)))
 
-            bbx_.append(draw_bounding_boxes(img_int, boxes=bboxes_int, colors=bbclrs, font_size = 20, labels=bbclss))
+            bbx_.append(draw_bounding_boxes(img_int, boxes=bboxes_int,
+                                            colors=bbclrs, font_size=20, labels=bbclss))
 
-        self._show(bbx_)        
+        self._show(bbx_)
 
     def _show(self, imgs):
         plt.rcParams["savefig.bbox"] = 'tight'
@@ -1066,7 +1085,8 @@ class VinBigDataset(Dataset):
         if not isinstance(imgs, list):
             imgs = [imgs]
 
-        fix, axs = plt.subplots(ncols=len(imgs), squeeze=False, figsize=(50, 50))
+        fix, axs = plt.subplots(
+            ncols=len(imgs), squeeze=False, figsize=(50, 50))
 
         for i, img in enumerate(imgs):
             img = img.detach()
@@ -1111,5 +1131,76 @@ class TestBiodatasets(unittest.TestCase):
         train_dataset = VinBigDataset(
             root=_path, mode="train", show=False, download=False)
         print(train_dataset)
+
+
+class MosmedDataset(Dataset):
+    def __init__(self, download: bool = False, save_path: str = ".", train: bool = True):
+        if download:
+            ct_link = {
+                "CT-0": "https://github.com/hasibzunair/3D-image-classification-tutorial/releases/download/v0.2/CT-0.zip",
+                "CT-23": "https://github.com/hasibzunair/3D-image-classification-tutorial/releases/download/v0.2/CT-23.zip"
+            }
+            for key in ct_link.keys():
+                wget.download(ct_link[key], save_path)
+                with ZipFile(os.path.join(save_path, ct_link + ".zip"), "r") as z_fp:
+                    z_fp.extractall(os.path.join(save_path))
+
+        volume_dir = "/home/data/01_SSD4TB/suzy/datasets/public-datasets/mosmed"
+        normal_scans = [os.path.join(volume_dir, "CT-0", fname)
+                        for fname in os.listdir(os.path.join(volume_dir, "CT-0"))]
+        abnormal_scans = [os.path.join(volume_dir, "CT-23", fname)
+                          for fname in os.listdir(os.path.join(volume_dir, "CT-23"))]
+        normal_labels = [[0] for _ in range(len(normal_scans))]
+        abnormal_labels = [[1] for _ in range(len(abnormal_scans))]
+
+        normal = list(zip(normal_scans, normal_labels))
+        abnormal = list(zip(abnormal_scans, abnormal_labels))
+
+        all_list = normal + abnormal
+        train_files, test_files = train_test_split(all_list, test_size=0.3)
+        if train:
+            self.fnames = train_files
+        else:
+            self.fnames = test_files
+
+    def normalize_volume(self, volume):
+        _min, _max = -1000, 400
+        volume[volume < _min] = _min
+        volume[volume > _max] = _max
+        volume = (volume - _min) / (_max - _min)
+        volume = volume.astype("float32")
+        return volume
+
+    def resize_volume(self, volume):
+        target_d, target_w, target_h = 64, 128, 128
+        curr_d, curr_w, curr_h = volume.shape[-1], volume.shape[0], volume.shape[1]
+
+        d = curr_d / target_d
+        w = curr_w / target_w
+        h = curr_h / target_h
+
+        d_factor = 1 / d
+        w_factor = 1 / w
+        h_factor = 1 / h
+
+        volume = ndimage.rotate(volume, 90, reshape=False)
+        volume = ndimage.zoom(volume, (w_factor, h_factor, d_factor), order=1)
+
+        return volume
+
+    def __getitem__(self, idx: int):
+        volume = nib.load(self.fnames[idx][0])
+        label = self.fnames[idx][-1][0]
+        volume = volume.get_fdata()
+        volume = self.normalize_volume(volume)
+        volume = self.resize_volume(volume)
+        volume = torch.from_numpy(volume)
+        volume = volume.unsqueeze(3)
+        volume = volume.permute(3, 0, 1, 2)
+        label = torch.tensor(label, dtype=torch.float32)
+        return volume, label
+
+    def __len__(self):
+        return len(self.fnames)
 
 # unittest.main()
