@@ -1,3 +1,4 @@
+import numpy as np
 from typing import Optional
 
 __all__ = ['get_num_parameters', '_make_divisible']
@@ -13,10 +14,14 @@ def get_num_parameters(model, only_trainable=False):
     return num_model_params
 
 
-def _make_divisible(v: float, divisor: int, min_value: Optional[int] = None) -> int:
+def _make_divisible(v: float, divisor: int, min_value: Optional[int] = None):
     if min_value is None:
         min_value = divisor
     new_v = max(min_value, int(v + divisor / 2) // divisor * divisor)
     if new_v < 0.9 * v:
         new_v += divisor
     return new_v
+
+
+def to_categorical(y):
+    return np.eye(max(y+1), dtype='uint8')[y]

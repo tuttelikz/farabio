@@ -27,6 +27,8 @@ import nibabel as nib
 from scipy import ndimage
 import matplotlib.pyplot as plt
 import torch.nn.functional as F
+from farabio.utils.helpers import to_categorical
+from sklearn.preprocessing import StandardScaler
 
 
 __all__ = ['ChestXrayDataset', 'DSB18Dataset', 'HistocancerDataset',
@@ -77,6 +79,9 @@ def download_datasets(tag, path="."):
     elif tag == "skin-cancer-mnist":
         bash_c_tag = ["kaggle", "datasets", "download",
                       "-d", "kmader/skin-cancer-mnist-ham10000"]
+    elif tag == "epileptic-seizure-recognition":
+        bash_c_tag = ["kaggle", "datasets", "download",
+                      "-d", "harunshimanto/epileptic-seizure-recognition"]
     else:
         bash_c = ["kaggle", "competitions", "download", "-c"]
         bash_c_tag = bash_c.copy()
@@ -1134,6 +1139,24 @@ class TestBiodatasets(unittest.TestCase):
 
 
 class MosmedDataset(Dataset):
+    r"""PyTorch friendly MosmedDataset class
+
+    Dataset is loaded using Kaggle API.
+    For further information on raw dataset and CT scan classification, please refer to [1]_.
+
+    Examples
+    ----------
+    >>> train_dataset = MosmedDataset(download=False,  train=True)
+    >>> valid_dataset = MosmedDataset(download=False,  train=False)
+
+    .. image:: ../imgs/mosmed.jpg
+        :width: 600
+
+    References
+    ---------------
+    .. [1] https://www.kaggle.com/datasets/andrewmvd/mosmed-covid19-ct-scans
+    """
+
     def __init__(self, download: bool = False, save_path: str = ".", train: bool = True):
         if download:
             ct_link = {
@@ -1202,5 +1225,66 @@ class MosmedDataset(Dataset):
 
     def __len__(self):
         return len(self.fnames)
+
+
+class EpiSeizureDataset(Dataset):
+    r"""PyTorch friendly EpiSeizureDataset class
+
+    Dataset is loaded using Kaggle API.
+    For further information on raw dataset and epileptic seizure detection, please refer to [1]_.
+
+    Examples
+    ----------
+    >>> train_dataset = EpiSeizureDataset(save_path, download=True, mode="train")
+    >>> valid_dataset = test_dataset = EpiSeizureDataset(csv_file, download=False, mode="test")
+
+    .. image:: ../imgs/episeizure.png
+        :width: 600
+
+    References
+    ---------------
+    .. [1] https://www.kaggle.com/datasets/harunshimanto/epileptic-seizure-recognition
+    """
+    def __init__(self, root: str = ".", download: bool = False, mode: str = "train", transform: Optional[Callable] = None, target_transform: Optional[Callable] = None):
+        if download:
+            tag = "epileptic-seizure-recognition"
+            to_save_path = root
+            download_datasets(tag, path=root)
+            extract_zip(os.path.join(to_save_path, tag+".zip"),
+                        os.path.join(to_save_path, tag))
+
+            root = os.path.join(to_save_path, tag,
+                                "Epileptic Seizure Recognition.csv")
+
+        ESR = pd.read_csv(root)
+
+        X = ESR.iloc[:, 1:179].values
+        y = ESR.iloc[:, 179].values
+        y[y > 1] = 0
+
+        scaler = StandardScaler()
+        scaler.fit(X)
+        x = scaler.transform(X)
+        y = to_categorical(y)
+
+        x_train, x_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42)  # cap X
+
+        if mode == "train":
+            self._x = x_train
+            self._y = y_train
+        else:
+            self._x = x_test
+            self._y = y_test
+
+    def __getitem__(self, idx: int):
+        x = torch.FloatTensor(np.float32(self._x[idx, :]))
+        y = torch.FloatTensor(self._y[idx, :])
+        x = x.unsqueeze(0)
+
+        return x, y
+
+    def __len__(self):
+        return len(self._x)
 
 # unittest.main()
