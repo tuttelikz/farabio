@@ -46,16 +46,22 @@ This work is selected for PyTorch Ecosystem Day.
 - Flexible trainers (**in progress*)
 
 ## 📚 Biodatasets
-* Chest X-Ray Images (Pneumonia):  
+* `biodatasets.ChestXrayDataset`:  
 https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia
-* 2018 Data Science Bowl:  
+* `biodatasets.DSB18Dataset`:  
 https://www.kaggle.com/c/data-science-bowl-2018/overview
-* Histopathologic Cancer Detection:  
+* `biodatasets.HistocancerDataset`:  
 https://www.kaggle.com/c/histopathologic-cancer-detection/overview
-* RANZCR CLiP - Catheter and Line Position Challenge:  
+* `biodatasets.RANZCRDataset`:  
 https://www.kaggle.com/c/ranzcr-clip-catheter-line-classification/overview
-* APTOS 2019 Blindness Detection:  
+* `biodatasets.RetinopathyDataset`:  
 https://www.kaggle.com/c/aptos2019-blindness-detection/overview
+* `biodatasets.VinBigDataset`:  
+ https://www.kaggle.com/c/vinbigdata-chest-xray-abnormalities-detection
+* `biodatasets.MosmedDataset`:  
+https://www.kaggle.com/datasets/andrewmvd/mosmed-covid19-ct-scans
+* `biodatasets.EpiSeizureDataset`:
+https://www.kaggle.com/datasets/harunshimanto/epileptic-seizure-recognition
 
 ## 🚢 Models
 ### Classification:
@@ -74,6 +80,12 @@ https://www.kaggle.com/c/aptos2019-blindness-detection/overview
 * LinkNet - https://arxiv.org/pdf/1707.03718
 * PSPNet - https://arxiv.org/pdf/1612.01105
 * FPN - http://presentations.cocodataset.org/COCO17-Stuff-FAIR.pdf
+
+### Volume:
+* ConvNet3D - https://www.sciencedirect.com/science/article/pii/S0010482521001001
+
+### Sequence:
+* VanillaLSTM - https://www.sciencedirect.com/science/article/abs/pii/S001048251830132X
 
 ## 🚀 Getting started (Installation)
 
@@ -102,7 +114,10 @@ pip install .
 ## 🤿 Tutorials
 **Tutorial 1:** Training a classifier for `ChestXrayDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-classifier.ipynb)  
 **Tutorial 2:** Training a segmentation model for `DSB18Dataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-segmentation.ipynb)  
-**Tutorial 3:** Training a Faster-RCNN detection model for `VinBigDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-detection.ipynb)
+**Tutorial 3:** Training a Faster-RCNN detection model for `VinBigDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-detection.ipynb)  
+**Tutorial 4:** Training a 3D-CNN to predict the presence of viral pneumonia in computer tomography (CT) scans for `MosmedDataset` - [Script](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-conv3d.py)  
+**Tutorial 5:** Training a LSTM for epileptic seizures prediction using `EpiSeizureDataset` dataset - [Script](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-lstm.py)
+
 
 ## 🔎 Links
 - API documentations: https://farabio.readthedocs.io
