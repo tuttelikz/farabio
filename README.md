@@ -46,16 +46,22 @@ This work is selected for PyTorch Ecosystem Day.
 - Flexible trainers (**in progress*)
 
 ## 📚 Biodatasets
-* Chest X-Ray Images (Pneumonia):  
+* `biodatasets.ChestXrayDataset`:  
 https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia
-* 2018 Data Science Bowl:  
+* `biodatasets.DSB18Dataset`:  
 https://www.kaggle.com/c/data-science-bowl-2018/overview
-* Histopathologic Cancer Detection:  
+* `biodatasets.HistocancerDataset`:  
 https://www.kaggle.com/c/histopathologic-cancer-detection/overview
-* RANZCR CLiP - Catheter and Line Position Challenge:  
+* `biodatasets.RANZCRDataset`:  
 https://www.kaggle.com/c/ranzcr-clip-catheter-line-classification/overview
-* APTOS 2019 Blindness Detection:  
+* `biodatasets.RetinopathyDataset`:  
 https://www.kaggle.com/c/aptos2019-blindness-detection/overview
+* `biodatasets.VinBigDataset`:  
+ https://www.kaggle.com/c/vinbigdata-chest-xray-abnormalities-detection
+* `biodatasets.MosmedDataset`:  
+https://www.kaggle.com/datasets/andrewmvd/mosmed-covid19-ct-scans
+* `biodatasets.EpiSeizureDataset`:
+https://www.kaggle.com/datasets/harunshimanto/epileptic-seizure-recognition
 
 ## 🚢 Models
 ### Classification:
