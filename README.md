@@ -81,6 +81,12 @@ https://www.kaggle.com/datasets/harunshimanto/epileptic-seizure-recognition
 * PSPNet - https://arxiv.org/pdf/1612.01105
 * FPN - http://presentations.cocodataset.org/COCO17-Stuff-FAIR.pdf
 
+### Volume:
+* ConvNet3D - https://www.sciencedirect.com/science/article/pii/S0010482521001001
+
+### Sequence:
+* VanillaLSTM - https://www.sciencedirect.com/science/article/abs/pii/S001048251830132X
+
 ## 🚀 Getting started (Installation)
 
 #### 1. Create and activate [`conda`](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands) environment:
@@ -108,7 +114,10 @@ pip install .
 ## 🤿 Tutorials
 **Tutorial 1:** Training a classifier for `ChestXrayDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-classifier.ipynb)  
 **Tutorial 2:** Training a segmentation model for `DSB18Dataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-segmentation.ipynb)  
-**Tutorial 3:** Training a Faster-RCNN detection model for `VinBigDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-detection.ipynb)
+**Tutorial 3:** Training a Faster-RCNN detection model for `VinBigDataset` - [Notebook](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-detection.ipynb)  
+**Tutorial 4:** Training a 3D-CNN to predict the presence of viral pneumonia in computer tomography (CT) scans for `MosmedDataset` - [Script](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-conv3d.py)  
+**Tutorial 5:** Training a LSTM for epileptic seizures prediction using `EpiSeizureDataset` dataset - [Script](https://github.com/tuttelikz/farabio/blob/main/farabio/notebooks/train-lstm.py)
+
 
 ## 🔎 Links
 - API documentations: https://farabio.readthedocs.io
